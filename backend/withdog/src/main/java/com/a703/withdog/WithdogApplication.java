@@ -1,13 +1,13 @@
-package com.a703.withdog2;
+package com.a703.withdog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Withdog2Application {
+public class WithdogApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Withdog2Application.class, args);
+		SpringApplication.run(WithdogApplication.class, args);
 	}
 
 }

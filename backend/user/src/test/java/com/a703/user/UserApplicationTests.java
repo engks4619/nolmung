@@ -1,10 +1,10 @@
-package com.a703.withdog;
+package com.a703.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WithdogApplicationTests {
+class UserApplicationTests {
 
 	@Test
 	void contextLoads() {
