@@ -2,15 +2,14 @@ package com.a703.community.entity;
 
 
 import com.a703.community.type.CategoryType;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
+@AllArgsConstructor
+@Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -23,9 +22,12 @@ public class Post {
 
     private Long dogIdx;
 
-    private Long userIdx;
+    private Long writerIdx;
+
+    private Long albaIdx;
 
     @Column(length = 20)
+    @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
 
     private String subject;
@@ -40,16 +42,18 @@ public class Post {
 
     private LocalDateTime walkDate;
 
+    @ColumnDefault("false")
     private Boolean getCompleted;
 
-    private Boolean get_deleted;
+    @ColumnDefault("false")
+    private Boolean getDeleted;
 
     @Column(length = 100)
     private String location;
 
     private Integer pay;
 
-    private Boolean lead;
+    private Boolean leadLine;
 
     private Boolean poopBag;
 

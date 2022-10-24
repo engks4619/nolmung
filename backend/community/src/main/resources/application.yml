@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
@@ -23,3 +23,6 @@ spring:
         enable_lazy_load_no_trans: true
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
 #        default_batch_fetch_size: 100
+
+server:
+  port: 8081

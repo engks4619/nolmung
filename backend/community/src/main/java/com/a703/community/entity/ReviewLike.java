@@ -11,18 +11,23 @@ import javax.persistence.*;
 @Getter
 public class ReviewLike {
 
-    @Id
-    @Column(unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewLikeIdx;
+
+    @EmbeddedId
+    private ReviewLikeId id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")
-    private Post post;
 
-    private Long userIdx;
+//    @Id
+//    @Column(unique = true)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long reviewLikeIdx;
 
+
+//    private Long userIdx;
+//
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")
+//    private Post post;
 
 
 
