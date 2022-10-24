@@ -1,0 +1,48 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spot?serverTimezone=UTC&useLegacyDatetimeCode=false&useUnicode=true&characterEncoding=utf8
+    username: ssafy
+    password: ssafy
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+      jdbc:
+        time_zone: UTC
+logging:
+  file:
+    name: logs/app.log
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %clr([%M]){cyan}  %clr(%-5level) %clr(%logger{36}){magenta} - %msg%n"
+    file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%M] %-5level %logger{36} - %msg%n"
+  logback:
+    rollingpolicy:
+      file-name-pattern: "logs/app.%d{yyyy-MM-dd}.%i.log"
+      max-file-size: 10MB
+  level:
+    root: WARN
+    org.hibernate.type.descriptor.sql: trace
+    com.comsultant: debug
+    org.apache.kafka: error
+response:
+  success: success
+  fail: fail
+frontend:
+  url: http://localhost:3000
