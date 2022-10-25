@@ -1,0 +1,28 @@
+#JPA
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/community?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: community
+    password: a703
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show_sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+
+    properties:
+      hibernate:
+        format_sql: true
+        enable_lazy_load_no_trans: true
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        default_batch_fetch_size: 100
+
+server:
+  port: 8081
