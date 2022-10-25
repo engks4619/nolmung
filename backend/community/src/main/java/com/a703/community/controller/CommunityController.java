@@ -25,6 +25,7 @@ import java.util.Map;
 public class CommunityController {
 
     private final CommunityService communityService;
+
     @PostMapping
     public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader Map<String, Object> token ,@RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
