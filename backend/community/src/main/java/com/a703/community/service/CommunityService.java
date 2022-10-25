@@ -6,8 +6,10 @@ import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.TblPost;
+import com.a703.community.entity.TblPostLike;
+import com.a703.community.entity.TblPostLikeId;
 import com.a703.community.repository.PostRepository;
-import com.a703.community.repository.ReviewLikeRepository;
+import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.type.CategoryType;
 import com.a703.community.util.File;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class CommunityService {
 
     private final PostRepository postRepository;
 
-    private final ReviewLikeRepository reviewLikeRepository;
+    private final PostLikeRepository postLikeRepository;
 
     private final File file;
 
@@ -79,6 +81,24 @@ public class CommunityService {
 
     }
 
+    public void pushLike(Long postIdx,Map<String, Object> token){
+
+        //통신필요
+        Long userIdx =1L;
+        TblPost post=postRepository.findByPostIdx(postIdx);
+
+        TblPostLikeId id = TblPostLikeId.builder()
+                        .userIdx(userIdx)
+                        .post(post)
+                        .build();
+
+        TblPostLike postLike = TblPostLike.builder()
+                        .id(id)
+                        .build();
+
+        postLikeRepository.save(postLike);
+    }
+
     public PostDto showPost(Long postIdx, Map<String, Object> token){
         //통신해서 받아와야함
         Long userIdx =1L;
@@ -86,7 +106,7 @@ public class CommunityService {
         TblPost post = postRepository.findByPostIdx(postIdx);
         //강아지 관련 api연결해야됨
         return PostDto.builder()
-                .getLike(reviewLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
                 .dogBreed(null)
                 .dogName(null)
                 .dogImgUrl(null)
@@ -121,7 +141,7 @@ public class CommunityService {
 
         return withLists.stream().map(with-> WithListDto.builder()
                 .postIdx(with.getPostIdx())
-                .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                 .location(with.getLocation())
                 .modifyDate(with.getModifyDate())
                 .thumbnailUrl(null)
@@ -136,7 +156,7 @@ public class CommunityService {
 
         return otherLists.stream().map(other-> OtherListDto.builder()
                         .postIdx(other.getPostIdx())
-                        .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())

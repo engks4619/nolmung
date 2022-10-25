@@ -1,11 +1,11 @@
 package com.a703.community.repository;
-import com.a703.community.entity.TblReviewLike;
-import com.a703.community.entity.TblReviewLikeId;
+import com.a703.community.entity.TblPostLike;
+import com.a703.community.entity.TblPostLikeId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReviewLikeRepository extends JpaRepository<TblReviewLike, TblReviewLikeId> {
+public interface PostLikeRepository extends JpaRepository<TblPostLike, TblPostLikeId> {
 
     Long countReviewLikeByIdPostPostIdx(Long postIdx);
 

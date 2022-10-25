@@ -71,4 +71,15 @@ public class CommunityController {
         return ResponseEntity.ok().body(postDto);
     }
 
+    @PutMapping("{postIdx}")
+    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
+
+        communityService.pushLike(postIdx,token);
+        return ResponseEntity.ok().body("success");
+    }
+
+
+
+
+
 }
