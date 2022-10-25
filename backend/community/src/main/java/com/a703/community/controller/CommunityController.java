@@ -28,8 +28,9 @@ public class CommunityController {
         return ResponseEntity.ok().body("success");
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deletePost (){
+    @DeleteMapping("{postIdx}")
+    public ResponseEntity<?> deletePost (@PathVariable Long postIdx){
+        communityService.deletePost(postIdx);
 
         return ResponseEntity.ok().body("success");
 

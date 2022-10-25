@@ -50,7 +50,9 @@ public class CommunityService {
     }
     //진짜 삭제하지말기
     public void deletePost(Long postIdx){
-
+        TblPost post = postRepository.findByPostIdx(postIdx);
+        post.setGetDeleted(Boolean.TRUE);
+        postRepository.save(post);
 
     }
     //재등록
