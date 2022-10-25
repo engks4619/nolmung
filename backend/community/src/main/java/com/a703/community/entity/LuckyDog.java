@@ -16,9 +16,6 @@ public class LuckyDog {
     private LuckyDogId id;
 
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")
-//    private Post post;
 
 
 }

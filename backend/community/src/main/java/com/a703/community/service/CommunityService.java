@@ -1,6 +1,7 @@
 package com.a703.community.service;
 
 import com.a703.community.dto.request.RegisterPostRequest;
+import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.Post;
@@ -57,6 +58,17 @@ public class CommunityService {
     //구인여부나
     public void updatePost(){
 
+    }
+
+    public List<MainListDto> showMainList(){
+
+        List<Post> mainLists =postRepository.findFirst10ByOrderByModifyDateDesc();
+
+        return mainLists.stream().map(main-> MainListDto.builder()
+                        .subject(main.getSubject())
+                        .categoryType(main.getCategoryType())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public List<WithListDto> showWithList(){

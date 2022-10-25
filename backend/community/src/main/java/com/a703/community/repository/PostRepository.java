@@ -12,6 +12,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findByCategoryTypeOrderByModifyDateDesc(CategoryType categoryType);
 
+    List<Post> findFirst10ByOrderByModifyDateDesc();
 
 
 }

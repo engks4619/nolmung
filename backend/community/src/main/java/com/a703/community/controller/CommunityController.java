@@ -1,6 +1,7 @@
 package com.a703.community.controller;
 
 import com.a703.community.dto.request.RegisterPostRequest;
+import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.service.CommunityService;
@@ -31,6 +32,12 @@ public class CommunityController {
 
         return ResponseEntity.ok().body("success");
 
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<List<MainListDto>>showMainList(){
+        List<MainListDto> mainLists = communityService.showMainList();
+        return ResponseEntity.ok().body(mainLists);
     }
 
 

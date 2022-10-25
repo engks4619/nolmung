@@ -57,11 +57,6 @@ public class Post {
 
     private Boolean poopBag;
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    private Set<ReviewLike> reviewLikes = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    private Set<LuckyDog> luckyDogs = new HashSet<>();
 
 
 }
