@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -16,11 +19,13 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "tbl_spot")
 public class Spot {
     @Id
-    @Column(name = "spot_idx", nullable = false)
-    private long idx;
+    @Column(name = "spot_id", nullable = false, columnDefinition = "VARCHAR(255)")
+    private String spotId;
 
     @Column(name = "name", columnDefinition = "VARCHAR(255)")
     private String name;
@@ -37,8 +42,8 @@ public class Spot {
     @Column(name = "time", columnDefinition = "VARCHAR(255)")
     private String time;
 
-    @Column(name = "desc", columnDefinition = "TEXT")
-    private String desc;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     @Column(name = "menu", columnDefinition = "TEXT")
     private String menu;
@@ -48,4 +53,8 @@ public class Spot {
 
     @Column(name = "lng", columnDefinition = "DOUBLE")
     private double lng;
+
+    @Column(name = "img_cnt", columnDefinition = "INT")
+    @ColumnDefault("0")
+    private int imgCnt;
 }

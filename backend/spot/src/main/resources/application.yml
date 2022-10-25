@@ -28,7 +28,7 @@ spring:
         time_zone: UTC
 logging:
   file:
-    name: logs/app.log
+    name: logs/spot.log
   pattern:
     console: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %clr([%M]){cyan}  %clr(%-5level) %clr(%logger{36}){magenta} - %msg%n"
     file: "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%M] %-5level %logger{36} - %msg%n"
@@ -39,10 +39,9 @@ logging:
   level:
     root: WARN
     org.hibernate.type.descriptor.sql: trace
-    com.comsultant: debug
-    org.apache.kafka: error
-response:
-  success: success
-  fail: fail
-frontend:
-  url: http://localhost:3000
+    com.a703.spot: debug
+#response:
+#  success: success
+#  fail: fail
+#frontend:
+#  url: http://localhost:3000
