@@ -7,6 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 
 public interface WalkMongoDBRepository extends MongoRepository<WalkDTO, Integer> {
-
-    WalkDTO saveWalk(WalkDTO walk);
+    public WalkDTO save(WalkDTO walk);
 }

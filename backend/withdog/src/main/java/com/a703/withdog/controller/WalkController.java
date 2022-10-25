@@ -2,19 +2,20 @@ package com.a703.withdog.controller;
 
 import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.serrvice.WalkService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/walk")
+@RequestMapping("/walk")
+@RequiredArgsConstructor
 public class WalkController {
 
-    @Autowired
-    WalkService walkService;
+    private final WalkService walkService;
 
-    @GetMapping(value = "save")
+    @GetMapping("/save")
     public int saveWalk(@RequestBody WalkDTO walk) {
         return walkService.saveWalk(walk);
     }
