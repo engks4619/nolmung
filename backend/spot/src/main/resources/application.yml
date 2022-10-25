@@ -18,7 +18,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
     generate-ddl: true
     properties:
       hibernate:
@@ -40,6 +40,8 @@ logging:
     root: WARN
     org.hibernate.type.descriptor.sql: trace
     com.a703.spot: debug
+const:
+  spot-list-size : 10
 #response:
 #  success: success
 #  fail: fail

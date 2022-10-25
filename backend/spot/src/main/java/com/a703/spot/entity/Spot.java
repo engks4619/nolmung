@@ -57,4 +57,7 @@ public class Spot {
     @Column(name = "img_cnt", columnDefinition = "INT")
     @ColumnDefault("0")
     private int imgCnt;
+
+    @Column(name = "category", columnDefinition = "VARCHAR")
+    private String category;
 }
