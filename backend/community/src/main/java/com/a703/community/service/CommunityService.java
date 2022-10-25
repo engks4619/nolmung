@@ -3,6 +3,7 @@ package com.a703.community.service;
 import com.a703.community.dto.request.RegisterPostRequest;
 import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
+import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.TblPost;
 import com.a703.community.repository.PostRepository;
@@ -63,6 +64,30 @@ public class CommunityService {
 
     }
 
+    public PostDto showPost(Long postIdx, Map<String, Object> token){
+        //통신해서 받아와야함
+        Long userIdx =1L;
+
+        TblPost post = postRepository.findByPostIdx(postIdx);
+        //강아지 관련 api연결해야됨
+        return PostDto.builder()
+                .getLike(reviewLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .dogBreed(null)
+                .dogName(null)
+                .dogImgUrl(null)
+                .photoUrl(null)
+                .categoryType(post.getCategoryType())
+                .content(post.getContent())
+                .leadLine(post.getLeadLine())
+                .pay(post.getPay())
+                .location(post.getLocation())
+                .walkDate(post.getWalkDate())
+                .poopBag(post.getPoopBag())
+                .build();
+
+
+    }
+
     public List<MainListDto> showMainList(){
 
         List<TblPost> mainLists =postRepository.findFirst10ByOrderByModifyDateDesc();
@@ -84,6 +109,7 @@ public class CommunityService {
                 .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                 .location(with.getLocation())
                 .modifyDate(with.getModifyDate())
+                .thumbnailUrl(null)
                 .walkDate(with.getWalkDate())
                 .build())
                 .collect(Collectors.toList());
@@ -98,6 +124,7 @@ public class CommunityService {
                         .modifyDate(with.getModifyDate())
                         .walkDate(with.getWalkDate())
                         .pay(with.getPay())
+                        .thumbnailUrl(null)
                         .build())
                 .collect(Collectors.toList());
     }

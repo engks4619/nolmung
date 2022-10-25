@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class TblReviewLikeId implements Serializable {
 
-    private Long user_idx;
+    private Long userIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")

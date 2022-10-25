@@ -15,4 +15,6 @@ public class MainListDto {
     private String subject;
 
     private CategoryType categoryType;
+
+
 }

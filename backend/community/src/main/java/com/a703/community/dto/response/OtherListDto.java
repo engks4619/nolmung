@@ -25,4 +25,6 @@ public class OtherListDto {
     private Integer likeCnt;
 
     private Integer pay;
+
+    private String thumbnailUrl;
 }

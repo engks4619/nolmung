@@ -25,4 +25,6 @@ public class WithListDto {
 
     private Integer likeCnt;
 
+    private String thumbnailUrl;
+
 }

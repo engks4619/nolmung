@@ -9,5 +9,7 @@ public interface ReviewLikeRepository extends JpaRepository<TblReviewLike, TblRe
 
     Long countReviewLikeByIdPostPostIdx(Long postIdx);
 
+    Boolean existsByIdUserIdxAndIdPostPostIdx(Long userIdx, Long postIdx);
+
 
 }

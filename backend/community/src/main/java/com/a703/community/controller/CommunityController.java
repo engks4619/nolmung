@@ -3,6 +3,7 @@ package com.a703.community.controller;
 import com.a703.community.dto.request.RegisterPostRequest;
 import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
+import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +61,10 @@ public class CommunityController {
         return ResponseEntity.ok().body("success");
     }
 
+    @GetMapping("/showPost/{postIdx}")
+    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token){
+        PostDto postDto = communityService.showPost(postIdx,token);
+        return ResponseEntity.ok().body(postDto);
+    }
 
 }
