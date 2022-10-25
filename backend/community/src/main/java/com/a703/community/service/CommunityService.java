@@ -28,7 +28,7 @@ public class CommunityService {
     public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files){
 
         Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
-        Long doxIdx = 1L;//통신해서 받아와야함
+        Long dogIdx = 1L;//통신해서 받아와야함
 
 
         Post post = Post.builder()
@@ -36,7 +36,7 @@ public class CommunityService {
                 .content(registerPost.getContent())
                 .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .modifyDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
-                .dogIdx(doxIdx)
+                .dogIdx(dogIdx)
                 .writerIdx(userIdx)
                 .getDeleted(false)
                 .getCompleted(false)
