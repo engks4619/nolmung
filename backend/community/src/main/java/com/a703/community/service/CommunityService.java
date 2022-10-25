@@ -10,6 +10,8 @@ import com.a703.community.repository.PostRepository;
 import com.a703.community.repository.ReviewLikeRepository;
 import com.a703.community.type.CategoryType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -88,9 +90,9 @@ public class CommunityService {
 
     }
 
-    public List<MainListDto> showMainList(){
+    public List<MainListDto> showMainList(Pageable pageable){
 
-        List<TblPost> mainLists =postRepository.findFirst10ByOrderByModifyDateDesc();
+        Page<TblPost> mainLists = postRepository.findAll(pageable);
 
         return mainLists.stream().map(main-> MainListDto.builder()
                         .postIdx(main.getPostIdx())
@@ -100,9 +102,9 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
-    public List<WithListDto> showWithList(){
+    public List<WithListDto> showWithList(Pageable pageable){
 
-        List<TblPost> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.WITH);
+        Page<TblPost> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
 
         return withLists.stream().map(with-> WithListDto.builder()
                 .postIdx(with.getPostIdx())
@@ -115,15 +117,17 @@ public class CommunityService {
                 .collect(Collectors.toList());
     }
 
-    public List<OtherListDto> showOtherList(){
-        List<TblPost> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.OTHER);
-        return withLists.stream().map(with-> OtherListDto.builder()
-                        .postIdx(with.getPostIdx())
-                        .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
-                        .location(with.getLocation())
-                        .modifyDate(with.getModifyDate())
-                        .walkDate(with.getWalkDate())
-                        .pay(with.getPay())
+    public List<OtherListDto> showOtherList(Pageable pageable){
+
+        Page<TblPost> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
+
+        return otherLists.stream().map(other-> OtherListDto.builder()
+                        .postIdx(other.getPostIdx())
+                        .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .location(other.getLocation())
+                        .modifyDate(other.getModifyDate())
+                        .walkDate(other.getWalkDate())
+                        .pay(other.getPay())
                         .thumbnailUrl(null)
                         .build())
                 .collect(Collectors.toList());

@@ -7,6 +7,9 @@ import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.service.CommunityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,20 +41,20 @@ public class CommunityController {
     }
 
     @GetMapping("/main")
-    public ResponseEntity<List<MainListDto>>showMainList(){
-        List<MainListDto> mainLists = communityService.showMainList();
+    public ResponseEntity<List<MainListDto>>showMainList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 5)Pageable pageable){
+        List<MainListDto> mainLists = communityService.showMainList(pageable);
         return ResponseEntity.ok().body(mainLists);
     }
 
     @GetMapping("/with")
-    public ResponseEntity<List<WithListDto>> showWithList(){
-        List<WithListDto> withLists = communityService.showWithList();
+    public ResponseEntity<List<WithListDto>> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+        List<WithListDto> withLists = communityService.showWithList(pageable);
         return ResponseEntity.ok().body(withLists);
     }
 
     @GetMapping("/other")
-    public ResponseEntity<List<OtherListDto>>showOtherList(){
-        List<OtherListDto> otherLists = communityService.showOtherList();
+    public ResponseEntity<List<OtherListDto>>showOtherList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+        List<OtherListDto> otherLists = communityService.showOtherList(pageable);
         return ResponseEntity.ok().body(otherLists);
     }
 
