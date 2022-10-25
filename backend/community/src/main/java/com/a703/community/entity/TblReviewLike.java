@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ReviewLike {
+public class TblReviewLike {
 
 
     @EmbeddedId
-    private ReviewLikeId id;
+    private TblReviewLikeId id;
 
 }

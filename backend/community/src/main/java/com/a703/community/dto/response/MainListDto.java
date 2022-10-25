@@ -10,6 +10,8 @@ import lombok.Getter;
 @Builder
 public class MainListDto {
 
+    private Long postIdx;
+
     private String subject;
 
     private CategoryType categoryType;

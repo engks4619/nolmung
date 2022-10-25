@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Table(name = "lucky_dog")
+//@Table(name = "tbl_lucky_dog")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class LuckyDog {
+public class TblLuckyDog {
 
     @EmbeddedId
-    private LuckyDogId id;
+    private TblLuckyDogId id;
 
 
 

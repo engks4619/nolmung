@@ -17,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/community")
+
 public class CommunityController {
 
     private final CommunityService communityService;
@@ -40,8 +41,6 @@ public class CommunityController {
         return ResponseEntity.ok().body(mainLists);
     }
 
-
-
     @GetMapping("/with")
     public ResponseEntity<List<WithListDto>> showWithList(){
         List<WithListDto> withLists = communityService.showWithList();
@@ -52,6 +51,12 @@ public class CommunityController {
     public ResponseEntity<List<OtherListDto>>showOtherList(){
         List<OtherListDto> otherLists = communityService.showOtherList();
         return ResponseEntity.ok().body(otherLists);
+    }
+
+    @PatchMapping("{postIdx}")
+    public ResponseEntity<?>reRegisterPost(@PathVariable Long postIdx){
+        communityService.reRegisterPost(postIdx);
+        return ResponseEntity.ok().body("success");
     }
 
 

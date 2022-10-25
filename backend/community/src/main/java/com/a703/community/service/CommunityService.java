@@ -4,7 +4,7 @@ import com.a703.community.dto.request.RegisterPostRequest;
 import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.Post;
+import com.a703.community.entity.TblPost;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.repository.ReviewLikeRepository;
 import com.a703.community.type.CategoryType;
@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,11 +30,9 @@ public class CommunityService {
         Long dogIdx = 1L;//통신해서 받아와야함
 
 
-        Post post = Post.builder()
+        TblPost post = TblPost.builder()
                 .categoryType(registerPost.getCategoryType())
                 .content(registerPost.getContent())
-                .createDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
-                .modifyDate(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .dogIdx(dogIdx)
                 .writerIdx(userIdx)
                 .getDeleted(false)
@@ -46,25 +42,31 @@ public class CommunityService {
                 .pay(registerPost.getPay())
                 .poopBag(registerPost.getPoopBag())
                 .walkDate(registerPost.getWalkDate())
+                .reRegister(0)
                 .build();
 
         postRepository.save(post);
 
     }
     //진짜 삭제하지말기
-    public void deletePost(){
+    public void deletePost(Long postIdx){
+
 
     }
-    //구인여부나
-    public void updatePost(){
+    //재등록
+    public void reRegisterPost(Long postIdx){
+        TblPost post = postRepository.findByPostIdx(postIdx);
+        post.setReRegister(post.getReRegister()+1);
+        postRepository.save(post);
 
     }
 
     public List<MainListDto> showMainList(){
 
-        List<Post> mainLists =postRepository.findFirst10ByOrderByModifyDateDesc();
+        List<TblPost> mainLists =postRepository.findFirst10ByOrderByModifyDateDesc();
 
         return mainLists.stream().map(main-> MainListDto.builder()
+                        .postIdx(main.getPostIdx())
                         .subject(main.getSubject())
                         .categoryType(main.getCategoryType())
                         .build())
@@ -73,7 +75,7 @@ public class CommunityService {
 
     public List<WithListDto> showWithList(){
 
-        List<Post> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.WITH);
+        List<TblPost> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.WITH);
 
         return withLists.stream().map(with-> WithListDto.builder()
                 .postIdx(with.getPostIdx())
@@ -86,7 +88,7 @@ public class CommunityService {
     }
 
     public List<OtherListDto> showOtherList(){
-        List<Post> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.OTHER);
+        List<TblPost> withLists =postRepository.findByCategoryTypeOrderByModifyDateDesc(CategoryType.OTHER);
         return withLists.stream().map(with-> OtherListDto.builder()
                         .postIdx(with.getPostIdx())
                         .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))

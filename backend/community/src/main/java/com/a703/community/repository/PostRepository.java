@@ -1,6 +1,6 @@
 package com.a703.community.repository;
 
-import com.a703.community.entity.Post;
+import com.a703.community.entity.TblPost;
 import com.a703.community.type.CategoryType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,11 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long> {
+public interface PostRepository extends JpaRepository<TblPost,Long> {
 
-    List<Post> findByCategoryTypeOrderByModifyDateDesc(CategoryType categoryType);
+    List<TblPost> findByCategoryTypeOrderByModifyDateDesc(CategoryType categoryType);
 
-    List<Post> findFirst10ByOrderByModifyDateDesc();
+    List<TblPost> findFirst10ByOrderByModifyDateDesc();
+
+    TblPost findByPostIdx(Long postIdx);
 
 
 }

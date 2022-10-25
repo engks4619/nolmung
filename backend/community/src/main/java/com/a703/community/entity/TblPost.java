@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Post {
+@Setter
+public class TblPost extends BaseEntity{
 
     @Id
     @Column(unique = true,name = "post_idx")
@@ -35,10 +36,7 @@ public class Post {
     @Column(length = 200)
     private String content;
 
-    private LocalDateTime createDate;
 
-    //재등록
-    private LocalDateTime modifyDate;
 
     private LocalDateTime walkDate;
 
@@ -56,6 +54,8 @@ public class Post {
     private Boolean leadLine;
 
     private Boolean poopBag;
+
+    private Integer reRegister;
 
 
 

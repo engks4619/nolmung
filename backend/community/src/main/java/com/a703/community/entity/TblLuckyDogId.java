@@ -5,11 +5,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-public class LuckyDogId implements Serializable {
+public class TblLuckyDogId implements Serializable {
 
     private Long dogIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")
-    private Post post;
+    private TblPost post;
 }
