@@ -19,9 +19,9 @@ public class WalkController {
     private final WalkService walkService;
 
     @GetMapping("/save")
-    public ResponseEntity<?> saveWalkRecord(@RequestBody WalkDTO walk) {
+    public ResponseEntity<?> saveWalk(@RequestBody WalkDTO walk) {
         /**
-         * @Method Name : saveWalkRecord
+         * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
         int walkIdx = walkService.saveWalk(walk);
@@ -32,7 +32,7 @@ public class WalkController {
     @GetMapping("record/{ownerIdx}")
     public ResponseEntity<?> getWalkListByOwner(@PathVariable int ownerIdx) {
         /**
-         * @Method Name : getWalkRecord
+         * @Method Name : getWalkListByOwner
          * @Method 설명 : 견주 id로 산책 기록들 조회
          */
         List<WalkRes> walkResList = walkService.findByOwnerIdx(ownerIdx);
