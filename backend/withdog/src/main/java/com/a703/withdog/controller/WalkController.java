@@ -1,23 +1,59 @@
 package com.a703.withdog.controller;
 
 import com.a703.withdog.dto.WalkDTO;
+import com.a703.withdog.dto.WalkRes;
 import com.a703.withdog.serrvice.WalkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/walk")
 @RequiredArgsConstructor
 public class WalkController {
-
     private final WalkService walkService;
 
     @GetMapping("/save")
-    public int saveWalk(@RequestBody WalkDTO walk) {
-        return walkService.saveWalk(walk);
+    public ResponseEntity<?> saveWalkRecord(@RequestBody WalkDTO walk) {
+        /**
+         * @Method Name : saveWalkRecord
+         * @Method 설명 : 산책 기록 저장 후 산책 id 반환
+         */
+        int walkIdx = walkService.saveWalk(walk);
+
+        return ResponseEntity.ok().body(walkIdx);
     }
 
+    @GetMapping("record/{ownerIdx}")
+    public ResponseEntity<?> getWalkListByOwner(@PathVariable int ownerIdx) {
+        /**
+         * @Method Name : getWalkRecord
+         * @Method 설명 : 견주 id로 산책 기록들 조회
+         */
+        List<WalkRes> walkResList = walkService.findByOwnerIdx(ownerIdx);
+        if (walkResList != null) {
+            return ResponseEntity.ok().body(walkResList);
+        }
+
+        return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
+    }
+
+//    @GetMapping("record/{walkedDog}")
+//    public ResponseEntity<?> getWalkListByWalkedDog(@PathVariable int walkedDog) {
+//        /**
+//         * @Method Name : getWalkListByWalkedDog
+//         * @Method 설명 : 산책한 강아지 id로 산책 기록들 조회
+//         */
+//        List<WalkRes> walkResList = walkService.findByWalkedDog(walkedDog);
+//        if (walkResList != null) {
+//            return ResponseEntity.ok().body(walkResList);
+//        }
+//
+//        return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
+//    }
 }
