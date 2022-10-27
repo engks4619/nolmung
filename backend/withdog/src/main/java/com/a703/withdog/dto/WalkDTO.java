@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document(collection = "walk")
 public class WalkDTO {
+
     @Id
     private int walkIdx;   // 산책 기록 번호
 

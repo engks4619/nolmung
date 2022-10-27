@@ -39,7 +39,24 @@ public class WalkService {
         return walkResList;
     }
 
-//    public List<WalkRes> findByWalkedDog(int walkedDog) {
-//
-//    }
+    public List<WalkRes> findByWalkedDog(int walkedDogIdx) {
+
+        List<WalkDTO> walkDTOList = walkMongoDBRepository.findAllByWalkedDogIdx(walkedDogIdx);
+
+        List<WalkRes> walkResList = new ArrayList<>();
+        for(WalkDTO walk : walkDTOList) {
+            walkResList.add(WalkRes.builder()
+                    .walkIdx(walk.getWalkIdx())
+                    .ownerIdx(walk.getOwnerIdx())
+                    .walkerIdx(walk.getWalkerIdx())
+                    .distance(walk.getDistance())
+                    .time(walk.getTime())
+                    .startDate(walk.getStartDate())
+                    .endDate(walk.getEndDate())
+                    .walkedDogList(walk.getWalkedDogList())
+                    .build());
+        }
+
+        return walkResList;
+    }
 }

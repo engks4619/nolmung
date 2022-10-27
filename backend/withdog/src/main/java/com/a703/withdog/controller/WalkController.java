@@ -29,31 +29,30 @@ public class WalkController {
         return ResponseEntity.ok().body(walkIdx);
     }
 
-    @GetMapping("record/{ownerIdx}")
+    @GetMapping("record/owner/{ownerIdx}")
     public ResponseEntity<?> getWalkListByOwner(@PathVariable int ownerIdx) {
         /**
          * @Method Name : getWalkListByOwner
          * @Method 설명 : 견주 id로 산책 기록들 조회
          */
         List<WalkRes> walkResList = walkService.findByOwnerIdx(ownerIdx);
-        if (walkResList != null) {
+        if (!walkResList.isEmpty()) {
             return ResponseEntity.ok().body(walkResList);
         }
 
         return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
     }
 
-//    @GetMapping("record/{walkedDog}")
-//    public ResponseEntity<?> getWalkListByWalkedDog(@PathVariable int walkedDog) {
-//        /**
-//         * @Method Name : getWalkListByWalkedDog
-//         * @Method 설명 : 산책한 강아지 id로 산책 기록들 조회
-//         */
-//        List<WalkRes> walkResList = walkService.findByWalkedDog(walkedDog);
-//        if (walkResList != null) {
-//            return ResponseEntity.ok().body(walkResList);
-//        }
-//
-//        return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
-//    }
+    @GetMapping("/dog/{walkedDogIdx}")
+    public ResponseEntity<?> getWalkListByWalkedDog(@PathVariable int walkedDogIdx) {
+        /**
+         * @Method Name : getWalkListByWalkedDog
+         * @Method 설명 : 산책한 강아지 id로 산책 기록들 조회
+         */
+        List<WalkRes> walkResList = walkService.findByWalkedDog(walkedDogIdx);
+        if (!walkResList.isEmpty()) {
+            return ResponseEntity.ok().body(walkResList);
+        }
+        return ResponseEntity.badRequest().body(HttpStatus.NOT_FOUND);
+    }
 }
