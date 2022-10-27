@@ -11,7 +11,9 @@ public class SearchRequest {
 
     private LocalDateTime endWalkDate;
 
-    private Integer pay;
+    private Integer startPay;
+
+    private Integer endPay;
 
     private String dogBreed;
 

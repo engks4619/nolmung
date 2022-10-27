@@ -15,6 +15,8 @@ public interface PostRepository extends JpaRepository<TblPost,Long>, JpaSpecific
 //
 //    List<TblPost> findFirst10ByOrderByModifyDateDesc();
 
+//    Page<TblPost> findAll(Pageable pageable, Specification<TblPost> spec);
+
     Page<TblPost> findByCategoryType(CategoryType categoryType, Pageable pageable);
 
     TblPost findByPostIdx(Long postIdx);
