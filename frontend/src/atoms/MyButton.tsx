@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import {StyleSheet, Pressable, Text, View} from 'react-native';
 import {MAIN_COLOR} from '~/const';
 
@@ -10,13 +10,13 @@ interface Props {
   onClick: Function;
 }
 
-const MyButton: FC = ({
+function MyButton({
   btnText,
   horizontalSize = 80,
   fontWeight = '600',
   fontSize = 15,
   onClick,
-}: Props) => {
+}: Props) {
   return (
     <View>
       <Pressable
@@ -40,7 +40,7 @@ const MyButton: FC = ({
       </Pressable>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
