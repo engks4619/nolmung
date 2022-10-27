@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -31,19 +32,27 @@ public class SpotServiceImpl implements SpotService {
     public SpotListDto getSpotList(SpotRequest request, int page, int desc) {
         // 검색 조건 설정
         Specification<Spot> spec = (root, query, criteriaBuilder) -> null;
-        if (request.getSearchValue() != null){
+        if (request.getSearchValue() != null){ // 검색어 있을 경우 포함
             spec = spec.and(SpotSpecification.containsName(request.getSearchValue()));
         }
 
         //페이지네이션
         Pageable pageable = getPageable(page, desc);
-        Page<Spot> pageSpots = spotRepository.findAll(spec, pageable);
-        List<Spot> spots = pageSpots.getContent();
-        int totalPages =pageSpots.getTotalPages();
+        Page<Spot> pageSpots = null;
+        if(desc == 1) { // 별점순
+            pageSpots = spotRepository.findAll(spec, pageable);
+        }else if(desc == 2) { // 리뷰 많은 순
+            
+        }else { // 기본(거리 가까운 순)
+
+        }
+        
+        List<Spot> spots = Objects.requireNonNull(pageSpots).getContent();
+        int totalPages = pageSpots.getTotalPages();
 
         List<Spot> list = new ArrayList<>();
         for(Spot spot : spots) {
-//            SpotDto spotDto =
+//
         }
         return null;
     }
@@ -53,11 +62,9 @@ public class SpotServiceImpl implements SpotService {
         int pageSize = constProperties.getSpotListSize();
         if (desc == 1) { // 별점 순
             return PageRequest.of(page, pageSize, Sort.by("star").descending());
-        } else if (desc == 2) { // 리뷰 많은 순
-//            return PageRequest.of(page, pageSize, Sort.by("reviewCnt").descending());
+        } else if (desc == 2) { // 리뷰 많은 순, 리뷰 개수를 컬럼에 추가할 가능성도 있어 따로 빼둠
             return PageRequest.of(page, pageSize);
         } else { // 기본은 거리 가까운 순
-//            return PageRequest.of(page, pageSize, Sort.by("distance").descending());
             return PageRequest.of(page, pageSize);
         }
     }

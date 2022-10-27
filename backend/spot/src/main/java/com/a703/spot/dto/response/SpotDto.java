@@ -24,7 +24,7 @@ public class SpotDto {
     private Map<String, String> menu; // 메뉴 이름 : 가격 (~원)
     private double lat;
     private double lng;
-    private double distance;
+    private double distanceDiff;
     private double star;
-    private int reviewCnt;
+
 }

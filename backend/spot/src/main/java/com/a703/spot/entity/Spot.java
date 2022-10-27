@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -58,6 +59,9 @@ public class Spot {
     @ColumnDefault("0")
     private int imgCnt;
 
-    @Column(name = "category", columnDefinition = "VARCHAR")
+    @Column(name = "category", columnDefinition = "VARCHAR(10)")
     private String category;
+
+//    @Column(name = "location")
+//    private Point location;
 }
