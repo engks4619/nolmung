@@ -58,6 +58,8 @@ public class TblPost extends BaseEntity{
 
     private Integer reRegister;
 
+//    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private Set<TblPostLike> postLikes = new HashSet<>();
 
 
 }

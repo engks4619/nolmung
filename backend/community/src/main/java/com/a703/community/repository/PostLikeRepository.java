@@ -1,4 +1,5 @@
 package com.a703.community.repository;
+
 import com.a703.community.entity.TblPostLike;
 import com.a703.community.entity.TblPostLikeId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,11 @@ public interface PostLikeRepository extends JpaRepository<TblPostLike, TblPostLi
     Long countReviewLikeByIdPostPostIdx(Long postIdx);
 
     Boolean existsByIdUserIdxAndIdPostPostIdx(Long userIdx, Long postIdx);
+
+//    Page<TblPost> findAllPostByIdUserIdx(Long userIdx,Pageable pageable);
+////    Page<TblPostLike> findAllByIdUserIdx(Long userIdx, Pageable pageable);
+
+
 
 
 }

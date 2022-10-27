@@ -59,9 +59,15 @@ public class CommunityController {
         return ResponseEntity.ok().body(otherLists);
     }
 
-    @PatchMapping("{postIdx}")
+    @PatchMapping("/repost/{postIdx}")
     public ResponseEntity<?>reRegisterPost(@PathVariable Long postIdx){
         communityService.reRegisterPost(postIdx);
+        return ResponseEntity.ok().body("success");
+    }
+
+    @PatchMapping("/complete/{postIdx}")
+    public ResponseEntity<?>completePost(@PathVariable Long postIdx){
+        communityService.completePost(postIdx);
         return ResponseEntity.ok().body("success");
     }
 
@@ -71,12 +77,15 @@ public class CommunityController {
         return ResponseEntity.ok().body(postDto);
     }
 
-    @PutMapping("{postIdx}")
+    @PutMapping("/pushLike/{postIdx}")
     public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
 
         communityService.pushLike(postIdx,token);
         return ResponseEntity.ok().body("success");
     }
+
+
+
 
 
 

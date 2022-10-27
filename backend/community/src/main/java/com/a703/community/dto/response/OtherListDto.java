@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class OtherListDto {
     private Long postIdx;
 
-    private Long writerIdx;
+    private String writer;
 
     private String subject;
 

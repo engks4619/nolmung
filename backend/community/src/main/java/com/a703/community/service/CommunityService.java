@@ -36,9 +36,10 @@ public class CommunityService {
     public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws IOException {
 
         Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
-        Long dogIdx = 1L;//통신해서 받아와야함
+        Long dogIdx = 1L;//통신해서 받아와야함 산책할 강아지도 등록해줘야함
 
         TblPost post = TblPost.builder()
+                .subject(registerPost.getSubject())
                 .categoryType(registerPost.getCategoryType())
                 .content(registerPost.getContent())
                 .dogIdx(dogIdx)
@@ -60,11 +61,6 @@ public class CommunityService {
 
         }
 
-
-
-
-
-
     }
     //진짜 삭제하지말기
     public void deletePost(Long postIdx){
@@ -77,6 +73,13 @@ public class CommunityService {
     public void reRegisterPost(Long postIdx){
         TblPost post = postRepository.findByPostIdx(postIdx);
         post.setReRegister(post.getReRegister()+1);
+        postRepository.save(post);
+
+    }
+
+    public void completePost(Long postIdx){
+        TblPost post = postRepository.findByPostIdx(postIdx);
+        post.setGetCompleted(true);
         postRepository.save(post);
 
     }
@@ -107,6 +110,7 @@ public class CommunityService {
         //강아지 관련 api연결해야됨
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .writer("통신필요")
                 .dogBreed(null)
                 .dogName(null)
                 .dogImgUrl(null)
@@ -140,6 +144,7 @@ public class CommunityService {
         Page<TblPost> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
 
         return withLists.stream().map(with-> WithListDto.builder()
+                .writer("통신필요")
                 .postIdx(with.getPostIdx())
                 .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                 .location(with.getLocation())
@@ -155,6 +160,7 @@ public class CommunityService {
         Page<TblPost> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
 
         return otherLists.stream().map(other-> OtherListDto.builder()
+                        .writer("통신필요")
                         .postIdx(other.getPostIdx())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
                         .location(other.getLocation())

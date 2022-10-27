@@ -13,7 +13,7 @@ public class WithListDto {
 
     private Long postIdx;
 
-    private Long writerIdx;
+    private String writer;
 
     private String subject;
 

@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 public class TblPostLike {
 
-
     @EmbeddedId
     private TblPostLikeId id;
 
