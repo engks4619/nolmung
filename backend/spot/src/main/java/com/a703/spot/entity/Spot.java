@@ -1,5 +1,6 @@
 package com.a703.spot.entity;
 
+import com.a703.spot.dto.response.SpotTransferDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,10 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Builder
@@ -23,6 +21,35 @@ import javax.persistence.Table;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "tbl_spot")
+//@NamedNativeQuery(
+//        name = "find_spot_by_distance",
+//        query = "SELECT *, ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) AS distance_diff " +
+//                "FROM tbl_spot AS s " +
+//                "HAVING distance_diff <= :dist " +
+//                "ORDER BY distance_diff ",
+//        resultSetMapping = "spot_transfer_dto"
+//)
+//@SqlResultSetMapping(
+//        name="spot_transfer_dto",
+//        classes = @ConstructorResult(
+//                targetClass = SpotTransferDto.class,
+//                columns = {
+//                        @ColumnResult(name = "spot_id", type = String.class),
+//                        @ColumnResult(name = "name", type = String.class),
+//                        @ColumnResult(name = "address", type = String.class),
+//                        @ColumnResult(name = "tel", type = String.class),
+//                        @ColumnResult(name = "tag", type = String.class),
+//                        @ColumnResult(name = "time", type = String.class),
+//                        @ColumnResult(name = "menu", type = String.class),
+//                        @ColumnResult(name = "description", type = String.class),
+//                        @ColumnResult(name = "lat", type = Double.class),
+//                        @ColumnResult(name = "lng", type = Double.class),
+//                        @ColumnResult(name = "img_cnt", type = Integer.class),
+//                        @ColumnResult(name = "category", type = String.class),
+//                        @ColumnResult(name = "distance_diff", type = Double.class)
+//                }
+//        )
+//)
 public class Spot {
     @Id
     @Column(name = "spot_id", nullable = false, columnDefinition = "VARCHAR(255)")
@@ -64,4 +91,5 @@ public class Spot {
 
 //    @Column(name = "location")
 //    private Point location;
+
 }

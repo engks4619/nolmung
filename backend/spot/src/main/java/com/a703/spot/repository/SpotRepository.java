@@ -2,6 +2,7 @@ package com.a703.spot.repository;
 
 import com.a703.spot.dto.response.SpotDto;
 import com.a703.spot.dto.response.SpotDtoInterface;
+import com.a703.spot.dto.response.SpotTransferDto;
 import com.a703.spot.entity.Spot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,9 @@ public interface SpotRepository extends JpaRepository<Spot, String> {
 
     Page<Spot> findAll(Specification<Spot> spec, Pageable pageable);
     Optional<Spot> findBySpotId(String spotId);
-    @Query(value =
+    @Query(
+//            name = "find_spot_by_distance",
+            value =
                 "SELECT *, ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) AS distance_diff " +
                 "FROM tbl_spot AS s " +
                 "HAVING distance_diff <= :dist " +
@@ -27,7 +30,7 @@ public interface SpotRepository extends JpaRepository<Spot, String> {
                     "FROM tbl_spot AS s " +
                     "WHERE ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) <= :dist ",
             nativeQuery = true)
-    Page<SpotDtoInterface> getSpotByDistance(@Param("currLng") double currLng, @Param("currLat") double currLat,
-                                             @Param("dist") int dist, Pageable pageable);
+    Optional<Page<SpotTransferDto>> getSpotByDistance(@Param("currLng") double currLng, @Param("currLat") double currLat,
+                                                      @Param("dist") int dist, Pageable pageable);
 
 }
