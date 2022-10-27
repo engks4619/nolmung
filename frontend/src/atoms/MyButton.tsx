@@ -4,7 +4,7 @@ import {MAIN_COLOR} from '~/const';
 
 interface Props {
   btnText: string;
-  horizontalSize?: number;
+  width: number;
   fontWeight: string;
   fontSize: number;
   onClick: Function;
@@ -12,21 +12,14 @@ interface Props {
 
 const MyButton: FC = ({
   btnText,
-  horizontalSize = 80,
+  width,
   fontWeight = '600',
   fontSize = 15,
   onClick,
 }: Props) => {
   return (
-    <View>
-      <Pressable
-        style={[
-          styles.container,
-          {
-            paddingHorizontal: horizontalSize,
-          },
-        ]}
-        onPress={onClick}>
+    <View style={styles.btnContainer}>
+      <Pressable style={[styles.btn, {width}]} onPress={onClick}>
         <Text
           style={[
             styles.fontStyle,
@@ -43,13 +36,17 @@ const MyButton: FC = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
+  btn: {
     paddingVertical: 20,
     backgroundColor: MAIN_COLOR,
     borderRadius: 10,
   },
   fontStyle: {
     color: 'white',
+    textAlign: 'center',
+  },
+  btnContainer: {
+    alignItems: 'center',
   },
 });
 
