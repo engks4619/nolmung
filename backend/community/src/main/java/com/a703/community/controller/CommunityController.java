@@ -25,6 +25,7 @@ import java.util.Map;
 public class CommunityController {
 
     private final CommunityService communityService;
+
     @PostMapping
     public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader Map<String, Object> token ,@RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
 
@@ -69,5 +70,17 @@ public class CommunityController {
         PostDto postDto = communityService.showPost(postIdx,token);
         return ResponseEntity.ok().body(postDto);
     }
+
+    @PutMapping("{postIdx}")
+    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
+
+        communityService.pushLike(postIdx,token);
+        return ResponseEntity.ok().body("success");
+    }
+
+
+
+
+
 
 }

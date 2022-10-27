@@ -1,18 +1,18 @@
 package com.a703.community.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
+@Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class TblReviewLike {
+public class TblPostLike {
 
 
     @EmbeddedId
-    private TblReviewLikeId id;
+    private TblPostLikeId id;
 
 }

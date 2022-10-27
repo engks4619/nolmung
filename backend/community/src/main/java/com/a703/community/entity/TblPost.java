@@ -2,6 +2,7 @@ package com.a703.community.entity;
 
 
 import com.a703.community.type.CategoryType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -37,7 +38,7 @@ public class TblPost extends BaseEntity{
     private String content;
 
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime walkDate;
 
     @ColumnDefault("false")
