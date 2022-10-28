@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    include: db
+
+server:
+  port: 8080
+  servlet:
+    contextPath: /api/user
