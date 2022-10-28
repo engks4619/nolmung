@@ -71,13 +71,13 @@ public class CommunityController {
         return ResponseEntity.ok().body("success");
     }
 
-    @GetMapping("/showPost/{postIdx}")
+    @GetMapping("/post-info/{postIdx}")
     public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token){
         PostDto postDto = communityService.showPost(postIdx,token);
         return ResponseEntity.ok().body(postDto);
     }
 
-    @PutMapping("/pushLike/{postIdx}")
+    @PutMapping("/like/{postIdx}")
     public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
 
         communityService.pushLike(postIdx,token);
