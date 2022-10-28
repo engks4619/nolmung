@@ -27,5 +27,5 @@ public interface PostRepository extends JpaRepository<TblPost,Long>, JpaSpecific
     @Query(value = "SELECT * FROM tbl_post a " +
             "WHERE a.post_idx in (SELECT b.post_idx FROM tbl_post_like b WHERE b.user_idx = :userIdx) " +
             "AND a.category_type = :categoryType", nativeQuery = true)
-    Page<TblPost> findAllBySomething(@Param("userIdx") Long userIdx, @Param("categoryType") CategoryType categoryType, Pageable pageable);
+    Page<TblPost> findAllBySomething(@Param("userIdx") Long userIdx, @Param("categoryType") String categoryType, Pageable pageable);
 }

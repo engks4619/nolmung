@@ -69,7 +69,7 @@ public class MyListService {
         //통신필요
         Long userIdx = 1L;
 
-        Page<TblPost> myLikeOtherLists = postRepository.findAllBySomething(userIdx,CategoryType.OTHER,pageable);
+        Page<TblPost> myLikeOtherLists = postRepository.findAllBySomething(userIdx,"OTHER",pageable);
 
         return myLikeOtherLists.stream().map(other -> OtherListDto.builder()
                         .writer("통신필요")
@@ -89,7 +89,7 @@ public class MyListService {
         //통신필요
         Long userIdx = 1L;
 
-        Page<TblPost> myLikeWithLists = postRepository.findAllBySomething(userIdx,CategoryType.WITH,pageable);
+        Page<TblPost> myLikeWithLists = postRepository.findAllBySomething(userIdx,"WITH",pageable);
 
         return myLikeWithLists.stream().map(with -> WithListDto.builder()
                         .writer("통신필요")

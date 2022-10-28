@@ -35,13 +35,13 @@ public class MyListController {
         return ResponseEntity.ok().body(withMyLists);
     }
 
-    @GetMapping("/like/other")
+    @GetMapping("/like/with")
     public ResponseEntity<List<WithListDto>> showMyWithLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
         List<WithListDto> withMyLikeLists = myListService.showMyLikeWithList(pageable,token);
         return ResponseEntity.ok().body(withMyLikeLists);
     }
 
-    @GetMapping("/like/with")
+    @GetMapping("/like/other")
     public ResponseEntity<List<OtherListDto>> showMyOtherLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
         List<OtherListDto> otherMyLikeLists = myListService.showMyLikeOtherList(pageable,token);
         return ResponseEntity.ok().body(otherMyLikeLists);
