@@ -8,6 +8,8 @@ server:
       force: true
 
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/test
+  profiles:
+    include: db
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/test
