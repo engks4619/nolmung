@@ -5,7 +5,9 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.service.CommunityService;
+import com.a703.community.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,8 @@ import java.util.Map;
 public class CommunityController {
 
     private final CommunityService communityService;
+
+    private final ClientUtil clientUtil;
 
     @PostMapping
     public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader Map<String, Object> token ,@RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
@@ -84,12 +88,10 @@ public class CommunityController {
         return ResponseEntity.ok().body("success");
     }
 
-
-
-
-
-
-
-
+    @GetMapping("/test")
+    public ResponseEntity<?>test(Long dogIdx) throws Exception {
+        DogInfoDto dogInfoDto = clientUtil.requestDogInfo(1L);
+        return ResponseEntity.ok().body(dogInfoDto);
+    }
 
 }
