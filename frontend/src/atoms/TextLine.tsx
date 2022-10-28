@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TextInput, StyleSheet} from 'react-native';
+import {MAIN_COLOR} from '~/const';
 
 interface Props {
   placeholder?: string;
@@ -16,9 +17,18 @@ function TextLine({
   autoComplete,
   isPassword,
 }: Props) {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const customOnFocus = () => {
+    setIsFocused(true);
+  };
+  const customOnBlur = () => {
+    setIsFocused(false);
+  };
+
   return (
     <TextInput
-      style={styles.textInput}
+      style={isFocused ? styles.textActive : styles.textInput}
       placeholder={placeholder}
       placeholderTextColor="#666"
       importantForAutofill="yes"
@@ -28,6 +38,9 @@ function TextLine({
       autoComplete={autoComplete}
       blurOnSubmit={!isPassword}
       secureTextEntry={isPassword}
+      keyboardType={isPassword ? 'default' : 'number-pad'}
+      onFocus={customOnFocus}
+      onBlur={customOnBlur}
     />
   );
 }
@@ -35,7 +48,12 @@ function TextLine({
 const styles = StyleSheet.create({
   textInput: {
     padding: 5,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0.9,
+  },
+  textActive: {
+    borderBottomColor: MAIN_COLOR,
+    padding: 5,
+    borderBottomWidth: 1,
   },
 });
 

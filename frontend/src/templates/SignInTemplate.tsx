@@ -34,7 +34,7 @@ function SignInTemplate({
         placeholder="핸드폰 번호를 입력해주세요"
         value={phoneNumber}
         onChangeText={onChangePhoneNumber}
-        autoComplete="tel"
+        autoComplete="tel-device"
         isPassword={false}
       />
       <LoginInput
@@ -45,7 +45,12 @@ function SignInTemplate({
         autoComplete="password"
         isPassword={true}
       />
-      <MyButton btnText="로그인" width={200} onClick={onSubmit} />
+      <MyButton
+        btnText="로그인"
+        width={200}
+        paddingVertical={15}
+        onClick={onSubmit}
+      />
       <Pressable onPress={() => toSignUp()}>
         <Text style={styles.textCenter}>회원가입하기</Text>
       </Pressable>

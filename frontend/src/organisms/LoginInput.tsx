@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import TextLine from '~/atoms/TextLine';
+import {View, StyleSheet} from 'react-native';
+import TextLine from '../atoms/TextLine';
+import Label from '../atoms/Label';
 
 interface Props {
   labelText: string;
@@ -21,7 +22,7 @@ function LoginInput({
 }: Props) {
   return (
     <View style={styles.inputWrapper}>
-      <Text style={styles.label}>{labelText}</Text>
+      <Label labelText={labelText} />
       <TextLine
         placeholder={placeholder}
         onChangeText={onChangeText}
@@ -34,11 +35,6 @@ function LoginInput({
 }
 
 const styles = StyleSheet.create({
-  label: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 20,
-  },
   inputWrapper: {
     padding: 20,
   },
