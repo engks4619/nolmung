@@ -5,6 +5,7 @@ import com.a703.withdog.dto.WalkRes;
 import com.a703.withdog.serrvice.WalkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,13 @@ public class WalkController {
          * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
-        int walkIdx = walkService.saveWalk(walk);
+        ObjectId walkIdx = walkService.saveWalk(walk);
 
         return ResponseEntity.ok().body(walkIdx);
     }
 
     @GetMapping("record/owner/{ownerIdx}")
-    public ResponseEntity<?> getWalkListByOwner(@PathVariable int ownerIdx) {
+    public ResponseEntity<?> getWalkListByOwner(@PathVariable Long ownerIdx) {
         /**
          * @Method Name : getWalkListByOwner
          * @Method 설명 : 견주 id로 산책 기록들 조회
@@ -44,7 +45,7 @@ public class WalkController {
     }
 
     @GetMapping("/dog/{walkedDogIdx}")
-    public ResponseEntity<?> getWalkListByWalkedDog(@PathVariable int walkedDogIdx) {
+    public ResponseEntity<?> getWalkListByWalkedDog(@PathVariable Long walkedDogIdx) {
         /**
          * @Method Name : getWalkListByWalkedDog
          * @Method 설명 : 산책한 강아지 id로 산책 기록들 조회

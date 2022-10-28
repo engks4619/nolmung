@@ -3,6 +3,7 @@ package com.a703.withdog.serrvice;
 import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.dto.WalkRes;
 import com.a703.withdog.repository.WalkMongoDBRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,12 @@ public class WalkService {
     @Autowired
     WalkMongoDBRepository walkMongoDBRepository;
 
-    public int saveWalk(WalkDTO walk){
+    public ObjectId saveWalk(WalkDTO walk){
         WalkDTO walkDTO = walkMongoDBRepository.save(walk);
         return walkDTO.getWalkIdx();
     }
 
-    public List<WalkRes> findByOwnerIdx(int ownerIdx) {
+    public List<WalkRes> findByOwnerIdx(Long ownerIdx) {
         List<WalkDTO> walkDTOList = walkMongoDBRepository.findAllByOwnerIdx(ownerIdx);
 
         List<WalkRes> walkResList = new ArrayList<>();
@@ -39,7 +40,7 @@ public class WalkService {
         return walkResList;
     }
 
-    public List<WalkRes> findByWalkedDog(int walkedDogIdx) {
+    public List<WalkRes> findByWalkedDog(Long walkedDogIdx) {
 
         List<WalkDTO> walkDTOList = walkMongoDBRepository.findAllByWalkedDogIdx(walkedDogIdx);
 
