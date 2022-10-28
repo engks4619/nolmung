@@ -6,6 +6,7 @@ import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.TblPost;
 import com.a703.community.repository.PostLikeRepository;
+import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.search.PostSpecification;
 import com.a703.community.type.CategoryType;
@@ -25,6 +26,8 @@ public class SearchService {
     private final PostRepository postRepository;
 
     private final PostLikeRepository postLikeRepository;
+
+    private final PostPhotoRepository postPhotoRepository;
 
     public List<OtherListDto> searchOther(SearchRequest searchRequest, Pageable pageable){
 
@@ -54,7 +57,7 @@ public class SearchService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -81,7 +84,7 @@ public class SearchService {
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl())
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());

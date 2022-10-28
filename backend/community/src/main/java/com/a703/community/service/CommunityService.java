@@ -8,6 +8,8 @@ import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.TblPost;
 import com.a703.community.entity.TblPostLike;
 import com.a703.community.entity.TblPostLikeId;
+import com.a703.community.entity.TblPostPhoto;
+import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.type.CategoryType;
@@ -30,6 +32,8 @@ public class CommunityService {
     private final PostRepository postRepository;
 
     private final PostLikeRepository postLikeRepository;
+
+    private final PostPhotoRepository postPhotoRepository;
 
     private final File file;
 
@@ -56,9 +60,11 @@ public class CommunityService {
 
         TblPost savePost =postRepository.save(post);
 
-        for (MultipartFile multipartFile : files) {
-            file.fileUpload(multipartFile,savePost.getPostIdx());
+        if (files !=null) {
+            for (MultipartFile multipartFile : files) {
+                file.fileUpload(multipartFile, savePost.getPostIdx());
 
+            }
         }
 
     }
@@ -105,6 +111,7 @@ public class CommunityService {
     public PostDto showPost(Long postIdx, Map<String, Object> token){
         //통신해서 받아와야함
         Long userIdx =1L;
+        List<TblPostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
 
         TblPost post = postRepository.findByPostIdx(postIdx);
         //강아지 관련 api연결해야됨
@@ -114,7 +121,7 @@ public class CommunityService {
                 .dogBreed(null)
                 .dogName(null)
                 .dogImgUrl(null)
-                .photoUrl(null)
+                .photoUrl(convertPostPhotoListToUrlList(postPhotos))
                 .categoryType(post.getCategoryType())
                 .content(post.getContent())
                 .leadLine(post.getLeadLine())
@@ -125,6 +132,9 @@ public class CommunityService {
                 .build();
 
 
+    }
+    public List<String> convertPostPhotoListToUrlList(List<TblPostPhoto> postPhotos){
+        return postPhotos.stream().map(TblPostPhoto::getPhotoUrl).collect(Collectors.toList());
     }
 
     public List<MainListDto> showMainList(Pageable pageable){
@@ -149,7 +159,7 @@ public class CommunityService {
                 .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                 .location(with.getLocation())
                 .modifyDate(with.getModifyDate())
-                .thumbnailUrl(null)
+                .thumbnailUrl(postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl())
                 .walkDate(with.getWalkDate())
                 .build())
                 .collect(Collectors.toList());
@@ -167,7 +177,7 @@ public class CommunityService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl())
                         .build())
                 .collect(Collectors.toList());
     }
