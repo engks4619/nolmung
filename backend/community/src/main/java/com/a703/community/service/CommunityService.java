@@ -5,15 +5,15 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.TblPost;
-import com.a703.community.entity.TblPostLike;
-import com.a703.community.entity.TblPostLikeId;
-import com.a703.community.entity.TblPostPhoto;
+import com.a703.community.entity.Post;
+import com.a703.community.entity.PostLike;
+import com.a703.community.entity.PostLikeId;
+import com.a703.community.entity.PostPhoto;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.type.CategoryType;
-import com.a703.community.util.File;
+import com.a703.community.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,14 +35,14 @@ public class CommunityService {
 
     private final PostPhotoRepository postPhotoRepository;
 
-    private final File file;
+    private final FileUtil fileUtil;
 
     public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws IOException {
 
         Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
         Long dogIdx = 1L;//통신해서 받아와야함 산책할 강아지도 등록해줘야함
 
-        TblPost post = TblPost.builder()
+        Post post = Post.builder()
                 .subject(registerPost.getSubject())
                 .categoryType(registerPost.getCategoryType())
                 .content(registerPost.getContent())
@@ -58,11 +58,11 @@ public class CommunityService {
                 .reRegister(0)
                 .build();
 
-        TblPost savePost =postRepository.save(post);
+        Post savePost =postRepository.save(post);
 
         if (files !=null) {
             for (MultipartFile multipartFile : files) {
-                file.fileUpload(multipartFile, savePost.getPostIdx());
+                fileUtil.fileUpload(multipartFile, savePost.getPostIdx());
 
             }
         }
@@ -70,21 +70,21 @@ public class CommunityService {
     }
     //진짜 삭제하지말기
     public void deletePost(Long postIdx){
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         post.setGetDeleted(Boolean.TRUE);
         postRepository.save(post);
 
     }
     //재등록
     public void reRegisterPost(Long postIdx){
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         post.setReRegister(post.getReRegister()+1);
         postRepository.save(post);
 
     }
 
     public void completePost(Long postIdx){
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         post.setGetCompleted(true);
         postRepository.save(post);
 
@@ -94,14 +94,14 @@ public class CommunityService {
 
         //통신필요
         Long userIdx =1L;
-        TblPost post=postRepository.findByPostIdx(postIdx);
+        Post post=postRepository.findByPostIdx(postIdx);
 
-        TblPostLikeId id = TblPostLikeId.builder()
+        PostLikeId id = PostLikeId.builder()
                         .userIdx(userIdx)
                         .post(post)
                         .build();
 
-        TblPostLike postLike = TblPostLike.builder()
+        PostLike postLike = PostLike.builder()
                         .id(id)
                         .build();
 
@@ -111,9 +111,9 @@ public class CommunityService {
     public PostDto showPost(Long postIdx, Map<String, Object> token){
         //통신해서 받아와야함
         Long userIdx =1L;
-        List<TblPostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
+        List<PostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
 
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         //강아지 관련 api연결해야됨
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
@@ -133,13 +133,13 @@ public class CommunityService {
 
 
     }
-    public List<String> convertPostPhotoListToUrlList(List<TblPostPhoto> postPhotos){
-        return postPhotos.stream().map(TblPostPhoto::getPhotoUrl).collect(Collectors.toList());
+    public List<String> convertPostPhotoListToUrlList(List<PostPhoto> postPhotos){
+        return postPhotos.stream().map(PostPhoto::getPhotoUrl).collect(Collectors.toList());
     }
 
     public List<MainListDto> showMainList(Pageable pageable){
 
-        Page<TblPost> mainLists = postRepository.findAll(pageable);
+        Page<Post> mainLists = postRepository.findAll(pageable);
 
         return mainLists.stream().map(main-> MainListDto.builder()
                         .postIdx(main.getPostIdx())
@@ -151,7 +151,7 @@ public class CommunityService {
 
     public List<WithListDto> showWithList(Pageable pageable){
 
-        Page<TblPost> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
+        Page<Post> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
 
         return withLists.stream().map(with-> WithListDto.builder()
                 .writer("통신필요")
@@ -167,7 +167,7 @@ public class CommunityService {
 
     public List<OtherListDto> showOtherList(Pageable pageable){
 
-        Page<TblPost> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
+        Page<Post> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
 
         return otherLists.stream().map(other-> OtherListDto.builder()
                         .writer("통신필요")

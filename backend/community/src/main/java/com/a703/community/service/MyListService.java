@@ -2,7 +2,7 @@ package com.a703.community.service;
 
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.TblPost;
+import com.a703.community.entity.Post;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
@@ -30,7 +30,7 @@ public class MyListService {
         //통신필요
         Long writerIdx = 1L;
 
-        Page<TblPost> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
+        Page<Post> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
 
         return myWithLists.stream().map(with -> WithListDto.builder()
                         .writer("통신필요")
@@ -49,7 +49,7 @@ public class MyListService {
         //통신필요
         Long writerIdx = 1L;
 
-        Page<TblPost> myOtherLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.OTHER, writerIdx, pageable);
+        Page<Post> myOtherLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.OTHER, writerIdx, pageable);
 
         return myOtherLists.stream().map(other -> OtherListDto.builder()
                         .writer("통신필요")
@@ -69,7 +69,7 @@ public class MyListService {
         //통신필요
         Long userIdx = 1L;
 
-        Page<TblPost> myLikeOtherLists = postRepository.findAllBySomething(userIdx,"OTHER",pageable);
+        Page<Post> myLikeOtherLists = postRepository.findAllBySomething(userIdx,"OTHER",pageable);
 
         return myLikeOtherLists.stream().map(other -> OtherListDto.builder()
                         .writer("통신필요")
@@ -89,7 +89,7 @@ public class MyListService {
         //통신필요
         Long userIdx = 1L;
 
-        Page<TblPost> myLikeWithLists = postRepository.findAllBySomething(userIdx,"WITH",pageable);
+        Page<Post> myLikeWithLists = postRepository.findAllBySomething(userIdx,"WITH",pageable);
 
         return myLikeWithLists.stream().map(with -> WithListDto.builder()
                         .writer("통신필요")

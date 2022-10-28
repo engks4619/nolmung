@@ -9,13 +9,14 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Table(name = "tbl_post")
 @AllArgsConstructor
 @Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-public class TblPost extends BaseEntity{
+public class Post extends BaseEntity{
 
     @Id
     @Column(unique = true,name = "post_idx")

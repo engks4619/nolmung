@@ -4,14 +4,15 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@Table(name = "tbl_post_like")
 @AllArgsConstructor
 @Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class TblPostLike {
+public class PostLike {
 
     @EmbeddedId
-    private TblPostLikeId id;
+    private PostLikeId id;
 
 }
