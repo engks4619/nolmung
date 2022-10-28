@@ -1,0 +1,13 @@
+server:
+  port: 8082
+  servlet:
+    contextPath: /api/withdog
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test

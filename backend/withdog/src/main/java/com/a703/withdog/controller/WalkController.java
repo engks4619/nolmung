@@ -19,7 +19,7 @@ import java.util.List;
 public class WalkController {
     private final WalkService walkService;
 
-    @GetMapping("/save")
+    @PostMapping
     public ResponseEntity<?> saveWalk(@RequestBody WalkDTO walk) {
         /**
          * @Method Name : saveWalk
@@ -30,7 +30,7 @@ public class WalkController {
         return ResponseEntity.ok().body(walkIdx);
     }
 
-    @GetMapping("record/owner/{ownerIdx}")
+    @GetMapping("/owner/{ownerIdx}")
     public ResponseEntity<?> getWalkListByOwner(@PathVariable Long ownerIdx) {
         /**
          * @Method Name : getWalkListByOwner
