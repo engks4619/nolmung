@@ -5,6 +5,7 @@ import {MAIN_COLOR} from '~/const';
 interface Props {
   btnText: string;
   width: number;
+  paddingVertical: number;
   fontWeight: string;
   fontSize: number;
   onClick: Function;
@@ -13,13 +14,16 @@ interface Props {
 function MyButton({
   btnText,
   width,
+  paddingVertical = 20,
   fontWeight = '600',
   fontSize = 15,
   onClick,
 }: Props) {
   return (
     <View style={styles.btnContainer}>
-      <Pressable style={[styles.btn, {width}]} onPress={onClick}>
+      <Pressable
+        style={[styles.btn, {width, paddingVertical}]}
+        onPress={onClick}>
         <Text
           style={[
             styles.fontStyle,
@@ -37,7 +41,6 @@ function MyButton({
 
 const styles = StyleSheet.create({
   btn: {
-    paddingVertical: 20,
     backgroundColor: MAIN_COLOR,
     borderRadius: 10,
   },
