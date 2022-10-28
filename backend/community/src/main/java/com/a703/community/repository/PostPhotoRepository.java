@@ -9,5 +9,7 @@ public interface PostPhotoRepository extends JpaRepository<TblPostPhoto,Long> {
 
     List<TblPostPhoto> findByPostPostIdx(Long postIdx);
 
+    Boolean existsByPostPostIdx(Long postIdx);
+
 
 }

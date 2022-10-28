@@ -28,7 +28,7 @@ public class MyListService {
     public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) {
 
         //통신필요
-        Long writerIdx = 2L;
+        Long writerIdx = 1L;
 
         Page<TblPost> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
 
@@ -38,7 +38,7 @@ public class MyListService {
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class MyListService {
     public List<OtherListDto> showMyOtherList(Pageable pageable, Map<String, Object> token) {
 
         //통신필요
-        Long writerIdx = 2L;
+        Long writerIdx = 1L;
 
         Page<TblPost> myOtherLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.OTHER, writerIdx, pageable);
 
@@ -59,7 +59,7 @@ public class MyListService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -79,7 +79,7 @@ public class MyListService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -97,7 +97,7 @@ public class MyListService {
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());

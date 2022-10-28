@@ -57,7 +57,7 @@ public class SearchService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -84,7 +84,7 @@ public class SearchService {
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
-                        .thumbnailUrl(postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl())
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());
