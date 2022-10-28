@@ -23,8 +23,6 @@ public class Post extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postIdx;
 
-    private Long dogIdx;
-
     private Long writerIdx;
 
     private Long albaIdx;

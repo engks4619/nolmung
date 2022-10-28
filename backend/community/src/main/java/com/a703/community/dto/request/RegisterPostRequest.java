@@ -4,11 +4,12 @@ import com.a703.community.type.CategoryType;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class RegisterPostRequest {
 
-    private Long dogIdx;
+    private List<Long> dogIdx;
 
     private CategoryType categoryType;
 

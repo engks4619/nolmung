@@ -33,7 +33,7 @@ public class MyListService {
         Page<Post> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
 
         return myWithLists.stream().map(with -> WithListDto.builder()
-                        .writer("통신필요")
+                        .writer("토큰보내서 내이름 가져오기")
                         .postIdx(with.getPostIdx())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())

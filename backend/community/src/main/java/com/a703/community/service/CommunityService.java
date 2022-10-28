@@ -5,10 +5,8 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.Post;
-import com.a703.community.entity.PostLike;
-import com.a703.community.entity.PostLikeId;
-import com.a703.community.entity.PostPhoto;
+import com.a703.community.entity.*;
+import com.a703.community.repository.LuckDogRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.repository.PostLikeRepository;
@@ -37,16 +35,18 @@ public class CommunityService {
 
     private final FileUtil fileUtil;
 
+    private final LuckDogRepository luckDogRepository;
+
     public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws IOException {
 
         Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
-        Long dogIdx = 1L;//통신해서 받아와야함 산책할 강아지도 등록해줘야함
+
+        List<Long> dogIdxList = registerPost.getDogIdx();
 
         Post post = Post.builder()
                 .subject(registerPost.getSubject())
                 .categoryType(registerPost.getCategoryType())
                 .content(registerPost.getContent())
-                .dogIdx(dogIdx)
                 .writerIdx(userIdx)
                 .getDeleted(false)
                 .getCompleted(false)
@@ -60,14 +60,23 @@ public class CommunityService {
 
         Post savePost =postRepository.save(post);
 
+        List<LuckyDog> saveLuckDog = dogIdxList.stream().map(luckdog -> LuckyDog.builder()
+                .id(LuckyDogId.builder()
+                        .dogIdx(luckdog)
+                        .post(savePost)
+                        .build())
+                .build())
+                .collect(Collectors.toList());
+
+        luckDogRepository.saveAll(saveLuckDog);
+
         if (files !=null) {
             for (MultipartFile multipartFile : files) {
                 fileUtil.fileUpload(multipartFile, savePost.getPostIdx());
-
             }
         }
-
     }
+
     //진짜 삭제하지말기
     public void deletePost(Long postIdx){
         Post post = postRepository.findByPostIdx(postIdx);

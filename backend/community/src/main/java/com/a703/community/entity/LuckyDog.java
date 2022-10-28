@@ -1,14 +1,12 @@
 package com.a703.community.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@Builder
 @Table(name = "tbl_lucky_dog")
 @Entity
 @AllArgsConstructor
