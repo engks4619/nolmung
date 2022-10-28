@@ -59,24 +59,33 @@ public class CommunityController {
         return ResponseEntity.ok().body(otherLists);
     }
 
-    @PatchMapping("{postIdx}")
+    @PatchMapping("/repost/{postIdx}")
     public ResponseEntity<?>reRegisterPost(@PathVariable Long postIdx){
         communityService.reRegisterPost(postIdx);
         return ResponseEntity.ok().body("success");
     }
 
-    @GetMapping("/showPost/{postIdx}")
+    @PatchMapping("/complete/{postIdx}")
+    public ResponseEntity<?>completePost(@PathVariable Long postIdx){
+        communityService.completePost(postIdx);
+        return ResponseEntity.ok().body("success");
+    }
+
+    @GetMapping("/post-info/{postIdx}")
     public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token){
         PostDto postDto = communityService.showPost(postIdx,token);
         return ResponseEntity.ok().body(postDto);
     }
 
-    @PutMapping("{postIdx}")
+    @PutMapping("/like/{postIdx}")
     public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
 
         communityService.pushLike(postIdx,token);
         return ResponseEntity.ok().body("success");
     }
+
+
+
 
 
 

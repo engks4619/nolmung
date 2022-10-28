@@ -4,8 +4,9 @@ package com.a703.community.service;
 import com.a703.community.dto.request.SearchRequest;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.TblPost;
+import com.a703.community.entity.Post;
 import com.a703.community.repository.PostLikeRepository;
+import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.search.PostSpecification;
 import com.a703.community.type.CategoryType;
@@ -26,9 +27,11 @@ public class SearchService {
 
     private final PostLikeRepository postLikeRepository;
 
+    private final PostPhotoRepository postPhotoRepository;
+
     public List<OtherListDto> searchOther(SearchRequest searchRequest, Pageable pageable){
 
-        Specification<TblPost> spec = (root,query,criteriaBuilder) ->null;
+        Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
         spec = spec.and(PostSpecification.equalCategoryTpye(CategoryType.OTHER));
 
@@ -44,7 +47,7 @@ public class SearchService {
             spec = spec.and(PostSpecification.lessThanPay(searchRequest.getEndPay()));
         }
 
-        Page<TblPost> otherLists = postRepository.findAll(spec,pageable);
+        Page<Post> otherLists = postRepository.findAll(spec,pageable);
         //견종 통신해서 추가해야됨
 
         return otherLists.stream().map(other-> OtherListDto.builder()
@@ -54,14 +57,14 @@ public class SearchService {
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
     }
 
     public List<WithListDto> searchWith(SearchRequest searchRequest,Pageable pageable){
 
-        Specification<TblPost> spec = (root,query,criteriaBuilder) ->null;
+        Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
         spec = spec.and(PostSpecification.equalCategoryTpye(CategoryType.WITH));
 
@@ -73,7 +76,7 @@ public class SearchService {
             spec = spec.and(PostSpecification.lessThanWalkeDate(searchRequest.getEndWalkDate()));
         }
 
-        Page<TblPost> withLists = postRepository.findAll(spec,pageable);
+        Page<Post> withLists = postRepository.findAll(spec,pageable);
         //견종 통신해서 추가해야됨
 
         return withLists.stream().map(with-> WithListDto.builder()
@@ -81,7 +84,7 @@ public class SearchService {
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());

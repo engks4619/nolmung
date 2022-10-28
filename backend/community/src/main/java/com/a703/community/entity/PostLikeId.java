@@ -1,15 +1,23 @@
 package com.a703.community.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-public class TblLuckyDogId implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PostLikeId implements Serializable {
 
-    private Long dogIdx;
+    private Long userIdx;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_idx", referencedColumnName = "post_idx")
-    private TblPost post;
+    private Post post;
+
 }

@@ -1,7 +1,7 @@
 package com.a703.community.util;
 
-import com.a703.community.entity.TblPost;
-import com.a703.community.entity.TblPostPhoto;
+import com.a703.community.entity.Post;
+import com.a703.community.entity.PostPhoto;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.drew.imaging.ImageMetadataReader;
@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
-public class File {
+public class FileUtil {
 
     private final PostRepository postRepository;
 
@@ -40,7 +40,7 @@ public class File {
         try {
             String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(file.getOriginalFilename());
 
-            TblPost post = postRepository.findByPostIdx(postIdx);
+            Post post = postRepository.findByPostIdx(postIdx);
 
             java.io.File check = new java.io.File(uploadPath);
 //            if (check.exists()) {
@@ -62,7 +62,7 @@ public class File {
             resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
 
 
-            TblPostPhoto postPhoto = TblPostPhoto.builder()
+            PostPhoto postPhoto = PostPhoto.builder()
                     .post(post)
                     .photoUrl(savePath)
                     .build();
