@@ -5,7 +5,6 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.service.CommunityService;
 import com.a703.community.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +29,7 @@ public class CommunityController {
     private final ClientUtil clientUtil;
 
     @PostMapping
-    public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader Map<String, Object> token ,@RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+    public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader Map<String, Object> token ,@RequestPart(value = "files", required = false) List<MultipartFile> files) throws Exception {
 
         communityService.registerPost(registerPost,token,files);
         return ResponseEntity.ok().body("success");
@@ -76,22 +74,16 @@ public class CommunityController {
     }
 
     @GetMapping("/post-info/{postIdx}")
-    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token){
+    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token) throws Exception {
         PostDto postDto = communityService.showPost(postIdx,token);
         return ResponseEntity.ok().body(postDto);
     }
 
     @PutMapping("/like/{postIdx}")
-    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token)  {
+    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader Map<String, Object> token) throws Exception {
 
         communityService.pushLike(postIdx,token);
         return ResponseEntity.ok().body("success");
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?>test(Long dogIdx) throws Exception {
-        DogInfoDto dogInfoDto = clientUtil.requestDogInfo(1L);
-        return ResponseEntity.ok().body(dogInfoDto);
     }
 
 }

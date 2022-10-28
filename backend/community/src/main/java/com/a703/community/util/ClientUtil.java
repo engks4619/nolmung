@@ -21,7 +21,7 @@ import java.util.Map;
 public class ClientUtil {
 
 
-    public UserInfoDto requestUserInfo(String fileName, Map<String,Object>token) throws Exception {
+    public UserInfoDto requestUserInfo(Map<String,Object>token) throws Exception {
 
         String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();
@@ -33,7 +33,7 @@ public class ClientUtil {
 
         // Body set
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("filename", fileName);
+
 
         // Message
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);

@@ -2,11 +2,13 @@ package com.a703.community.service;
 
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.Post;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
 import com.a703.community.type.CategoryType;
+import com.a703.community.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +27,12 @@ public class MyListService {
 
     private final PostPhotoRepository postPhotoRepository;
 
-    public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) {
+    private final ClientUtil clientUtil;
 
-        //통신필요
+    public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
+
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
         Page<Post> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
@@ -44,9 +49,10 @@ public class MyListService {
                 .collect(Collectors.toList());
     }
 
-    public List<OtherListDto> showMyOtherList(Pageable pageable, Map<String, Object> token) {
+    public List<OtherListDto> showMyOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        //통신필요
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
         Page<Post> myOtherLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.OTHER, writerIdx, pageable);
@@ -64,9 +70,10 @@ public class MyListService {
                 .collect(Collectors.toList());
     }
 
-    public List<OtherListDto> showMyLikeOtherList(Pageable pageable, Map<String, Object> token) {
+    public List<OtherListDto> showMyLikeOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        //통신필요
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 
         Page<Post> myLikeOtherLists = postRepository.findAllBySomething(userIdx,"OTHER",pageable);
@@ -84,9 +91,10 @@ public class MyListService {
                 .collect(Collectors.toList());
     }
 
-    public List<WithListDto> showMyLikeWithList(Pageable pageable, Map<String, Object> token) {
+    public List<WithListDto> showMyLikeWithList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        //통신필요
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 
         Page<Post> myLikeWithLists = postRepository.findAllBySomething(userIdx,"WITH",pageable);

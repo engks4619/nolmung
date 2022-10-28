@@ -5,12 +5,14 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.*;
 import com.a703.community.repository.LuckDogRepository;
+import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
-import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.type.CategoryType;
+import com.a703.community.util.ClientUtil;
 import com.a703.community.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,9 +38,13 @@ public class CommunityService {
 
     private final LuckDogRepository luckDogRepository;
 
-    public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws IOException {
+    private final ClientUtil clientUtil;
 
-        Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
+    public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws Exception {
+
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
 
         List<Long> dogIdxList = registerPost.getDogIdx();
 
@@ -99,10 +104,11 @@ public class CommunityService {
 
     }
 
-    public void pushLike(Long postIdx,Map<String, Object> token){
+    public void pushLike(Long postIdx,Map<String, Object> token) throws Exception {
 
-        //통신필요
-        Long userIdx =1L;
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
         Post post=postRepository.findByPostIdx(postIdx);
 
         PostLikeId id = PostLikeId.builder()
@@ -117,13 +123,19 @@ public class CommunityService {
         postLikeRepository.save(postLike);
     }
 
-    public PostDto showPost(Long postIdx, Map<String, Object> token){
-        //통신해서 받아와야함
-        Long userIdx =1L;
+    public PostDto showPost(Long postIdx, Map<String, Object> token) throws Exception {
+
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
+
         List<PostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
 
         Post post = postRepository.findByPostIdx(postIdx);
+
         //강아지 관련 api연결해야됨
+//        DogInfoDto dogInfoDto = clientUtil.requestDogInfo(dogIdx);
+
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
                 .writer("통신필요")
