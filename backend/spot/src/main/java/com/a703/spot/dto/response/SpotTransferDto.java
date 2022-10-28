@@ -1,14 +1,13 @@
 package com.a703.spot.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class SpotTransferDto {
     String spotId;
     String name;
@@ -23,4 +22,7 @@ public class SpotTransferDto {
     Integer imgCnt;
     String category;
     Double distanceDiff;
+    Integer reviewCnt;
+    Double star;
+
 }

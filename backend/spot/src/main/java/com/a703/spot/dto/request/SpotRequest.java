@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class SpotRequest {
-    private double lat;
-    private double lng;
+    private Double lat;
+    private Double lng;
     private String searchValue;
-    private int limitDistance;
-    private String descType;
+    private Integer limitDistance;
+    private Integer descType;
     private String category;
 }

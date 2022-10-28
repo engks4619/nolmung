@@ -18,19 +18,21 @@ public interface SpotRepository extends JpaRepository<Spot, String> {
 
     Page<Spot> findAll(Specification<Spot> spec, Pageable pageable);
     Optional<Spot> findBySpotId(String spotId);
-    @Query(
-//            name = "find_spot_by_distance",
-            value =
-                "SELECT *, ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) AS distance_diff " +
-                "FROM tbl_spot AS s " +
-                "HAVING distance_diff <= :dist " +
-                "ORDER BY distance_diff ",
-            countQuery =
-                    "SELECT count(*) " +
-                    "FROM tbl_spot AS s " +
-                    "WHERE ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) <= :dist ",
-            nativeQuery = true)
-    Optional<Page<SpotTransferDto>> getSpotByDistance(@Param("currLng") double currLng, @Param("currLat") double currLat,
-                                                      @Param("dist") int dist, Pageable pageable);
+    Page<Spot> findByName(String name, Pageable pageable);
+
+//    @Query(
+////            name = "find_spot_by_distance",
+//            value =
+//                "SELECT *, ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) AS distance_diff " +
+//                "FROM tbl_spot AS s " +
+//                "HAVING distance_diff <= :dist " +
+//                "ORDER BY distance_diff ",
+//            countQuery =
+//                    "SELECT count(*) " +
+//                    "FROM tbl_spot AS s " +
+//                    "WHERE ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) <= :dist ",
+//            nativeQuery = true)
+//    Optional<Page<SpotTransferDto>> getSpotByDistance(@Param("currLng") double currLng, @Param("currLat") double currLat,
+//                                                      @Param("dist") int dist, Pageable pageable);
 
 }

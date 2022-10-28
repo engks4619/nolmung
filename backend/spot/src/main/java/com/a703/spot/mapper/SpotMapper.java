@@ -39,7 +39,7 @@ public class SpotMapper {
                 .menu(menuMap)
                 .lat(transferDto.getLat())
                 .lng(transferDto.getLng())
-                .distanceDiff(transferDto.getDistanceDiff())
+//                .distanceDiff(transferDto.getDistanceDiff())
 //                .star(transferDto.getStar())
                 .build();
     }
