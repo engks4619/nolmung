@@ -10,5 +10,5 @@ import java.util.List;
 public interface SpotService {
 
     SpotListDto getSpotList(SpotRequest request, int page, int desc);
-    Pageable getPageable(int page, int desc);
+
 }

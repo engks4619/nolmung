@@ -21,35 +21,6 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "tbl_spot")
-//@NamedNativeQuery(
-//        name = "find_spot_by_distance",
-//        query = "SELECT *, ST_DISTANCE_SPHERE(POINT(:currLng,:currLat), POINT(s.lng, s.lat)) AS distance_diff " +
-//                "FROM tbl_spot AS s " +
-//                "HAVING distance_diff <= :dist " +
-//                "ORDER BY distance_diff ",
-//        resultSetMapping = "spot_transfer_dto"
-//)
-//@SqlResultSetMapping(
-//        name="spot_transfer_dto",
-//        classes = @ConstructorResult(
-//                targetClass = SpotTransferDto.class,
-//                columns = {
-//                        @ColumnResult(name = "spot_id", type = String.class),
-//                        @ColumnResult(name = "name", type = String.class),
-//                        @ColumnResult(name = "address", type = String.class),
-//                        @ColumnResult(name = "tel", type = String.class),
-//                        @ColumnResult(name = "tag", type = String.class),
-//                        @ColumnResult(name = "time", type = String.class),
-//                        @ColumnResult(name = "menu", type = String.class),
-//                        @ColumnResult(name = "description", type = String.class),
-//                        @ColumnResult(name = "lat", type = Double.class),
-//                        @ColumnResult(name = "lng", type = Double.class),
-//                        @ColumnResult(name = "img_cnt", type = Integer.class),
-//                        @ColumnResult(name = "category", type = String.class),
-//                        @ColumnResult(name = "distance_diff", type = Double.class)
-//                }
-//        )
-//)
 public class Spot {
     @Id
     @Column(name = "spot_id", nullable = false, columnDefinition = "VARCHAR(255)")
@@ -88,8 +59,5 @@ public class Spot {
 
     @Column(name = "category", columnDefinition = "VARCHAR(10)")
     private String category;
-
-//    @Column(name = "location")
-//    private Point location;
 
 }

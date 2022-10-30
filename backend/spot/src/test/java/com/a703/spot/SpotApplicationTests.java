@@ -2,56 +2,52 @@ package com.a703.spot;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.*;
-import com.a703.spot.entity.QSpot;
-import com.a703.spot.entity.Spot;
 import com.a703.spot.mapper.SpotMapper;
 import com.a703.spot.repository.SpotRepository;
-import com.querydsl.core.QueryFactory;
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
+import com.a703.spot.service.SpotService;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.ComparableExpressionBase;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberTemplate;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.a703.spot.entity.QSpot.spot;
-import static com.a703.spot.entity.QSpotReview.spotReview;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//@DataJpaTest
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest(classes = SpotApplication.class)
 class SpotApplicationTests {
 
     @Autowired
-    SpotRepository spotRepository;
+    private SpotRepository spotRepository;
 
-//    SpotMapper spotMapper;
+    @Autowired
+    private SpotMapper spotMapper;
 
     @Autowired
     EntityManager em;
 
     JPAQueryFactory queryFactory;
 
-    //    @Test
+    @Autowired
+    SpotService spotService;
+
+    @Test
     void contextLoads() {
     }
 //    @Test
@@ -78,38 +74,85 @@ class SpotApplicationTests {
 //
 //    }
 
-    @Test
+//    @Test
     void queryDslTest() {
         queryFactory = new JPAQueryFactory(em);
-
+//        spotCustomMapper = new SpotCustomMapper();
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
         int distance = 2000; // meter 단위
         SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "식당");
+        NumberTemplate distanceExpression = Expressions.numberTemplate(Double.class, "ST_Distance_Sphere({0}, {1})",
+                Expressions.stringTemplate("POINT({0}, {1})",
+                        request.getLng(),
+                        request.getLat()
+                ),
+                Expressions.stringTemplate("POINT({0}, {1})",
+                        spot.lng,
+                        spot.lat
+                ));
+        NumberTemplate limitDistance = Expressions.numberTemplate(Double.class, "{0}", request.getLimitDistance());
         Pageable pageable = PageRequest.of(0, 10);
-        Path<Double> distanceDiff = Expressions.numberPath(Double.class, "distance_diff");
-        List<SpotTransferDto> content = queryFactory
-                .select(Projections.fields(SpotTransferDto.class,
-                                spot.spotId, spot.name, spot.address, spot.tel,
-                                spot.tag, spot.time, spot.menu, spot.description,
-                                spot.lat, spot.lng, spot.imgCnt, spot.category,
-                                Expressions.stringTemplate("ST_Distance_Sphere({0}, {1})",
-                                        Expressions.stringTemplate("POINT({0}, {1})",
-                                                request.getLng(),
-                                                request.getLat()
-                                        ),
-                                        Expressions.stringTemplate("POINT({0}, {1})",
-                                                spot.lng,
-                                                spot.lat
-                                        )).as(String.valueOf(distanceDiff))
+        Path<Double> distanceDiff = Expressions.numberPath(Double.class, "distance");
+        //스팟 리스트
+        List<SpotTransferDto> transferContent = queryFactory
+                .select(Projections.constructor(SpotTransferDto.class,
+                        spot.spotId, spot.name, spot.address, spot.tel,
+                        spot.tag, spot.time, spot.menu, spot.description,
+                        spot.lat, spot.lng, spot.imgCnt, spot.category,
+                        distanceExpression.as(String.valueOf(distanceDiff))
+//                        Expressions.stringTemplate("{0}", 0).as("star"),
+//                        Expressions.stringTemplate("{0}", 0.0).as("review_cnt")
                         )
                 )
                 .from(spot)
+                .where(distanceExpression.loe(limitDistance),
+                        spot.name.contains(request.getSearchValue()))
+                .orderBy(((ComparableExpressionBase<Double>) distanceDiff).asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
-                .orderBy(((ComparableExpressionBase<Double>) distanceDiff).asc())
                 .fetch();
-        //count query 추가 작성 예정
+
+        // 총 페이지 수 count query
+        Long totalPage = queryFactory
+                .select(spot.count())
+                .from(spot)
+                .where(distanceExpression.loe(limitDistance),
+                        spot.name.contains(request.getSearchValue()))
+                .fetchOne() / pageable.getPageSize();
+
+        // SpotTransferDto to SpotDto 매핑
+        List<SpotDto> content = new ArrayList<>();
+        for (SpotTransferDto transferDto : transferContent) {
+            SpotDto spotDto = spotMapper.TransferDtoToDto(transferDto);
+            content.add(spotDto);
+        }
+        Page<SpotDto> result = new PageImpl<>(content, pageable, totalPage);
+
     }
 
+    @Test
+    public void SpotRepoTest() {
+        double currLat = 37.511468; // 내 위치 y
+        double currLng = 127.121504; // 내 위치 x
+        int distance = 2000; // meter 단위
+        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "카페");
+        Pageable pageable = PageRequest.of(0, 10);
+        spotRepository.search(request, pageable);
+    }
+
+    @Test
+    public void SpotServiceTest() {
+        double currLat = 37.511468; // 내 위치 y
+        double currLng = 127.121504; // 내 위치 x
+        int distance = 2000; // meter 단위
+        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "");
+        int page = 17;
+        int desc = 0;
+        SpotListDto result = spotService.getSpotList(request, page, desc);
+        System.out.println("totalPage : " + result.getTotalPage());
+        for(SpotDto spotDto : result.getSpotDtoList()) {
+            System.out.println(spotDto);
+        }
+    }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class SpotDto {
     private String spotId;
     private String name;
@@ -21,7 +22,14 @@ public class SpotDto {
     private Map<String, String> menu; // 메뉴 이름 : 가격 (~원)
     private double lat;
     private double lng;
-    private double distanceDiff;
-    private double star;
+    private double distance;
+    private Double star;
+    private Long reviewCnt;
 
+    public void setStar(Double star) {
+        this.star = star;
+    }
+    public void setReviewCnt(Long reviewCnt) {
+        this.reviewCnt = reviewCnt;
+    }
 }

@@ -6,6 +6,7 @@ import com.a703.spot.dto.response.SpotListDto;
 import com.a703.spot.entity.Spot;
 import com.a703.spot.properties.ConstProperties;
 import com.a703.spot.repository.SpotRepository;
+import com.a703.spot.repository.SpotReviewRepository;
 import com.a703.spot.service.specification.SpotSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,35 +38,18 @@ public class SpotServiceImpl implements SpotService {
         }
 
         //페이지네이션
-        Pageable pageable = getPageable(page, desc);
-        Page<Spot> pageSpots = null;
+//        Pageable pageable = getPageable(page, desc);
+        Pageable pageable = PageRequest.of(page-1, constProperties.getSpotListSize());
+        Page<SpotDto> pageSpots = null;
         if(desc == 1) { // 별점순
-            pageSpots = spotRepository.findAll(spec, pageable);
+//            pageSpots = spotRepository.findAll(spec, pageable);
         }else if(desc == 2) { // 리뷰 많은 순
-            
+//            pageSpots = spotRepository.findAll(spec, pageable);
         }else { // 기본(거리 가까운 순)
-
+            pageSpots = spotRepository.search(request, pageable);
         }
-        
-        List<Spot> spots = Objects.requireNonNull(pageSpots).getContent();
-        int totalPages = pageSpots.getTotalPages();
 
-        List<Spot> list = new ArrayList<>();
-        for(Spot spot : spots) {
-//
-        }
-        return null;
+        return new SpotListDto(pageSpots.getContent(), pageSpots.getTotalPages());
     }
 
-    @Override
-    public Pageable getPageable(int page, int desc) {
-        int pageSize = constProperties.getSpotListSize();
-        if (desc == 1) { // 별점 순
-            return PageRequest.of(page, pageSize, Sort.by("star").descending());
-        } else if (desc == 2) { // 리뷰 많은 순, 리뷰 개수를 컬럼에 추가할 가능성도 있어 따로 빼둠
-            return PageRequest.of(page, pageSize);
-        } else { // 기본은 거리 가까운 순
-            return PageRequest.of(page, pageSize);
-        }
-    }
 }
