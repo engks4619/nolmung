@@ -5,8 +5,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import MainFake from './src/pages/MainFake'; // Main 들어갈 곳
-import Mypage from './src/pages/Mypage';
+// import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
+import Maps from './src/pages/maps'
 
 
 import SignUp from './src/pages/SignUp';
@@ -55,9 +56,14 @@ function App() {
             component={Community}
             options={{headerShown: false}}
           />
+{/*           <Tab.Screen */}
+{/*             name="마이페이지" */}
+{/*             component={Mypage} */}
+{/*             options={{headerShown: false}} */}
+{/*           /> */}
           <Tab.Screen
-            name="마이페이지"
-            component={Mypage}
+            name="Maps"
+            component={Maps}
             options={{headerShown: false}}
           />
         </Tab.Navigator>
