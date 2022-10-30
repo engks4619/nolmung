@@ -12,6 +12,15 @@ import Spots from './src/pages/Spots';
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
 
+export type LoggedInParamList = {
+  Chats: undefined;
+  Spots: undefined;
+  Main: undefined;
+  Community: undefined;
+  Mypage: undefined;
+  // Coummunity: {orderId: string};
+};
+
 export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
