@@ -582,3 +582,6 @@ $RECYCLE.BIN/
 # Java heap dump
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,java,intellij+all,visualstudiocode,reactnative,node,macos,gradle
+
+application-db.yml
+application-dbtest.yml

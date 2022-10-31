@@ -24,25 +24,25 @@ public class MyListController {
     private final MyListService myListService;
 
     @GetMapping("/other")
-    public ResponseEntity<List<OtherListDto>> showMyOtherList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
+    public ResponseEntity<List<OtherListDto>> showMyOtherList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ) throws Exception {
         List<OtherListDto> otherMyLists = myListService.showMyOtherList(pageable,token);
         return ResponseEntity.ok().body(otherMyLists);
     }
 
     @GetMapping("/with")
-    public ResponseEntity<List<WithListDto>> showMyWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
+    public ResponseEntity<List<WithListDto>> showMyWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ) throws Exception {
         List<WithListDto> withMyLists = myListService.showMyWithList(pageable,token);
         return ResponseEntity.ok().body(withMyLists);
     }
 
     @GetMapping("/like/with")
-    public ResponseEntity<List<WithListDto>> showMyWithLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
+    public ResponseEntity<List<WithListDto>> showMyWithLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ) throws Exception {
         List<WithListDto> withMyLikeLists = myListService.showMyLikeWithList(pageable,token);
         return ResponseEntity.ok().body(withMyLikeLists);
     }
 
     @GetMapping("/like/other")
-    public ResponseEntity<List<OtherListDto>> showMyOtherLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ){
+    public ResponseEntity<List<OtherListDto>> showMyOtherLikeList(@PageableDefault(sort = "modify_date", direction = Sort.Direction.DESC,size = 10) Pageable pageable,@RequestHeader Map<String, Object> token ) throws Exception {
         List<OtherListDto> otherMyLikeLists = myListService.showMyLikeOtherList(pageable,token);
         return ResponseEntity.ok().body(otherMyLikeLists);
     }
