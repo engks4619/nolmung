@@ -5,7 +5,7 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.dto.response.connection.UserInfoDto;
+import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.entity.*;
 import com.a703.community.repository.LuckDogRepository;
 import com.a703.community.repository.PostLikeRepository;
@@ -42,7 +42,7 @@ public class CommunityService {
 
     public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 
@@ -106,7 +106,7 @@ public class CommunityService {
 
     public void pushLike(Long postIdx,Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
         Post post=postRepository.findByPostIdx(postIdx);
@@ -125,7 +125,7 @@ public class CommunityService {
 
     public PostDto showPost(Long postIdx, Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 
@@ -133,19 +133,19 @@ public class CommunityService {
 
         Post post = postRepository.findByPostIdx(postIdx);
 
-//        List<LuckyDog> luckyDogList = luckDogRepository.findByIdPostPostIdx(postIdx);
+        List<LuckyDog> luckyDogList = luckDogRepository.findByIdPostPostIdx(postIdx);
 
-//        luckyDogList.stream()
+        List<Long> dogIdxList = luckyDogList.stream().map(a -> {
+            return a.getId().getDogIdx();
+        }).collect(Collectors.toList());
 
         //강아지 관련 api연결해야됨
-//        DogInfoDto dogInfoDto = clientUtil.requestDogInfo();
+        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
 
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
                 .writer("통신필요")
-                .dogBreed(null)
-                .dogName(null)
-                .dogImgUrl(null)
+                .dogInfoList(dogInfoDto)
                 .photoUrl(postPhotoRepository.existsByPostPostIdx(post.getPostIdx()) ? convertPostPhotoListToUrlList(postPhotos) : null)
                 .categoryType(post.getCategoryType())
                 .content(post.getContent())

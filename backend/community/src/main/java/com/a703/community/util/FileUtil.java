@@ -35,7 +35,7 @@ public class FileUtil {
 
 
 //        String uploadPath = java.io.File.separator + "profile_images" + java.io.File.separator + "community";
-        String uploadPath = "c:/photo/community";
+        String uploadPath = "/images";
 
         try {
             String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(file.getOriginalFilename());
