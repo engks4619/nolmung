@@ -65,7 +65,7 @@ public class CommunityService {
 
         Post savePost =postRepository.save(post);
 
-        List<LuckyDog> saveLuckDog = dogIdxList.stream().map(luckdog -> LuckyDog.builder()
+        List<LuckyDog> saveLuckyDog = dogIdxList.stream().map(luckdog -> LuckyDog.builder()
                 .id(LuckyDogId.builder()
                         .dogIdx(luckdog)
                         .post(savePost)
@@ -73,7 +73,7 @@ public class CommunityService {
                 .build())
                 .collect(Collectors.toList());
 
-        luckDogRepository.saveAll(saveLuckDog);
+        luckDogRepository.saveAll(saveLuckyDog);
 
         if (files !=null) {
             for (MultipartFile multipartFile : files) {
@@ -133,8 +133,12 @@ public class CommunityService {
 
         Post post = postRepository.findByPostIdx(postIdx);
 
+//        List<LuckyDog> luckyDogList = luckDogRepository.findByIdPostPostIdx(postIdx);
+
+//        luckyDogList.stream()
+
         //강아지 관련 api연결해야됨
-//        DogInfoDto dogInfoDto = clientUtil.requestDogInfo(dogIdx);
+//        DogInfoDto dogInfoDto = clientUtil.requestDogInfo();
 
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
