@@ -2,8 +2,12 @@ package com.a703.spot;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.*;
+import com.a703.spot.entity.Spot;
+import com.a703.spot.entity.SpotReview;
 import com.a703.spot.mapper.SpotMapper;
+import com.a703.spot.mapper.SpotReviewMapper;
 import com.a703.spot.repository.SpotRepository;
+import com.a703.spot.repository.SpotReviewRepository;
 import com.a703.spot.service.SpotService;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Projections;
@@ -37,6 +41,9 @@ class SpotApplicationTests {
     private SpotRepository spotRepository;
 
     @Autowired
+    private SpotReviewRepository spotReviewRepository;
+
+    @Autowired
     private SpotMapper spotMapper;
 
     @Autowired
@@ -46,6 +53,7 @@ class SpotApplicationTests {
 
     @Autowired
     SpotService spotService;
+
 
     @Test
     void contextLoads() {}
@@ -130,5 +138,19 @@ class SpotApplicationTests {
         for(SpotDto spotDto : result.getSpotDtoList()) {
             System.out.println(spotDto);
         }
+    }
+
+    @Test
+    public void SpotReviewRepoTest() {
+        SpotReviewDto spotReviewDto =
+                SpotReviewDto.builder()
+                        .spotId("3s4OsGqFUPwb")
+                        .content("테스트123")
+                        .star(2.0)
+                        .userIdx(3L)
+                        .isDeleted(false)
+                        .build();
+        spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
+//        spotReviewRepository.save(spotReview);
     }
 }

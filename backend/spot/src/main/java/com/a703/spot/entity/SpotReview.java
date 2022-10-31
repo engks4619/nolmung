@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -11,15 +13,17 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Table(name = "tbl_spot_review")
 public class SpotReview extends BaseTime {
     @Id
-    @Column(name = "review_idx", nullable = false)
-    private long reviewIdx;
+    @Column(name = "review_idx", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long reviewIdx;
 
     @ManyToOne
-    @JoinColumn(name= "spot_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "spot_id", updatable = false, nullable = false)
     private Spot spot;
 
     @Column(name = "star", columnDefinition = "DOUBLE")
@@ -29,9 +33,13 @@ public class SpotReview extends BaseTime {
     private String content;
 
     @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
+    @ColumnDefault("0")
     private boolean isDeleted;
 
     @Column(name = "user_idx", columnDefinition = "BIGINT", nullable = false)
     private long userIdx;
 
+    public void setIsDeleted(boolean flag) {
+        this.isDeleted = flag;
+    }
 }

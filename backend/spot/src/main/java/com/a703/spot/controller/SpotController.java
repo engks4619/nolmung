@@ -2,7 +2,9 @@ package com.a703.spot.controller;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.DtoResponse;
+import com.a703.spot.dto.response.SpotDto;
 import com.a703.spot.dto.response.SpotListDto;
+import com.a703.spot.entity.Spot;
 import com.a703.spot.properties.ResponseProperties;
 import com.a703.spot.service.SpotService;
 import com.a703.spot.util.ParameterUtil;
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/spot")
 public class SpotController {
 
     private final SpotService spotService;
     private final ResponseProperties responseProperties;
-    @PostMapping("/spot")
+    @PostMapping
     public ResponseEntity<DtoResponse<SpotListDto>> getSpotList(
             @RequestParam(name = "page") String pageParam,
             @RequestParam(name = "desc") String descParam,
@@ -25,6 +28,18 @@ public class SpotController {
         int page = ParameterUtil.checkPage(pageParam);
         int desc = ParameterUtil.checkDesc(descParam);
         SpotListDto result = spotService.getSpotList(request, page, desc);
-        return ResponseEntity.status(HttpStatus.OK).body(DtoResponse.of(HttpStatus.OK, responseProperties.getSuccess(), result));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(DtoResponse.of(
+                        HttpStatus.OK,
+                        responseProperties.getSuccess(),
+                        result)
+                );
+    }
+
+    @GetMapping
+    public ResponseEntity<DtoResponse<SpotDto>> getSpot(String spotId) {
+//        Spot spot = spotService.getSpot(spotId);
+        return null;
     }
 }

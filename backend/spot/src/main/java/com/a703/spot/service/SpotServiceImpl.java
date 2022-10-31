@@ -41,9 +41,9 @@ public class SpotServiceImpl implements SpotService {
         Pageable pageable = PageRequest.of(page, constProperties.getSpotListSize());
         Page<SpotDto> pageSpots = null;
         if(desc == 1) { // 별점순
-//            pageSpots = spotRepository.findAll(spec, pageable);
+            pageSpots = spotRepository.searchByStar(request, pageable);
         }else if(desc == 2) { // 리뷰 많은 순
-//            pageSpots = spotRepository.findAll(spec, pageable);
+            pageSpots = spotRepository.searchByReviewCnt(request, pageable);
         }else { // 기본(거리 가까운 순)
             pageSpots = spotRepository.search(request, pageable);
         }
