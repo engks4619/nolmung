@@ -21,7 +21,8 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
         return queryFactory
                 .select(spotReview.count())
                 .from(spotReview)
-                .where(spotReview.spot.spotId.eq(spotId))
+                .where(spotReview.spot.spotId.eq(spotId),
+                        spotReview.isDeleted.eq(false))
                 .fetchOne();
     }
 
@@ -30,7 +31,8 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
         return queryFactory
                 .select(spotReview.star.avg())
                 .from(spotReview)
-                .where(spotReview.spot.spotId.eq(spotId))
+                .where(spotReview.spot.spotId.eq(spotId),
+                        spotReview.isDeleted.eq(false))
                 .fetchOne();
     }
 }

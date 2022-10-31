@@ -115,7 +115,8 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                         )
                 )
                 .from(spot)
-                .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId))
+                .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId),
+                        spotReview.isDeleted.eq(false))
                 .where(distanceExpression.loe(limitDistance),
                         spot.name.contains(request.getSearchValue()),
                         spot.category.eq(request.getCategory())
@@ -171,7 +172,8 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                         )
                 )
                 .from(spot)
-                .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId))
+                .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId),
+                        spotReview.isDeleted.eq(false))
                 .where(distanceExpression.loe(limitDistance),
                         spot.name.contains(request.getSearchValue()),
                         spot.category.eq(request.getCategory())
