@@ -77,7 +77,7 @@ public class ClientUtil {
         return dogIdxList;
     }
 
-    public DogInfoDto requestDogInfo(Long dogIdx) throws Exception {
+    public DogInfoDto requestDogInfo(List<Long> dogIdx) throws Exception {
 
         String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();

@@ -13,11 +13,11 @@ import java.util.List;
 @Builder
 public class PostDto {
 
-    private String dogBreed;
+    private List<String> dogBreed;
 
-    private String dogName;
+    private List<String> dogName;
 
-    private String dogImgUrl;
+    private List<String> dogImgUrl;
 
     private String writer;
 
