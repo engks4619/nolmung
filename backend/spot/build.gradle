@@ -44,6 +44,10 @@ dependencies {
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    //StringUtils
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
 }
 
 tasks.named('test') {

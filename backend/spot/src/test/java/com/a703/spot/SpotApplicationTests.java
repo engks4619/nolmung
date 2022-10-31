@@ -48,31 +48,7 @@ class SpotApplicationTests {
     SpotService spotService;
 
     @Test
-    void contextLoads() {
-    }
-//    @Test
-//    void distanceTest() {
-//        double lat = 37.511468; // 내 위치 y
-//        double lng = 127.121504; // 내 위치 x
-//        int distance = 2000; // meter 단위
-//        Specification<SpotDtoInterface> spec = (root, query, criteriaBuilder) -> null;
-//        Pageable pageable = PageRequest.of(1, 10);
-//        Page<SpotTransferDto> pageSpots = spotRepository.getSpotByDistance(lng, lat, distance, pageable).orElse(null);
-//        System.out.println(pageSpots.getContent());
-//        List<SpotDto> spotDtoList = new ArrayList<>();
-//        List<SpotTransferDto> spotTransferDtoList = pageSpots.getContent();
-//        for(SpotTransferDto spottransferDto : spotTransferDtoList){
-//            System.out.println(spottransferDto);
-//            SpotDto spotDto = spotMapper.TransferDtoToDto(spottransferDto);
-//            spotDtoList.add(spotDto);
-//        }
-//        SpotListDto result = SpotListDto.builder()
-//                        .spotDtoList(spotDtoList)
-//                        .totalPage(pageSpots.getTotalPages())
-//                        .build();
-////        System.out.println(result);
-//
-//    }
+    void contextLoads() {}
 
 //    @Test
     void queryDslTest() {
@@ -81,7 +57,7 @@ class SpotApplicationTests {
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
         int distance = 2000; // meter 단위
-        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "식당");
+        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, "식당");
         NumberTemplate distanceExpression = Expressions.numberTemplate(Double.class, "ST_Distance_Sphere({0}, {1})",
                 Expressions.stringTemplate("POINT({0}, {1})",
                         request.getLng(),
@@ -136,7 +112,7 @@ class SpotApplicationTests {
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
         int distance = 2000; // meter 단위
-        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "카페");
+        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, "카페");
         Pageable pageable = PageRequest.of(0, 10);
         spotRepository.search(request, pageable);
     }
@@ -146,8 +122,8 @@ class SpotApplicationTests {
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
         int distance = 2000; // meter 단위
-        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, 0, "");
-        int page = 17;
+        SpotRequest request = new SpotRequest(currLat, currLng, "", distance, "카페");
+        int page = 9;
         int desc = 0;
         SpotListDto result = spotService.getSpotList(request, page, desc);
         System.out.println("totalPage : " + result.getTotalPage());

@@ -14,6 +14,5 @@ public class SpotRequest {
     private Double lng;
     private String searchValue;
     private Integer limitDistance;
-    private Integer descType;
     private String category;
 }

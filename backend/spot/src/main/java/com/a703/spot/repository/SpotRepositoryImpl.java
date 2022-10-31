@@ -57,17 +57,13 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                                 spot.tag, spot.time, spot.menu, spot.description,
                                 spot.lat, spot.lng, spot.imgCnt, spot.category,
                                 distanceExpression.as(String.valueOf(distanceDiff))
-//                        Expressions.stringTemplate("{0}", 0).as("star"),
-//                        Expressions.stringTemplate("{0}", 0.0).as("review_cnt")
                         )
                 )
                 .from(spot)
                 .where(distanceExpression.loe(limitDistance),
-                        spot.name.contains(request.getSearchValue()))
-//                .where(distanceExpression.loe(limitDistance),
-//                        spot.name.contains(request.getSearchValue()),
-//                        spot.category.eq(request.getCategory())
-//                )
+                        spot.name.contains(request.getSearchValue()),
+                        spot.category.eq(request.getCategory())
+                )
                 .orderBy(((ComparableExpressionBase<Double>) distanceDiff).asc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
@@ -78,10 +74,8 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                 .select(spot.count())
                 .from(spot)
                 .where(distanceExpression.loe(limitDistance),
-                spot.name.contains(request.getSearchValue()))
-//                .where(distanceExpression.loe(limitDistance),
-//                        spot.name.contains(request.getSearchValue()),
-//                        spot.category.eq(request.getCategory()))
+                        spot.name.contains(request.getSearchValue()),
+                        spot.category.eq(request.getCategory()))
                 .fetchOne();
 
         // SpotTransferDto to SpotDto 매핑
@@ -95,6 +89,5 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
             content.add(spotDto);
         }
         return new PageImpl<>(content, pageable, totalCount);
-
     }
 }
