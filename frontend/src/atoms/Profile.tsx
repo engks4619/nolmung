@@ -12,7 +12,7 @@ function Profile({width = 70, height = 70, imageSource}: Props) {
     <View>
       <Image
         style={[styles.roundImage, {width, height}]}
-        source={imageSource}
+        source={{uri: imageSource}}
       />
     </View>
   );

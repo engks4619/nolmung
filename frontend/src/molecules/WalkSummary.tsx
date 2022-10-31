@@ -10,7 +10,7 @@ interface Props {
   thridText: string;
 }
 
-function Summary({
+function WalkSummary({
   firstLabel,
   firstText,
   secondLabel,
@@ -20,17 +20,17 @@ function Summary({
 }: Props) {
   return (
     <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Text>산책 횟수</Text>
-        <Text style={styles.textCenter}>13회</Text>
+      <View style={[styles.infoContainer, styles.borderRight]}>
+        <Text>{firstLabel}</Text>
+        <Text style={styles.textCenter}>{firstText}회</Text>
+      </View>
+      <View style={[styles.infoContainer, styles.borderRight]}>
+        <Text>{secondLabel}</Text>
+        <Text style={styles.textCenter}>{secondeText}시간</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text>총 산책 시간</Text>
-        <Text style={styles.textCenter}>500시간</Text>
-      </View>
-      <View>
-        <Text>총 산책 거리</Text>
-        <Text style={styles.textCenter}>500Km</Text>
+        <Text>{thirdLabel}</Text>
+        <Text style={styles.textCenter}>{thridText}km</Text>
       </View>
     </View>
   );
@@ -40,14 +40,17 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
   },
+  borderRight: {
+    borderRightWidth: 1,
+  },
   infoContainer: {
     textAlign: 'center',
-    borderRightWidth: 1,
     padding: 10,
   },
   textCenter: {
+    paddingTop: 7,
     textAlign: 'center',
   },
 });
 
-export default Summary;
+export default WalkSummary;

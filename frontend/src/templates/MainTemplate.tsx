@@ -1,11 +1,17 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-import Summary from '../molecules/Summary';
+import UserSummary from '../organisms/UserSummary';
 
 function MainTemplate() {
   return (
     <View>
-      <Summary />
+      <UserSummary
+        imageSource="https://reactnative.dev/img/tiny_logo.png"
+        userName="userName"
+        walkNumber={13}
+        walkHour={500}
+        walkDistance={500}
+      />
     </View>
   );
 }
