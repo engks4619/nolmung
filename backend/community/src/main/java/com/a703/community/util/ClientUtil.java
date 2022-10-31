@@ -77,7 +77,7 @@ public class ClientUtil {
         return dogIdxList;
     }
 
-    public DogInfoDto requestDogInfo(List<Long> dogIdx) throws Exception {
+    public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) throws Exception {
 
         String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();
@@ -94,13 +94,13 @@ public class ClientUtil {
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
         // Request
-        HttpEntity<String> response = restTemplate.getForEntity(url,String.class);
+        DogInfoDto[] response = restTemplate.getForObject(url,DogInfoDto[].class);
 
 
         // Response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        DogInfoDto dogInfoDto = objectMapper.readValue(response.getBody(), DogInfoDto.class);
+        List<DogInfoDto> dogInfoDto = Arrays.asList(response);
 
         return dogInfoDto;
     }

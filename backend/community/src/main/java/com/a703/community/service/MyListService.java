@@ -2,7 +2,6 @@ package com.a703.community.service;
 
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
-import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.Post;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
@@ -31,7 +30,7 @@ public class MyListService {
 
     public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
@@ -51,7 +50,7 @@ public class MyListService {
 
     public List<OtherListDto> showMyOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
@@ -72,7 +71,7 @@ public class MyListService {
 
     public List<OtherListDto> showMyLikeOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 
@@ -93,7 +92,7 @@ public class MyListService {
 
     public List<WithListDto> showMyLikeWithList(Pageable pageable, Map<String, Object> token) throws Exception {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long userIdx = 1L;
 

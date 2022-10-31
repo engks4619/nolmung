@@ -5,19 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @JsonIgnoreProperties(ignoreUnknown =true)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DogInfoDto {
 
-    private List<String> dogBreed;
+    private String dogBreed;
 
-    private List<String> dogName;
+    private String dogName;
 
-    private List<String> dogImgUrl;
+    private String dogImgUrl;
 
 
 }
