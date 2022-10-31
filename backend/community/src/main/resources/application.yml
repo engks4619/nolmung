@@ -6,5 +6,5 @@ server:
   port: 8081
 
 resources:
-  location: /
+  location: /images/
   uri_path: /images
