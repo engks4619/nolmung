@@ -35,7 +35,7 @@ public class FileUtil {
 
 
 //        String uploadPath = java.io.File.separator + "profile_images" + java.io.File.separator + "community";
-        String uploadPath = "/images";
+        String uploadPath = "/images/community";
 
         try {
             String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(file.getOriginalFilename());
@@ -64,7 +64,7 @@ public class FileUtil {
 
             PostPhoto postPhoto = PostPhoto.builder()
                     .post(post)
-                    .photoUrl(savePath)
+                    .photoUrl("http://k7a703.p.ssafy.io:8081"+savePath)
                     .build();
             postPhotoRepository.save(postPhoto);
 
