@@ -4,10 +4,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
-import MainFake from './src/pages/MainFake'; // Main 들어갈 곳
+import Main from './src/pages/Main';
 import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
-
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -47,7 +46,7 @@ function App() {
           />
           <Tab.Screen
             name="홈"
-            component={MainFake}
+            component={Main}
             options={{headerShown: false}}
           />
           <Tab.Screen
