@@ -33,7 +33,7 @@ function App() {
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator>
+        <Tab.Navigator initialRouteName="홈">
           <Tab.Screen
             name="채팅"
             component={Chats}

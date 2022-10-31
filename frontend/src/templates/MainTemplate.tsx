@@ -1,8 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import UserSummary from '../organisms/UserSummary';
+import MainSpots from '../organisms/MainSpots';
 
-function MainTemplate() {
+interface Props {
+  spots: any[];
+}
+function MainTemplate({spots}: Props) {
   return (
     <View>
       <UserSummary
@@ -12,6 +16,7 @@ function MainTemplate() {
         walkHour={500}
         walkDistance={500}
       />
+      <MainSpots spots={spots} />
     </View>
   );
 }
