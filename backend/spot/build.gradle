@@ -48,6 +48,10 @@ dependencies {
     //StringUtils
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
+    //이미지 업로드
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+    implementation group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.17.0'
+
 }
 
 tasks.named('test') {

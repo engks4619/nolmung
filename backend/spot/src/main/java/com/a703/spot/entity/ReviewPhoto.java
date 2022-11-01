@@ -15,14 +15,15 @@ import javax.persistence.*;
 @Table(name = "tbl_review_photo")
 public class ReviewPhoto {
     @Id
-    @Column(name = "review_photo_idx", nullable = false, columnDefinition = "BIGINT")
+    @Column(name = "review_photo_idx", unique = true, columnDefinition = "BIGINT")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reviewPhotoIdx;
 
     @ManyToOne
-    @JoinColumn(name= "review_idx", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name= "review_idx", updatable = false, nullable = false)
     private SpotReview spotReview;
 
-    @Column(name = "review_url", columnDefinition = "VARCHAR(255)")
-    private String reviewUrl;
+    @Column(name = "photo_url", columnDefinition = "VARCHAR(255)")
+    private String photoUrl;
 
 }

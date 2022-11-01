@@ -11,5 +11,4 @@ public class SpotReviewRequest {
     String spotId;
     Double star;
     String content;
-    Long userIdx;
 }

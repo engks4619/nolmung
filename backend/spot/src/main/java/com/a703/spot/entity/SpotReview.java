@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Table(name = "tbl_spot_review")
 public class SpotReview extends BaseTime {
     @Id
-    @Column(name = "review_idx", unique = true)
+    @Column(name = "review_idx", unique = true, columnDefinition = "BIGINT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewIdx;
 

@@ -8,6 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +22,10 @@ public class SpotReviewController {
     private final ResponseProperties responseProperties;
 
     @PostMapping
-    public ResponseEntity<MessageResponse> registReview(@RequestBody  SpotReviewRequest request) {
-        spotReviewService.registReview(request);
+    public ResponseEntity<MessageResponse> registReview(@RequestPart  SpotReviewRequest request,
+                                                        @RequestHeader Map<String, Object> token,
+                                                        @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+        spotReviewService.registReview(request, token, files);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(MessageResponse.of(
@@ -28,9 +34,10 @@ public class SpotReviewController {
                 );
     }
 
-    @DeleteMapping
-    public ResponseEntity<MessageResponse> deleteReview(@RequestBody SpotReviewRequest request) {
-        spotReviewService.deleteReview(request);
+    @DeleteMapping("{reviewIdx}")
+    public ResponseEntity<MessageResponse> deleteReview(@PathVariable Long reviewIdx,
+                                                        @RequestHeader Map<String, Object> token) {
+        spotReviewService.deleteReview(reviewIdx, token);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(MessageResponse.of(
