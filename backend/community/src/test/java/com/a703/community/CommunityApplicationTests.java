@@ -1,9 +1,8 @@
 package com.a703.community;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+// @SpringBootTest
 class CommunityApplicationTests {
 
 	@Test

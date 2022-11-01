@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    include: db
+
+server:
+  port: 8081
+
+resources:
+  location: /images/
+  uri_path: /images
