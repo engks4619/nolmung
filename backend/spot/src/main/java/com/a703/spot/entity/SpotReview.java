@@ -32,14 +32,14 @@ public class SpotReview extends BaseTime {
     @Column(name = "content", columnDefinition = "VARCHAR(255)")
     private String content;
 
-    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
+    @Column(name = "deleted", columnDefinition = "TINYINT(1)")
     @ColumnDefault("0")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "user_idx", columnDefinition = "BIGINT", nullable = false)
     private long userIdx;
 
     public void setIsDeleted(boolean flag) {
-        this.isDeleted = flag;
+        this.deleted = flag;
     }
 }

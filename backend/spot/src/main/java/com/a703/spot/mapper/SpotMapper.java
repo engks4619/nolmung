@@ -2,6 +2,7 @@ package com.a703.spot.mapper;
 
 import com.a703.spot.dto.response.SpotDto;
 import com.a703.spot.dto.response.SpotTransferDto;
+import com.a703.spot.entity.Spot;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +41,24 @@ public class SpotMapper {
                 .build();
     }
 
+    public SpotDto EntityToDto(Spot entitiy) {
+        List<String> descList = getDescList(entitiy.getDescription());
+        Map<String, String > timeMap = getMap(entitiy.getTime());
+        Map<String, String> menuMap = getMap(entitiy.getMenu());
+        return SpotDto.builder()
+                .spotId(entitiy.getSpotId())
+                .name(entitiy.getName())
+                .imgCnt(entitiy.getImgCnt())
+                .address(entitiy.getAddress())
+                .tel(entitiy.getTel())
+                .tag(entitiy.getTag())
+                .descList(descList)
+                .time(timeMap)
+                .menu(menuMap)
+                .lat(entitiy.getLat())
+                .lng(entitiy.getLng())
+                .build();
+    }
     List<String> getDescList(String descStr) {
         if(descStr == null || descStr.equals("")) return null;
         List<String> descList = new ArrayList<String>();

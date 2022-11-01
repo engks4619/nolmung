@@ -36,14 +36,17 @@ public class SpotReviewServiceImpl implements SpotReviewService {
     @Override
     public void registReview(SpotReviewRequest request, Map<String, Object> token, List<MultipartFile> files) {
         try {
-            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
             SpotReviewDto spotReviewDto
                     = SpotReviewDto.builder()
                     .spotId(request.getSpotId())
                     .content(request.getContent())
                     .star(request.getStar())
-                    .userIdx(userInfoDto.getUserIdx())
-                    .isDeleted(false)
+//                    .userIdx(userInfoDto.getUserIdx())
+                    .userInfoDto(UserInfoDto.builder()
+                            .userIdx(1L)
+                            .build())
+                    .deleted(false)
                     .build();
             SpotReview spotReview = spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
             if(files != null) {

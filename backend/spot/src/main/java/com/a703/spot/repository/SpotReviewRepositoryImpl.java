@@ -1,7 +1,5 @@
 package com.a703.spot.repository;
 
-import com.a703.spot.entity.QSpotReview;
-import com.a703.spot.mapper.SpotMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,7 +20,7 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
                 .select(spotReview.count())
                 .from(spotReview)
                 .where(spotReview.spot.spotId.eq(spotId),
-                        spotReview.isDeleted.eq(false))
+                        spotReview.deleted.eq(false))
                 .fetchOne();
     }
 
@@ -32,7 +30,7 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
                 .select(spotReview.star.avg())
                 .from(spotReview)
                 .where(spotReview.spot.spotId.eq(spotId),
-                        spotReview.isDeleted.eq(false))
+                        spotReview.deleted.eq(false))
                 .fetchOne();
     }
 }

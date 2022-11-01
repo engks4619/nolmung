@@ -2,8 +2,6 @@ package com.a703.spot;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.*;
-import com.a703.spot.entity.Spot;
-import com.a703.spot.entity.SpotReview;
 import com.a703.spot.mapper.SpotMapper;
 import com.a703.spot.mapper.SpotReviewMapper;
 import com.a703.spot.repository.SpotRepository;
@@ -16,8 +14,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -147,8 +143,8 @@ class SpotApplicationTests {
                         .spotId("3s4OsGqFUPwb")
                         .content("테스트123")
                         .star(2.0)
-                        .userIdx(3L)
-                        .isDeleted(false)
+//                        .userIdx(3L)
+                        .deleted(false)
                         .build();
         spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
 //        spotReviewRepository.save(spotReview);

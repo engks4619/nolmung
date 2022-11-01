@@ -2,6 +2,7 @@ package com.a703.spot.controller;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.DtoResponse;
+import com.a703.spot.dto.response.SpotDetailDto;
 import com.a703.spot.dto.response.SpotDto;
 import com.a703.spot.dto.response.SpotListDto;
 import com.a703.spot.entity.Spot;
@@ -37,9 +38,16 @@ public class SpotController {
                 );
     }
 
-    @GetMapping
-    public ResponseEntity<DtoResponse<SpotDto>> getSpot(String spotId) {
-//        Spot spot = spotService.getSpot(spotId);
-        return null;
+    @GetMapping("{spotId}")
+    public ResponseEntity<DtoResponse<SpotDetailDto>> getSpot(@PathVariable String spotId) {
+        SpotDetailDto result = spotService.getSpotDetail(spotId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(DtoResponse.of(
+                        HttpStatus.OK,
+                        responseProperties.getSuccess(),
+                        result
+                ));
     }
+
 }

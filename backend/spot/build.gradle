@@ -51,7 +51,10 @@ dependencies {
     //이미지 업로드
     implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
     implementation group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.17.0'
-
+    
+    // 서비스 디스커버리
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4'
 }
 
 tasks.named('test') {

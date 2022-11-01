@@ -17,7 +17,7 @@ public class ReviewPhoto {
     @Id
     @Column(name = "review_photo_idx", unique = true, columnDefinition = "BIGINT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reviewPhotoIdx;
+    private Long reviewPhotoIdx;
 
     @ManyToOne
     @JoinColumn(name= "review_idx", updatable = false, nullable = false)
