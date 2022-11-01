@@ -31,9 +31,9 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
-    // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
-    const [isLoggedIn, setLoggedIn] = useState(true);
-  return(
+  // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  return (
     <NavigationContainer>
       {isLoggedIn ? (
         <Tab.Navigator initialRouteName="홈">
@@ -78,5 +78,6 @@ function AppInner() {
         </Stack.Navigator>
       )}
     </NavigationContainer>
-  )
-} export default AppInner
+  );
+}
+export default AppInner;

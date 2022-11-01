@@ -8,10 +8,10 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "paths": {
       "~/*": ["./*"],
-      "@atoms": ["atoms/*"],
-      "@molecules": ["molecules/*"],
-      "@organisms": ["organisms/*"],
-      "@templates": ["templates/*"]
+      "@atoms": ["./src/atoms/*"],
+      "@molecules": ["./src/molecules/*"],
+      "@organisms": ["./src/organisms/*"],
+      "@templates": ["./src/templates/*"]
     }
   }
 }
