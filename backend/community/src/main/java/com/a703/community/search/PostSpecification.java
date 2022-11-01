@@ -2,11 +2,17 @@ package com.a703.community.search;
 
 import com.a703.community.entity.Post;
 import com.a703.community.type.CategoryType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Component
+@RequiredArgsConstructor
 public class PostSpecification {
+//    private static LuckyDogRepository luckyDogRepository;
 
     public static Specification<Post> equalLocation(String location) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("location"), location);
@@ -31,7 +37,10 @@ public class PostSpecification {
 
     public static Specification<Post> lessThanWalkeDate(LocalDateTime endWalkDate) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("walkDate"), endWalkDate);
+    }
 
+    public static Specification<Post> findDogBreedByPostIdx(List<Long> postIdxList) {
+        return (root, query, criteriaBuilder) -> root.get("postIdx").in(postIdxList);
     }
 
 }

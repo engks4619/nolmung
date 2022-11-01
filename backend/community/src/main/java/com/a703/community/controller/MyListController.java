@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/community/me")
+@RequestMapping("/community/me")
 public class MyListController {
 
     private final MyListService myListService;

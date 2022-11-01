@@ -7,7 +7,7 @@ import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.entity.*;
-import com.a703.community.repository.LuckDogRepository;
+import com.a703.community.repository.LuckyDogRepository;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
@@ -36,7 +36,7 @@ public class CommunityService {
 
     private final FileUtil fileUtil;
 
-    private final LuckDogRepository luckDogRepository;
+    private final LuckyDogRepository luckDogRepository;
 
     private final ClientUtil clientUtil;
 

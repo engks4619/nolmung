@@ -15,7 +15,7 @@ public class SearchRequest {
 
     private Integer endPay;
 
-    private String dogBreed;
+    private Integer dogBreed;
 
     private String location;
 }

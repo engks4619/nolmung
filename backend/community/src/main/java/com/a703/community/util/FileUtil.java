@@ -64,7 +64,7 @@ public class FileUtil {
 
             PostPhoto postPhoto = PostPhoto.builder()
                     .post(post)
-                    .photoUrl("http://k7a703.p.ssafy.io:8081"+savePath)
+                    .photoUrl("http://k7a703.p.ssafy.io:8081/api"+savePath)
                     .build();
             postPhotoRepository.save(postPhoto);
 
