@@ -16,14 +16,12 @@ import com.a703.spot.properties.ConstProperties;
 import com.a703.spot.repository.ReviewPhotoRepository;
 import com.a703.spot.repository.SpotRepository;
 import com.a703.spot.repository.SpotReviewRepository;
-import com.a703.spot.service.specification.SpotSpecification;
 import com.a703.spot.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
