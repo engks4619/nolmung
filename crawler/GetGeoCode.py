@@ -24,7 +24,7 @@ STR_MENU = 'menu'
 
 def addr_to_lat_lon(addr):
     url = 'https://dapi.kakao.com/v2/local/search/address.json?query={address}'.format(address=addr)
-    headers = {"Authorization": "KakaoAK " + "5d339211bac97f20d9fe0992a3da1481"}
+    headers = {"Authorization": "KakaoAK " + API_KEY}
     result = json.loads(str(requests.get(url, headers=headers).text))
     if(result and 'documents' in result and len(result['documents']) > 0): 
         match_first = result['documents'][0]['address']
