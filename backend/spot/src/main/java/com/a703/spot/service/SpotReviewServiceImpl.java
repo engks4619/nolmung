@@ -16,10 +16,13 @@ import com.a703.spot.repository.SpotReviewRepository;
 import com.a703.spot.util.ClientUtil;
 import com.a703.spot.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +39,7 @@ public class SpotReviewServiceImpl implements SpotReviewService {
     @Override
     public void registReview(SpotReviewRequest request, Map<String, Object> token, List<MultipartFile> files) {
         try {
+            // 리뷰 저장
 //            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
             SpotReviewDto spotReviewDto
                     = SpotReviewDto.builder()
@@ -49,14 +53,21 @@ public class SpotReviewServiceImpl implements SpotReviewService {
                     .deleted(false)
                     .build();
             SpotReview spotReview = spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
-            if(files != null) {
-                for(MultipartFile multipartFile : files) {
-                    fileUtil.fileUpload(multipartFile, spotReview.getReviewIdx());
+            
+            //이미지 파일 업로드
+            try {
+                if (files != null) {
+                    for (MultipartFile multipartFile : files) {
+                        fileUtil.fileUpload(multipartFile, spotReview.getReviewIdx());
+                    }
                 }
+            }catch (NoSuchFileException e) {
+                throw new SpotReviewException(ReviewErrorCode.FILE_UPLOAD_FAILED);
             }
-        }catch (Exception e){
+        }catch (Exception e) {
             throw new SpotReviewException(AccountErrorCode.ACCOUNT_NOT_FOUND);
         }
+        
     }
 
     @Override
@@ -65,13 +76,16 @@ public class SpotReviewServiceImpl implements SpotReviewService {
                 () -> new SpotReviewException(ReviewErrorCode.REVIEW_NOT_FOUND)
         );
         try {
-            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-            if(spotReview.getUserIdx() == userInfoDto.getUserIdx()){
+//            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+            UserInfoDto userInfoDto = UserInfoDto.builder().userIdx(1L).build();
+
+            if(spotReview.getUserIdx() == userInfoDto.getUserIdx()) {
                 spotReview.setIsDeleted(true);
                 spotReviewRepository.save(spotReview);
-            }else{ // 리뷰 작성한 유저가 아닌 경우
+            }else { // 리뷰 작성한 유저가 아닌 경우
                 throw new SpotReviewException(AccountErrorCode.ACCOUNT_NOT_MATCH);
             }
+
         } catch (Exception e) { // 유저를 찾을 수 없는 경우
             throw new SpotReviewException(AccountErrorCode.ACCOUNT_NOT_FOUND);
         }
