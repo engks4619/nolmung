@@ -6,12 +6,14 @@
 
     /* Completeness */
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
+    "baseUrl": "./src",
     "paths": {
       "~/*": ["./*"],
-      "@atoms": ["atoms/*"],
-      "@molecules": ["molecules/*"],
-      "@organisms": ["organisms/*"],
-      "@templates": ["templates/*"]
+      "@atoms/*": ["atoms/*"],
+      "@molecules/*": ["molecules/*"],
+      "@organisms/*": ["organisms/*"],
+      "@templates/*": ["templates/*"]
     }
-  }
+  },
+  "include": ["src"]
 }
