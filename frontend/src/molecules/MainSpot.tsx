@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import Squre from '../atoms/Squre';
-import {MAIN_COLOR} from '../const';
+import Squre from '@atoms/Squre';
+import {MAIN_COLOR} from '~/const';
 
 interface Props {
   item: {

@@ -1,7 +1,7 @@
 import React from 'react';
-import TextLine from '../atoms/TextLine';
-import Label from '../atoms/Label';
-import MyButton from '../atoms/MyButton';
+import TextLine from '@atoms/TextLine';
+import Label from '@atoms/Label';
+import MyButton from '@atoms/MyButton';
 import {View, StyleSheet} from 'react-native';
 
 interface Props {

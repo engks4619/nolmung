@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Text, Dimensions} from 'react-native';
-import MainSpot from '../molecules/MainSpot';
-import Carousel from './Carousel';
+import MainSpot from '@molecules/MainSpot';
+import Carousel from '@organisms/Carousel';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '~/App';

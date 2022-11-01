@@ -18,6 +18,10 @@ module.exports = {
         ],
         alias: {
           '~': './src',
+          '@atoms': './src/atoms',
+          '@molecules': './src/molecules',
+          '@organisms': './src/organisms',
+          '@templates': './src/templates',
         },
       },
     ],

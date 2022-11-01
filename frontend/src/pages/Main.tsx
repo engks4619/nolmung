@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import MainTemplate from '../templates/MainTemplate';
+import MainTemplate from '@templates/MainTemplate';
 
 const dummyData = [
   {
