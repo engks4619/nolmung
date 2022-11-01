@@ -133,4 +133,3 @@ class GetGeoCode:
 if __name__ == '__main__':
     geoCoder = GetGeoCode()
     geoCoder.run()
-#   print(addr_to_lat_lon("서울특별시 성북구 장위동 214-51"))

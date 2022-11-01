@@ -36,8 +36,8 @@ from GetGeoCode import addr_to_lat_lon
 PROCESS_COUNT = 1
 TIMEZONE = 'Asia/Seoul'
 
-CRAWLING_DATA_CSV_FILE="spot_data_2.csv"
-OUTPUT_FILE="spot_data_final_2"
+CRAWLING_DATA_CSV_FILE="spot_data.csv"
+OUTPUT_FILE="spot_data_final"
 
 STR_URL = 'url'
 STR_ID = 'id'
