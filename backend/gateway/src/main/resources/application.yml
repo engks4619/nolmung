@@ -18,15 +18,23 @@ spring:
           uri: http://k7a703.p.ssafy.io:8080/
           predicates:
             - Path=/api/user/**
+          filters:
+            - CustomFilter
         - id: community
           uri: http://k7a703.p.ssafy.io:8081/
           predicates:
             - Path=/api/community/**
+          filters:
+            - CustomFilter
         - id: withdog
           uri: http://k7a703.p.ssafy.io:8082/
           predicates:
             - Path=/api/withdog/**
+          filters:
+            - CustomFilter
         - id: spot
           uri: http://k7a703.p.ssafy.io:8083/
           predicates:
             - Path=/api/spot/**
+          filters:
+            - CustomFilter
