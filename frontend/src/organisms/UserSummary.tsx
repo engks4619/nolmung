@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import WalkSummary from '../molecules/WalkSummary';
-import Profile from '../atoms/Profile';
+import WalkSummary from '@molecules/WalkSummary';
+import Profile from '@atoms/Profile';
 
 interface Props {
   imageSource: string;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import UserSummary from '../organisms/UserSummary';
-import MainSpots from '../organisms/MainSpots';
+import UserSummary from '@organisms/UserSummary';
+import MainSpots from '@organisms/MainSpots';
 
 interface Props {
   spots: any[];
