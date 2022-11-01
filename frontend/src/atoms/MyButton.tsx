@@ -1,19 +1,35 @@
 import React from 'react';
 import {StyleSheet, Pressable, Text, View} from 'react-native';
-import {MAIN_COLOR} from '~/const';
+import {MAIN_COLOR} from '../const';
 
 interface Props {
   btnText: string;
   width: number;
   paddingVertical: number;
-  fontWeight: string;
+  fontWeight:
+    | '600'
+    | 'normal'
+    | 'bold'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '700'
+    | '800'
+    | '900'
+    | undefined;
   fontSize: number;
-  onClick: Function;
+  onClick: void;
+  backgroundColor: string;
+  height: number;
 }
 
 function MyButton({
   btnText,
   width,
+  height,
+  backgroundColor = MAIN_COLOR,
   paddingVertical = 20,
   fontWeight = '600',
   fontSize = 15,
@@ -22,15 +38,15 @@ function MyButton({
   return (
     <View style={styles.btnContainer}>
       <Pressable
-        style={[styles.btn, {width, paddingVertical}]}
-        onPress={onClick}>
+        style={[styles.btn, {width, paddingVertical, backgroundColor, height}]}
+        onPress={() => {
+          onClick;
+        }}>
         <Text
           style={[
             styles.fontStyle,
-            {
-              fontWeight,
-              fontSize,
-            },
+            {fontWeight: fontWeight},
+            {fontSize: fontSize},
           ]}>
           {btnText}
         </Text>
@@ -41,7 +57,7 @@ function MyButton({
 
 const styles = StyleSheet.create({
   btn: {
-    backgroundColor: MAIN_COLOR,
+    // backgroundColor: MAIN_COLOR,
     borderRadius: 10,
   },
   fontStyle: {

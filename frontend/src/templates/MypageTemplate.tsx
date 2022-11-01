@@ -1,22 +1,45 @@
 import React from 'react';
-import {View} from 'react-native';
-import UserSummary from '../organisms/UserSummary';
-import MainSpots from '../organisms/MainSpots';
+import {Pressable, View, Text} from 'react-native';
+import UserSummary from '@organisms/UserSummary';
+import type {UserInfoType} from '@templates/MypageTemplate';
+import MyButton from '@atoms/MyButton';
 
 interface Props {
-  props:
+  userInfo: UserInfoType;
 }
 
+const funcKim = (): void => {
+  console.log('123');
+};
+
+// const onChangePassword = useCallback(text => {
+//   setPassword(text.trim());
+// }, []);
 function MypageTemplate(props: Props) {
   return (
     <View>
       <UserSummary
-        imageSource="https://reactnative.dev/img/tiny_logo.png"
-        userName="userName"
-        walkNumber={13}
-        walkHour={500}
-        walkDistance={500}
+        imageSource={props.userInfo.imageSource}
+        userName={props.userInfo.userName}
+        walkNumber={props.userInfo.walkNumber}
+        walkHour={props.userInfo.walkHour}
+        walkDistance={props.userInfo.walkHour}
       />
+      <MyButton
+        btnText="프로필 수정"
+        width={350}
+        paddingVertical={3}
+        onClick={funcKim}
+        backgroundColor="#D9D9D9"
+        height={25}
+        fontSize={12}
+      />
+      <Pressable
+        onPress={() => {
+          // navigate;
+        }}>
+        <Text>{'내가 쓴 글'}</Text>
+      </Pressable>
     </View>
   );
 }
