@@ -1,5 +1,5 @@
-import React from 'react';
-import {Pressable, View, Text} from 'react-native';
+import React, { useState } from 'react';
+import {Pressable, View, Text, Alert} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import type {UserInfoType} from '@templates/MypageTemplate';
 import MyButton from '@atoms/MyButton';
@@ -8,8 +8,28 @@ interface Props {
   userInfo: UserInfoType;
 }
 
-const funcKim = (): void => {
-  console.log('123');
+const showAlert = () =>
+  Alert.alert(
+    "Alert Title",
+    "My Alert Msg",
+    [
+      {
+        text: "Cancel",
+        onPress: () => Alert.alert("Cancel Pressed"),
+        style: "cancel",
+      },
+    ],
+    {
+      cancelable: true,
+      onDismiss: () =>
+        Alert.alert(
+          "This alert was dismissed by tapping outside of the alert dialog."
+        ),
+    }
+  );
+
+const editProfile = (): void => {
+ showAlert();
 };
 
 // const onChangePassword = useCallback(text => {
@@ -29,16 +49,34 @@ function MypageTemplate(props: Props) {
         btnText="프로필 수정"
         width={350}
         paddingVertical={3}
-        onClick={funcKim}
+        onClick={editProfile}
         backgroundColor="#D9D9D9"
         height={25}
         fontSize={12}
       />
       <Pressable
-        onPress={() => {
-          // navigate;
-        }}>
+        onPress={()=>showAlert()}>
         <Text>{'내가 쓴 글'}</Text>
+      </Pressable>
+      <Pressable
+        onPress={()=>showAlert()}>
+        <Text>{'찜한 글'}</Text>
+      </Pressable>
+      <Pressable
+        onPress={()=>showAlert()}>
+        <Text>{'찜한 스팟'}</Text>
+      </Pressable>
+      <Pressable
+        onPress={()=>showAlert()}>
+        <Text>{'산책 기록'}</Text>
+      </Pressable>
+      <Pressable
+        onPress={()=>showAlert()}>
+        <Text>{'로그아웃'}</Text>
+      </Pressable>
+      <Pressable
+        onPress={()=>showAlert()}>
+        <Text>{'회원탈퇴'}</Text>
       </Pressable>
     </View>
   );

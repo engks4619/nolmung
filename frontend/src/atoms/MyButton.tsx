@@ -39,9 +39,8 @@ function MyButton({
     <View style={styles.btnContainer}>
       <Pressable
         style={[styles.btn, {width, paddingVertical, backgroundColor, height}]}
-        onPress={() => {
-          onClick;
-        }}>
+        onPress={onClick
+        }>
         <Text
           style={[
             styles.fontStyle,
