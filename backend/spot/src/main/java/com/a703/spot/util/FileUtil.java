@@ -63,7 +63,7 @@ public class FileUtil {
 
             ReviewPhoto reviewPhoto = ReviewPhoto.builder()
                     .spotReview(spotReview)
-                    .photoUrl("http://k7a703.p.ssafy.io:8083"+savePath)
+                    .photoUrl("http://k7a703.p.ssafy.io:8083/api"+savePath)
                     .build();
             reviewPhotoRepository.save(reviewPhoto);
 
