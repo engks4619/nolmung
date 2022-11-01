@@ -3,11 +3,11 @@ import {View, Text, StyleSheet} from 'react-native';
 
 interface Props {
   firstLabel: string;
-  firstText: string;
+  firstText: number;
   secondLabel: string;
-  secondeText: string;
+  secondeText: number;
   thirdLabel: string;
-  thridText: string;
+  thridText: number;
 }
 
 function WalkSummary({
