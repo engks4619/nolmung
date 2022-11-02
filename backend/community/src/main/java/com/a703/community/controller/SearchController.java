@@ -19,20 +19,20 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/community/search")
+@RequestMapping("/community/search")
 public class SearchController {
 
     private final SearchService searchService;
 
     @GetMapping("/other")
-    public ResponseEntity<?> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable){
+    public ResponseEntity<?> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
         List<OtherListDto> otherListDtos = searchService.searchOther(search,pageable);
         return ResponseEntity.ok().body(otherListDtos);
 
     }
 
     @GetMapping("/with")
-    public ResponseEntity<List<WithListDto>> searchWith(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable){
+    public ResponseEntity<List<WithListDto>> searchWith(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
         List<WithListDto> withListDtos = searchService.searchWith(search,pageable);
         return ResponseEntity.ok().body(withListDtos);
     }
