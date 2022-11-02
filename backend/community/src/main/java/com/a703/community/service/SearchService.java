@@ -77,6 +77,7 @@ public class SearchService {
 
         return otherLists.stream().map(other-> OtherListDto.builder()
                         .postIdx(other.getPostIdx())
+                        .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
@@ -121,6 +122,7 @@ public class SearchService {
 
         return withLists.stream().map(with-> WithListDto.builder()
                         .postIdx(with.getPostIdx())
+                        .subject(with.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
