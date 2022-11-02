@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 
-@SpringBootTest
+@SpringBootTest(classes = CommunityApplication.class)
 class CommunityApplicationTests {
 
 	@Autowired
