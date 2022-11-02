@@ -10,6 +10,7 @@ import Spots from './src/pages/Spots';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
+import {MAIN_COLOR} from '~/const';
 
 // import {RootState} from "./src/store/reducer";
 
@@ -45,17 +46,31 @@ function AppInner() {
           <Tab.Screen
             name="애견 동반 스팟"
             component={Spots}
-            options={{headerShown: false}}
+            options={{optiopn: false}}
           />
           <Tab.Screen
             name="홈"
             component={Main}
-            options={{headerShown: false}}
+            options={{
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
+            }}
           />
           <Tab.Screen
             name="커뮤니티"
             component={Community}
-            options={{headerShown: false}}
+            options={{
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
+            }}
           />
           <Tab.Screen
             name="마이페이지"

@@ -1,6 +1,7 @@
-import React from 'react';
-import {View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Alert} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
+import axios from '~/utils/axios';
 
 const dummyData = [
   {
@@ -62,9 +63,26 @@ const dummyData = [
 ];
 
 function Main() {
+  const [mainPostList, setMainSpotList] = useState([]);
+  const getMainPostList = async () => {
+    try {
+      const {data} = await axios.get('/api/community/main');
+      setMainSpotList(data);
+    } catch (error: any) {
+      Alert.alert(
+        `에러코드 ${error.response.status}`,
+        '죄송합니다. 다시 시도해주시길 바랍니다.',
+      );
+    }
+  };
+
+  useEffect(() => {
+    getMainPostList();
+  }, []);
+
   return (
     <View>
-      <MainTemplate spots={dummyData} />
+      <MainTemplate spots={dummyData} mainPostList={mainPostList} />
     </View>
   );
 }
