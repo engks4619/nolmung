@@ -9,7 +9,7 @@ public class WeatherDto {
 
     String weather;
 
-    Integer temperature;
+    Double temperature;
 
     String description;
 }
