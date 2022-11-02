@@ -162,16 +162,25 @@ public class CommunityService {
         return postPhotos.stream().map(PostPhoto::getPhotoUrl).collect(Collectors.toList());
     }
 
-    public List<MainListDto> showMainList(Pageable pageable){
+    public List<MainListDto>[] showMainList(Pageable pageable){
+
 
         Page<Post> mainLists = postRepository.findAll(pageable);
-
-        return mainLists.stream().map(main-> MainListDto.builder()
+        List<MainListDto>[] result = new List[2];
+        result[0] = mainLists.stream().limit(5).map(main-> MainListDto.builder()
                         .postIdx(main.getPostIdx())
                         .subject(main.getSubject())
                         .categoryType(main.getCategoryType())
                         .build())
                 .collect(Collectors.toList());
+        result[1] = mainLists.stream().skip(5).map(main-> MainListDto.builder()
+                        .postIdx(main.getPostIdx())
+                        .subject(main.getSubject())
+                        .categoryType(main.getCategoryType())
+                        .build())
+                .collect(Collectors.toList());
+        //배열 두개로 보내줘야
+        return result;
     }
 
     public List<WithListDto> showWithList(Pageable pageable){

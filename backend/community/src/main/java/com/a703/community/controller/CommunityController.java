@@ -44,8 +44,8 @@ public class CommunityController {
     }
 
     @GetMapping("/main")
-    public ResponseEntity<List<MainListDto>>showMainList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 5)Pageable pageable){
-        List<MainListDto> mainLists = communityService.showMainList(pageable);
+    public ResponseEntity<List<MainListDto>[]>showMainList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+        List<MainListDto>[] mainLists = communityService.showMainList(pageable);
         return ResponseEntity.ok().body(mainLists);
     }
 
