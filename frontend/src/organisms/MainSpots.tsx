@@ -4,7 +4,7 @@ import MainSpot from '@molecules/MainSpot';
 import Carousel from '@organisms/Carousel';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-import {LoggedInParamList} from '~/App';
+import {LoggedInParamList} from '~/../AppInner';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 type mainScreenProp = NativeStackNavigationProp<LoggedInParamList, 'Main'>;
@@ -18,9 +18,9 @@ function MainSpots({spots}: Props) {
   const navigation = useNavigation<mainScreenProp>();
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.textContainer}>
-        <Text>주변 애완 동반 스팟</Text>
+        <Text style={styles.headingText}>주변 애완 동반 스팟</Text>
         <Text onPress={() => navigation.navigate('커뮤니티')}>전체보기</Text>
       </View>
       <Carousel
@@ -37,14 +37,18 @@ function MainSpots({spots}: Props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    marginTop: 2,
+  },
   headingText: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 15,
+    paddingVertical: 15,
     paddingHorizontal: 5,
   },
 });

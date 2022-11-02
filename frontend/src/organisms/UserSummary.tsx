@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    backgroundColor: 'white',
+    marginTop: 2,
+    paddingBottom: 7,
   },
   userName: {
     paddingLeft: 10,

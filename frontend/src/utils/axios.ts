@@ -1,12 +1,12 @@
 import axios from 'axios';
-import {API_URL, COMMUNITY_PORT} from '@env';
 
-const HOST = API_URL;
-const PORT = COMMUNITY_PORT;
-const BASE_URL = `${HOST}:${PORT}`;
+const HOST = 'http://k7a703.p.ssafy.io';
+const COMMUNITY_PORT = '8081';
+
+const COMMUNITY_URI = `${HOST}:${COMMUNITY_PORT}`;
 
 const axiosApiInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: COMMUNITY_URI,
 });
 
 axiosApiInstance.interceptors.request.use(async config => {
