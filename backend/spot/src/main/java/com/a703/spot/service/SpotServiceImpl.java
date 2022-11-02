@@ -39,14 +39,14 @@ public class SpotServiceImpl implements SpotService {
     private final SpotMapper spotMapper;
 
     @Override
-    public SpotListDto getSpotList(SpotRequest request, int page, int desc) {
+    public SpotListDto getSpotList(SpotRequest request, int page, int sort) {
 
         //페이지네이션
         Pageable pageable = PageRequest.of(page, constProperties.getSpotListSize());
         Page<SpotDto> pageSpots = null;
-        if(desc == 1) { // 별점순
+        if(sort == 1) { // 별점순
             pageSpots = spotRepository.searchByStar(request, pageable);
-        }else if(desc == 2) { // 리뷰 많은 순
+        }else if(sort == 2) { // 리뷰 많은 순
             pageSpots = spotRepository.searchByReviewCnt(request, pageable);
         }else { // 기본(거리 가까운 순)
             pageSpots = spotRepository.search(request, pageable);

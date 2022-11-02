@@ -47,6 +47,10 @@ logging:
     com.a703.spot: debug
 const:
   spot-list-size : 10
+  default-lat : 37.5012428
+  default-lng : 127.0395859
+  default-limit-distance : 10000
+  default-category: 카페
 response:
   success: success
   fail: fail

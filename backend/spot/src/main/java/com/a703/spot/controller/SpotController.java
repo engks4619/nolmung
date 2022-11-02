@@ -3,9 +3,8 @@ package com.a703.spot.controller;
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.DtoResponse;
 import com.a703.spot.dto.response.SpotDetailDto;
-import com.a703.spot.dto.response.SpotDto;
 import com.a703.spot.dto.response.SpotListDto;
-import com.a703.spot.entity.Spot;
+import com.a703.spot.properties.ConstProperties;
 import com.a703.spot.properties.ResponseProperties;
 import com.a703.spot.service.SpotService;
 import com.a703.spot.util.ParameterUtil;
@@ -14,21 +13,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/spot")
 public class SpotController {
 
     private final SpotService spotService;
+    private final ConstProperties constProperties;
     private final ResponseProperties responseProperties;
-    @PostMapping
+    private final ParameterUtil parameterUtil;
+    @GetMapping
     public ResponseEntity<DtoResponse<SpotListDto>> getSpotList(
             @RequestParam(name = "page") String pageParam,
-            @RequestParam(name = "desc") String descParam,
-            @RequestBody SpotRequest request) {
+            @RequestParam(name = "sort") String sortParam,
+            @Valid @RequestBody SpotRequest request) {
         int page = ParameterUtil.checkPage(pageParam);
-        int desc = ParameterUtil.checkDesc(descParam);
-        SpotListDto result = spotService.getSpotList(request, page, desc);
+        int sort = ParameterUtil.checkSort(sortParam);
+        // rquest 값 없는 경우 기본 세팅
+        request = parameterUtil.checkSpotRequest(request);
+        SpotListDto result = spotService.getSpotList(request, page, sort);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(DtoResponse.of(
