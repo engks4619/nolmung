@@ -12,17 +12,18 @@ interface Props {
   profileEdit: (event: GestureResponderEvent) => void;
   onChangeNickname: Function;
   value: string;
-  // onClick:
+  onClick: (whereToGo:string)=>void;
 }
 
 // const onChangePassword = useCallback(text => {
 //   setPassword(text.trim());
 // }, []);
 
-function MypageTemplate(props: Props, navigation: any) {
-  const abc = (): void => {
-    navigation.navigate('MyPostList');
-  };
+function MypageTemplate(props: Props) {
+  // const abc = (): void => {
+  //   navigation.navigate('MyPostList');
+  //   // console.log('2')
+  // };
   //***** 여기서 navigation navigate 못 받아옴 undefined로 나옴 문제 해결 notion 볼것* */
   return (
     <View>
@@ -45,7 +46,11 @@ function MypageTemplate(props: Props, navigation: any) {
         height={25}
         fontSize={12}
       />
-      <TabButton BtnText={'내가 쓴 글'} onClick={abc} />
+      <TabButton BtnText={'내가 쓴 글'} onClick={()=>{props.onClick('MyPostList')}} />
+      <TabButton BtnText={'내가 찜 한 글'} onClick={()=>{props.onClick('MyLikedList')}} />
+      <TabButton BtnText={'내가 찜 한 스팟'} onClick={()=>{props.onClick('MyLikedSpots')}} />
+      <TabButton BtnText={'내 산책 기록'} onClick={()=>{props.onClick('MyWalkingRecord')}} />
+      
     </View>
   );
 }

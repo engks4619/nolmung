@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   ImageSpace: {
-    width: 15,
+    width: 15, 
     height: 15,
     resizeMode: 'contain',
     padding: 10,

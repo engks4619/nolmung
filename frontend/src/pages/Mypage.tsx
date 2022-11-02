@@ -3,8 +3,8 @@ import {Text, View, Alert} from 'react-native';
 // import {RootState} from '../store/reducer';
 // import {useSelector} from 'react-redux';
 import MypageTemplate from '../templates/MypageTemplate';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NavigationContainer, NavigationContainerRefContext} from '@react-navigation/native';
 import MyPostList from './MyPostList';
 
 //UserInfoType
@@ -25,10 +25,15 @@ const userInfo: UserInfoType = {
   walkHour: 10,
   walkDistance: 100,
 };
+// export type MypageStackParamList = {
+//   MyPostList: undefined;
+  // SignUp: undefined;
+// };
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator<MypageStackParamList>();
+// type MypageProps = NativeStackScreenProps<MypageStackParamList,'Mypage'>
 
-function Mypage() {
+function Mypage({navigation}) {
   // const userInfo = useSelector((state: RootState) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
@@ -43,6 +48,11 @@ function Mypage() {
     }
     setIsEditing(!isEditing);
   };
+
+  const goNextStack = useCallback((whereToGo:string)=>{
+    navigation.navigate(whereToGo);
+  },[])
+
   return (
     <View>
       <Text>마이 페이지</Text>
@@ -52,11 +62,12 @@ function Mypage() {
         profileEdit={profileEdit}
         onChangeNickname={onChangeNickname}
         value={tempNickname}
+        onClick={goNextStack}
       />
       {/* <NavigationContainer> */}
-      <Stack.Navigator>
+      {/* <Stack.Navigator>
         <Stack.Screen name="MyPostList" component={MyPostList} />
-      </Stack.Navigator>
+      </Stack.Navigator> */}
       {/* </NavigationContainer> */}
     </View>
   );
