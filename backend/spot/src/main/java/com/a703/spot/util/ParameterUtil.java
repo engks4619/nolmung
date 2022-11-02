@@ -36,7 +36,7 @@ public class ParameterUtil {
         if(request.getLimitDistance() == null || request.getLimitDistance() == 0) {
             request.setLimitDistance(constProperties.getDefaultLimitDistance());
         }
-        if(request.getCategory() == null || request.getCategory().equals("")) {
+        if(request.getCategory() == null || "".equals(request.getCategory())) {
             request.setCategory(constProperties.getDefaultCategory());
         }
         return request;
