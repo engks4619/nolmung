@@ -1,8 +1,23 @@
 spring:
   profiles:
     include: db
+  application:
+    name: user
 
 server:
-  port: 8080
+  port: 0
   servlet:
     contextPath: /api/user
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k7a703.p.ssafy.io:8761/eureka
+#      defaultZone: http://localhost:8761/eureka
+
+greeting:
+  message: Welcome to User Service!
