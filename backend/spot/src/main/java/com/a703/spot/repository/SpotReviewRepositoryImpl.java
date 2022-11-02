@@ -1,10 +1,15 @@
 package com.a703.spot.repository;
 
+import com.a703.spot.entity.QSpotReview;
+import com.a703.spot.entity.Spot;
+import com.a703.spot.entity.SpotReview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static com.a703.spot.entity.QSpotReview.spotReview;
 
@@ -32,5 +37,14 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
                 .where(spotReview.spot.spotId.eq(spotId),
                         spotReview.deleted.eq(false))
                 .fetchOne();
+    }
+
+    @Override
+    public List<SpotReview> findBySpot(Spot spot) {
+        return queryFactory
+                .selectFrom(spotReview)
+                .where(spotReview.spot.eq(spot))
+                .orderBy(spotReview.createDate.desc())
+                .fetch();
     }
 }

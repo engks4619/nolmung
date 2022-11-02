@@ -3,6 +3,7 @@ package com.a703.spot.dto.response;
 import com.a703.spot.dto.response.connection.UserInfoDto;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,6 +18,8 @@ public class SpotReviewDto {
     String content;
     Boolean deleted;
 //    Long userIdx;
+    LocalDateTime createDate;
+    LocalDateTime modifyDate;
     UserInfoDto userInfoDto;
     List<String> photoList;
 

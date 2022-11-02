@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface SpotService {
 
-    SpotListDto getSpotList(SpotRequest request, int page, int desc);
+    SpotListDto getSpotList(SpotRequest request, int page, int sort);
     SpotDetailDto getSpotDetail(String spotId);
 }

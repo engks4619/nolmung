@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpotReviewRepository extends JpaRepository<SpotReview, Long>, SpotReviewRepositoryCustom {
-    List<SpotReview> findBySpot(Spot spot);
+//    List<SpotReview> findBySpot(Spot spot);
 //    SpotReview findBySpot(Spot spot);
     Optional<SpotReview> findByReviewIdx(Long reviewIdx);
 }
