@@ -1,10 +1,25 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
+import CommunityTemplate from '@templates/CommunityTemplate';
 
 function Community() {
+  const [categoryType, setCategoryType] = useState('WITH');
+
+  const navigateWithPg = () => {
+    setCategoryType('WITH');
+  };
+
+  const navigateOtherPg = () => {
+    setCategoryType('OTHER');
+  };
+
   return (
     <View>
-      <Text>커뮤니티</Text>
+      <CommunityTemplate
+        navigateWithPg={navigateWithPg}
+        navigateOtherPg={navigateOtherPg}
+        categoryType={categoryType}
+      />
     </View>
   );
 }
