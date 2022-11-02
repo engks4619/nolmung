@@ -3,8 +3,8 @@ server:
 
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://k7a703.p.ssafy.io:8761/eureka
 
@@ -15,26 +15,43 @@ spring:
     gateway:
       routes:
         - id: user
-          uri: http://k7a703.p.ssafy.io:8080/
+          uri: lb://USER
           predicates:
             - Path=/api/user/**
           filters:
-            - CustomFilter
+            - name: CustomFilter
+            - name: LoggingFilter
+              args:
+                baseMessage: Logging Filter
+                preLogger: true
+                postLogger: true
+
         - id: community
-          uri: http://k7a703.p.ssafy.io:8081/
+          uri: lb://COMMUNITY
           predicates:
             - Path=/api/community/**
           filters:
-            - CustomFilter
+            - name: CustomFilter
+            - name: LoggingFilter
+              args:
+                baseMessage: Logging Filter
+                preLogger: true
+                postLogger: true
         - id: withdog
-          uri: http://k7a703.p.ssafy.io:8082/
+          uri: lb://WITHDOG
           predicates:
             - Path=/api/withdog/**
           filters:
             - CustomFilter
         - id: spot
-          uri: http://k7a703.p.ssafy.io:8083/
+          uri: lb://SPOT
           predicates:
             - Path=/api/spot/**
           filters:
             - CustomFilter
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: true
