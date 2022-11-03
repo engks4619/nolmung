@@ -12,6 +12,7 @@ export interface CommunityTabType {
 
 interface Props extends CommunityTabType {
   withPostList: withPostListType[];
+  loadMore: () => void;
 }
 
 function CommunityTemplate({
@@ -19,6 +20,7 @@ function CommunityTemplate({
   navigateOtherPg,
   categoryType,
   withPostList,
+  loadMore,
 }: Props) {
   return (
     <View>
@@ -27,7 +29,7 @@ function CommunityTemplate({
         navigateOtherPg={navigateOtherPg}
         categoryType={categoryType}
       />
-      <CommWithPost withPostList={withPostList} />
+      <CommWithPost withPostList={withPostList} loadMore={loadMore} />
     </View>
   );
 }

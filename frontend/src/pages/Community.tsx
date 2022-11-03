@@ -35,14 +35,16 @@ function Community() {
   };
 
   const getWithPostList = async (pgNum: number) => {
+    const params = {
+      page: pgNum,
+    };
     try {
       const response: AxiosResponse = await axios.get('/api/community/with', {
-        params: {
-          page: {pgNum},
-        },
+        params,
       });
       const data: withPostListType[] = await response.data;
       setWithPostList([...withPostList, ...data]);
+      setWithPgNum(withPgNum + 1);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -68,13 +70,17 @@ function Community() {
     }
   };
 
-  useEffect(() => {
+  const loadMore = () => {
     if (categoryType === 'WITH') {
       getWithPostList(withPgNum);
     } else {
       getOtherPostList(otherPgNum);
     }
-  }, [withPgNum, otherPgNum, categoryType]);
+  };
+
+  useEffect(() => {
+    loadMore();
+  }, [categoryType]);
 
   return (
     <View>
@@ -83,6 +89,7 @@ function Community() {
         navigateOtherPg={navigateOtherPg}
         categoryType={categoryType}
         withPostList={withPostList}
+        loadMore={loadMore}
       />
     </View>
   );
