@@ -12,7 +12,9 @@
       "@atoms/*": ["atoms/*"],
       "@molecules/*": ["molecules/*"],
       "@organisms/*": ["organisms/*"],
-      "@templates/*": ["templates/*"]
+      "@templates/*": ["templates/*"],
+      "@pages/*": ["pages/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src"]
