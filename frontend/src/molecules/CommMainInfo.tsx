@@ -45,7 +45,9 @@ function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
   return (
     <View>
       <View style={styles.subjectContainer}>
-        <Text style={styles.headingText}>{subject}</Text>
+        <Text style={styles.headingText}>
+          {subject.length > 10 ? subject.slice(0, 10) + '...' : subject}
+        </Text>
         <Text>{elapsedTime(modifyDate)}</Text>
       </View>
       <View style={styles.dateContainer}>
