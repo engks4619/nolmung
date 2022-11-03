@@ -1,6 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
+import CommWithPost from '@organisms/CommWithPost';
+import {withPostListType} from '~/pages/Community';
 
 export interface CommunityTabType {
   navigateWithPg: () => void;
@@ -8,12 +10,15 @@ export interface CommunityTabType {
   categoryType: string;
 }
 
-interface Props extends CommunityTabType {}
+interface Props extends CommunityTabType {
+  withPostList: withPostListType;
+}
 
 function CommunityTemplate({
   navigateWithPg,
   navigateOtherPg,
   categoryType,
+  withPostList,
 }: Props) {
   return (
     <View>
@@ -22,6 +27,7 @@ function CommunityTemplate({
         navigateOtherPg={navigateOtherPg}
         categoryType={categoryType}
       />
+      <CommWithPost withPostList={withPostList} />
     </View>
   );
 }
