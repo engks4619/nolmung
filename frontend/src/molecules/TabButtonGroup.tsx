@@ -7,7 +7,6 @@ export interface TabButtonObject {
   name: string;
   icon: any;
   BtnText: string;
-  // onClick?: () => void;
   onClick?: () => void | Function;
 }
 

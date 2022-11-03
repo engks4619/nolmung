@@ -77,8 +77,7 @@ const myPageListFunc: TabButtonList = [
     },
   },
 ];
-function Mypage({navigation}) {
-  // const userInfo = useSelector((state: RootState) => state.user);
+function Mypage({navigation}:any) {
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
 
@@ -93,60 +92,7 @@ function Mypage({navigation}) {
     setIsEditing(!isEditing);
   };
 
-  // type TabButtonList = Array<TabButtonObject>;
-  // const myPageListNavi: TabButtonList = [
-  //   {
-  //     name: 'MyPostList',
-  //     icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '내가 쓴 글',
-  //     // onClick: () => {
-  //     //   navigation.navigate();
-  //     // },
-  //   },
-  //   {
-  //     name: 'MyLikedList',
-  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '내가 찜한 글',
-  //     // onClick: () => {
-  //     //   navigation.navigate('MyLikedList');
-  //     // },
-  //   },
-  //   {
-  //     name: 'MyLikedSpots',
-  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '내가 찜한 스팟',
-  //     // onClick: () => {
-  //     //   navigation.navigate('MyLikedSpots');
-  //     // },
-  //   },
-  //   {
-  //     name: 'MyWalkingRecord',
-  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '내 산책 기록',
-  //     // onClick: () => {
-  //     //   navigation.navigate('MyWalkingRecord');
-  //     // },
-  //   },
-  //   {
-  //     name: 'MyDogs',
-  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '내 강아지',
-  //     // onClick: () => {
-  //     //   navigation.navigate('MyDogs');
-  //     // },
-  //   },
-  // ];
-
-  // const myPageListFunc: TabButtonList = [
-  //   {
-  //     name: 'Logout',
-  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-  //     BtnText: '로그아웃',
-  //     // onClick: () => {
-  //     //   // 이 후 로그아웃 넣을 곳
-  //     // },
-  //   },
-  // ];
+  
 
   return (
     <View>

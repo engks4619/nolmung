@@ -5,9 +5,8 @@ interface Props {
   name: string;
   BtnText: string;
   icon: any;
-  onClick?: () => void | Function;
-  // onClick: any;
   navigation: any;
+  onClick?: () => void | Function;
 }
 
 function TabButton({
@@ -15,17 +14,16 @@ function TabButton({
   BtnText,
   icon,
   onClick = () => {
-    navigation.navigate('MyLikedList');
+    navigation.navigate(name);
   },
   navigation,
 }: Props) {
   return (
     <View style={styles.TabContainer}>
       <Pressable
-        onPress={() => {
-          onClick;
-          // navigation.navigate('MyLikedList');
-        }}
+        onPress={
+          onClick
+      }
         style={styles.PressableSpace}>
         <View>{icon}</View>
         <Text style={styles.TextSpace}>{BtnText}</Text>

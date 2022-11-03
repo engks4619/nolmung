@@ -9,11 +9,11 @@ interface Props {
   walkNumber: number;
   walkHour: number;
   walkDistance: number;
-  isEditing?: boolean;
-  value: string;
-  onChangeText: Function;
-  autoComplete: string;
-  isPassword: Boolean;
+  // isEditing?: boolean;
+  // value: string;
+  // onChangeText: Function;
+  // autoComplete: string;
+  // isPassword: Boolean;
 }
 
 function UserSummary({
@@ -25,8 +25,8 @@ function UserSummary({
 }: Props) {
   return (
     <View style={styles.container}>
-      <Profile imageSource={imageSource} />
-      <View>
+      <Profile imageSource={imageSource}/>
+      <View style={styles.description}>
         <Text style={styles.userName}>{userName}</Text>
         <WalkSummary
           firstLabel="산책 횟수"
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginTop: 2,
     paddingBottom: 7,
   },
@@ -56,6 +55,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+  description:{
+    width:260,
+    height:93,
+  }
 });
 
 export default UserSummary;

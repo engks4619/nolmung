@@ -5,6 +5,7 @@ import type {UserInfoType} from '../pages/Mypage';
 import MyButton from '@atoms/MyButton';
 import TabButtonGroup from '@molecules/TabButtonGroup';
 import {TabButtonObject} from '@molecules/TabButtonGroup';
+import UserEditForm from '~/organisms/UserEditForm';
 
 interface Props {
   userInfo: UserInfoType;
@@ -20,16 +21,21 @@ interface Props {
 function MypageTemplate(props: Props) {
   return (
     <View>
-      <UserSummary
+      {props.isEditing? 
+      <UserEditForm
+      imageSource={props.userInfo.imageSource}
+      userName={props.userInfo.userName}
+      value={props.value}
+      onChangeText={props.onChangeNickname}
+      isPassword={false}
+      ></UserEditForm>
+      :<UserSummary
         imageSource={props.userInfo.imageSource}
         userName={props.userInfo.userName}
         walkNumber={props.userInfo.walkNumber}
         walkHour={props.userInfo.walkHour}
         walkDistance={props.userInfo.walkHour}
-        isEditing={props.isEditing}
-        onChangeText={props.onChangeNickname}
-        value={props.value}
-      />
+      />}
       <MyButton
         btnText={props.isEditing ? '수정 완료' : '프로필 수정'}
         width={350}

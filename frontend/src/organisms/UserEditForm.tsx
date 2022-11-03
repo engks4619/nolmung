@@ -6,13 +6,8 @@ import TextLine from '@atoms/TextLine';
 interface Props {
   imageSource: string;
   userName: string;
-  walkNumber: number;
-  walkHour: number;
-  walkDistance: number;
-  isEditing?: boolean;
   value: string;
   onChangeText: Function;
-  autoComplete: string;
   isPassword: Boolean;
 }
 
@@ -20,13 +15,12 @@ function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
   return (
     <View style={styles.container}>
       <Profile imageSource={imageSource} />
-      <View>
+      <View style={styles.description}>
         <Text style={styles.userName}>{'닉네임'}</Text>
         <TextLine
           placeholder={userName}
           onChangeText={onChangeText}
           value={value}
-          // autoComplete={autoComplete}
           isPassword={false}
         />
       </View>
@@ -39,7 +33,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: 'white',
     marginTop: 2,
     paddingBottom: 7,
   },
@@ -49,6 +42,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
+  description:{
+    width:260,
+    height:93,
+  }
 });
 
 export default UserEditForm;

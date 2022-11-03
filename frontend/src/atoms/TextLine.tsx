@@ -6,7 +6,7 @@ interface Props {
   placeholder?: string;
   value: string;
   onChangeText: Function;
-  autoComplete: string;
+  autoComplete?: string;
   isPassword: Boolean;
   keyboardType?: string;
 }
