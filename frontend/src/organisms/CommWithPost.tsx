@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import CommMainInfo from '@molecules/CommMainInfo';
 import Squre from '@atoms/Squre';
 import CommUserInfo from '@molecules/CommUserInfo';
@@ -7,9 +7,10 @@ import {withPostListType} from '~/pages/Community';
 
 interface Props {
   withPostList: withPostListType[];
+  loadMore: () => void;
 }
 
-function CommWithPost({withPostList}: Props) {
+function CommWithPost({withPostList, loadMore}: Props) {
   return (
     <FlatList
       data={withPostList}
@@ -30,6 +31,7 @@ function CommWithPost({withPostList}: Props) {
           </View>
         </View>
       )}
+      onEndReached={() => loadMore()}
     />
   );
 }
