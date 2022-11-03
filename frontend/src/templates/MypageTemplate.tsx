@@ -12,9 +12,9 @@ interface Props {
   profileEdit: (event: GestureResponderEvent) => void;
   onChangeNickname: Function;
   value: string;
-  onClick: (whereToGo: string) => void;
-  TabButtonList: Array<TabButtonObject>;
-  TabButtonList2: Array<TabButtonObject>;
+  TabButtonListNavi: Array<TabButtonObject>;
+  TabButtonListFunc: Array<TabButtonObject>;
+  navigation: any;
 }
 
 function MypageTemplate(props: Props) {
@@ -40,8 +40,14 @@ function MypageTemplate(props: Props) {
         fontSize={12}
       />
 
-      <TabButtonGroup TabButtonList={props.TabButtonList} />
-      <TabButtonGroup TabButtonList={props.TabButtonList2} />
+      <TabButtonGroup
+        TabButtonList={props.TabButtonListNavi}
+        navigation={props.navigation}
+      />
+      <TabButtonGroup
+        TabButtonList={props.TabButtonListFunc}
+        navigation={props.navigation}
+      />
     </View>
   );
 }

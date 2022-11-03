@@ -23,7 +23,60 @@ const userInfo: UserInfoType = {
   walkHour: 10,
   walkDistance: 100,
 };
+type TabButtonList = Array<TabButtonObject>;
+const myPageListNavi: TabButtonList = [
+  {
+    name: 'MyPostList',
+    icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '내가 쓴 글',
+    // onClick: () => {
+    //   navigation.navigate();
+    // },
+  },
+  {
+    name: 'MyLikedList',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '내가 찜한 글',
+    // onClick: () => {
+    //   navigation.navigate('MyLikedList');
+    // },
+  },
+  {
+    name: 'MyLikedSpots',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '내가 찜한 스팟',
+    // onClick: () => {
+    //   navigation.navigate('MyLikedSpots');
+    // },
+  },
+  {
+    name: 'MyWalkingRecord',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '내 산책 기록',
+    // onClick: () => {
+    //   navigation.navigate('MyWalkingRecord');
+    // },
+  },
+  {
+    name: 'MyDogs',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '내 강아지',
+    // onClick: () => {
+    //   navigation.navigate('MyDogs');
+    // },
+  },
+];
 
+const myPageListFunc: TabButtonList = [
+  {
+    name: 'Logout',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    BtnText: '로그아웃',
+    onClick: () => {
+      console.log('로그아웃');
+    },
+  },
+];
 function Mypage({navigation}) {
   // const userInfo = useSelector((state: RootState) => state.user);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,64 +93,60 @@ function Mypage({navigation}) {
     setIsEditing(!isEditing);
   };
 
-  const goNextStack = useCallback((whereToGo: string) => {
-    navigation.navigate(whereToGo);
-  }, []);
+  // type TabButtonList = Array<TabButtonObject>;
+  // const myPageListNavi: TabButtonList = [
+  //   {
+  //     name: 'MyPostList',
+  //     icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '내가 쓴 글',
+  //     // onClick: () => {
+  //     //   navigation.navigate();
+  //     // },
+  //   },
+  //   {
+  //     name: 'MyLikedList',
+  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '내가 찜한 글',
+  //     // onClick: () => {
+  //     //   navigation.navigate('MyLikedList');
+  //     // },
+  //   },
+  //   {
+  //     name: 'MyLikedSpots',
+  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '내가 찜한 스팟',
+  //     // onClick: () => {
+  //     //   navigation.navigate('MyLikedSpots');
+  //     // },
+  //   },
+  //   {
+  //     name: 'MyWalkingRecord',
+  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '내 산책 기록',
+  //     // onClick: () => {
+  //     //   navigation.navigate('MyWalkingRecord');
+  //     // },
+  //   },
+  //   {
+  //     name: 'MyDogs',
+  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '내 강아지',
+  //     // onClick: () => {
+  //     //   navigation.navigate('MyDogs');
+  //     // },
+  //   },
+  // ];
 
-  type TabButtonList = Array<TabButtonObject>;
-  const myPageList: TabButtonList = [
-    {
-      name: 'MyPostList',
-      icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '내가 쓴 글',
-      onClick: () => {
-        navigation.navigate('MyPostList');
-      },
-    },
-    {
-      name: 'MyLikedList',
-      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '내가 찜한 글',
-      onClick: () => {
-        navigation.navigate('MyLikedList');
-      },
-    },
-    {
-      name: 'MyLikedSpots',
-      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '내가 찜한 스팟',
-      onClick: () => {
-        navigation.navigate('MyLikedSpots');
-      },
-    },
-    {
-      name: 'MyWalkingRecord',
-      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '내 산책 기록',
-      onClick: () => {
-        navigation.navigate('MyWalkingRecord');
-      },
-    },
-    {
-      name: 'MyDogs',
-      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '내 강아지',
-      onClick: () => {
-        navigation.navigate('MyDogs');
-      },
-    },
-  ];
-
-  const myPageList2: TabButtonList = [
-    {
-      name: 'Logout',
-      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-      BtnText: '로그아웃',
-      onClick: () => {
-        // 이 후 로그아웃 넣을 곳
-      },
-    },
-  ];
+  // const myPageListFunc: TabButtonList = [
+  //   {
+  //     name: 'Logout',
+  //     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+  //     BtnText: '로그아웃',
+  //     // onClick: () => {
+  //     //   // 이 후 로그아웃 넣을 곳
+  //     // },
+  //   },
+  // ];
 
   return (
     <View>
@@ -107,15 +156,10 @@ function Mypage({navigation}) {
         profileEdit={profileEdit}
         onChangeNickname={onChangeNickname}
         value={tempNickname}
-        onClick={goNextStack}
-        TabButtonList={myPageList}
-        TabButtonList2={myPageList2}
+        TabButtonListNavi={myPageListNavi}
+        TabButtonListFunc={myPageListFunc}
+        navigation={navigation}
       />
-      {/* <NavigationContainer> */}
-      {/* <Stack.Navigator>
-        <Stack.Screen name="MyPostList" component={MyPostList} />
-      </Stack.Navigator> */}
-      {/* </NavigationContainer> */}
     </View>
   );
 }

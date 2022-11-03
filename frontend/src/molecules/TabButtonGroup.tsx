@@ -7,22 +7,26 @@ export interface TabButtonObject {
   name: string;
   icon: any;
   BtnText: string;
-  onClick: () => void;
+  // onClick?: () => void;
+  onClick?: () => void | Function;
 }
 
 interface Props {
   TabButtonList: Array<TabButtonObject>;
+  navigation: any;
 }
 
-function TabButtonGroup({TabButtonList}: Props) {
+function TabButtonGroup({TabButtonList, navigation}: Props) {
   return (
     <View style={styles.ButtonGroup}>
       {TabButtonList.map(value => (
         <TabButton
           key={value.name}
+          name={value.name}
           BtnText={value.BtnText}
           icon={value.icon}
           onClick={value.onClick}
+          navigation={navigation}
         />
       ))}
     </View>

@@ -46,12 +46,7 @@ function MyButton({
       <Pressable
         style={[styles.btn, {width, paddingVertical, backgroundColor, height}]}
         onPress={onClick}>
-        <Text
-          style={[
-            styles.fontStyle,
-            {fontWeight: fontWeight},
-            {fontSize: fontSize},
-          ]}>
+        <Text style={[styles.fontStyle, {fontWeight}, {fontSize}]}>
           {btnText}
         </Text>
       </Pressable>
@@ -61,7 +56,6 @@ function MyButton({
 
 const styles = StyleSheet.create({
   btn: {
-    // backgroundColor: MAIN_COLOR,
     borderRadius: 10,
   },
   fontStyle: {
