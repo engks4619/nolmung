@@ -140,7 +140,8 @@ public class CommunityService {
         }).collect(Collectors.toList());
 
         //강아지 관련 api연결해야됨
-        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
+//        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
+        List<DogInfoDto> dogInfoDto = null;
 
         return PostDto.builder()
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))

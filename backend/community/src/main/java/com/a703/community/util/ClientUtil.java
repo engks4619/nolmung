@@ -105,4 +105,32 @@ public class ClientUtil {
         return dogInfoDto;
     }
 
+    //목록 보여줄 때 유저인덱스 하나씩 보내서 통신하는 것보다 리스트로 받는게 좋을 것 같음
+    public String getUserName(int userIdx) throws Exception {
+
+        String url = "http://localhost:8080/api/v1/test";
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Header set
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        // Body set
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("userIdx", String.valueOf(userIdx));
+
+        // Message
+        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+
+        // Request
+        String response = restTemplate.getForObject(url,String.class);
+
+        // Response 파싱
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        String userNaem = response;
+
+        return userNaem;
+    }
+
 }
