@@ -13,6 +13,8 @@ import {
 } from '@react-navigation/native';
 import MyPostList from './MyPostList';
 import {TabButtonObject} from '@molecules/TabButtonGroup';
+import Filter from '@assets/filter.svg';
+import Home from '@assets/home.svg';
 //UserInfoType
 type UserInfoType = {
   imageSource: string;
@@ -62,19 +64,54 @@ function Mypage({navigation}) {
   type TabButtonList = Array<TabButtonObject>;
   const myPageList: TabButtonList = [
     {
-      name: 'MyPosts',
-      imgPath: '../assets/mypageMenus/papers.png',
+      name: 'MyPostList',
+      icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
       BtnText: '내가 쓴 글',
+      onClick: () => {
+        navigation.navigate('MyPostList');
+      },
+    },
+    {
+      name: 'MyLikedList',
+      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+      BtnText: '내가 찜한 글',
       onClick: () => {
         navigation.navigate('MyLikedList');
       },
     },
     {
-      name: 'MyPosts',
-      imgPath: '../assets/mypageMenus/papers.png',
-      BtnText: '내가 쓴 글',
+      name: 'MyLikedSpots',
+      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+      BtnText: '내가 찜한 스팟',
       onClick: () => {
-        navigation.navigate('MyLikedList');
+        navigation.navigate('MyLikedSpots');
+      },
+    },
+    {
+      name: 'MyWalkingRecord',
+      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+      BtnText: '내 산책 기록',
+      onClick: () => {
+        navigation.navigate('MyWalkingRecord');
+      },
+    },
+    {
+      name: 'MyDogs',
+      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+      BtnText: '내 강아지',
+      onClick: () => {
+        navigation.navigate('MyDogs');
+      },
+    },
+  ];
+
+  const myPageList2: TabButtonList = [
+    {
+      name: 'Logout',
+      icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+      BtnText: '로그아웃',
+      onClick: () => {
+        // navigation.navigate('MyDogs');
       },
     },
   ];
@@ -89,6 +126,7 @@ function Mypage({navigation}) {
         value={tempNickname}
         onClick={goNextStack}
         TabButtonList={myPageList}
+        TabButtonList2={myPageList2}
       />
       {/* <NavigationContainer> */}
       {/* <Stack.Navigator>

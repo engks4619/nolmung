@@ -16,6 +16,7 @@ interface Props {
   value: string;
   onClick: (whereToGo: string) => void;
   TabButtonList: Array<TabButtonObject>;
+  TabButtonList2: Array<TabButtonObject>;
 }
 
 // const onChangePassword = useCallback(text => {
@@ -51,56 +52,9 @@ function MypageTemplate(props: Props) {
       />
 
       <TabButtonGroup TabButtonList={props.TabButtonList} />
-      {/* <TabButton
-        BtnText={'내가 쓴 글'}
-        onClick={() => {
-          props.onClick('MyPostList');
-        }}
-      />
-      <TabButton
-        BtnText={'내가 찜 한 글'}
-        onClick={() => {
-          props.onClick('MyLikedList');
-        }}
-      />
-      <TabButton
-        BtnText={'내가 찜 한 스팟'}
-        onClick={() => {
-          props.onClick('MyLikedSpots');
-        }}
-      />
-      <TabButton
-        BtnText={'내 산책 기록'}
-        onClick={() => {
-          props.onClick('MyWalkingRecord');
-        }}
-      />
-      <TabButton
-        BtnText={'내 강아지'}
-        onClick={() => {
-          props.onClick('MyDogs');
-        }}
-      /> */}
+      <TabButtonGroup TabButtonList={props.TabButtonList2} />
     </View>
   );
 }
-// const showAlert = () =>
-//   Alert.alert(
-//     'Alert Title',
-//     'My Alert Msg',
-//     [
-//       {
-//         text: 'Cancel',
-//         onPress: () => Alert.alert('Cancel Pressed'),
-//         style: 'cancel',
-//       },
-//     ],
-//     {
-//       cancelable: true,
-//       onDismiss: () =>
-//         Alert.alert(
-//           'This alert was dismissed by tapping outside of the alert dialog.',
-//         ),
-//     },
-//   );
+
 export default MypageTemplate;
