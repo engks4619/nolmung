@@ -11,7 +11,7 @@ export interface CommunityTabType {
 }
 
 interface Props extends CommunityTabType {
-  withPostList: withPostListType;
+  withPostList: withPostListType[];
 }
 
 function CommunityTemplate({

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
 import CommMainInfo from '@molecules/CommMainInfo';
 import Squre from '@atoms/Squre';
 import CommUserInfo from '@molecules/CommUserInfo';
@@ -16,7 +16,9 @@ function CommWithPost({withPostList}: Props) {
       keyExtractor={item => String(item.postIdx)}
       renderItem={({item}) => (
         <View style={styles.container}>
-          <Squre imageSource={item.thumbnailUrl} />
+          <View style={styles.imgContainer}>
+            <Squre imageSource={item.thumbnailUrl} />
+          </View>
           <View style={styles.infoContainer}>
             <CommMainInfo
               subject={item.subject}
@@ -35,6 +37,13 @@ function CommWithPost({withPostList}: Props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    height: 110,
+    backgroundColor: 'white',
+    marginBottom: 2,
+    paddingHorizontal: 7,
+  },
+  imgContainer: {
+    justifyContent: 'center',
   },
   infoContainer: {
     flex: 1,
