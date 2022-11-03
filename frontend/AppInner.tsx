@@ -46,7 +46,14 @@ function AppInner() {
           <Tab.Screen
             name="애견 동반 스팟"
             component={Spots}
-            options={{optiopn: false}}
+            options={{
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
+            }}
           />
           <Tab.Screen
             name="홈"
