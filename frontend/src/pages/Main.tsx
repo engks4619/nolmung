@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, ScrollView} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
 
@@ -81,9 +81,9 @@ function Main() {
   }, []);
 
   return (
-    <View>
+    <ScrollView>
       <MainTemplate spots={dummyData} mainPostList={mainPostList} />
-    </View>
+    </ScrollView>
   );
 }
 
