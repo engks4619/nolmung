@@ -1,7 +1,5 @@
 import React from 'react';
-// import TextLine from '@atoms/TextLine';
-import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
-import SvgIcon from '@assets/SvgIcon';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 
 interface Props {
   BtnText: string;
@@ -27,7 +25,6 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 20,
     paddingVertical: 2,
-    // backgroundColor: 'yellow',
     marginVertical: 1,
     alignItems: 'center',
   },
@@ -40,7 +37,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 10,
     paddingVertical: 0,
-    // backgroundColor: 'red',
   },
 });
 

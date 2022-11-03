@@ -1,20 +1,10 @@
 import React, {useState, useCallback} from 'react';
-import {Text, View, Alert} from 'react-native';
-// import {RootState} from '../store/reducer';
-// import {useSelector} from 'react-redux';
+import {View} from 'react-native';
 import MypageTemplate from '../templates/MypageTemplate';
-import {
-  createNativeStackNavigator,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
-import {
-  NavigationContainer,
-  NavigationContainerRefContext,
-} from '@react-navigation/native';
-import MyPostList from './MyPostList';
 import {TabButtonObject} from '@molecules/TabButtonGroup';
 import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
+
 //UserInfoType
 type UserInfoType = {
   imageSource: string;
@@ -33,13 +23,6 @@ const userInfo: UserInfoType = {
   walkHour: 10,
   walkDistance: 100,
 };
-// export type MypageStackParamList = {
-//   MyPostList: undefined;
-// SignUp: undefined;
-// };
-
-// const Stack = createNativeStackNavigator<MypageStackParamList>();
-// type MypageProps = NativeStackScreenProps<MypageStackParamList,'Mypage'>
 
 function Mypage({navigation}) {
   // const userInfo = useSelector((state: RootState) => state.user);
@@ -111,7 +94,7 @@ function Mypage({navigation}) {
       icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
       BtnText: '로그아웃',
       onClick: () => {
-        // navigation.navigate('MyDogs');
+        // 이 후 로그아웃 넣을 곳
       },
     },
   ];

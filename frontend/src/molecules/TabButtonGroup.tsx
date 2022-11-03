@@ -1,10 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-// import UserSummary from '@organisms/UserSummary';
-// import type {UserInfoType} from '../pages/Mypage';
-// import MyButton from '@atoms/MyButton';
+
 import TabButton from '@atoms/TabButton';
-// import {NavigationContainer} from '@react-navigation/native';
 
 export interface TabButtonObject {
   name: string;

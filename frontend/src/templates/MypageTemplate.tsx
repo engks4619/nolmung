@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, GestureResponderEvent} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import type {UserInfoType} from '../pages/Mypage';
 import MyButton from '@atoms/MyButton';
-import TabButton from '@atoms/TabButton';
-import {NavigationContainer} from '@react-navigation/native';
 import TabButtonGroup from '@molecules/TabButtonGroup';
 import {TabButtonObject} from '@molecules/TabButtonGroup';
 
@@ -19,16 +17,7 @@ interface Props {
   TabButtonList2: Array<TabButtonObject>;
 }
 
-// const onChangePassword = useCallback(text => {
-//   setPassword(text.trim());
-// }, []);
-
 function MypageTemplate(props: Props) {
-  // const abc = (): void => {
-  //   navigation.navigate('MyPostList');
-  //   // console.log('2')
-  // };
-  //***** 여기서 navigation navigate 못 받아옴 undefined로 나옴 문제 해결 notion 볼것* */
   return (
     <View>
       <UserSummary
