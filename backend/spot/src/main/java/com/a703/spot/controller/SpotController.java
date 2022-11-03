@@ -24,7 +24,7 @@ public class SpotController {
     private final ConstProperties constProperties;
     private final ResponseProperties responseProperties;
     private final ParameterUtil parameterUtil;
-    @GetMapping
+    @PostMapping
     public ResponseEntity<DtoResponse<SpotListDto>> getSpotList(
             @RequestParam(name = "page") String pageParam,
             @RequestParam(name = "sort") String sortParam,
