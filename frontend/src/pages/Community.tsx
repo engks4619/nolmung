@@ -54,14 +54,16 @@ function Community() {
   };
 
   const getOtherPostList = async (pgNum: number) => {
+    const params = {
+      page: pgNum,
+    };
     try {
       const response: AxiosResponse = await axios.get('/api/community/other', {
-        params: {
-          page: {pgNum},
-        },
+        params,
       });
       const data: otherPostListType[] = await response.data;
       setOtherPostList([...otherPostList, ...data]);
+      setOtherPgNum(otherPgNum + 1);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -89,6 +91,7 @@ function Community() {
         navigateOtherPg={navigateOtherPg}
         categoryType={categoryType}
         withPostList={withPostList}
+        otherPostList={otherPostList}
         loadMore={loadMore}
       />
     </View>
