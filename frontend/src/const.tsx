@@ -1,1 +1,1 @@
-export const MAIN_COLOR = '#C38E70';
+export const MAIN_COLOR: string = '#C38E70';
