@@ -25,6 +25,8 @@ public class WithListDto {
 
     private Integer likeCnt;
 
+    private Integer chatCnt;
+
     private String thumbnailUrl;
 
 }

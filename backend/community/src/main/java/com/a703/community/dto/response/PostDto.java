@@ -16,6 +16,8 @@ public class PostDto {
 
     private List<DogInfoDto> dogInfoList;
 
+    private Long postIdx;
+
     private String writer;
 
     private Boolean getLike;
