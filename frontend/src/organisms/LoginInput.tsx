@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import TextLine from '../atoms/TextLine';
-import Label from '../atoms/Label';
+import TextLine from '@atoms/TextLine';
+import Label from '@atoms/Label';
 
 interface Props {
   labelText: string;
