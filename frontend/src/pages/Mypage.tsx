@@ -3,10 +3,16 @@ import {Text, View, Alert} from 'react-native';
 // import {RootState} from '../store/reducer';
 // import {useSelector} from 'react-redux';
 import MypageTemplate from '../templates/MypageTemplate';
-import {createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
-import {NavigationContainer, NavigationContainerRefContext} from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {
+  NavigationContainer,
+  NavigationContainerRefContext,
+} from '@react-navigation/native';
 import MyPostList from './MyPostList';
-
+import {TabButtonObject} from '@molecules/TabButtonGroup';
 //UserInfoType
 type UserInfoType = {
   imageSource: string;
@@ -27,7 +33,7 @@ const userInfo: UserInfoType = {
 };
 // export type MypageStackParamList = {
 //   MyPostList: undefined;
-  // SignUp: undefined;
+// SignUp: undefined;
 // };
 
 // const Stack = createNativeStackNavigator<MypageStackParamList>();
@@ -49,13 +55,32 @@ function Mypage({navigation}) {
     setIsEditing(!isEditing);
   };
 
-  const goNextStack = useCallback((whereToGo:string)=>{
+  const goNextStack = useCallback((whereToGo: string) => {
     navigation.navigate(whereToGo);
-  },[])
+  }, []);
+
+  type TabButtonList = Array<TabButtonObject>;
+  const myPageList: TabButtonList = [
+    {
+      name: 'MyPosts',
+      imgPath: '../assets/mypageMenus/papers.png',
+      BtnText: '내가 쓴 글',
+      onClick: () => {
+        navigation.navigate('MyLikedList');
+      },
+    },
+    {
+      name: 'MyPosts',
+      imgPath: '../assets/mypageMenus/papers.png',
+      BtnText: '내가 쓴 글',
+      onClick: () => {
+        navigation.navigate('MyLikedList');
+      },
+    },
+  ];
 
   return (
     <View>
-      <Text>마이 페이지</Text>
       <MypageTemplate
         userInfo={userInfo}
         isEditing={isEditing}
@@ -63,6 +88,7 @@ function Mypage({navigation}) {
         onChangeNickname={onChangeNickname}
         value={tempNickname}
         onClick={goNextStack}
+        TabButtonList={myPageList}
       />
       {/* <NavigationContainer> */}
       {/* <Stack.Navigator>

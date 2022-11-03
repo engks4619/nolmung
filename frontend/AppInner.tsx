@@ -12,6 +12,7 @@ import MyPostList from './src/pages/MyPostList';
 import MyLikedList from './src/pages/MyLikedList';
 import MyLikedSpots from './src/pages/MyLikedSpots';
 import MyWalkingRecord from './src/pages/MyWalkingRecord';
+import MyDogs from './src/pages/MyDogs';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -35,13 +36,18 @@ export type RootStackParamList = {
 const MypageStack = createNativeStackNavigator();
 const MypageStackNavigator = () => (
   <MypageStack.Navigator>
-    <MypageStack.Screen name="Mypage" component={Mypage} options={{headerShown: false}}/>
-    <MypageStack.Screen name="MyPostList" component={MyPostList}/>
-    <MypageStack.Screen name="MyLikedList" component={MyLikedList}/>
-    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots}/>
-    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord}/>
-  </MypageStack.Navigator>  
-)
+    <MypageStack.Screen
+      name="Mypage"
+      component={Mypage}
+      options={{headerShown: false}}
+    />
+    <MypageStack.Screen name="MyPostList" component={MyPostList} />
+    <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
+    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
+    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
+    <MypageStack.Screen name="MyDogs" component={MyDogs} />
+  </MypageStack.Navigator>
+);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();

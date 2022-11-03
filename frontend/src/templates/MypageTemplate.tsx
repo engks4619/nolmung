@@ -5,6 +5,8 @@ import type {UserInfoType} from '../pages/Mypage';
 import MyButton from '@atoms/MyButton';
 import TabButton from '@atoms/TabButton';
 import {NavigationContainer} from '@react-navigation/native';
+import TabButtonGroup from '@molecules/TabButtonGroup';
+import {TabButtonObject} from '@molecules/TabButtonGroup';
 
 interface Props {
   userInfo: UserInfoType;
@@ -12,7 +14,8 @@ interface Props {
   profileEdit: (event: GestureResponderEvent) => void;
   onChangeNickname: Function;
   value: string;
-  onClick: (whereToGo:string)=>void;
+  onClick: (whereToGo: string) => void;
+  TabButtonList: Array<TabButtonObject>;
 }
 
 // const onChangePassword = useCallback(text => {
@@ -46,11 +49,38 @@ function MypageTemplate(props: Props) {
         height={25}
         fontSize={12}
       />
-      <TabButton BtnText={'내가 쓴 글'} onClick={()=>{props.onClick('MyPostList')}} />
-      <TabButton BtnText={'내가 찜 한 글'} onClick={()=>{props.onClick('MyLikedList')}} />
-      <TabButton BtnText={'내가 찜 한 스팟'} onClick={()=>{props.onClick('MyLikedSpots')}} />
-      <TabButton BtnText={'내 산책 기록'} onClick={()=>{props.onClick('MyWalkingRecord')}} />
-      
+
+      <TabButtonGroup TabButtonList={props.TabButtonList} />
+      {/* <TabButton
+        BtnText={'내가 쓴 글'}
+        onClick={() => {
+          props.onClick('MyPostList');
+        }}
+      />
+      <TabButton
+        BtnText={'내가 찜 한 글'}
+        onClick={() => {
+          props.onClick('MyLikedList');
+        }}
+      />
+      <TabButton
+        BtnText={'내가 찜 한 스팟'}
+        onClick={() => {
+          props.onClick('MyLikedSpots');
+        }}
+      />
+      <TabButton
+        BtnText={'내 산책 기록'}
+        onClick={() => {
+          props.onClick('MyWalkingRecord');
+        }}
+      />
+      <TabButton
+        BtnText={'내 강아지'}
+        onClick={() => {
+          props.onClick('MyDogs');
+        }}
+      /> */}
     </View>
   );
 }

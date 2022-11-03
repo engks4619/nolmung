@@ -4,17 +4,15 @@ import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
 
 interface Props {
   BtnText: string;
+  imgPath: string;
   onClick: () => void;
 }
 
-function TabButton({BtnText, onClick}: Props) {
+function TabButton({BtnText, imgPath, onClick}: Props) {
   return (
     <Pressable onPress={onClick}>
       <View style={styles.TabContainer}>
-        <Image
-          style={styles.ImageSpace}
-          source={require('../assets/mypageMenus/papers.png')}
-        />
+        <Image style={styles.ImageSpace} source={require(imgPath)} />
         <Text style={styles.TextSpace}>{BtnText}</Text>
       </View>
     </Pressable>
@@ -30,7 +28,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   ImageSpace: {
-    width: 15, 
+    width: 15,
     height: 15,
     resizeMode: 'contain',
     padding: 10,
