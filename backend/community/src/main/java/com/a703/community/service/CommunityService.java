@@ -7,10 +7,7 @@ import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.entity.*;
-import com.a703.community.repository.LuckyDogRepository;
-import com.a703.community.repository.PostLikeRepository;
-import com.a703.community.repository.PostPhotoRepository;
-import com.a703.community.repository.PostRepository;
+import com.a703.community.repository.*;
 import com.a703.community.type.CategoryType;
 import com.a703.community.util.ClientUtil;
 import com.a703.community.util.FileUtil;
@@ -37,6 +34,8 @@ public class CommunityService {
     private final FileUtil fileUtil;
 
     private final LuckyDogRepository luckyDogRepository;
+
+    private final ChatRepository chatRepository;
 
     private final ClientUtil clientUtil;
 
@@ -144,6 +143,7 @@ public class CommunityService {
         List<DogInfoDto> dogInfoDto = null;
 
         return PostDto.builder()
+                .postIdx(post.getPostIdx())
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
                 .writer("통신필요")
                 .subject(post.getSubject())
@@ -155,6 +155,7 @@ public class CommunityService {
                 .pay(post.getPay())
                 .location(post.getLocation())
                 .walkDate(post.getWalkDate())
+                .modifyDate(post.getModifyDate())
                 .poopBag(post.getPoopBag())
                 .build();
 
@@ -194,6 +195,7 @@ public class CommunityService {
                 .postIdx(with.getPostIdx())
                 .subject(with.getSubject())
                 .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                .chatCnt(chatRepository.countChatByPost(with))
                 .location(with.getLocation())
                 .modifyDate(with.getModifyDate())
                 .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
@@ -211,6 +213,7 @@ public class CommunityService {
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(other))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())

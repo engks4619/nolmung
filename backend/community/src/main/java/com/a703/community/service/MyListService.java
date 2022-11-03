@@ -3,6 +3,7 @@ package com.a703.community.service;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.Post;
+import com.a703.community.repository.ChatRepository;
 import com.a703.community.repository.PostLikeRepository;
 import com.a703.community.repository.PostPhotoRepository;
 import com.a703.community.repository.PostRepository;
@@ -26,6 +27,8 @@ public class MyListService {
 
     private final PostPhotoRepository postPhotoRepository;
 
+    private final ChatRepository chatRepository;
+
     private final ClientUtil clientUtil;
 
     public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
@@ -41,6 +44,7 @@ public class MyListService {
                         .subject(with.getSubject())
                         .postIdx(with.getPostIdx())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(with))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
@@ -62,6 +66,7 @@ public class MyListService {
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(other))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
@@ -84,6 +89,7 @@ public class MyListService {
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(other))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
@@ -106,6 +112,7 @@ public class MyListService {
                         .postIdx(with.getPostIdx())
                         .subject(with.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(with))
                         .location(with.getLocation())
                         .modifyDate(with.getModifyDate())
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
