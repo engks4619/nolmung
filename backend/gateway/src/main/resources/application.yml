@@ -44,25 +44,35 @@ spring:
             - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
 
         - id: community
           uri: lb://COMMUNITY
           predicates:
             - Path=/api/community/**
           filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
         - id: withdog
           uri: lb://WITHDOG
           predicates:
             - Path=/api/withdog/**
           filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
         - id: spot
           uri: lb://SPOT
           predicates:
             - Path=/api/spot/**
           filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
       default-filters:
         - name: GlobalFilter
           args:
             baseMessage: Spring Cloud Gateway Global Filter
             preLogger: true
             postLogger: true
+
+token:
+  secret: user_token
