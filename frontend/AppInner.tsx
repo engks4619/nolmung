@@ -19,9 +19,11 @@ import SignIn from './src/pages/SignIn';
 import {MAIN_COLOR} from '~/const';
 
 // SVG ICONS for BOTTOM TAB BAR
-import Chat from '@assets/chat.svg';
-import Home from '@assets/home.svg';
-import User from '@assets/user.svg';
+import ChatIcon from '@assets/chat.svg';
+import HomeIcon from '@assets/home.svg';
+import UserIcon from '@assets/user.svg';
+import CommunityIcon from '@assets/community.svg';
+import SpotIcon from '@assets/spot.svg';
 
 // import {RootState} from "./src/store/reducer";
 
@@ -80,14 +82,20 @@ function AppInner() {
               headerShown: false,
               title: '채팅',
               tabBarIcon: ({color}) => (
-                <Chat width={25} height={25} fill={color} />
+                <ChatIcon width={25} height={25} fill={color} />
               ),
             }}
           />
           <Tab.Screen
             name="애견 동반 스팟"
             component={Spots}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              title: '애견 동반 스팟',
+              tabBarIcon: ({color}) => (
+                <SpotIcon width={25} height={25} fill={color} />
+              ),
+            }}
           />
           <Tab.Screen
             name="홈"
@@ -101,7 +109,7 @@ function AppInner() {
               },
               title: '홈',
               tabBarIcon: ({color}) => (
-                <Home width={25} height={25} fill={color} />
+                <HomeIcon width={25} height={25} fill={color} />
               ),
             }}
           />
@@ -115,6 +123,10 @@ function AppInner() {
                 fontWeight: 'bold',
                 fontSize: 15,
               },
+              title: '커뮤니티',
+              tabBarIcon: ({color}) => (
+                <CommunityIcon width={25} height={25} fill={color} />
+              ),
             }}
           />
           <Tab.Screen
@@ -125,7 +137,7 @@ function AppInner() {
               headerShown: false,
               title: '마이페이지',
               tabBarIcon: ({color}) => (
-                <User width={25} height={25} fill={color} />
+                <UserIcon width={25} height={25} fill={color} />
               ),
             }}
           />
