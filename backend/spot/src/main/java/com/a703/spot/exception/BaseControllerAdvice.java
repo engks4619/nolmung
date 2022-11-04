@@ -25,6 +25,18 @@ public class BaseControllerAdvice {
                 .body(e.getErrorCode().getMessage());
     }
 
+    @ExceptionHandler(SpotException.class)
+    public ResponseEntity<String> spotException(SpotException e, HttpServletRequest req) {
+        log.error(req.getRequestURI());
+        log.error(e.getClass().getCanonicalName());
+        e.printStackTrace();
+        log.error(e.getMessage());
+
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(e.getErrorCode().getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest req) {
         log.error(req.getRequestURI());
