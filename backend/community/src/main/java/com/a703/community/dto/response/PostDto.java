@@ -20,6 +20,8 @@ public class PostDto {
 
     private String writer;
 
+    private String userImgUrl;
+
     private Boolean getLike;
 
     private CategoryType categoryType;
