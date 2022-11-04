@@ -1,7 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
 import MypageTemplate from '../templates/MypageTemplate';
-import {TabButtonObject} from '@molecules/TabButtonGroup';
 import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
 
@@ -23,61 +22,45 @@ const userInfo: UserInfoType = {
   walkHour: 10,
   walkDistance: 100,
 };
-type TabButtonList = Array<TabButtonObject>;
-const myPageListNavi: TabButtonList = [
+
+// 마이페이지 버튼탭 목록(navi동작)
+const myPageListNavi = [
   {
     name: 'MyPostList',
     icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '내가 쓴 글',
-    // onClick: () => {
-    //   navigation.navigate();
-    // },
+    btnText: '내가 쓴 글',
   },
   {
     name: 'MyLikedList',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '내가 찜한 글',
-    // onClick: () => {
-    //   navigation.navigate('MyLikedList');
-    // },
+    btnText: '내가 찜한 글',
   },
   {
     name: 'MyLikedSpots',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '내가 찜한 스팟',
-    // onClick: () => {
-    //   navigation.navigate('MyLikedSpots');
-    // },
+    btnText: '내가 찜한 스팟',
   },
   {
     name: 'MyWalkingRecord',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '내 산책 기록',
-    // onClick: () => {
-    //   navigation.navigate('MyWalkingRecord');
-    // },
+    btnText: '내 산책 기록',
   },
   {
     name: 'MyDogs',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '내 강아지',
-    // onClick: () => {
-    //   navigation.navigate('MyDogs');
-    // },
+    btnText: '내 강아지',
   },
 ];
-
-const myPageListFunc: TabButtonList = [
+// 마이페이지 버튼탭 목록(다른동작)
+const myPageListFunc = [
   {
     name: 'Logout',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
-    BtnText: '로그아웃',
-    onClick: () => {
-      console.log('로그아웃');
-    },
+    btnText: '로그아웃',
   },
 ];
-function Mypage({navigation}:any) {
+
+function Mypage({navigation}: any) {
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
 
@@ -91,8 +74,6 @@ function Mypage({navigation}:any) {
     }
     setIsEditing(!isEditing);
   };
-
-  
 
   return (
     <View>

@@ -23,7 +23,7 @@ function CertificationForm({
   onChangeText,
   autoComplete,
   onClick,
-  keyboardType,
+  keyboardType = 'number-pad',
 }: Props) {
   return (
     <View style={styles.inputWrapper}>

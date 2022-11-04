@@ -20,7 +20,7 @@ function LoginInput({
   onChangeText,
   autoComplete,
   isPassword,
-  keyboardType,
+  keyboardType = 'default',
 }: Props) {
   return (
     <View style={styles.inputWrapper}>

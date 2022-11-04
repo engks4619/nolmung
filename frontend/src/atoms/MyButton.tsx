@@ -46,7 +46,7 @@ function MyButton({
       <Pressable
         style={[styles.btn, {width, paddingVertical, backgroundColor, height}]}
         onPress={onClick}>
-        <Text style={[styles.fontStyle, {fontWeight}, {fontSize}]}>
+        <Text style={[styles.fontStyle, {fontWeight, fontSize}]}>
           {btnText}
         </Text>
       </Pressable>

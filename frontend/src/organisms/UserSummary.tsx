@@ -25,7 +25,7 @@ function UserSummary({
 }: Props) {
   return (
     <View style={styles.container}>
-      <Profile imageSource={imageSource}/>
+      <Profile imageSource={imageSource} />
       <View style={styles.description}>
         <Text style={styles.userName}>{userName}</Text>
         <WalkSummary
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 2,
     paddingBottom: 7,
+    backgroundColor: 'white',
   },
   userName: {
     paddingLeft: 10,
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
-  description:{
-    width:260,
-    height:93,
-  }
+  description: {
+    width: 260,
+    height: 93,
+  },
 });
 
 export default UserSummary;

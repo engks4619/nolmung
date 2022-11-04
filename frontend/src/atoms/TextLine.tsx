@@ -15,7 +15,7 @@ function TextLine({
   placeholder,
   onChangeText,
   value,
-  autoComplete,
+  autoComplete = 'off',
   isPassword,
   keyboardType = 'default',
 }: Props) {

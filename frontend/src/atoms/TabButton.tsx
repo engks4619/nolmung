@@ -3,30 +3,21 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 
 interface Props {
   name: string;
-  BtnText: string;
+  btnText: string;
   icon: any;
-  navigation: any;
-  onClick?: () => void | Function;
+  onClick: (params?: string) => void;
 }
 
-function TabButton({
-  name,
-  BtnText,
-  icon,
-  onClick = () => {
-    navigation.navigate(name);
-  },
-  navigation,
-}: Props) {
+function TabButton({name, btnText, icon, onClick}: Props) {
   return (
     <View style={styles.TabContainer}>
       <Pressable
-        onPress={
-          onClick
-      }
+        onPress={() => {
+          onClick(name);
+        }}
         style={styles.PressableSpace}>
         <View>{icon}</View>
-        <Text style={styles.TextSpace}>{BtnText}</Text>
+        <Text style={styles.TextSpace}>{btnText}</Text>
       </Pressable>
     </View>
   );

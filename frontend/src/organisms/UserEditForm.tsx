@@ -16,7 +16,7 @@ function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
     <View style={styles.container}>
       <Profile imageSource={imageSource} />
       <View style={styles.description}>
-        <Text style={styles.userName}>{'닉네임'}</Text>
+        <Text style={styles.userName}>닉네임</Text>
         <TextLine
           placeholder={userName}
           onChangeText={onChangeText}
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 2,
     paddingBottom: 7,
+    backgroundColor: 'white',
   },
   userName: {
     paddingLeft: 10,
@@ -42,10 +43,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
   },
-  description:{
-    width:260,
-    height:93,
-  }
+  description: {
+    width: 260,
+    height: 93,
+  },
 });
 
 export default UserEditForm;

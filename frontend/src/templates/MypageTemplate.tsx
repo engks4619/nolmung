@@ -17,25 +17,31 @@ interface Props {
   TabButtonListFunc: Array<TabButtonObject>;
   navigation: any;
 }
+const logout = () => {
+  //logout 실행
+  console.log('로그아웃!');
+};
 
 function MypageTemplate(props: Props) {
   return (
     <View>
-      {props.isEditing? 
-      <UserEditForm
-      imageSource={props.userInfo.imageSource}
-      userName={props.userInfo.userName}
-      value={props.value}
-      onChangeText={props.onChangeNickname}
-      isPassword={false}
-      ></UserEditForm>
-      :<UserSummary
-        imageSource={props.userInfo.imageSource}
-        userName={props.userInfo.userName}
-        walkNumber={props.userInfo.walkNumber}
-        walkHour={props.userInfo.walkHour}
-        walkDistance={props.userInfo.walkHour}
-      />}
+      {props.isEditing ? (
+        <UserEditForm
+          imageSource={props.userInfo.imageSource}
+          userName={props.userInfo.userName}
+          value={props.value}
+          onChangeText={props.onChangeNickname}
+          isPassword={false}
+        />
+      ) : (
+        <UserSummary
+          imageSource={props.userInfo.imageSource}
+          userName={props.userInfo.userName}
+          walkNumber={props.userInfo.walkNumber}
+          walkHour={props.userInfo.walkHour}
+          walkDistance={props.userInfo.walkHour}
+        />
+      )}
       <MyButton
         btnText={props.isEditing ? '수정 완료' : '프로필 수정'}
         width={350}
@@ -48,12 +54,11 @@ function MypageTemplate(props: Props) {
 
       <TabButtonGroup
         TabButtonList={props.TabButtonListNavi}
-        navigation={props.navigation}
+        func={(params?: string) => {
+          props.navigation.navigate(params);
+        }}
       />
-      <TabButtonGroup
-        TabButtonList={props.TabButtonListFunc}
-        navigation={props.navigation}
-      />
+      <TabButtonGroup TabButtonList={props.TabButtonListFunc} func={logout} />
     </View>
   );
 }

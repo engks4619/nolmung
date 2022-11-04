@@ -6,26 +6,24 @@ import TabButton from '@atoms/TabButton';
 export interface TabButtonObject {
   name: string;
   icon: any;
-  BtnText: string;
-  onClick?: () => void | Function;
+  btnText: string;
 }
 
 interface Props {
   TabButtonList: Array<TabButtonObject>;
-  navigation: any;
+  func: (params?: string) => void;
 }
 
-function TabButtonGroup({TabButtonList, navigation}: Props) {
+function TabButtonGroup({TabButtonList, func}: Props) {
   return (
     <View style={styles.ButtonGroup}>
       {TabButtonList.map(value => (
         <TabButton
           key={value.name}
           name={value.name}
-          BtnText={value.BtnText}
+          btnText={value.btnText}
           icon={value.icon}
-          onClick={value.onClick}
-          navigation={navigation}
+          onClick={func}
         />
       ))}
     </View>
