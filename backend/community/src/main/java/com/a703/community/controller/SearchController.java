@@ -10,9 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,15 +23,15 @@ public class SearchController {
     private final SearchService searchService;
 
     @PostMapping("/other")
-    public ResponseEntity<?> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
-        List<OtherListDto> otherListDtos = searchService.searchOther(search,pageable);
+    public ResponseEntity<OtherListDto> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
+        OtherListDto otherListDtos = searchService.searchOther(search,pageable);
         return ResponseEntity.ok().body(otherListDtos);
 
     }
 
     @PostMapping("/with")
-    public ResponseEntity<List<WithListDto>> searchWith(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
-        List<WithListDto> withListDtos = searchService.searchWith(search,pageable);
+    public ResponseEntity<WithListDto> searchWith(@RequestBody(required = false) SearchRequest search, @PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
+        WithListDto withListDtos = searchService.searchWith(search,pageable);
         return ResponseEntity.ok().body(withListDtos);
     }
 

@@ -1,10 +1,7 @@
 package com.a703.community.controller;
 
 import com.a703.community.dto.request.RegisterPostRequest;
-import com.a703.community.dto.response.MainListDto;
-import com.a703.community.dto.response.OtherListDto;
-import com.a703.community.dto.response.PostDto;
-import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.*;
 import com.a703.community.service.CommunityService;
 import com.a703.community.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
@@ -50,14 +47,14 @@ public class CommunityController {
     }
 
     @GetMapping("/with")
-    public ResponseEntity<List<WithListDto>> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
-        List<WithListDto> withLists = communityService.showWithList(pageable);
+    public ResponseEntity<WithListDto> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+        WithListDto withLists = communityService.showWithList(pageable);
         return ResponseEntity.ok().body(withLists);
     }
 
     @GetMapping("/other")
-    public ResponseEntity<List<OtherListDto>>showOtherList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
-        List<OtherListDto> otherLists = communityService.showOtherList(pageable);
+    public ResponseEntity<OtherListDto>showOtherList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+        OtherListDto otherLists = communityService.showOtherList(pageable);
         return ResponseEntity.ok().body(otherLists);
     }
 
