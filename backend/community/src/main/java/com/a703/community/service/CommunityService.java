@@ -1,14 +1,13 @@
 package com.a703.community.service;
 
 import com.a703.community.dto.request.RegisterPostRequest;
-import com.a703.community.dto.response.MainListDto;
-import com.a703.community.dto.response.OtherListDto;
-import com.a703.community.dto.response.PostDto;
-import com.a703.community.dto.response.WithListDto;
-import com.a703.community.entity.TblPost;
-import com.a703.community.repository.PostRepository;
-import com.a703.community.repository.ReviewLikeRepository;
+import com.a703.community.dto.response.*;
+import com.a703.community.dto.response.connection.DogInfoDto;
+import com.a703.community.entity.*;
+import com.a703.community.repository.*;
 import com.a703.community.type.CategoryType;
+import com.a703.community.util.ClientUtil;
+import com.a703.community.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,18 +24,30 @@ public class CommunityService {
 
     private final PostRepository postRepository;
 
-    private final ReviewLikeRepository reviewLikeRepository;
+    private final PostLikeRepository postLikeRepository;
 
-    public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files){
+    private final PostPhotoRepository postPhotoRepository;
 
-        Long userIdx = 1L;// 토큰 받아서 유저서버에 보내서 받아오기
-        Long dogIdx = 1L;//통신해서 받아와야함
+    private final FileUtil fileUtil;
 
+    private final LuckyDogRepository luckyDogRepository;
 
-        TblPost post = TblPost.builder()
+    private final ChatRepository chatRepository;
+
+    private final ClientUtil clientUtil;
+
+    public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws Exception {
+
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
+
+        List<Long> dogIdxList = registerPost.getDogIdx();
+
+        Post post = Post.builder()
+                .subject(registerPost.getSubject())
                 .categoryType(registerPost.getCategoryType())
                 .content(registerPost.getContent())
-                .dogIdx(dogIdx)
                 .writerIdx(userIdx)
                 .getDeleted(false)
                 .getCompleted(false)
@@ -48,89 +59,178 @@ public class CommunityService {
                 .reRegister(0)
                 .build();
 
-        postRepository.save(post);
+        Post savePost =postRepository.save(post);
 
+        List<LuckyDog> saveLuckyDog = dogIdxList.stream().map(luckdog -> LuckyDog.builder()
+                .id(LuckyDogId.builder()
+                        .dogIdx(luckdog)
+                        .post(savePost)
+                        .build())
+                .build())
+                .collect(Collectors.toList());
+
+        luckyDogRepository.saveAll(saveLuckyDog);
+
+        if (files !=null) {
+            for (MultipartFile multipartFile : files) {
+                fileUtil.fileUpload(multipartFile, savePost.getPostIdx());
+            }
+        }
     }
+
     //진짜 삭제하지말기
     public void deletePost(Long postIdx){
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         post.setGetDeleted(Boolean.TRUE);
         postRepository.save(post);
 
     }
     //재등록
     public void reRegisterPost(Long postIdx){
-        TblPost post = postRepository.findByPostIdx(postIdx);
+        Post post = postRepository.findByPostIdx(postIdx);
         post.setReRegister(post.getReRegister()+1);
         postRepository.save(post);
 
     }
 
-    public PostDto showPost(Long postIdx, Map<String, Object> token){
-        //통신해서 받아와야함
-        Long userIdx =1L;
+    public void completePost(Long postIdx){
+        Post post = postRepository.findByPostIdx(postIdx);
+        post.setGetCompleted(true);
+        postRepository.save(post);
 
-        TblPost post = postRepository.findByPostIdx(postIdx);
+    }
+
+    public void pushLike(Long postIdx,Map<String, Object> token) throws Exception {
+
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
+        Post post=postRepository.findByPostIdx(postIdx);
+
+        PostLikeId id = PostLikeId.builder()
+                        .userIdx(userIdx)
+                        .post(post)
+                        .build();
+
+        PostLike postLike = PostLike.builder()
+                        .id(id)
+                        .build();
+
+        postLikeRepository.save(postLike);
+    }
+
+    public PostDto showPost(Long postIdx, Map<String, Object> token) throws Exception {
+
+//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//        Long userIdx = userInfoDto.getUserIdx();
+        Long userIdx = 1L;
+
+        List<PostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
+
+        Post post = postRepository.findByPostIdx(postIdx);
+
+        List<LuckyDog> luckyDogList = luckyDogRepository.findByIdPostPostIdx(postIdx);
+
+        List<Long> dogIdxList = luckyDogList.stream().map(a -> {
+            return a.getId().getDogIdx();
+        }).collect(Collectors.toList());
+
         //강아지 관련 api연결해야됨
+//        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
+        List<DogInfoDto> dogInfoDto = null;
+
         return PostDto.builder()
-                .getLike(reviewLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
-                .dogBreed(null)
-                .dogName(null)
-                .dogImgUrl(null)
-                .photoUrl(null)
+                .postIdx(post.getPostIdx())
+                .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .writer("통신필요")
+                .subject(post.getSubject())
+                .dogInfoList(dogInfoDto)
+                .photoUrl(postPhotoRepository.existsByPostPostIdx(post.getPostIdx()) ? convertPostPhotoListToUrlList(postPhotos) : null)
                 .categoryType(post.getCategoryType())
                 .content(post.getContent())
                 .leadLine(post.getLeadLine())
                 .pay(post.getPay())
                 .location(post.getLocation())
                 .walkDate(post.getWalkDate())
+                .modifyDate(post.getModifyDate())
                 .poopBag(post.getPoopBag())
                 .build();
 
 
     }
+    public List<String> convertPostPhotoListToUrlList(List<PostPhoto> postPhotos){
+        return postPhotos.stream().map(PostPhoto::getPhotoUrl).collect(Collectors.toList());
+    }
 
-    public List<MainListDto> showMainList(Pageable pageable){
+    public List<MainListDto>[] showMainList(Pageable pageable){
 
-        Page<TblPost> mainLists = postRepository.findAll(pageable);
 
-        return mainLists.stream().map(main-> MainListDto.builder()
+        Page<Post> mainLists = postRepository.findAll(pageable);
+        List<MainListDto>[] result = new List[2];
+        result[0] = mainLists.stream().limit(5).map(main-> MainListDto.builder()
                         .postIdx(main.getPostIdx())
                         .subject(main.getSubject())
                         .categoryType(main.getCategoryType())
                         .build())
                 .collect(Collectors.toList());
+        result[1] = mainLists.stream().skip(5).map(main-> MainListDto.builder()
+                        .postIdx(main.getPostIdx())
+                        .subject(main.getSubject())
+                        .categoryType(main.getCategoryType())
+                        .build())
+                .collect(Collectors.toList());
+        //배열 두개로 보내줘야
+        return result;
     }
 
-    public List<WithListDto> showWithList(Pageable pageable){
+    public WithListDto showWithList(Pageable pageable){
 
-        Page<TblPost> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
+        Page<Post> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
+        int totalPages = withLists.getTotalPages();
 
-        return withLists.stream().map(with-> WithListDto.builder()
+        List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
+                .writer("통신필요")
                 .postIdx(with.getPostIdx())
-                .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                .subject(with.getSubject())
+                .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                .chatCnt(chatRepository.countChatByPost(with))
                 .location(with.getLocation())
                 .modifyDate(with.getModifyDate())
-                .thumbnailUrl(null)
+                .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
                 .walkDate(with.getWalkDate())
                 .build())
                 .collect(Collectors.toList());
+
+        return WithListDto.builder()
+                .withDtoList(withDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<OtherListDto> showOtherList(Pageable pageable){
+    public OtherListDto showOtherList(Pageable pageable){
 
-        Page<TblPost> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
+        Page<Post> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
 
-        return otherLists.stream().map(other-> OtherListDto.builder()
+        int totalPages = otherLists.getTotalPages();
+
+        List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
+                        .writer("통신필요")
                         .postIdx(other.getPostIdx())
-                        .likeCnt(Math.toIntExact(reviewLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .subject(other.getSubject())
+                        .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                        .chatCnt(chatRepository.countChatByPost(other))
                         .location(other.getLocation())
                         .modifyDate(other.getModifyDate())
                         .walkDate(other.getWalkDate())
                         .pay(other.getPay())
-                        .thumbnailUrl(null)
+                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
+
+        return OtherListDto.builder()
+                .otherDtoList(otherDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
 }

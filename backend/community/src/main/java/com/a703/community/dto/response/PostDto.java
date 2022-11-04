@@ -1,5 +1,6 @@
 package com.a703.community.dto.response;
 
+import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.type.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +14,9 @@ import java.util.List;
 @Builder
 public class PostDto {
 
-    private String dogBreed;
+    private List<DogInfoDto> dogInfoList;
 
-    private String dogName;
-
-    private String dogImgUrl;
+    private Long postIdx;
 
     private String writer;
 
