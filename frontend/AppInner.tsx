@@ -8,6 +8,12 @@ import Main from './src/pages/Main';
 import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
 
+import MyPostList from './src/pages/MyPostList';
+import MyLikedList from './src/pages/MyLikedList';
+import MyLikedSpots from './src/pages/MyLikedSpots';
+import MyWalkingRecord from './src/pages/MyWalkingRecord';
+import MyDogs from './src/pages/MyDogs';
+
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
 import {MAIN_COLOR} from '~/const';
@@ -27,6 +33,21 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
 };
+const MypageStack = createNativeStackNavigator();
+const MypageStackNavigator = () => (
+  <MypageStack.Navigator>
+    <MypageStack.Screen
+      name="Mypage"
+      component={Mypage}
+      options={{headerShown: false}}
+    />
+    <MypageStack.Screen name="MyPostList" component={MyPostList} />
+    <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
+    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
+    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
+    <MypageStack.Screen name="MyDogs" component={MyDogs} />
+  </MypageStack.Navigator>
+);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -74,7 +95,8 @@ function AppInner() {
           />
           <Tab.Screen
             name="마이페이지"
-            component={Mypage}
+            // component={Mypage}
+            component={MypageStackNavigator}
             options={{headerShown: false}}
           />
           <Tab.Screen
