@@ -5,7 +5,7 @@ spring:
     name: user
 
 server:
-  port: 0
+  port: 8080
   servlet:
     contextPath: /api/user
 
@@ -16,7 +16,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://k7a703.p.ssafy.io:8761/eureka
+      defaultZone: http://nolmung.kr:8761/eureka
 #      defaultZone: http://localhost:8761/eureka
 
 logging:
