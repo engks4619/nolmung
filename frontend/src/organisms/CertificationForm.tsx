@@ -12,6 +12,7 @@ interface Props {
   autoComplete: string;
   onChangeText: Function;
   onClick: Function;
+  keyboardType?: string;
 }
 
 function CertificationForm({
@@ -22,6 +23,7 @@ function CertificationForm({
   onChangeText,
   autoComplete,
   onClick,
+  keyboardType = 'number-pad',
 }: Props) {
   return (
     <View style={styles.inputWrapper}>
@@ -34,6 +36,7 @@ function CertificationForm({
             onChangeText={onChangeText}
             autoComplete={autoComplete}
             isPassword={false}
+            keyboardType={keyboardType}
           />
         </View>
         <MyButton

@@ -6,16 +6,18 @@ interface Props {
   placeholder?: string;
   value: string;
   onChangeText: Function;
-  autoComplete: string;
+  autoComplete?: string;
   isPassword: Boolean;
+  keyboardType?: string;
 }
 
 function TextLine({
   placeholder,
   onChangeText,
   value,
-  autoComplete,
+  autoComplete = 'off',
   isPassword,
+  keyboardType = 'default',
 }: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -38,7 +40,7 @@ function TextLine({
       autoComplete={autoComplete}
       blurOnSubmit={!isPassword}
       secureTextEntry={isPassword}
-      keyboardType={isPassword ? 'default' : 'number-pad'}
+      keyboardType={keyboardType}
       onFocus={customOnFocus}
       onBlur={customOnBlur}
     />

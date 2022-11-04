@@ -10,6 +10,7 @@ interface Props {
   onChangeText: Function;
   autoComplete: string;
   isPassword: Boolean;
+  keyboardType?: string;
 }
 
 function LoginInput({
@@ -19,6 +20,7 @@ function LoginInput({
   onChangeText,
   autoComplete,
   isPassword,
+  keyboardType = 'default',
 }: Props) {
   return (
     <View style={styles.inputWrapper}>
@@ -29,6 +31,7 @@ function LoginInput({
         value={value}
         autoComplete={autoComplete}
         isPassword={isPassword}
+        keyboardType={keyboardType}
       />
     </View>
   );
