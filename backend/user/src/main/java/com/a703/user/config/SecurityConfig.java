@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 //        http.authorizeRequests().antMatchers("/api/user/sign/**").permitAll();
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        http.authorizeRequests().antMatchers("/**").permitAll()
 //                .access("hasIpAddress('127.0.0.1')")
                 .and()
                 .addFilter(getAuthenticationFilter());
