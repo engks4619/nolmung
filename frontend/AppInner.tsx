@@ -66,7 +66,7 @@ function AppInner() {
     <NavigationContainer>
       {isLoggedIn ? (
         <Tab.Navigator
-          initialRouteName="홈"
+          initialRouteName="Main"
           screenOptions={{
             tabBarHideOnKeyboard: true,
             tabBarActiveTintColor: MAIN_COLOR,
@@ -76,7 +76,7 @@ function AppInner() {
             },
           }}>
           <Tab.Screen
-            name="채팅"
+            name="Chats"
             component={Chats}
             options={{
               headerShown: false,
@@ -87,7 +87,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="애견 동반 스팟"
+            name="Spots"
             component={Spots}
             options={{
               headerShown: false,
@@ -98,7 +98,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="홈"
+            name="Main"
             component={Main}
             options={{
               headerTitle: '놀면 멍하니',
@@ -114,7 +114,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="커뮤니티"
+            name="Community"
             component={Community}
             options={{
               headerTitle: '놀면 멍하니',
@@ -130,7 +130,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="마이페이지"
+            name="Mypage"
             // component={Mypage}
             component={MypageStackNavigator}
             options={{
