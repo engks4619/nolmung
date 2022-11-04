@@ -5,7 +5,7 @@ import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
 
 //UserInfoType
-type UserInfoType = {
+export type UserInfoType = {
   imageSource: string;
   userName: string;
   walkNumber: number;
@@ -91,5 +91,4 @@ function Mypage({navigation}: any) {
   );
 }
 
-export type {UserInfoType};
 export default Mypage;
