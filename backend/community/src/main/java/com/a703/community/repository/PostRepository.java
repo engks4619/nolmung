@@ -11,13 +11,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificationExecutor<Post> {
+public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificationExecutor<Post>,PostRepositoryCustom {
 
     Page<Post> findByCategoryTypeAndWriterIdx(CategoryType categoryType, Long writerIdx, Pageable pageable);
 
     Page<Post> findByCategoryType(CategoryType categoryType, Pageable pageable);
 
-    Post findByPostIdx(Long postIdx);
+//    Post findByPostIdx(Long postIdx);
 
     @Query(value = "SELECT * FROM tbl_post " +
             "WHERE tbl_post.post_idx in (SELECT tbl_post_like.post_idx FROM tbl_post_like WHERE tbl_post_like.user_idx = :userIdx) " +

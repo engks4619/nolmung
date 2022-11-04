@@ -1,4 +1,4 @@
-package com.a703.community.search;
+package com.a703.community.service.search;
 
 import com.a703.community.entity.Post;
 import com.a703.community.type.CategoryType;
