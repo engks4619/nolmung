@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -17,6 +17,11 @@ import MyDogs from './src/pages/MyDogs';
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
 import {MAIN_COLOR} from '~/const';
+
+// SVG ICONS for BOTTOM TAB BAR
+import Chat from '@assets/chat.svg';
+import Home from '@assets/home.svg';
+import User from '@assets/user.svg';
 
 // import {RootState} from "./src/store/reducer";
 
@@ -58,16 +63,31 @@ function AppInner() {
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator initialRouteName="홈">
+        <Tab.Navigator
+          initialRouteName="홈"
+          screenOptions={{
+            tabBarHideOnKeyboard: true,
+            tabBarActiveTintColor: MAIN_COLOR,
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: 'bold',
+            },
+          }}>
           <Tab.Screen
             name="채팅"
             component={Chats}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              title: '채팅',
+              tabBarIcon: ({color}) => (
+                <Chat width={25} height={25} fill={color} />
+              ),
+            }}
           />
           <Tab.Screen
             name="애견 동반 스팟"
             component={Spots}
-            options={{optiopn: false}}
+            options={{headerShown: false}}
           />
           <Tab.Screen
             name="홈"
@@ -79,6 +99,10 @@ function AppInner() {
                 fontWeight: 'bold',
                 fontSize: 15,
               },
+              title: '홈',
+              tabBarIcon: ({color}) => (
+                <Home width={25} height={25} fill={color} />
+              ),
             }}
           />
           <Tab.Screen
@@ -97,7 +121,13 @@ function AppInner() {
             name="마이페이지"
             // component={Mypage}
             component={MypageStackNavigator}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              title: '마이페이지',
+              tabBarIcon: ({color}) => (
+                <User width={25} height={25} fill={color} />
+              ),
+            }}
           />
         </Tab.Navigator>
       ) : (
