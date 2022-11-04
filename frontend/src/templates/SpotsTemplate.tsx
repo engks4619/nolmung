@@ -1,14 +1,17 @@
 import React from 'react';
-import {View} from 'react-native';
-import LocationSummary from '~/organisms/LocationSummary';
+import { View } from 'react-native';
+import LocationSummary from '@organisms/LocationSummary';
+import SpotsContainer from '@organisms/SpotsContainer';
+import { Spot } from '~/pages/Spots';
 
 interface Props {
-  spotList: any[];
+  spotList: Spot[];
   totalPage : number;
   userLocation: string;
   onSearchSubmit: Function;
   searchValue: string;
   onChangeSearchValue: Function;
+  loadMore: Function;
 }
 
 function SpotsTemplate({
@@ -18,6 +21,7 @@ function SpotsTemplate({
   onSearchSubmit,
   searchValue,
   onChangeSearchValue,
+  loadMore,
 }: Props) {
   return (
     <View>
@@ -26,7 +30,11 @@ function SpotsTemplate({
         onSearchSubmit={onSearchSubmit}
         searchValue={searchValue}
         onChangeSearchValue={onChangeSearchValue}
-      />
+        />
+      <SpotsContainer
+        spotList={spotList}
+        loadMore={loadMore}
+        />
     </View>
   );
 }

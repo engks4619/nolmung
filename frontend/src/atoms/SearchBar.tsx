@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Pressable, Text, TextInput, View } from "react-native";
 import { MAIN_COLOR } from "~/const";
+import Search from "@assets/search.svg";
 
 interface Props {
   onSearchSubmit: Function; 
@@ -37,7 +38,9 @@ function SearchBar({
         style={styles.searchButton}
         onPress={() => onSearchSubmit(searchValue)}
       >
-        <Text>확인</Text>
+        <View>
+          <Search width={20} height={20} fill={'black'} stroke={'black'} />
+        </View>
       </Pressable>
     </View>
   );

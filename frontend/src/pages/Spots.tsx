@@ -4,6 +4,33 @@ import {Alert, ScrollView, StatusBar, Text, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
 import spotAxios from '~/utils/spotAxios';
 
+export interface menu {
+  menuName: string,
+  menuPrice: number,
+}
+
+export interface time {
+  timeName: string,
+  timeDesc: string,
+}
+export interface Spot {
+  category: string | null,
+  distance: number,
+  imgCnt: number,
+  address: string | null,
+  lat: number,
+  lng: number,
+  descList: string[] | null,
+  menuList: menu[] | null,
+  timeList: time[] | null,
+  name: string,
+  reviewCnt: number,
+  star: number | null,
+  tag: string | null,
+  spotId: string,
+  tel: string | null,
+}
+
 function Spots() {
   interface SpotRequest {
     lat: number,
@@ -13,32 +40,8 @@ function Spots() {
     category: string,
   }
 
-  interface menu {
-    menuName: string,
-    menuPrice: number,
-  }
-
-  interface time {
-    timeName: string,
-    timeDesc: string,
-  }
-  interface Spot {
-    address: string | null,
-    descList: string[] | null,
-    distance: number,
-    lat: number,
-    lng: number,
-    menuList: menu[] | null,
-    timeList: time[] | null,
-    name: string,
-    star: number | null,
-    tag: string | null,
-    spotId: string,
-    tel: string | null,
-  }
-
   const [spotList, setSpotList] = useState<Spot[]>([]);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
   const [spotRequest, setSpotRequest] = useState<SpotRequest | null>();
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -46,16 +49,22 @@ function Spots() {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const getSpotList = async () => {
+    const params = {
+      page,
+      sort,
+    }
     try {
-      const {data}: AxiosResponse = await spotAxios.post(`/spot?page=${page}&sort=${sort}`, spotRequest);
-      if(data?.status === 'OK' && data?.message === 'success') {
-        setSpotList(data?.responseDto?.spotDtoList);
-        setTotalPage(data?.responseDto?.totalPage);
+      const response: AxiosResponse = await spotAxios.post(`/spot`, spotRequest, {params});
+      console.log(response.status);
+      if(response.status == 200) {
+        const data = await response.data;
+        // setSpotList(data?.spotDtoList);
+        setSpotList([...spotList, ...data?.spotDtoList]);
+        setTotalPage(data?.totalPage);
       }
     } catch (error: any) {
       Alert.alert(
-        `에러코드 ${error}`,
-        ``
+        `에러코드 ${error}`
       )
     }
   };
@@ -64,20 +73,6 @@ function Spots() {
     setSearchValue(val.trim());
   },[]);
 
-  // const getMoreSpotList = async () => {
-  //   try {
-  //     const {data}: AxiosResponse = await spotAxios.post(`/spot?page=${page}&sort=${sort}`, spotRequest);
-  //     if(data?.status === 'OK' && data?.message === 'success') {
-  //       setSpotList([...spotList, data?.responseDto?.spotDtoList] as Spot[]);
-  //     }
-  //   } catch (error: any) {
-  //     Alert.alert(
-  //       `에러코드 ${error}`,
-  //       ``
-  //     )
-  //   }
-  // }
-
   const onSearchSubmit = () => {
     setSpotRequest({
       ...spotRequest, 
@@ -85,6 +80,11 @@ function Spots() {
     } as SpotRequest);
   };
 
+  const loadMore = () => {
+    if(page < totalPage) {
+      setPage(page + 1);
+    }
+  }
   
 
   const initSpotRequest = () => {
@@ -115,17 +115,8 @@ function Spots() {
     getSpotList();
   }, [spotRequest, page, sort]);
 
-  // useEffect(() => {
-  //   getMoreSpotList();
-  // }, [page]);
-
-  useEffect(()=> {
-    console.log(spotList);
-    console.log(totalPage);
-  },[spotList, totalPage])
-
   return (
-    <ScrollView>
+    <View>
       <SpotsTemplate 
         spotList={spotList} 
         totalPage={totalPage}
@@ -133,8 +124,9 @@ function Spots() {
         onSearchSubmit={onSearchSubmit}
         searchValue={searchValue}
         onChangeSearchValue={onChangeSearchValue}
+        loadMore={loadMore}
         />
-    </ScrollView>
+    </View>
   );
 }
 
