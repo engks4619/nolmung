@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Alert} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
+import spotAxios from '~/utils/spotAxios';
 
 const dummyData = [
   {
@@ -63,11 +64,40 @@ const dummyData = [
 ];
 
 function Main() {
-  const [mainPostList, setMainSpotList] = useState([]);
+  const [mainPostList, setMainPostList] = useState([]);
+  const [mainSpotList, setMainSpotList] = useState([]);
+
   const getMainPostList = async () => {
     try {
       const {data} = await axios.get('/api/community/main');
-      setMainSpotList(data);
+      setMainPostList(data);
+    } catch (error: any) {
+      Alert.alert(
+        `에러코드 ${error.response.status}`,
+        '죄송합니다. 다시 시도해주시길 바랍니다.',
+      );
+    }
+  };
+
+  const getMainSpotList = async () => {
+    const params = {
+      page: 1,
+      sort: 0,
+    };
+    try {
+      const {data} = await spotAxios({
+        method: 'post',
+        url: '/spot',
+        data: {
+          lat: null,
+          lng: null,
+          searchValue: null,
+          limitDistance: 0,
+          category: null,
+        },
+        params,
+      });
+      // console.log(data);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -78,6 +108,7 @@ function Main() {
 
   useEffect(() => {
     getMainPostList();
+    getMainSpotList();
   }, []);
 
   return (
