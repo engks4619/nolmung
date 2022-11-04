@@ -6,7 +6,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://k7a703.p.ssafy.io:8761/eureka
+      defaultZone: http://nolmung.kr:8761/eureka
 
 spring:
   application:
@@ -14,41 +14,52 @@ spring:
   cloud:
     gateway:
       routes:
+#        - id: user
+#          uri: lb://USER
+#          predicates:
+#            - Path=/api/user/**
+#          filters:
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+
+
         - id: user
           uri: lb://USER
           predicates:
             - Path=/api/user/**
+            - Method=GET
           filters:
-            - name: CustomFilter
-            - name: LoggingFilter
-              args:
-                baseMessage: Logging Filter
-                preLogger: true
-                postLogger: true
+            - RemoveRequestHeader=Cookie
 
         - id: community
           uri: lb://COMMUNITY
           predicates:
             - Path=/api/community/**
           filters:
-            - name: CustomFilter
-            - name: LoggingFilter
-              args:
-                baseMessage: Logging Filter
-                preLogger: true
-                postLogger: true
         - id: withdog
           uri: lb://WITHDOG
           predicates:
             - Path=/api/withdog/**
           filters:
-            - CustomFilter
         - id: spot
           uri: lb://SPOT
           predicates:
             - Path=/api/spot/**
           filters:
-            - CustomFilter
       default-filters:
         - name: GlobalFilter
           args:
