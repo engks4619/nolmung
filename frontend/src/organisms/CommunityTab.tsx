@@ -13,7 +13,7 @@ function CommunityTab({
       <Text
         style={
           categoryType === 'WITH'
-            ? StyleSheet.compose(styles.textContainer, styles.textActive)
+            ? [styles.textContainer, styles.textActive]
             : styles.textContainer
         }
         onPress={navigateWithPg}>
@@ -22,7 +22,7 @@ function CommunityTab({
       <Text
         style={
           categoryType === 'OTHER'
-            ? StyleSheet.compose(styles.textContainer, styles.textActive)
+            ? [styles.textContainer, styles.textActive]
             : styles.textContainer
         }
         onPress={navigateOtherPg}>
