@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ParameterUtil {
-    private  final ConstProperties constProperties;
+    private final ConstProperties constProperties;
     public static int checkPage(String page) {
         if(!StringUtils.isNumeric(page) || Integer.parseInt(page) <= 0) {
             return 0;
         } else {
-            return Integer.parseInt(page) - 1;
+            return Integer.parseInt(page);
         }
     }
     public static int checkSort(String sort) {
@@ -40,5 +40,19 @@ public class ParameterUtil {
             request.setCategory(constProperties.getDefaultCategory());
         }
         return request;
+    }
+
+    public Double checkLat(String lat) {
+        if(lat == null || !StringUtils.isNumeric(lat) || Integer.parseInt(lat) == 0)
+            return constProperties.getDefaultLat();
+        else
+            return Double.parseDouble(lat);
+    }
+
+    public Double checkLng(String lng) {
+        if(lng == null || !StringUtils.isNumeric(lng) || Integer.parseInt(lng) == 0)
+            return constProperties.getDefaultLng();
+        else
+            return Double.parseDouble(lng);
     }
 }

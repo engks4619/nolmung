@@ -56,12 +56,13 @@ public class SpotServiceImpl implements SpotService {
     }
 
     @Override
-    public SpotDetailDto getSpotDetail(String spotId) {
+    public SpotDetailDto getSpotDetail(Double lng, Double lat, String spotId) {
         Spot spot = spotRepository.findBySpotId(spotId).orElseThrow(
                 () -> new SpotException(SpotErrorCode.SPOT_NOT_FOUND)
         );
         SpotDto spotDto = spotMapper.EntityToDto(spot);
         spotDto.setReviewCnt(spotReviewRepository.getReviewCnt(spotId));
+        spotDto.setDistance(spotRepository.getDistanceBySpotId(lng, lat, spotId));
         spotDto.setStar(spotReviewRepository.getStarAvg(spotId));
         List<SpotReview> reviewEntityList = spotReviewRepository.findBySpot(spot);
         List<SpotReviewDto> reviewList = new ArrayList<>();

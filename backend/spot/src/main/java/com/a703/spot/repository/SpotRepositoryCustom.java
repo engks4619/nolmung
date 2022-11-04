@@ -9,4 +9,6 @@ public interface SpotRepositoryCustom {
     Page<SpotDto> search(SpotRequest request, Pageable pageable);
     Page<SpotDto> searchByStar(SpotRequest request, Pageable pageable);
     Page<SpotDto> searchByReviewCnt(SpotRequest request, Pageable pageable);
+
+    Double getDistanceBySpotId(Double lng, Double lat, String spotId);
 }

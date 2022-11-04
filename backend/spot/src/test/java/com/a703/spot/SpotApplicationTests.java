@@ -111,7 +111,7 @@ class SpotApplicationTests {
 
     }
 
-    @Test
+//    @Test
     public void SpotRepoTest() {
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
@@ -121,7 +121,7 @@ class SpotApplicationTests {
         spotRepository.search(request, pageable);
     }
 
-    @Test
+//    @Test
     public void SpotServiceTest() {
         double currLat = 37.511468; // 내 위치 y
         double currLng = 127.121504; // 내 위치 x
@@ -136,7 +136,7 @@ class SpotApplicationTests {
         }
     }
 
-    @Test
+//    @Test
     public void SpotReviewRepoTest() {
         SpotReviewDto spotReviewDto =
                 SpotReviewDto.builder()
@@ -148,5 +148,15 @@ class SpotApplicationTests {
                         .build();
         spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
 //        spotReviewRepository.save(spotReview);
+    }
+
+//    @Test
+    public void getDistacneBySpotId() {
+        SpotRequest request = SpotRequest.builder()
+                .lat(37.511468)
+                .lng(127.121504)
+                .build();
+        double dist = spotRepository.getDistanceBySpotId(request.getLat(), request.getLng(), "2AdBiATZChf8");
+        System.out.println(dist);
     }
 }
