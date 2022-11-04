@@ -1,10 +1,7 @@
 package com.a703.community.service;
 
 import com.a703.community.dto.request.RegisterPostRequest;
-import com.a703.community.dto.response.MainListDto;
-import com.a703.community.dto.response.OtherListDto;
-import com.a703.community.dto.response.PostDto;
-import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.*;
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.entity.*;
 import com.a703.community.repository.*;
@@ -186,11 +183,12 @@ public class CommunityService {
         return result;
     }
 
-    public List<WithListDto> showWithList(Pageable pageable){
+    public WithListDto showWithList(Pageable pageable){
 
         Page<Post> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
+        int totalPages = withLists.getTotalPages();
 
-        return withLists.stream().map(with-> WithListDto.builder()
+        List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
                 .writer("통신필요")
                 .postIdx(with.getPostIdx())
                 .subject(with.getSubject())
@@ -202,13 +200,20 @@ public class CommunityService {
                 .walkDate(with.getWalkDate())
                 .build())
                 .collect(Collectors.toList());
+
+        return WithListDto.builder()
+                .withDtoList(withDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<OtherListDto> showOtherList(Pageable pageable){
+    public OtherListDto showOtherList(Pageable pageable){
 
         Page<Post> otherLists =  postRepository.findByCategoryType(CategoryType.OTHER,pageable);
 
-        return otherLists.stream().map(other-> OtherListDto.builder()
+        int totalPages = otherLists.getTotalPages();
+
+        List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
                         .writer("통신필요")
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
@@ -221,6 +226,11 @@ public class CommunityService {
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
+
+        return OtherListDto.builder()
+                .otherDtoList(otherDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
 }

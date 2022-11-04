@@ -1,6 +1,8 @@
 package com.a703.community.service;
 
+import com.a703.community.dto.response.OtherDto;
 import com.a703.community.dto.response.OtherListDto;
+import com.a703.community.dto.response.WithDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.Post;
 import com.a703.community.repository.ChatRepository;
@@ -31,15 +33,16 @@ public class MyListService {
 
     private final ClientUtil clientUtil;
 
-    public List<WithListDto> showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public WithListDto showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
         Page<Post> myWithLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.WITH, writerIdx, pageable);
+        int totalPages = myWithLists.getTotalPages();
 
-        return myWithLists.stream().map(with -> WithListDto.builder()
+        List<WithDto> myWithDtoList = myWithLists.stream().map(with -> WithDto.builder()
                         .writer("토큰보내서 내이름 가져오기")
                         .subject(with.getSubject())
                         .postIdx(with.getPostIdx())
@@ -51,17 +54,23 @@ public class MyListService {
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());
+
+        return WithListDto.builder()
+                .withDtoList(myWithDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<OtherListDto> showMyOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public OtherListDto showMyOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         Long writerIdx = 1L;
 
         Page<Post> myOtherLists = postRepository.findByCategoryTypeAndWriterIdx(CategoryType.OTHER, writerIdx, pageable);
+        int totalPages = myOtherLists.getTotalPages();
 
-        return myOtherLists.stream().map(other -> OtherListDto.builder()
+        List<OtherDto> myOtherDtoList = myOtherLists.stream().map(other -> OtherDto.builder()
                         .writer("통신필요")
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
@@ -74,9 +83,14 @@ public class MyListService {
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
+
+        return OtherListDto.builder()
+                .otherDtoList(myOtherDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<OtherListDto> showMyLikeOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public OtherListDto showMyLikeOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -84,7 +98,9 @@ public class MyListService {
 
         Page<Post> myLikeOtherLists = postRepository.findAllBySomething(userIdx,"OTHER",pageable);
 
-        return myLikeOtherLists.stream().map(other -> OtherListDto.builder()
+        int totalPages = myLikeOtherLists.getTotalPages();
+
+        List<OtherDto> myLikeOtherDtoList = myLikeOtherLists.stream().map(other -> OtherDto.builder()
                         .writer("통신필요")
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
@@ -97,9 +113,14 @@ public class MyListService {
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
+
+        return OtherListDto.builder()
+                .otherDtoList(myLikeOtherDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<WithListDto> showMyLikeWithList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public WithListDto showMyLikeWithList(Pageable pageable, Map<String, Object> token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -107,7 +128,9 @@ public class MyListService {
 
         Page<Post> myLikeWithLists = postRepository.findAllBySomething(userIdx,"WITH",pageable);
 
-        return myLikeWithLists.stream().map(with -> WithListDto.builder()
+        int totalPages = myLikeWithLists.getTotalPages();
+
+        List<WithDto> myWithLikeDtoList = myLikeWithLists.stream().map(with -> WithDto.builder()
                         .writer("통신필요")
                         .postIdx(with.getPostIdx())
                         .subject(with.getSubject())
@@ -119,5 +142,10 @@ public class MyListService {
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());
+
+        return WithListDto.builder()
+                .withDtoList(myWithLikeDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 }

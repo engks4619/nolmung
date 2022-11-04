@@ -2,7 +2,9 @@ package com.a703.community.service;
 
 
 import com.a703.community.dto.request.SearchRequest;
+import com.a703.community.dto.response.OtherDto;
 import com.a703.community.dto.response.OtherListDto;
+import com.a703.community.dto.response.WithDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.LuckyDog;
 import com.a703.community.entity.Post;
@@ -38,7 +40,7 @@ public class SearchService {
 
     private final ClientUtil clientUtil;
 
-    public List<OtherListDto> searchOther(SearchRequest searchRequest, Pageable pageable) throws Exception {
+    public OtherListDto searchOther(SearchRequest searchRequest, Pageable pageable) throws Exception {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
@@ -73,8 +75,9 @@ public class SearchService {
 
         Page<Post> otherLists = postRepository.findAll(spec,pageable);
 
+        int totalPages = otherLists.getTotalPages();
 
-        return otherLists.stream().map(other-> OtherListDto.builder()
+        List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
@@ -86,9 +89,14 @@ public class SearchService {
                         .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
                         .build())
                 .collect(Collectors.toList());
+
+        return OtherListDto.builder()
+                .otherDtoList(otherDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 
-    public List<WithListDto> searchWith(SearchRequest searchRequest,Pageable pageable) throws Exception {
+    public WithListDto searchWith(SearchRequest searchRequest, Pageable pageable) throws Exception {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
@@ -117,10 +125,11 @@ public class SearchService {
             spec = spec.and(PostSpecification.findDogBreedByPostIdx(findPostIdx));
         }
 
-
         Page<Post> withLists = postRepository.findAll(spec,pageable);
 
-        return withLists.stream().map(with-> WithListDto.builder()
+        int totalPages = withLists.getTotalPages();
+
+        List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
                         .postIdx(with.getPostIdx())
                         .subject(with.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
@@ -131,5 +140,10 @@ public class SearchService {
                         .walkDate(with.getWalkDate())
                         .build())
                 .collect(Collectors.toList());
+
+        return WithListDto.builder()
+                .withDtoList(withDtoList)
+                .totalPage(totalPages)
+                .build();
     }
 }
