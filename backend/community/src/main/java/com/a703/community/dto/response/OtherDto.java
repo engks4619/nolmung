@@ -10,9 +10,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class OtherDto {
+
     private Long postIdx;
 
     private String writer;
+
+    private String userImgUrl;
 
     private String subject;
 

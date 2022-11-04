@@ -15,6 +15,8 @@ public class WithDto {
 
     private String writer;
 
+    private String userImgUrl;
+
     private String subject;
 
     private LocalDateTime modifyDate;

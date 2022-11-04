@@ -79,6 +79,8 @@ public class SearchService {
 
         List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
                         .postIdx(other.getPostIdx())
+                        .writer("통신필요")
+                        .userImgUrl("통신필요")
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
                         .chatCnt(chatRepository.countChatByPost(other))
@@ -131,6 +133,8 @@ public class SearchService {
 
         List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
                         .postIdx(with.getPostIdx())
+                        .writer("통신필요")
+                        .userImgUrl("통신필요")
                         .subject(with.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                         .chatCnt(chatRepository.countChatByPost(with))

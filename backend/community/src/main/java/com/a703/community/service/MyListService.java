@@ -102,6 +102,7 @@ public class MyListService {
 
         List<OtherDto> myLikeOtherDtoList = myLikeOtherLists.stream().map(other -> OtherDto.builder()
                         .writer("통신필요")
+                        .userImgUrl("통신필요")
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
@@ -132,6 +133,7 @@ public class MyListService {
 
         List<WithDto> myWithLikeDtoList = myLikeWithLists.stream().map(with -> WithDto.builder()
                         .writer("통신필요")
+                        .userImgUrl("통신필요")
                         .postIdx(with.getPostIdx())
                         .subject(with.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
