@@ -26,7 +26,7 @@ public class UserController {
         return String.format("It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
     }
 
-    @PostMapping("/sign/up")
+    @PostMapping("/")
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user){
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
@@ -39,7 +39,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
 
-    @GetMapping("/{userIdx}")
+    @GetMapping("/info/{userIdx}")
     public ResponseEntity<?> getUserInfo(@PathVariable("userIdx") Long userIdx){
         UserDto userDto = userService.getUserByUserIdx(userIdx);
 

@@ -1,17 +1,20 @@
 package com.a703.user.service;
 
 import com.a703.user.dto.UserDto;
-import com.a703.user.entity.User;
+import com.a703.user.entity.UserEntity;
 import com.a703.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDto userDto) {
         userDto.setUserIdx((long) userDto.getPhone().hashCode());
-        userDto.setNickname("user"+userDto.getUserIdx());
+        userDto.setNickname("user" + userDto.getUserIdx());
         userDto.setProfileImage("/images/user/default/default.png");
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
@@ -33,16 +36,16 @@ public class UserServiceImpl implements UserService {
                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
                 .setFieldMatchingEnabled(true)
                 .setMatchingStrategy(MatchingStrategies.STRICT);
-        User userEntity = mapper.map(userDto, User.class);
+        UserEntity userEntity = mapper.map(userDto, UserEntity.class);
 
         userRepository.save(userEntity);
     }
 
     @Override
     public UserDto getUserByUserIdx(Long userIdx) {
-        User userEntity = userRepository.findByUserIdx(userIdx);
+        UserEntity userEntity = userRepository.findByUserIdx(userIdx);
 
-        if(userEntity == null){
+        if (userEntity == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
@@ -52,7 +55,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto getUserByPhone(String phone) {
+        return this.getUserByUserIdx((long) phone.hashCode());
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        UserEntity userEntity = userRepository.findByUserIdx((long) username.hashCode());
+
+        if (userEntity == null) {
+            throw new UsernameNotFoundException(username);
+        }
+
+        return new User(userEntity.getPhone(), userEntity.getPassword(), true, true, true, true, new ArrayList<>());
     }
 }

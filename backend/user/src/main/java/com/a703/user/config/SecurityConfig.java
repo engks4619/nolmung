@@ -25,15 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 //        http.authorizeRequests().antMatchers("/api/user/sign/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("211.192.252.88")
-//                        .hasIpAddress("13.124.136.64")
+                .access("hasIpAddress('127.0.0.1')")
                 .and()
                 .addFilter(getAuthenticationFilter());
         http.headers().frameOptions().disable();
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager(), userService, env);
         authenticationFilter.setAuthenticationManager(authenticationManager());
 
         return authenticationFilter;

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Getter
 @ToString
 @Table(name = "tbl_user")
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
     @Id
     Long userIdx;
 
