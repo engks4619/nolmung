@@ -43,7 +43,8 @@ public class SpotReviewRepositoryImpl implements SpotReviewRepositoryCustom {
     public List<SpotReview> findBySpot(Spot spot) {
         return queryFactory
                 .selectFrom(spotReview)
-                .where(spotReview.spot.eq(spot))
+                .where(spotReview.spot.eq(spot),
+                        spotReview.deleted.eq(false))
                 .orderBy(spotReview.createDate.desc())
                 .fetch();
     }

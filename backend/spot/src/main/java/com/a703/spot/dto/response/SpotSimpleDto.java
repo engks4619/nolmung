@@ -1,5 +1,6 @@
 package com.a703.spot.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.util.List;
@@ -10,18 +11,13 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 @ToString
-public class SpotDto {
+public class SpotSimpleDto {
     private String spotId;
     private String name;
     private Integer imgCnt;
-    private String address;
-    private String tel;
-    private String tag;
-    private List<String> descList; // 캐주얼한, 점심식사, 저녁식사...
-    private Map<String, String> time; // 운영일 : 운영시간
-    private Map<String, String> menu; // 메뉴 이름 : 가격 (~원)
     private Double lat;
     private Double lng;
+    private String category;
     private Double distance;
     private Double star;
     private Long reviewCnt;
@@ -33,4 +29,15 @@ public class SpotDto {
         this.reviewCnt = reviewCnt;
     }
     public void setDistance(Double distance) { this.distance = distance; }
+
+    @QueryProjection
+    public SpotSimpleDto(String spotId, String name, Integer imgCnt, Double lat, Double lng, String category, Double distance) {
+        this.spotId = spotId;
+        this.name = name;
+        this.imgCnt = imgCnt;
+        this.lat = lat;
+        this.lng = lng;
+        this.category = category;
+        this.distance = distance;
+    }
 }

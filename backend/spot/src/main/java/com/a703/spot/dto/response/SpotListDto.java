@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class SpotListDto {
-    private List<SpotDto> spotDtoList;
+    private List<SpotSimpleDto> spotDtoList;
     private int totalPage;
 }

@@ -37,4 +37,15 @@ public class SpotTransferDto {
         this.category = category;
         this.distance = distance;
     }
+
+    @QueryProjection
+    public SpotTransferDto(String spotId, String name, Double lat, Double lng, Integer imgCnt, String category, Double distance) {
+        this.spotId = spotId;
+        this.name = name;
+        this.lat = lat;
+        this.lng = lng;
+        this.imgCnt = imgCnt;
+        this.category = category;
+        this.distance = distance;
+    }
 }

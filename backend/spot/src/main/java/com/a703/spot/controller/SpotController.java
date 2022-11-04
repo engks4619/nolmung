@@ -1,11 +1,8 @@
 package com.a703.spot.controller;
 
 import com.a703.spot.dto.request.SpotRequest;
-import com.a703.spot.dto.response.DtoResponse;
 import com.a703.spot.dto.response.SpotDetailDto;
 import com.a703.spot.dto.response.SpotListDto;
-import com.a703.spot.properties.ConstProperties;
-import com.a703.spot.properties.ResponseProperties;
 import com.a703.spot.service.SpotService;
 import com.a703.spot.util.ParameterUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +18,9 @@ import javax.validation.Valid;
 public class SpotController {
 
     private final SpotService spotService;
-    private final ConstProperties constProperties;
-    private final ResponseProperties responseProperties;
     private final ParameterUtil parameterUtil;
     @PostMapping
-    public ResponseEntity<DtoResponse<SpotListDto>> getSpotList(
+    public ResponseEntity<SpotListDto> getSpotList(
             @RequestParam(name = "page") String pageParam,
             @RequestParam(name = "sort") String sortParam,
             @Valid @RequestBody SpotRequest request) {
@@ -37,23 +32,21 @@ public class SpotController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(DtoResponse.of(
-                        HttpStatus.OK,
-                        responseProperties.getSuccess(),
-                        result)
-                );
+                .body(result);
     }
 
     @GetMapping("{spotId}")
-    public ResponseEntity<DtoResponse<SpotDetailDto>> getSpot(@PathVariable String spotId) {
-        SpotDetailDto result = spotService.getSpotDetail(spotId);
+    public ResponseEntity<SpotDetailDto> getSpot(
+            @PathVariable String spotId,
+            @RequestParam(name = "lat") String latParam,
+            @RequestParam(name = "lng") String lngParam
+    ) {
+        Double lng = parameterUtil.checkLng(lngParam);
+        Double lat = parameterUtil.checkLat(latParam);
+        SpotDetailDto result = spotService.getSpotDetail(lng, lat, spotId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(DtoResponse.of(
-                        HttpStatus.OK,
-                        responseProperties.getSuccess(),
-                        result
-                ));
+                .body(result);
     }
 
 }
