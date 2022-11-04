@@ -4,27 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @Builder
 public class WithListDto {
 
-    private Long postIdx;
+    List<WithDto> withDtoList;
 
-    private Long writerIdx;
-
-    private String subject;
-
-    private LocalDateTime modifyDate;
-
-    private String location;
-
-    private LocalDateTime walkDate;
-
-    private Integer likeCnt;
-
-    private String thumbnailUrl;
-
+    private Integer totalPage;
 }

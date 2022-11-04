@@ -1,28 +1,30 @@
-#JPA
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/community?allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: community
-    password: a703
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    show_sql: true
-    hibernate:
-      ddl-auto: update
-      naming:
-        strategy: org.hibernate.cfg.ImprovedNamingStrategy
-
-    properties:
-      hibernate:
-        format_sql: true
-        enable_lazy_load_no_trans: true
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        default_batch_fetch_size: 100
+  profiles:
+    include: db
+  application:
+    name: community
 
 server:
   port: 8081
+#  address: k7a703.p.ssafy.io
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+
+resources:
+  location: /images/
+  uri_path: /images
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://k7a703.p.ssafy.io:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
