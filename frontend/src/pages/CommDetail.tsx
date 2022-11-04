@@ -28,14 +28,14 @@ type CommScreenProp = NativeStackScreenProps<CommunityParamList, 'CommDetail'>;
 function CommDetail({route}: CommScreenProp) {
   const postIdx: number = route.params.postIdx;
 
-  const [detailContent, setDetailContent] = useState<DetailProps[]>([]);
+  const [detailContent, setDetailContent] = useState<DetailProps>([]);
 
   const getDetailPost = async (postId: number) => {
     try {
       const response: AxiosResponse = await axios.get(
         `/api/community/post-info/${postId}`,
       );
-      const data: DetailProps[] = response.data;
+      const data: DetailProps = response.data;
       setDetailContent(data);
     } catch (error: any) {
       Alert.alert(
