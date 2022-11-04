@@ -36,7 +36,7 @@ function convertTime(time: string) {
   if (Number(hour) < 12) {
     return `AM ${hour}:${minute}`;
   }
-  return `PM ${hour}:${minute}`;
+  return `PM ${hour - 12}:${minute}`;
 }
 
 function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
