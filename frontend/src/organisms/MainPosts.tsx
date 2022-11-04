@@ -40,9 +40,13 @@ function MainPosts({mainPostList}: Props) {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
         horizontal>
-        {mainPostList.map(mainPosts => {
+        {mainPostList.map((mainPosts, idx) => {
           return (
-            <MainPost mainPosts={mainPosts} mainPostPgNum={mainPostPgNum} />
+            <MainPost
+              key={idx}
+              mainPosts={mainPosts}
+              mainPostPgNum={mainPostPgNum}
+            />
           );
         })}
       </ScrollView>
