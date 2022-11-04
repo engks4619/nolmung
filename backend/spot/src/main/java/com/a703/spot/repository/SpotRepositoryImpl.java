@@ -2,6 +2,7 @@ package com.a703.spot.repository;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.SpotDto;
+import com.a703.spot.dto.response.SpotSimpleDto;
 import com.a703.spot.dto.response.SpotTransferDto;
 import com.a703.spot.mapper.SpotMapper;
 import com.querydsl.core.Tuple;
@@ -44,16 +45,16 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
      * @return
      */
     @Override
-    public Page<SpotDto> search(SpotRequest request, Pageable pageable) {
+    public Page<SpotSimpleDto> search(SpotRequest request, Pageable pageable) {
         distanceExpression = getDistanceExpression(request.getLng(), request.getLat());
         limitDistance = getLimitDistanceExpression(request.getLimitDistance());
         //스팟 리스트
-        List<SpotTransferDto> transferContent = queryFactory
-                .select(Projections.constructor(SpotTransferDto.class,
-                            spot.spotId, spot.name,
-                            spot.lat, spot.lng, spot.imgCnt, spot.category,
-                            distanceExpression.as(String.valueOf(distanceDiff))
-                        )
+        List<SpotSimpleDto> content = queryFactory
+                .select(Projections.constructor(SpotSimpleDto.class,
+                        spot.spotId, spot.name, spot.imgCnt,
+                        spot.lat, spot.lng, spot.category,
+                        distanceExpression.as(String.valueOf(distanceDiff))
+                    )
                 )
                 .from(spot)
                 .where(distanceExpression.loe(limitDistance),
@@ -67,22 +68,20 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
 
         // count query
         Long totalCount = getTotalCount(request.getSearchValue(), request.getCategory());
-        // SpotTransferDto to SpotDto 매핑
-        List<SpotDto> content = getContentList(transferContent);
-        return new PageImpl<>(content, pageable, totalCount);
+        return new PageImpl<>(getContentList(content), pageable, totalCount);
     }
 
     @Override
-    public Page<SpotDto> searchByStar(SpotRequest request, Pageable pageable) {
+    public Page<SpotSimpleDto> searchByStar(SpotRequest request, Pageable pageable) {
         distanceExpression = getDistanceExpression(request.getLng(), request.getLat());
         limitDistance = getLimitDistanceExpression(request.getLimitDistance());
         //스팟 리스트
-        List<SpotTransferDto> transferContent = queryFactory
-                .select(Projections.constructor(SpotTransferDto.class,
-                                spot.spotId, spot.name,
-                                spot.lat, spot.lng, spot.imgCnt, spot.category,
-                                distanceExpression.as(String.valueOf(distanceDiff))
-                        )
+        List<SpotSimpleDto> content = queryFactory
+                .select(Projections.constructor(SpotSimpleDto.class,
+                        spot.spotId, spot.name, spot.imgCnt,
+                        spot.lat, spot.lng, spot.category,
+                        distanceExpression.as(String.valueOf(distanceDiff))
+                    )
                 )
                 .from(spot)
                 .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId),
@@ -100,22 +99,20 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                 .fetch();
         // count query
         Long totalCount = getTotalCount(request.getSearchValue(), request.getCategory());
-        // SpotTransferDto to SpotDto 매핑
-        List<SpotDto> content = getContentList(transferContent);
-        return new PageImpl<>(content, pageable, totalCount);
+        return new PageImpl<>(getContentList(content), pageable, totalCount);
     }
 
     @Override
-    public Page<SpotDto> searchByReviewCnt(SpotRequest request, Pageable pageable) {
+    public Page<SpotSimpleDto> searchByReviewCnt(SpotRequest request, Pageable pageable) {
         distanceExpression = getDistanceExpression(request.getLng(), request.getLat());
         limitDistance = getLimitDistanceExpression(request.getLimitDistance());
         //스팟 리스트
-        List<SpotTransferDto> transferContent = queryFactory
-                .select(Projections.constructor(SpotTransferDto.class,
-                                spot.spotId, spot.name,
-                                spot.lat, spot.lng, spot.imgCnt, spot.category,
-                                distanceExpression.as(String.valueOf(distanceDiff))
-                        )
+        List<SpotSimpleDto> content = queryFactory
+                .select(Projections.constructor(SpotSimpleDto.class,
+                        spot.spotId, spot.name, spot.imgCnt,
+                        spot.lat, spot.lng, spot.category,
+                        distanceExpression.as(String.valueOf(distanceDiff))
+                    )
                 )
                 .from(spot)
                 .leftJoin(spotReview).on(spot.spotId.eq(spotReview.spot.spotId),
@@ -133,9 +130,7 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                 .fetch();
         // count query
         Long totalCount = getTotalCount(request.getSearchValue(), request.getCategory());
-        // SpotTransferDto to SpotDto 매핑
-        List<SpotDto> content = getContentList(transferContent);
-        return new PageImpl<>(content, pageable, totalCount);
+        return new PageImpl<>(getContentList(content), pageable, totalCount);
     }
 
     @Override
@@ -174,16 +169,28 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
                 .fetchOne();
     }
 
-    private List<SpotDto> getContentList(List<SpotTransferDto> transferContent) {
-        List<SpotDto> result = new ArrayList<>();
-        for (SpotTransferDto transferDto : transferContent) {
+    private List<SpotSimpleDto> getContentList(List<SpotSimpleDto> transferContent) {
+        List<SpotSimpleDto> result = new ArrayList<>();
+        for (SpotSimpleDto transferDto : transferContent) {
             // 산책스팟 정보 매핑
-            SpotDto spotDto = spotMapper.TransferDtoToDto(transferDto);
             // 리뷰 정보 매핑
-            spotDto.setStar(spotReviewRepository.getStarAvg(transferDto.getSpotId()));
-            spotDto.setReviewCnt(spotReviewRepository.getReviewCnt(transferDto.getSpotId()));
-            result.add(spotDto);
+            transferDto.setStar(spotReviewRepository.getStarAvg(transferDto.getSpotId()));
+            transferDto.setReviewCnt(spotReviewRepository.getReviewCnt(transferDto.getSpotId()));
+            result.add(transferDto);
         }
         return result;
     }
+
+//    private List<SpotDto> getContentList(List<SpotTransferDto> transferContent) {
+//        List<SpotDto> result = new ArrayList<>();
+//        for (SpotTransferDto transferDto : transferContent) {
+//            // 산책스팟 정보 매핑
+//            SpotDto spotDto = spotMapper.TransferDtoToDto(transferDto);
+//            // 리뷰 정보 매핑
+//            spotDto.setStar(spotReviewRepository.getStarAvg(transferDto.getSpotId()));
+//            spotDto.setReviewCnt(spotReviewRepository.getReviewCnt(transferDto.getSpotId()));
+//            result.add(spotDto);
+//        }
+//        return result;
+//    }
 }

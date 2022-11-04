@@ -131,9 +131,9 @@ class SpotApplicationTests {
         int desc = 0;
         SpotListDto result = spotService.getSpotList(request, page, desc);
         System.out.println("totalPage : " + result.getTotalPage());
-        for(SpotDto spotDto : result.getSpotDtoList()) {
-            System.out.println(spotDto);
-        }
+//        for(SpotDto spotDto : result.getSpotDtoList()) {
+//            System.out.println(spotDto);
+//        }
     }
 
 //    @Test

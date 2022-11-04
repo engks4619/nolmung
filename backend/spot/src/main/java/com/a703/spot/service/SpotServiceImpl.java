@@ -1,10 +1,7 @@
 package com.a703.spot.service;
 
 import com.a703.spot.dto.request.SpotRequest;
-import com.a703.spot.dto.response.SpotDetailDto;
-import com.a703.spot.dto.response.SpotDto;
-import com.a703.spot.dto.response.SpotListDto;
-import com.a703.spot.dto.response.SpotReviewDto;
+import com.a703.spot.dto.response.*;
 import com.a703.spot.entity.ReviewPhoto;
 import com.a703.spot.entity.Spot;
 import com.a703.spot.entity.SpotReview;
@@ -43,7 +40,7 @@ public class SpotServiceImpl implements SpotService {
 
         //페이지네이션
         Pageable pageable = PageRequest.of(page, constProperties.getSpotListSize());
-        Page<SpotDto> pageSpots = null;
+        Page<SpotSimpleDto> pageSpots = null;
         if(sort == 1) { // 별점순
             pageSpots = spotRepository.searchByStar(request, pageable);
         }else if(sort == 2) { // 리뷰 많은 순
