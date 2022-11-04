@@ -1,0 +1,68 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://nolmung.kr:8761/eureka
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+#        - id: user
+#          uri: lb://USER
+#          predicates:
+#            - Path=/api/user/**
+#          filters:
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: community
+          uri: lb://COMMUNITY
+          predicates:
+            - Path=/api/community/**
+          filters:
+        - id: withdog
+          uri: lb://WITHDOG
+          predicates:
+            - Path=/api/withdog/**
+          filters:
+        - id: spot
+          uri: lb://SPOT
+          predicates:
+            - Path=/api/spot/**
+          filters:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: true
