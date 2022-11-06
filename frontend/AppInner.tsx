@@ -20,6 +20,8 @@ import {MAIN_COLOR} from '~/const';
 import Maps from './src/pages/maps'
 // import {RootState} from "./src/store/reducer";
 
+import usePermissions from '~/hooks/usePermissions';
+
 export type LoggedInParamList = {
   Chats: undefined;
   Spots: undefined;
@@ -53,6 +55,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
+  usePermissions(); //권한 요청 커스텀 훅
   // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
   const [isLoggedIn, setLoggedIn] = useState(true);
   return (
