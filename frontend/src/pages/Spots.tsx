@@ -50,6 +50,27 @@ function Spots() {
 
   const getSpotList = async () => {
     const params = {
+      page: 0,
+      sort,
+    }
+    try {
+      const response: AxiosResponse = await spotAxios.post(`/spot`, spotRequest, {params});
+      console.log(response.status);
+      if(response.status == 200) {
+        const data = await response.data;
+        // setSpotList(data?.spotDtoList);
+        setSpotList([...data?.spotDtoList]);
+        setTotalPage(data?.totalPage);
+      }
+    } catch (error: any) {
+      Alert.alert(
+        `에러코드 ${error}`
+      )
+    }
+  };
+
+  const getMoreSpotList = async () => {
+    const params = {
       page,
       sort,
     }
@@ -67,7 +88,7 @@ function Spots() {
         `에러코드 ${error}`
       )
     }
-  };
+  }
 
   const onChangeSearchValue = useCallback((val : string) => {
     setSearchValue(val.trim());
@@ -109,12 +130,17 @@ function Spots() {
   },[])
 
   useEffect(() => {
-    console.log(spotRequest);
     if(!spotRequest)
       return;
     getSpotList();
-  }, [spotRequest, page, sort]);
+  }, [spotRequest, sort]);
 
+  useEffect(() => {
+    if (!page)
+      return;
+    getMoreSpotList();
+  }, [page])
+  
   return (
     <View>
       <SpotsTemplate 
