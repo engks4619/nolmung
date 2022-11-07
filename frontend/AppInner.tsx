@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -18,6 +18,13 @@ import CommDetail from '~/pages/CommDetail';
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
 import {MAIN_COLOR} from '~/const';
+
+// SVG ICONS for BOTTOM TAB BAR
+import ChatIcon from '@assets/chat.svg';
+import HomeIcon from '@assets/home.svg';
+import UserIcon from '@assets/user.svg';
+import CommunityIcon from '@assets/community.svg';
+import SpotIcon from '@assets/spot.svg';
 
 // import {RootState} from "./src/store/reducer";
 
@@ -89,19 +96,40 @@ function AppInner() {
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Tab.Navigator initialRouteName="홈">
+        <Tab.Navigator
+          initialRouteName="Main"
+          screenOptions={{
+            tabBarHideOnKeyboard: true,
+            tabBarActiveTintColor: MAIN_COLOR,
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontWeight: 'bold',
+            },
+          }}>
           <Tab.Screen
-            name="채팅"
+            name="Chats"
             component={Chats}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              title: '채팅',
+              tabBarIcon: ({color}) => (
+                <ChatIcon width={25} height={25} fill={color} />
+              ),
+            }}
           />
           <Tab.Screen
-            name="애견 동반 스팟"
+            name="Spots"
             component={Spots}
-            options={{optiopn: false}}
+            options={{
+              headerShown: false,
+              title: '애견 동반 스팟',
+              tabBarIcon: ({color}) => (
+                <SpotIcon width={25} height={25} fill={color} />
+              ),
+            }}
           />
           <Tab.Screen
-            name="홈"
+            name="Main"
             component={Main}
             options={{
               headerTitle: '놀면 멍하니',
@@ -110,11 +138,15 @@ function AppInner() {
                 fontWeight: 'bold',
                 fontSize: 15,
               },
+              title: '홈',
+              tabBarIcon: ({color}) => (
+                <HomeIcon width={25} height={25} fill={color} />
+              ),
             }}
           />
           <Tab.Screen
-            name="커뮤니티"
-            component={CommunityStackNavigator}
+            name="Community"
+            component={Community}
             options={{
               headerTitle: '놀면 멍하니',
               headerTintColor: MAIN_COLOR,
@@ -122,13 +154,23 @@ function AppInner() {
                 fontWeight: 'bold',
                 fontSize: 15,
               },
+              title: '커뮤니티',
+              tabBarIcon: ({color}) => (
+                <CommunityIcon width={25} height={25} fill={color} />
+              ),
             }}
           />
           <Tab.Screen
-            name="마이페이지"
+            name="Mypage"
             // component={Mypage}
             component={MypageStackNavigator}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+              title: '마이페이지',
+              tabBarIcon: ({color}) => (
+                <UserIcon width={25} height={25} fill={color} />
+              ),
+            }}
           />
         </Tab.Navigator>
       ) : (

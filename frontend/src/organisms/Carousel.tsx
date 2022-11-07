@@ -38,7 +38,7 @@ const Carousel = ({
         snapToAlignment="start"
         pagingEnabled
         horizontal
-        keyExtractor={item => String(item.id)}
+        keyExtractor={item => String(item.spotId)}
         data={data}
         renderItem={({item}) => (
           <View style={{marginHorizontal: gap / 2}}>
