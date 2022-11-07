@@ -43,26 +43,28 @@ function SpotsContainer({spotList, loadMore}: Props) {
                   />
             )}
           </View>
-          <View style={styles.hContainer}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-              {spotList.indexOf(item) + 1}.{item.name}
-            </Text>
-            
-          </View>
-          <Text>
-              {item.star ? item.star : '평점 없음'}
-            </Text>
-          <View style={styles.hContainer}>
-            <Text style={styles.desc}>
-              동작/사당
-            </Text>      
-            <Text>
-              <Pencil width={10} height={10} fill={'black'} stroke={'black'} />
-              {item.reviewCnt}
-            </Text>
-          </View>
           
-          {/* <Text>{}.{item.name}</Text> */}
+            <View style={styles.descContainer}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+                {spotList.indexOf(item) + 1}. {item.name}
+              </Text>
+              <Text style={[styles.star, styles.right]}>
+                  {item.star ? item.star : '0.0'}
+                </Text>
+            </View>
+            <View style={[styles.descContainer, styles.right]}>
+              
+            </View>
+            <View style={styles.descContainer}>
+              <Text style={styles.desc}>
+                동작/사당
+              </Text>      
+              <Text style={styles.reviewContainer}>
+                <Pencil width={10} height={10} fill={'black'} stroke={'black'} />
+                  {item.reviewCnt}
+              </Text>
+            </View>
+          
         </View>
       )}
       onEndReached={() => loadMore()}
@@ -72,6 +74,7 @@ function SpotsContainer({spotList, loadMore}: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingVertical: 10,
     width: '50%',
@@ -84,15 +87,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  hContainer: {
-    flexDirection: 'row',
-  },
   title: {
     fontSize: 13,
     fontWeight: '700',
+    paddingTop: 5,
+    width:'80%'
+  },
+  descContainer: {
+    paddingHorizontal: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   desc: {
     fontSize: 10,
+  },
+  right: {
+    justifyContent: 'flex-end'
+  },
+  star: {
+    paddingTop: 5,
+    fontSize: 12,
+    fontWeight: '500'
+  },
+  reviewContainer: {
+    paddingHorizontal: 10
   }
 });
 
