@@ -23,8 +23,10 @@ function Community() {
   const [categoryType, setCategoryType] = useState<string>('WITH');
   const [withPgNum, setWithPgNum] = useState<number>(0);
   const [withPostList, setWithPostList] = useState<withPostListType[]>([]);
+  const [withTotalPg, setWithTotalPg] = useState<number>(0);
   const [otherPgNum, setOtherPgNum] = useState<number>(0);
   const [otherPostList, setOtherPostList] = useState<otherPostListType[]>([]);
+  const [otherTotalPg, setOtherTotalPg] = useState<number>(0);
 
   const navigateWithPg = () => {
     setCategoryType('WITH');
@@ -38,12 +40,16 @@ function Community() {
     const params = {
       page: pgNum,
     };
+    if (pgNum > withTotalPg) {
+      return;
+    }
     try {
       const response: AxiosResponse = await axios.get('community/with', {
         params,
       });
       const data: withPostListType[] = await response.data.withDtoList;
       setWithPostList([...withPostList, ...data]);
+      setWithTotalPg(response.data.totalPage);
       setWithPgNum(withPgNum + 1);
     } catch (error: any) {
       Alert.alert(
@@ -57,6 +63,9 @@ function Community() {
     const params = {
       page: pgNum,
     };
+    if (pgNum > otherTotalPg) {
+      return;
+    }
     try {
       const response: AxiosResponse = await axios.get('community/other', {
         params,
@@ -64,6 +73,7 @@ function Community() {
       const data: otherPostListType[] = await response.data.otherDtoList;
       setOtherPostList([...otherPostList, ...data]);
       setOtherPgNum(otherPgNum + 1);
+      setOtherTotalPg(response.data.totalPage);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,

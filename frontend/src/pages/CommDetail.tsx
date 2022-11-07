@@ -33,7 +33,7 @@ function CommDetail({route}: CommScreenProp) {
   const getDetailPost = async (postId: number) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `/api/community/post-info/${postId}`,
+        `community/post-info/${postId}`,
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
