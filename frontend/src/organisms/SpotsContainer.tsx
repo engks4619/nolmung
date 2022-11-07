@@ -1,5 +1,5 @@
-import React from 'react';
-import {FlatList, ScrollView, StyleSheet, View, Text} from 'react-native';
+import React, {useRef} from 'react';
+import {FlatList, ScrollView, StyleSheet, View, Text, Button} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Squre from '~/atoms/Squre';
 import {Spot} from '~/pages/Spots';
@@ -11,14 +11,29 @@ interface Props {
 }
 
 function SpotsContainer({spotList, loadMore}: Props) {
+
+  const flatListRef = useRef(null);
+  // const toTop = () => { 
+  //   flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+  // }
+
+  const renderEmpty = () => (
+    <View style={styles.emptyText}>
+        <Text>데이터가 없습니다.</Text>
+    </View>
+)
+
   return (
     <FlatList
+      ref={flatListRef}
       data={spotList}
       numColumns={2}
       columnWrapperStyle={styles.row}
       keyExtractor={(item, idx) => idx.toString()}
+      windowSize={30}
+      contentContainerStyle={{ paddingBottom: 250 }}
       renderItem={({item}) => (
-        <View key={item.spotId} style={styles.container}>
+        <ScrollView key={item.spotId} style={styles.container}>
           <View style={styles.imgContainer}>
             {item.imgCnt != 0 ? (
               
@@ -49,7 +64,7 @@ function SpotsContainer({spotList, loadMore}: Props) {
                 {spotList.indexOf(item) + 1}. {item.name}
               </Text>
               <Text style={[styles.star, styles.right]}>
-                  {item.star ? item.star : '0.0'}
+                  {item.star ? item.star.toString().slice(0,3) : '0.0'}
                 </Text>
             </View>
             <View style={[styles.descContainer, styles.right]}>
@@ -65,23 +80,28 @@ function SpotsContainer({spotList, loadMore}: Props) {
               </Text>
             </View>
           
-        </View>
+        </ScrollView>
       )}
+      ListEmptyComponent={renderEmpty}
+      onEndReachedThreshold={0.2}
       onEndReached={() => loadMore()}
     />
   );
 }
 
 const styles = StyleSheet.create({
+  // contentContainer: {
+  //   paddingBottom: 100
+  // },
   container: {
     backgroundColor: 'white',
     paddingHorizontal: 10,
-    paddingVertical: 10,
-    width: '50%',
+    paddingBottom: 15,
+    width: '100%',
   },
   row: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   imgContainer: {
     justifyContent: 'center',
@@ -111,6 +131,12 @@ const styles = StyleSheet.create({
   },
   reviewContainer: {
     paddingHorizontal: 10
+  },
+  emptyText: {
+    paddingVertical: 20,
+    alignItems: 'center',
+    fontSize: 12,
+    fontWeight: '500'
   }
 });
 

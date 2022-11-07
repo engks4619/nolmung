@@ -43,15 +43,18 @@ function Spots() {
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
+  const [limitDistance, setLimitDistance] = useState<number>(1000);
+  const [category, setCategory] = useState<string>('카페');
   const [spotRequest, setSpotRequest] = useState<SpotRequest | null>();
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
 
+  
   const getSpotList = async () => {
     const params = {
       page: 0,
-      sort,
+      sort: sort,
     }
     try {
       const response: AxiosResponse = await spotAxios.post(`/spot`, spotRequest, {params});
@@ -79,7 +82,6 @@ function Spots() {
       console.log(response.status);
       if(response.status == 200) {
         const data = await response.data;
-        // setSpotList(data?.spotDtoList);
         setSpotList([...spotList, ...data?.spotDtoList]);
         setTotalPage(data?.totalPage);
       }
@@ -113,8 +115,8 @@ function Spots() {
       "lat" : 0,
       "lng" : 0,
       "searchValue" : '',
-      "limitDistance" : 0,
-      "category" : '',
+      "limitDistance" : 1000,
+      "category" : '카페',
     };
 
     setSpotRequest(requestBody);
@@ -135,6 +137,14 @@ function Spots() {
     getSpotList();
   }, [spotRequest, sort]);
 
+  useEffect(()=> {
+    setSpotRequest({
+      ...spotRequest, 
+      limitDistance,
+      category
+    } as SpotRequest);
+  },[limitDistance, category]);
+
   useEffect(() => {
     if (!page)
       return;
@@ -151,6 +161,13 @@ function Spots() {
         searchValue={searchValue}
         onChangeSearchValue={onChangeSearchValue}
         loadMore={loadMore}
+        sort={sort}
+        setSort={setSort}
+        limitDistance={limitDistance}
+        setLimitDistance={setLimitDistance}
+        category={category}
+        setCategory={setCategory}
+        initSpotRequest={initSpotRequest}
         />
     </View>
   );
