@@ -3,7 +3,8 @@ import {View} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
 import CommOtherPost from '@organisms/CommOtherPost';
-import {withPostListType, otherPostListType} from '~/pages/Community';
+import {withPostListType, otherPostListType} from '@pages/Community';
+import EditBtn from '@molecules/EditBtn';
 
 export interface CommunityTabType {
   navigateWithPg: () => void;
@@ -33,9 +34,15 @@ function CommunityTemplate({
         categoryType={categoryType}
       />
       {categoryType === 'WITH' ? (
-        <CommWithPost withPostList={withPostList} loadMore={loadMore} />
+        <>
+          <CommWithPost withPostList={withPostList} loadMore={loadMore} />
+          <EditBtn />
+        </>
       ) : (
-        <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
+        <>
+          <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
+          <EditBtn />
+        </>
       )}
     </View>
   );
