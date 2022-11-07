@@ -1,8 +1,15 @@
 import React, {useState, useCallback} from 'react';
 import {View} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
+
+import MyPostList from '@pages/MyPostList';
+import MyLikedList from '@pages/MyLikedList';
+import MyLikedSpots from '@pages/MyLikedSpots';
+import MyWalkingRecord from '@pages/MyWalkingRecord';
+import MyDogs from '@pages/MyDogs';
 
 //UserInfoType
 export type UserInfoType = {
@@ -12,6 +19,22 @@ export type UserInfoType = {
   walkHour: number;
   walkDistance: number;
 };
+
+const MypageStack = createNativeStackNavigator();
+export const MypageStackNavigator = () => (
+  <MypageStack.Navigator>
+    <MypageStack.Screen
+      name="Mypage"
+      component={Mypage}
+      options={{headerShown: false}}
+    />
+    <MypageStack.Screen name="MyPostList" component={MyPostList} />
+    <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
+    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
+    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
+    <MypageStack.Screen name="MyDogs" component={MyDogs} />
+  </MypageStack.Navigator>
+);
 
 //dummy
 const userInfo: UserInfoType = {

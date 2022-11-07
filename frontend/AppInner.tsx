@@ -25,6 +25,8 @@ import UserIcon from '@assets/user.svg';
 import CommunityIcon from '@assets/community.svg';
 import SpotIcon from '@assets/spot.svg';
 
+import {MypageStackNavigator} from './src/pages/Mypage';
+
 // import {RootState} from "./src/store/reducer";
 
 export type LoggedInParamList = {
@@ -40,21 +42,6 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
 };
-const MypageStack = createNativeStackNavigator();
-const MypageStackNavigator = () => (
-  <MypageStack.Navigator>
-    <MypageStack.Screen
-      name="Mypage"
-      component={Mypage}
-      options={{headerShown: false}}
-    />
-    <MypageStack.Screen name="MyPostList" component={MyPostList} />
-    <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
-    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
-    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
-    <MypageStack.Screen name="MyDogs" component={MyDogs} />
-  </MypageStack.Navigator>
-);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
