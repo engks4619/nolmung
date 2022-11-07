@@ -14,14 +14,16 @@ interface Props {
 }
 
 function MainSpot({item}: Props) {
+  const imagePath = `http://nolmung.kr/api/images/spot/${item.spotId}/1.jpg`;
+  const distance = item.distance.toString().slice(0, 3);
   return (
     <View style={styles.spotContainer}>
-      <Squre imageSource={item.imagePath} />
+      <Squre imageSource={imagePath} />
       <Text style={styles.nameFont}>
         {item.name.length < 9 ? item.name : item.name.slice(0, 7) + '...'}
       </Text>
       <View style={styles.infoContainer}>
-        <Text style={styles.distanceInfo}>{item.distance}km</Text>
+        <Text style={styles.distanceInfo}>{distance}km</Text>
         <Text>[{item.category}]</Text>
       </View>
     </View>

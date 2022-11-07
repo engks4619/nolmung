@@ -1,12 +1,9 @@
 import axios from 'axios';
 
-const HOST = 'http://k7a703.p.ssafy.io';
-const COMMUNITY_PORT = '8081';
-
-const COMMUNITY_URI = `${HOST}:${COMMUNITY_PORT}`;
+const HOST = 'http://nolmung.kr/api/';
 
 const axiosApiInstance = axios.create({
-  baseURL: COMMUNITY_URI,
+  baseURL: HOST,
 });
 
 axiosApiInstance.interceptors.request.use(async config => {

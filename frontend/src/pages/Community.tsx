@@ -39,10 +39,10 @@ function Community() {
       page: pgNum,
     };
     try {
-      const response: AxiosResponse = await axios.get('/api/community/with', {
+      const response: AxiosResponse = await axios.get('community/with', {
         params,
       });
-      const data: withPostListType[] = await response.data;
+      const data: withPostListType[] = await response.data.withDtoList;
       setWithPostList([...withPostList, ...data]);
       setWithPgNum(withPgNum + 1);
     } catch (error: any) {
@@ -58,10 +58,10 @@ function Community() {
       page: pgNum,
     };
     try {
-      const response: AxiosResponse = await axios.get('/api/community/other', {
+      const response: AxiosResponse = await axios.get('community/other', {
         params,
       });
-      const data: otherPostListType[] = await response.data;
+      const data: otherPostListType[] = await response.data.otherDtoList;
       setOtherPostList([...otherPostList, ...data]);
       setOtherPgNum(otherPgNum + 1);
     } catch (error: any) {
