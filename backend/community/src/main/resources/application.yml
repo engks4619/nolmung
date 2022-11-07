@@ -5,7 +5,7 @@ spring:
     name: community
 
 server:
-  port: 8081
+  port: 0
 #  address: k7a703.p.ssafy.io
   servlet:
     context-path: /api
@@ -24,7 +24,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://k7a703.p.ssafy.io:8761/eureka
+      defaultZone: http://nolmung.kr:8761/eureka
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

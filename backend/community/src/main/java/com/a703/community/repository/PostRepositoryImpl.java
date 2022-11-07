@@ -26,17 +26,4 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchOne();
     }
 
-//    @Override
-//    public Page<Post> findAllBySomething(Long userIdx, String categoryType, Pageable pageable) {
-//
-//        return queryFactory
-//                .selectFrom(post)
-//                .where(post.postIdx.in(
-//                        JPAExpressions
-//                                .select(postLike.id.)
-//                                .from(postLike)
-//                                .where(postLike.id.getType().)
-//
-//                ));
-//    }
 }
