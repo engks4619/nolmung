@@ -142,6 +142,7 @@ public class CommunityService {
         return PostDto.builder()
                 .postIdx(post.getPostIdx())
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .writerIdx(post.getWriterIdx())
                 .writer("통신필요")
                 .userImgUrl("통신필요")
                 .subject(post.getSubject())
