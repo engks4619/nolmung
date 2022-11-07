@@ -13,7 +13,7 @@ public class UserInfoDto {
 
     private Long userIdx;
 
-    private String userName;
+    private String nickname;
 
-    private String userImgUrl;
+    private String profileImage;
 }

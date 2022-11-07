@@ -3,6 +3,7 @@ package com.a703.community.service;
 import com.a703.community.dto.request.RegisterPostRequest;
 import com.a703.community.dto.response.*;
 import com.a703.community.dto.response.connection.DogInfoDto;
+import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.*;
 import com.a703.community.repository.*;
 import com.a703.community.type.CategoryType;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,11 +36,11 @@ public class CommunityService {
 
     private final ClientUtil clientUtil;
 
-    public void registerPost(RegisterPostRequest registerPost, Map<String, Object> token, List<MultipartFile> files) throws Exception {
+    public void registerPost(RegisterPostRequest registerPost, String token, List<MultipartFile> files) throws Exception {
 
-//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-//        Long userIdx = userInfoDto.getUserIdx();
-        Long userIdx = 1L;
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+        Long userIdx = userInfoDto.getUserIdx();
+//        Long userIdx = 1L;
 
         List<Long> dogIdxList = registerPost.getDogIdx();
 
@@ -100,7 +100,7 @@ public class CommunityService {
 
     }
 
-    public void pushLike(Long postIdx,Map<String, Object> token) throws Exception {
+    public void pushLike(Long postIdx,String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -119,7 +119,7 @@ public class CommunityService {
         postLikeRepository.save(postLike);
     }
 
-    public PostDto showPost(Long postIdx, Map<String, Object> token) throws Exception {
+    public PostDto showPost(Long postIdx, String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();

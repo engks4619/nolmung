@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class MyListService {
 
     private final ClientUtil clientUtil;
 
-    public WithListDto showMyWithList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public WithListDto showMyWithList(Pageable pageable, String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -61,7 +60,7 @@ public class MyListService {
                 .build();
     }
 
-    public OtherListDto showMyOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public OtherListDto showMyOtherList(Pageable pageable, String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -90,7 +89,7 @@ public class MyListService {
                 .build();
     }
 
-    public OtherListDto showMyLikeOtherList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public OtherListDto showMyLikeOtherList(Pageable pageable, String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -121,7 +120,7 @@ public class MyListService {
                 .build();
     }
 
-    public WithListDto showMyLikeWithList(Pageable pageable, Map<String, Object> token) throws Exception {
+    public WithListDto showMyLikeWithList(Pageable pageable, String token) throws Exception {
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();

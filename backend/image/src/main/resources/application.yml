@@ -1,19 +1,15 @@
 spring:
-  profiles:
-    include: db
   application:
-    name: community
+    name: image
 
 server:
   port: 0
-#  address: k7a703.p.ssafy.io
   servlet:
     context-path: /api
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
 
 resources:
   location: /images/

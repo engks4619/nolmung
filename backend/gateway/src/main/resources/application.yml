@@ -6,7 +6,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://nolmung.kr:8761/eureka
+#      defaultZone: http://nolmung.kr:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
@@ -60,6 +61,12 @@ spring:
           predicates:
             - Path=/api/spot/**
           filters:
+        - id: image
+          uri: lb://IMAGE
+          predicates:
+            - Path=/api/image/**
+          filters:
+
       default-filters:
         - name: GlobalFilter
           args:
