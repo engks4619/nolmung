@@ -9,7 +9,7 @@ import com.a703.community.dto.response.WithListDto;
 import com.a703.community.entity.LuckyDog;
 import com.a703.community.entity.Post;
 import com.a703.community.repository.*;
-import com.a703.community.search.PostSpecification;
+import com.a703.community.service.search.PostSpecification;
 import com.a703.community.type.CategoryType;
 import com.a703.community.util.ClientUtil;
 import lombok.RequiredArgsConstructor;
