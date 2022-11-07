@@ -4,8 +4,10 @@ import com.a703.user.dto.UserDto;
 import com.a703.user.service.UserService;
 import com.a703.user.vo.RequestUser;
 import com.a703.user.vo.ResponseUser;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHeaders;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -14,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -23,10 +25,10 @@ public class UserController {
 
     @GetMapping("/health_check")
     public String status() {
-        return String.format("It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
+        return String.format("It's Working in User Service on local PORT %s", env.getProperty("local.server.port"));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user){
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
@@ -41,6 +43,20 @@ public class UserController {
 
     @GetMapping("/info/{userIdx}")
     public ResponseEntity<?> getUserInfo(@PathVariable("userIdx") Long userIdx){
+        UserDto userDto = userService.getUserByUserIdx(userIdx);
+
+        ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
+    @GetMapping("/my-info")
+    public ResponseEntity<?> getMyInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+        jwt = jwt.replace("Bearer ", "");
+        Long userIdx = Long.parseLong(Jwts.parser().setSigningKey(env.getProperty("token.secret"))
+                .parseClaimsJws(jwt).getBody()
+                .getSubject());
+
         UserDto userDto = userService.getUserByUserIdx(userIdx);
 
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
