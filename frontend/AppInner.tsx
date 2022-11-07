@@ -13,6 +13,7 @@ import MyLikedList from './src/pages/MyLikedList';
 import MyLikedSpots from './src/pages/MyLikedSpots';
 import MyWalkingRecord from './src/pages/MyWalkingRecord';
 import MyDogs from './src/pages/MyDogs';
+import CommDetail from '~/pages/CommDetail';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -33,6 +34,12 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
 };
+
+export type CommunityParamList = {
+  Community: undefined;
+  CommDetail: {postIdx: number};
+};
+
 const MypageStack = createNativeStackNavigator();
 const MypageStackNavigator = () => (
   <MypageStack.Navigator>
@@ -47,6 +54,30 @@ const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen name="MyDogs" component={MyDogs} />
   </MypageStack.Navigator>
+);
+
+const CommunityStack = createNativeStackNavigator();
+
+const CommunityStackNavigator = () => (
+  <CommunityStack.Navigator>
+    <CommunityStack.Screen
+      name="Community"
+      component={Community}
+      options={{headerShown: false}}
+    />
+    <CommunityStack.Screen
+      name="CommDetail"
+      component={CommDetail}
+      options={{
+        headerTitle: '게시글',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+  </CommunityStack.Navigator>
 );
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +114,7 @@ function AppInner() {
           />
           <Tab.Screen
             name="커뮤니티"
-            component={Community}
+            component={CommunityStackNavigator}
             options={{
               headerTitle: '놀면 멍하니',
               headerTintColor: MAIN_COLOR,

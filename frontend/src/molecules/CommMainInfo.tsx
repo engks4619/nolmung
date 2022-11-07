@@ -31,7 +31,7 @@ function elapsedTime(date: string) {
   return '방금 전';
 }
 
-function convertTime(time: string) {
+export function convertTime(time: string) {
   const [hour, minute] = time.split(':');
   if (Number(hour) < 12) {
     return `AM ${hour}:${minute}`;
