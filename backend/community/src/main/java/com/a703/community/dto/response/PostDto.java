@@ -18,6 +18,8 @@ public class PostDto {
 
     private Long postIdx;
 
+    private Long writerIdx;
+
     private String writer;
 
     private String userImgUrl;
