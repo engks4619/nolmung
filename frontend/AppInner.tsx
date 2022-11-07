@@ -17,7 +17,7 @@ import MyDogs from './src/pages/MyDogs';
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
 import {MAIN_COLOR} from '~/const';
-import Maps from './src/pages/maps'
+import Maps from './src/pages/maps';
 // import {RootState} from "./src/store/reducer";
 
 import usePermissions from '~/hooks/usePermissions';
