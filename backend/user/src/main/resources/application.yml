@@ -5,9 +5,9 @@ spring:
     name: user
 
 server:
-  port: 8080
+  port: 0
   servlet:
-    contextPath: /api/user
+    contextPath: /api
 
 eureka:
   instance:
@@ -26,3 +26,6 @@ logging:
 token:
   expiration_time: 86400000
   secret: user_token
+
+gateway:
+  ip: 172.18.0.4
