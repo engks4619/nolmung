@@ -1,20 +1,15 @@
-import React, { useState } from "react";
-import { StyleSheet, Pressable, Text, TextInput, View } from "react-native";
-import { MAIN_COLOR } from "~/const";
-import Search from "@assets/search.svg";
+import React, {useState} from 'react';
+import {StyleSheet, Pressable, Text, TextInput, View} from 'react-native';
+import {MAIN_COLOR} from '~/const';
+import Search from '@assets/search.svg';
 
 interface Props {
-  onSearchSubmit: Function; 
   searchValue: string;
-  onChangeSearchValue: Function;
+  onSearchSubmit: (val: string) => void;
+  onChangeSearchValue: (val: string) => void;
 }
 
-function SearchBar({
-  onSearchSubmit,
-  searchValue,
-  onChangeSearchValue
-}: Props) {
-
+function SearchBar({onSearchSubmit, searchValue, onChangeSearchValue}: Props) {
   const [isFocused, setIsFocused] = useState(false);
 
   const customOnFocus = () => {
@@ -24,7 +19,7 @@ function SearchBar({
     setIsFocused(false);
   };
 
-  return(
+  return (
     <View style={styles.hContainer}>
       <TextInput
         style={styles.textInput}
@@ -34,13 +29,10 @@ function SearchBar({
         onBlur={customOnBlur}
         keyboardType={'default'}
       />
-      <Pressable 
+      <Pressable
         style={styles.searchButton}
-        onPress={() => onSearchSubmit(searchValue)}
-      >
-        <View>
-          <Search width={20} height={20} fill={'black'} stroke={'black'} />
-        </View>
+        onPress={() => onSearchSubmit(searchValue)}>
+        <Search width={20} height={20} fill={'black'} stroke={'black'} />
       </Pressable>
     </View>
   );
@@ -48,7 +40,7 @@ function SearchBar({
 
 const styles = StyleSheet.create({
   hContainer: {
-    flexDirection:'row',
+    flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -59,7 +51,7 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     flex: 1,
-  }
-})
+  },
+});
 
 export default SearchBar;

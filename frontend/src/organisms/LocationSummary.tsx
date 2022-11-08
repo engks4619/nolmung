@@ -4,9 +4,9 @@ import SearchBar from '../atoms/SearchBar';
 
 interface Props {
   userLocation: string;
-  onSearchSubmit: Function;
+  onSearchSubmit: (val:string) => void;
   searchValue: string;
-  onChangeSearchValue: Function;
+  onChangeSearchValue: (val:string) => void;
 }
 
 function LocationSummary({

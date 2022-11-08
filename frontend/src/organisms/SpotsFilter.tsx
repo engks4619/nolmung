@@ -1,19 +1,21 @@
-import React, { useRef, useState } from "react";
-import { StyleSheet, View, Text, Pressable } from "react-native";
-import Reload from "@assets/reload.svg";
-import SelectDropdown from 'react-native-select-dropdown'
+import React, {Dispatch, SetStateAction, useRef, useState} from 'react';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
+import Reload from '@assets/reload.svg';
+import SelectDropdown from 'react-native-select-dropdown';
 
 interface Props {
   sort: number;
-  setSort: Function;
+  setSort: Dispatch<SetStateAction<number>>;
   limitDistance: number;
-  setLimitDistance: Function;
+  setLimitDistance: Dispatch<SetStateAction<number>>;
   category: string;
-  setCategory: Function;
-  initSpotRequest: Function;
+  setCategory: Dispatch<SetStateAction<string>>;
+  initSpotRequest: () => void;
 }
 
-
+const sorts = ['거리순', '별점순', '리뷰많은순'];
+const distances = ['1km', '10km', '30km', '제한없음'];
+const distanceArr = [1000, 10000, 30000, 0];
 
 function SpotsFilter({
   sort,
@@ -22,21 +24,15 @@ function SpotsFilter({
   setLimitDistance,
   category,
   setCategory,
-  initSpotRequest
+  initSpotRequest,
 }: Props) {
-  const sorts = ["거리순", "별점순", "리뷰많은순"];
-  const distances = ["1km", "10km", "30km", "제한없음"]
-  const distanceArr = [1000, 10000, 30000, 0];
-
   const sortRef = useRef<SelectDropdown>(null);
   const categoryRef = useRef<SelectDropdown>(null);
 
-
-  return(
-    <View style={styles.container}>
+  return (
     <View style={styles.hContainer}>
-      <Pressable onPress={
-        ()=>{
+      <Pressable
+        onPress={() => {
           initSpotRequest();
           sortRef.current?.reset();
           categoryRef.current?.reset();
@@ -44,12 +40,10 @@ function SpotsFilter({
         }}>
         <View style={styles.reloadBtn}>
           <Reload width={20} height={20} fill={'black'} stroke={'black'} />
-          <Text style={[styles.text, styles.reloadText]}>
-            초기화
-          </Text>     
+          <Text style={[styles.text, styles.reloadText]}>초기화</Text>
         </View>
       </Pressable>
-      <SelectDropdown 
+      <SelectDropdown
         ref={sortRef}
         buttonStyle={styles.borderBox}
         rowTextStyle={styles.borderText}
@@ -62,13 +56,13 @@ function SpotsFilter({
           setSort(idx);
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
-          return selectedItem
+          return selectedItem;
         }}
         rowTextForSelection={(item, index) => {
-          return item
+          return item;
         }}
       />
-      <SelectDropdown 
+      <SelectDropdown
         ref={categoryRef}
         buttonStyle={styles.borderDistanceBox}
         rowTextStyle={styles.borderText}
@@ -81,45 +75,52 @@ function SpotsFilter({
           setLimitDistance(distanceArr[idx]);
         }}
         buttonTextAfterSelection={(selectedItem, index) => {
-          return selectedItem
+          return selectedItem;
         }}
         rowTextForSelection={(item, index) => {
-          return item
+          return item;
         }}
       />
-      <Pressable onPress={()=>setCategory('카페')}>
-        <Text style={category == '카페' ? [styles.text, styles.brownBorder] : styles.text}>
+      <Pressable onPress={() => setCategory('카페')}>
+        <Text
+          style={
+            category == '카페' ? [styles.text, styles.brownBorder] : styles.text
+          }>
           카페
         </Text>
       </Pressable>
-      <Pressable onPress={()=>setCategory('식당')}>
-        <Text style={category == '식당' ? [styles.text, styles.brownBorder] : styles.text}>
+      <Pressable onPress={() => setCategory('식당')}>
+        <Text
+          style={
+            category == '식당' ? [styles.text, styles.brownBorder] : styles.text
+          }>
           식당
         </Text>
       </Pressable>
-    </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    alignItems: 'center',
-  },
+  // container: {
+  //   backgroundColor: 'white',
+  //   alignItems: 'center',
+  // },
   hContainer: {
+    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingVertical: 10,
-    width: '95%',
+    paddingHorizontal: 10,
+    // width: '95%',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   reloadBtn: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     fontSize: 12,
@@ -132,28 +133,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderColor: 'brown',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    borderWidth: 1,
     borderRadius: 15,
     width: 95,
     height: 30,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   borderDistanceBox: {
     backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderColor: 'brown',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    borderWidth: 1,
     borderRadius: 15,
     width: 85,
     height: 30,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   borderText: {
     fontSize: 12,
@@ -166,14 +161,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderColor: 'brown',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    borderWidth: 1,
     borderRadius: 15,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
+    alignItems: 'center',
+  },
+});
 
 export default SpotsFilter;

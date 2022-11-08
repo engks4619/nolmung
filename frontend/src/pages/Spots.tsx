@@ -1,45 +1,44 @@
-import { AxiosResponse } from 'axios';
-import React, { useCallback, useEffect, useState } from 'react';
+import {AxiosResponse} from 'axios';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, ScrollView, StatusBar, Text, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
-import spotAxios from '~/utils/spotAxios';
+import axios from '~/utils/axios';
 
 export interface menu {
-  menuName: string,
-  menuPrice: number,
+  menuName: string;
+  menuPrice: number;
 }
 
 export interface time {
-  timeName: string,
-  timeDesc: string,
+  timeName: string;
+  timeDesc: string;
 }
 export interface Spot {
-  category: string | null,
-  distance: number,
-  imgCnt: number,
-  address: string | null,
-  lat: number,
-  lng: number,
-  descList: string[] | null,
-  menuList: menu[] | null,
-  timeList: time[] | null,
-  name: string,
-  reviewCnt: number,
-  star: number | null,
-  tag: string | null,
-  spotId: string,
-  tel: string | null,
+  category: string | null;
+  distance: number;
+  imgCnt: number;
+  address: string | null;
+  lat: number;
+  lng: number;
+  descList: string[] | null;
+  menuList: menu[] | null;
+  timeList: time[] | null;
+  name: string;
+  reviewCnt: number;
+  star: number | null;
+  tag: string | null;
+  spotId: string;
+  tel: string | null;
+}
+interface SpotRequest {
+  lat: number;
+  lng: number;
+  searchValue: string;
+  limitDistance: number;
+  category: string;
 }
 
 function Spots() {
-  interface SpotRequest {
-    lat: number,
-    lng: number,
-    searchValue: string,
-    limitDistance: number,
-    category: string,
-  }
-
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
@@ -50,111 +49,88 @@ function Spots() {
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
 
-  
   const getSpotList = async () => {
-    const params = {
-      page: 0,
-      sort: sort,
-    }
-    try {
-      const response: AxiosResponse = await spotAxios.post(`/spot`, spotRequest, {params});
-      console.log(response.status);
-      if(response.status == 200) {
-        const data = await response.data;
-        // setSpotList(data?.spotDtoList);
-        setSpotList([...data?.spotDtoList]);
-        setTotalPage(data?.totalPage);
-      }
-    } catch (error: any) {
-      Alert.alert(
-        `에러코드 ${error}`
-      )
-    }
-  };
-
-  const getMoreSpotList = async () => {
     const params = {
       page,
       sort,
-    }
+    };
     try {
-      const response: AxiosResponse = await spotAxios.post(`/spot`, spotRequest, {params});
-      console.log(response.status);
-      if(response.status == 200) {
+      const response: AxiosResponse = await axios.post(`/spot`, spotRequest, {
+        params,
+      });
+      if (response.status == 200) {
         const data = await response.data;
-        setSpotList([...spotList, ...data?.spotDtoList]);
+        if (page == 0) setSpotList([...data?.spotDtoList]);
+        else setSpotList([...spotList, ...data?.spotDtoList]);
+
         setTotalPage(data?.totalPage);
       }
     } catch (error: any) {
-      Alert.alert(
-        `에러코드 ${error}`
-      )
+      Alert.alert(`에러코드 ${error}`, `산책스팟 리스트 조회 실패`);
     }
-  }
+  };
 
-  const onChangeSearchValue = useCallback((val : string) => {
+  const onChangeSearchValue = useCallback((val: string) => {
     setSearchValue(val.trim());
-  },[]);
+  }, []);
 
   const onSearchSubmit = () => {
     setSpotRequest({
-      ...spotRequest, 
-      searchValue
+      ...spotRequest,
+      searchValue,
     } as SpotRequest);
   };
 
   const loadMore = () => {
-    if(page < totalPage) {
+    if (page < totalPage) {
       setPage(page + 1);
     }
-  }
-  
+  };
 
   const initSpotRequest = () => {
     const requestBody: SpotRequest = {
-      "lat" : 0,
-      "lng" : 0,
-      "searchValue" : '',
-      "limitDistance" : 1000,
-      "category" : '카페',
+      lat: 0,
+      lng: 0,
+      searchValue: '',
+      limitDistance: 1000,
+      category: '카페',
     };
 
     setSpotRequest(requestBody);
-  }
+  };
 
   const getUserLocation = () => {
     setUserLocation('동작/사당');
-  }
+  };
 
   useEffect(() => {
     initSpotRequest();
     getUserLocation();
-  },[])
+  }, []);
 
   useEffect(() => {
-    if(!spotRequest)
-      return;
+    if (!spotRequest) return;
     getSpotList();
-  }, [spotRequest, sort]);
-
-  useEffect(()=> {
-    setSpotRequest({
-      ...spotRequest, 
-      limitDistance,
-      category
-    } as SpotRequest);
-  },[limitDistance, category]);
+  }, [spotRequest, page, sort]);
 
   useEffect(() => {
-    if (!page)
-      return;
-    getMoreSpotList();
-  }, [page])
-  
+    setPage(0);
+    setSpotRequest({
+      ...spotRequest,
+      limitDistance,
+      category,
+    } as SpotRequest);
+  }, [limitDistance, category]);
+
+  // useEffect(() => {
+  //   if (!page) return;
+  //   getMoreSpotList();
+  // }, [page]);
+
   return (
     <View>
-      <SpotsTemplate 
-        spotList={spotList} 
+      <SpotsTemplate
+        spotList={spotList}
         totalPage={totalPage}
         userLocation={userLocation}
         onSearchSubmit={onSearchSubmit}
@@ -168,7 +144,7 @@ function Spots() {
         category={category}
         setCategory={setCategory}
         initSpotRequest={initSpotRequest}
-        />
+      />
     </View>
   );
 }
