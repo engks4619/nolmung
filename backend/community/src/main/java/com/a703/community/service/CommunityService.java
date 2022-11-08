@@ -188,18 +188,21 @@ public class CommunityService {
         Page<Post> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
         int totalPages = withLists.getTotalPages();
 
-        List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
-                .writer(clientUtil.requestOtherUserInfo(with.getWriterIdx()).getNickname())
-                .userImgUrl(clientUtil.requestOtherUserInfo(with.getWriterIdx()).getProfileImage())
-                .postIdx(with.getPostIdx())
-                .subject(with.getSubject())
-                .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
-                .chatCnt(chatRepository.countChatByPost(with))
-                .location(with.getLocation())
-                .modifyDate(with.getModifyDate())
-                .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
-                .walkDate(with.getWalkDate())
-                .build())
+        List<WithDto> withDtoList = withLists.stream().map(with-> {
+            UserInfoDto userInfoDto = clientUtil.requestOtherUserInfo(with.getWriterIdx());
+            return WithDto.builder()
+                            .writer(userInfoDto.getNickname())
+                            .userImgUrl(userInfoDto.getProfileImage())
+                            .postIdx(with.getPostIdx())
+                            .subject(with.getSubject())
+                            .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
+                            .chatCnt(chatRepository.countChatByPost(with))
+                            .location(with.getLocation())
+                            .modifyDate(with.getModifyDate())
+                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .walkDate(with.getWalkDate())
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         return WithListDto.builder()
@@ -214,19 +217,22 @@ public class CommunityService {
 
         int totalPages = otherLists.getTotalPages();
 
-        List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
-                        .writer(clientUtil.requestOtherUserInfo(other.getWriterIdx()).getNickname())
-                        .userImgUrl(clientUtil.requestOtherUserInfo(other.getWriterIdx()).getProfileImage())
-                        .postIdx(other.getPostIdx())
-                        .subject(other.getSubject())
-                        .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
-                        .chatCnt(chatRepository.countChatByPost(other))
-                        .location(other.getLocation())
-                        .modifyDate(other.getModifyDate())
-                        .walkDate(other.getWalkDate())
-                        .pay(other.getPay())
-                        .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
-                        .build())
+        List<OtherDto> otherDtoList = otherLists.stream().map(other-> {
+            UserInfoDto userInfoDto = clientUtil.requestOtherUserInfo(other.getWriterIdx());
+            return OtherDto.builder()
+                            .writer(userInfoDto.getNickname())
+                            .userImgUrl(userInfoDto.getProfileImage())
+                            .postIdx(other.getPostIdx())
+                            .subject(other.getSubject())
+                            .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
+                            .chatCnt(chatRepository.countChatByPost(other))
+                            .location(other.getLocation())
+                            .modifyDate(other.getModifyDate())
+                            .walkDate(other.getWalkDate())
+                            .pay(other.getPay())
+                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         return OtherListDto.builder()
