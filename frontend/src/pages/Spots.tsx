@@ -123,11 +123,6 @@ function Spots() {
     } as SpotRequest);
   }, [limitDistance, category]);
 
-  // useEffect(() => {
-  //   if (!page) return;
-  //   getMoreSpotList();
-  // }, [page]);
-
   return (
     <View>
       <SpotsTemplate
