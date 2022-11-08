@@ -13,7 +13,7 @@ server:
 
 resources:
   location: /images/
-  uri_path: /images
+  uri_path: /image/images
 
 eureka:
   client:
