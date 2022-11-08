@@ -4,6 +4,4 @@ import com.a703.user.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
-
-    UserEntity findByUserIdx(Long userIdx);
 }
