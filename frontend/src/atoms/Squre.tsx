@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image} from 'react-native';
 
 interface Props {
   imageSource: string;
@@ -24,7 +24,5 @@ function Squre({imageSource, width = 100, height = 100, borderRadius = 0}: Props
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default Squre;

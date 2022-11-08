@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
 
 interface Props {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   imageSource: string;
 }
 

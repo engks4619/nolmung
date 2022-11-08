@@ -36,6 +36,7 @@ function SignInTemplate({
         onChangeText={onChangePhoneNumber}
         autoComplete="tel-device"
         isPassword={false}
+        keyboardType={'number-pad'}
       />
       <LoginInput
         labelText="비밀번호"

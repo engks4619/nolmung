@@ -45,6 +45,7 @@ function SignUpTemplate({
         autoComplete="tel-device"
         onChangeText={onChangePhoneNumber}
         onClick={onSendMessageNumber}
+        keyboardType={'number-pad'}
       />
       {isSend ? (
         <CertificationForm
