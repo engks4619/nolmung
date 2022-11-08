@@ -14,8 +14,8 @@ function DetailFooter() {
       <View style={styles.infoContainer}>
         <Text style={styles.textBold}>같이 산책🤎</Text>
         <MyButton
-          btnText="채팅목록"
-          width={80}
+          btnText="채팅하기"
+          width={100}
           paddingVertical={10}
           onClick={() => console.log('채팅목록')}
         />
@@ -26,13 +26,16 @@ function DetailFooter() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     width: windowWidth,
-    height: 50,
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
     bottom: 0,
+    paddingHorizontal: 15,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: 'gray',
   },
   heartContainer: {
     paddingHorizontal: 5,
@@ -40,6 +43,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     paddingHorizontal: 10,
+    marginLeft: 5,
     borderLeftWidth: 1,
     borderColor: 'gray',
     flexDirection: 'row',

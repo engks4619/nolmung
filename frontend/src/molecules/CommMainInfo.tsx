@@ -8,7 +8,7 @@ interface Props {
   modifyDate: string;
 }
 
-function elapsedTime(date: string) {
+export function elapsedTime(date: string) {
   const start: Date | any = new Date(date);
   const end: Date | any = new Date();
 

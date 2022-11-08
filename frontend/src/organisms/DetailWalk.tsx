@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import {convertTime} from '@molecules/CommMainInfo';
 
-const infoWidth = Dimensions.get('window').width * 0.25;
+const infoWidth = Dimensions.get('window').width * 0.97 * 0.25;
 
 interface DetailWalkProps {
   location: string;
@@ -12,7 +12,8 @@ interface DetailWalkProps {
 }
 
 function DetailWalk({location, walkDate, leadLine, poopBag}: DetailWalkProps) {
-  let [day, time] = walkDate?.split('T');
+  let day = walkDate?.split('T')[0];
+  let time = walkDate ? convertTime(walkDate.split('T')[1]) : null;
 
   return (
     <View style={styles.container}>
@@ -23,7 +24,7 @@ function DetailWalk({location, walkDate, leadLine, poopBag}: DetailWalkProps) {
       <View style={[styles.infoContainer, styles.borderRight]}>
         <Text style={styles.textCenter}>산책 시간</Text>
         <Text style={styles.textCenter}>{day}</Text>
-        <Text style={styles.textCenter}>{convertTime(time)}</Text>
+        <Text style={styles.textCenter}>{time}</Text>
       </View>
       <View style={[styles.infoContainer, styles.borderRight]}>
         <Text style={styles.textCenter}>리드줄</Text>
@@ -43,13 +44,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingVertical: 6,
     marginTop: 3,
+    justifyContent: 'center',
   },
   infoContainer: {
     textAlign: 'center',
     width: infoWidth,
   },
   borderRight: {
-    borderRightWidth: 1,
+    borderRightWidth: StyleSheet.hairlineWidth,
   },
   textCenter: {
     paddingTop: 5,

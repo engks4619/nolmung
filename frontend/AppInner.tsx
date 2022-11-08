@@ -95,7 +95,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Community"
+            name="CommunityList"
             component={CommunityStackNavigator}
             options={{
               headerTitle: '놀면 멍하니',

@@ -1,12 +1,21 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import Squre from '@atoms/Squre';
 
-const contentHeight = Dimensions.get('window').width * 0.8;
+interface detailProps {
+  content: string;
+  photoUrl: string[];
+}
 
-function DetailContent() {
+function DetailContent({content, photoUrl}: detailProps) {
   return (
     <View style={styles.container}>
-      <Text>Detail</Text>
+      <ScrollView>
+        <Text>{content}</Text>
+        {photoUrl.length > 0
+          ? photoUrl.map(path => <Squre imageSource={path} />)
+          : null}
+      </ScrollView>
     </View>
   );
 }
@@ -15,7 +24,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     marginTop: 3,
-    height: contentHeight,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    flex: 1,
   },
 });
 

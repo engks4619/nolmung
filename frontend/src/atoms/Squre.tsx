@@ -8,6 +8,8 @@ interface Props {
 }
 
 function Squre({imageSource, width = 100, height = 100}: Props) {
+  const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
+
   return (
     <View>
       <Image
@@ -16,7 +18,7 @@ function Squre({imageSource, width = 100, height = 100}: Props) {
           height,
         }}
         source={{
-          uri: imageSource,
+          uri: convertImagePath,
         }}
       />
     </View>

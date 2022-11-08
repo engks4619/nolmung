@@ -1,17 +1,21 @@
 import React from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
 import DetailDog from '@molecules/DetailDog';
 import {DetailDogProps} from '@molecules/DetailDog';
 
-interface DetailDogsProps {
-  dogInfoList: DetailDogProps[];
-}
+// interface DetailDogsProps {
+//   dogInfoList: DetailDogProps[];
+// }
 
-function DetailDogs({}: DetailDogsProps) {
+function DetailDogs() {
   return (
-    <ScrollView style={styles.container} horizontal>
-      <DetailDog />
-    </ScrollView>
+    <View style={styles.container}>
+      <ScrollView horizontal>
+        <DetailDog />
+        <DetailDog />
+        <DetailDog />
+      </ScrollView>
+    </View>
   );
 }
 
@@ -19,7 +23,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 3,
     backgroundColor: 'white',
-    paddingHorizontal: 5,
+    paddingHorizontal: 10,
+    height: 100,
   },
 });
 

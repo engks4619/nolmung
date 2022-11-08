@@ -5,7 +5,7 @@ import Squre from '@atoms/Squre';
 import CommUserInfo from '@molecules/CommUserInfo';
 import {withPostListType} from '~/pages/Community';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CommunityParamList} from '~/../AppInner';
+import {CommunityParamList} from '@pages/Community';
 import {useNavigation} from '@react-navigation/native';
 
 interface Props {

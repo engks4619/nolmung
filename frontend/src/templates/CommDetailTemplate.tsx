@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import DetailSubject from '@organisms/DetailSubject';
 import DetailDogs from '@organisms/DetailDogs';
 import DetailWalk from '@organisms/DetailWalk';
@@ -13,23 +13,35 @@ interface Props {
 
 function CommDetailTemplate({detailContent}: Props) {
   return (
-    <View>
-      <DetailSubject
-        subject={detailContent.subject}
-        writer={detailContent.writer}
-        modifyDate={detailContent.modifyDate}
-      />
-      <DetailDogs />
-      {/* <DetailWalk
-        location={detailContent.location}
-        walkDate={detailContent.walkDate}
-        leadLine={detailContent.leadLine}
-        poopBag={detailContent.poopBag}
-      /> */}
-      <DetailContent />
+    <View style={styles.container}>
+      <View style={styles.container}>
+        <DetailSubject
+          subject={detailContent.subject}
+          writer={detailContent.writer}
+          modifyDate={detailContent.modifyDate}
+          userImgUrl={detailContent.userImgUrl}
+        />
+        <DetailDogs />
+        <DetailWalk
+          location={detailContent.location}
+          walkDate={detailContent.walkDate}
+          leadLine={detailContent.leadLine}
+          poopBag={detailContent.poopBag}
+        />
+        <DetailContent
+          content={detailContent.content}
+          photoUrl={detailContent.photoUrl}
+        />
+      </View>
       <DetailFooter />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default CommDetailTemplate;
