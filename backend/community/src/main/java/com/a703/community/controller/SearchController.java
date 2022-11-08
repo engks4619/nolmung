@@ -23,14 +23,14 @@ public class SearchController {
     private final SearchService searchService;
 
     @PostMapping("/other")
-    public ResponseEntity<OtherListDto> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
+    public ResponseEntity<OtherListDto> searchOther(@RequestBody(required = false) SearchRequest search,@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) {
         OtherListDto otherListDtos = searchService.searchOther(search,pageable);
         return ResponseEntity.ok().body(otherListDtos);
 
     }
 
     @PostMapping("/with")
-    public ResponseEntity<WithListDto> searchWith(@RequestBody(required = false) SearchRequest search, @PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) throws Exception {
+    public ResponseEntity<WithListDto> searchWith(@RequestBody(required = false) SearchRequest search, @PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10) Pageable pageable) {
         WithListDto withListDtos = searchService.searchWith(search,pageable);
         return ResponseEntity.ok().body(withListDtos);
     }

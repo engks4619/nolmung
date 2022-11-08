@@ -41,7 +41,7 @@ public class SearchService {
 
     private final ClientUtil clientUtil;
 
-    public OtherListDto searchOther(SearchRequest searchRequest, Pageable pageable) throws Exception {
+    public OtherListDto searchOther(SearchRequest searchRequest, Pageable pageable) {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
@@ -104,7 +104,7 @@ public class SearchService {
                 .build();
     }
 
-    public WithListDto searchWith(SearchRequest searchRequest, Pageable pageable) throws Exception {
+    public WithListDto searchWith(SearchRequest searchRequest, Pageable pageable) {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 

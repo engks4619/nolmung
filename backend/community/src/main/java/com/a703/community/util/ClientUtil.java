@@ -50,7 +50,7 @@ public class ClientUtil {
 
     public List<Long> requestSearchDogInfo(int breedCode) {
 
-        String url = "http://localhost:8080/api/v1/test";
+        String url = String.format("http://nolmung.kr/api/user/dog/list/breedcode?breedcode=%d", breedCode);
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -85,51 +85,51 @@ public class ClientUtil {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         // Body set
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("dogIdx", String.valueOf(dogIdx));
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("dogIdxList", dogIdx);
 
         // Message
         HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
 
         // Request
-        DogInfoDto[] response = restTemplate.getForObject(url,DogInfoDto[].class);
-
+//        ResponseEntity<DogInfoDto[]> response = restTemplate.getForEntity(url,DogInfoDto[].class);
+        ResponseEntity<DogInfoDto[]> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, DogInfoDto[].class);
 
         // Response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        List<DogInfoDto> dogInfoDto = Arrays.asList(response);
+        List<DogInfoDto> dogInfoDto = Arrays.asList(response.getBody());
 
         return dogInfoDto;
     }
 
     //목록 보여줄 때 유저인덱스 하나씩 보내서 통신하는 것보다 리스트로 받는게 좋을 것 같음
-    public String getUserName(int userIdx) throws Exception {
-
-        String url = "http://localhost:8080/api/v1/test";
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Header set
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        // Body set
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("userIdx", String.valueOf(userIdx));
-
-        // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-
-        // Request
-        String response = restTemplate.getForObject(url,String.class);
-
-        // Response 파싱
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        String userName = response;
-
-        return userName;
-    }
+//    public String getUserName(int userIdx) throws Exception {
+//
+//        String url = "http://localhost:8080/api/v1/test";
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        // Header set
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//
+//        // Body set
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("userIdx", String.valueOf(userIdx));
+//
+//        // Message
+//        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+//
+//        // Request
+//        String response = restTemplate.getForObject(url,String.class);
+//
+//        // Response 파싱
+////        ObjectMapper objectMapper = new ObjectMapper();
+////        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+//        String userName = response;
+//
+//        return userName;
+//    }
 
     public UserInfoDto requestOtherUserInfo(Long userIdx) {
 
