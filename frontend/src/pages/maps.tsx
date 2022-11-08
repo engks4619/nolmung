@@ -63,9 +63,9 @@ import {
 type Geoloc = {
   latitude: number;
   longitude: number;
-} | null;
+};
 
-type GeolocList = Array<Geoloc> | any;
+type GeolocList = Array<Geoloc>;
 
 function Maps() {
   // 산책 종료 로직
@@ -77,175 +77,30 @@ function Maps() {
   // if asyncstorage에 남이 있는 walingLog가 있다면 불러와서 State에 저장
   // 현재 위치 변경시 지도 focus 변경과 동시에 Asynstorage에 저장
 
-  const [myPosition, setMyPosition] = useState<Geoloc>(null);
-  const [polylinePath, setpolylinePath] = useState<GeolocList>([
-    {latitude: 37.2877049, longitude: 127.0692822},
-    {latitude: 37.2762087, longitude: 127.0808982},
-  ]);
-  // Geolocation.getCurrentPosition(
-  //   async info => {
-  //     const answer = {
-  //       latitude: info.coords.latitude,
-  //       longitude: info.coords.longitude,
-  //     };
-  //     if (hasLog) {
-  //       const walkingLog = await getData('walkingLog');
-  //       setpolylinePath(walkingLog);
-  //       return true;
-  //     } else {
-  //       setpolylinePath([answer, answer, answer]);
-  //       return false;
-  //     }
-  //   },
-  //   console.error,
-  //   {enableHighAccuracy: true},
-  // );
-  // return true;
-  // if (hasLog) {
-  //   const walkingLog = await getData('walkinLog')
-  //   setpolylinePath(walkingLog)
-  //   return true
-  // } else {
-  //   setpolylinePath([answer,answer])
-  //   return false
-  // }
-  // initWalkingLog : 앱을 껐다 키거나 Gps 연결이 끊겼다 돌아 왔을 때 대비 초기 polylinePath배열 세팅
-  // const test = async (): Promise<boolean> => {
-  //   await storeData('123', {asdf: 'stststst'});
-  //   const abc = getData('123');
-  //   return true;
-  // };
-
-  // WalkingLog 초기 설정
-  // asyncStorage에 walkingLog 있으면 불러와서 setpolylinePath
-  // 없으면 현재 위치 불러와서 두번 저장
-
-  // const initWalkingLog = async (): Promise<boolean> => {
-  //   const hasLog = await containsKey('walkingLog');
-  //   if (hasLog) {
-  //     console.log('1');
-  //     const walkingLog = await getData('walkingLog');
-  //     if (walkingLog.length >= 2) {
-  //       console.log('2');
-  //       setpolylinePath(walkingLog);
-  //     } else {
-  //       console.log('3');
-  //       Geolocation.getCurrentPosition(
-  //         info => {
-  //           const initialLocation: Geoloc = {
-  //             latitude: info.coords.latitude,
-  //             longitude: info.coords.longitude,
-  //           };
-  //           const currentList: GeolocList = [initialLocation, initialLocation];
-  //           setpolylinePath(currentList);
-  //         },
-  //         console.error,
-  //         {enableHighAccuracy: true},
-  //       );
-  //     }
-  //   } else {
-  //     console.log('4');
-  //     Geolocation.getCurrentPosition(
-  //       info => {
-  //         const initialLocation: Geoloc = {
-  //           latitude: info.coords.latitude,
-  //           longitude: info.coords.longitude,
-  //         };
-  //         const currentList: GeolocList = [initialLocation, initialLocation];
-  //         setpolylinePath(currentList);
-  //       },
-  //       console.error,
-  //       {enableHighAccuracy: true},
-  //     );
-  //   }
-  //   return true;
-  // };
-
-  // useEffect(() => {
-  //   // test();
-  //   // asyncStorage에서 보유하고 있는 기록이 있으면 polylinePath default 값 설정
-  //   // console.log('boolean', containsKey('walkingLog'));
-  //   // console.log('here', getData('walkingLog'));
-  //   initWalkingLog();
-  //   // console.log('here', getData('walkingLog'));
-  //   // 현재위치업데이트 될 때 마다
-  //   Geolocation.watchPosition(
-  //     info => {
-  //       let currentLoc: Geoloc = {
-  //         latitude: info.coords.latitude,
-  //         longitude: info.coords.longitude,
-  //       };
-  //       let newPolyLinePath = polylinePath.concat(currentLoc);
-  //       setMyPosition(currentLoc); //현재지도 포커스 변경을 위해
-  //       setpolylinePath(newPolyLinePath); // state update
-  //       console.log('5');
-  //       storeData('walkingLog', newPolyLinePath); //asyncStorage에 저장
-  //     },
-  //     console.error,
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       distanceFilter: 10, // 몇 미터 당 callBack실행시킬것인가
-  //     },
-  //   );
-  // }, []);
-
-  const checkAsyncStorage = async (): Promise<boolean> => {
-    const hasLog = await containsKey('walkingLog');
-    if (hasLog) {
-      const walkingLog = await getData('walkingLog');
-      if (walkingLog.length >= 2) {
-        console.log('here', walkingLog);
-        return walkingLog;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  };
-
+  const [myPosition, setMyPosition] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  
   useEffect(() => {
-    if (checkAsyncStorage) {
-      setpolylinePath(checkAsyncStorage);
-      //async조회결과 true 이면 polyLine은 이전 기록들로 대체
-    } else {
-      //polyline은 현재데이터 * 2 넣기
-      Geolocation.getCurrentPosition(
-        info => {
-          const initialLocation = {
-            latitude: info.coords.latitude,
-            longitude: info.coords.longitude,
-          };
-          const currentList = [initialLocation, initialLocation];
-          setpolylinePath(currentList);
-        },
-        console.error,
-        {enableHighAccuracy: true},
-      );
-    }
-  }, []);
-  useEffect(() => {
+    console.log('myposition1',myPosition)
     Geolocation.watchPosition(
       info => {
-        let currentLoc: Geoloc = {
+        setMyPosition({
           latitude: info.coords.latitude,
           longitude: info.coords.longitude,
-        };
-        let newPolyLinePath = [...polylinePath, currentLoc];
-        setMyPosition(currentLoc); //현재지도 포커스 변경을 위해
-        setpolylinePath(newPolyLinePath); // state update
-        console.log('5');
-        storeData('walkingLog', newPolyLinePath); //asyncStorage에 저장
+        });
+        console.log('myposition2',myPosition);
       },
       console.error,
       {
         enableHighAccuracy: true,
         timeout: 20000,
-        distanceFilter: 10, // 몇 미터 당
+        distanceFilter: 10,
+
       },
     );
-  });
+  }, []);
 
   if (!myPosition || !myPosition.latitude) {
     return (
@@ -254,53 +109,32 @@ function Maps() {
       </View>
     );
   }
-
+  const a = {"latitude": 37.502425, "longitude": 127.04069}
   return (
-    <View>
-      <Pressable
-        onPress={() => {
-          removeData('walkingLog');
-        }}>
-        <Text>async리셋</Text>
-      </Pressable>
-      <NaverMapView
-        style={{width: '100%', height: '100%'}}
-        showsMyLocationButton={true}
-        center={{...myPosition, zoom: 16}}
-        // onTouch={e => console.warn('onTouch', JSON.stringify(e.nativeEvent))}
-        // onCameraChange={e => console.warn('onCameraChange', JSON.stringify(e))}
-        onMapClick={e => console.warn('onMapClick', JSON.stringify(e))}>
-        {myPosition?.latitude && (
-          <Marker
-            coordinate={{
-              latitude: myPosition.latitude,
-              longitude: myPosition.longitude,
-            }}
-            width={50}
-            height={50}
-            anchor={{x: 0.5, y: 0.5}}
-            caption={{text: '나'}}
-            image={require('@assets/logo.png')}
-          />
-        )}
-
-        {/* <Polyline coordinates={polylinePath} onClick={() => console.warn('onClick! polyline')}/>   */}
-        <Path
-          coordinates={polylinePath}
-          onClick={() => console.warn('onClick! path')}
-          width={1}
-          outlineColor={MAIN_COLOR}
-          color={MAIN_COLOR}
-        />
-        {/* <Marker coordinate={P0} onClick={() => console.warn('onClick! p0')}/>
-      <Marker coordinate={P1} pinColor="blue" onClick={() => console.warn('onClick! p1')}/>
-      <Marker coordinate={P2} pinColor="red" onClick={() => console.warn('onClick! p2')}/>
-      <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
-      <Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/>
-      <Circle coordinate={P0} color={"rgba(255,0,0,0.3)"} radius={200} onClick={() => console.warn('onClick! circle')}/>
-      <Polygon coordinates={[P0, P1, P2]} color={`rgba(0, 0, 0, 0.5)`} onClick={() => console.warn('onClick! polygon')}/> */}
-      </NaverMapView>
-    </View>
+    <NaverMapView
+    style={{width: '100%', height: '100%'}}
+    zoomControl={true}
+    center={{
+      zoom: 10,
+      latitude: myPosition.latitude,
+      longitude: myPosition.longitude
+    }}>
+<Marker
+        // coordinate={{
+        //   latitude: myPosition.latitude,
+        //   longitude: myPosition.longitude,
+        // }}
+        coordinate={a}
+        width={50}
+        height={50}
+        anchor={{x: 0.5, y: 0.5}}
+        caption={{text: '나'}}
+        image={require('@assets/logo.png')}
+      />
+{/* <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
+<Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/> */}
+</NaverMapView>
+ 
   );
 }
 
