@@ -5,6 +5,7 @@ import com.a703.community.dto.response.connection.UserInfoDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -31,7 +32,6 @@ public class ClientUtil {
         httpHeaders.set(HttpHeaders.AUTHORIZATION,token);
 
         // Body set
-
 
         // Messag
         HttpEntity<?> requestMessage = new HttpEntity<>(httpHeaders);
@@ -141,13 +141,21 @@ public class ClientUtil {
 
         // Body set
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        ByteArrayResource contentsAsResource = new ByteArrayResource(file.getBytes()){
+            @Override
+            public String getFilename(){
+                return file.getOriginalFilename();
+            }
+        };
 //        body.add("file",new ByteArrayResource(file.getBytes()));
-        body.add("file",file);
+//        body.add("file",file);
+        body.add("file",contentsAsResource);
         body.add("savePath",savePath);
 
 
         // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+        HttpEntity<MultiValueMap<String,Object>> requestMessage = new HttpEntity<>(body, httpHeaders);
 
         // Request
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestMessage, String.class);

@@ -20,7 +20,9 @@ public class ImageController {
     private final Environment env;
 
     @PostMapping
-    public ResponseEntity<?> fileUpload(@RequestPart MultipartFile file,@RequestPart String savePath) throws Exception {
+    public ResponseEntity<?> fileUpload(@RequestParam MultipartFile file,@RequestPart String savePath) throws Exception {
+        System.out.println(savePath);
+        System.out.println(file);
 
         imageService.uploadImg(file,savePath);
         return ResponseEntity.ok().body("success");
