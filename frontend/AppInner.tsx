@@ -5,14 +5,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import Main from './src/pages/Main';
-import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
-
-import MyPostList from './src/pages/MyPostList';
-import MyLikedList from './src/pages/MyLikedList';
-import MyLikedSpots from './src/pages/MyLikedSpots';
-import MyWalkingRecord from './src/pages/MyWalkingRecord';
-import MyDogs from './src/pages/MyDogs';
+import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -28,6 +22,8 @@ import SpotIcon from '@assets/spot.svg';
 import {MypageStackNavigator} from './src/pages/Mypage';
 
 // import {RootState} from "./src/store/reducer";
+
+import usePermissions from '~/hooks/usePermissions';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -47,6 +43,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
+  usePermissions(); //권한 요청 커스텀 훅
   // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
   const [isLoggedIn, setLoggedIn] = useState(true);
   return (
@@ -128,6 +125,7 @@ function AppInner() {
               ),
             }}
           />
+          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>
