@@ -32,7 +32,7 @@ public class DogController {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> getDogInfo(@RequestBody List<Long> dogIdxList) {
+    public ResponseEntity<?> getDogInfo(@RequestParam List<Long> dogIdxList) {
         List<ResponseDog> returnValue = dogIdxList.stream().map(idx -> new ModelMapper()
                 .typeMap(DogDto.class, ResponseDog.class)
                 .addMapping(DogDto::getBreedCodeValue, ResponseDog::setBreedCodeValue)
