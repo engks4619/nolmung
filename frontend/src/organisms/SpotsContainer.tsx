@@ -1,12 +1,5 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  Button,
-} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {FlatList, StyleSheet, View, Text} from 'react-native';
 import Squre from '~/atoms/Squre';
 import {Spot, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
@@ -50,8 +43,20 @@ function SpotsContainer({
     return Math.floor(Math.random() * (max - min) + min);
   };
 
+  const getStringStar = (star: number): string => {
+    if (!star) {
+      return '0.0';
+    }
+    if (star.toString().length == 1) {
+      return star.toString() + '.0';
+    }
+    return star.toString().slice(0, 3);
+  };
+
   useEffect(() => {
-    if (page != 0) toTop();
+    if (page !== 0) {
+      toTop();
+    }
   }, [spotRequest, sort, limitDistance, category]);
 
   return (
@@ -71,7 +76,7 @@ function SpotsContainer({
               height={130}
               borderRadius={5}
               imageSource={
-                item.imgCnt != 0
+                item.imgCnt !== 0
                   ? SPOT_IMG_URL + item.spotId + '/0.jpg'
                   : SPOT_IMG_URL + 'default/default.png'
               }
@@ -83,14 +88,9 @@ function SpotsContainer({
               {spotList.indexOf(item) + 1}. {item.name}
             </Text>
             <Text style={[styles.star, styles.right]}>
-              {item.star
-                ? item.star.toString().length == 1
-                  ? item.star.toString() + '.0'
-                  : item.star.toString().slice(0, 3)
-                : '0.0'}
+              {getStringStar(item.star)}
             </Text>
           </View>
-          <View style={[styles.descContainer, styles.right]}></View>
           <View style={styles.descContainer}>
             <Text style={styles.desc}>동작/사당</Text>
             <Text style={styles.reviewContainer}>
@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingBottom: 15,
-    // width: '100%',
     maxWidth: '50%',
   },
   row: {

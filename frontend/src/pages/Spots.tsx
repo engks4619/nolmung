@@ -55,13 +55,16 @@ function Spots() {
       sort,
     };
     try {
-      const response: AxiosResponse = await axios.post(`/spot`, spotRequest, {
+      const response: AxiosResponse = await axios.post(`spot`, spotRequest, {
         params,
       });
-      if (response.status == 200) {
+      if (response.status === 200) {
         const data = await response.data;
-        if (page == 0) setSpotList([...data?.spotDtoList]);
-        else setSpotList([...spotList, ...data?.spotDtoList]);
+        if (page === 0) {
+          setSpotList([...data?.spotDtoList]);
+        } else {
+          setSpotList([...spotList, ...data?.spotDtoList]);
+        }
 
         setTotalPage(data?.totalPage);
       }
@@ -110,7 +113,9 @@ function Spots() {
   }, []);
 
   useEffect(() => {
-    if (!spotRequest) return;
+    if (!spotRequest) {
+      return;
+    }
     getSpotList();
   }, [spotRequest, page, sort]);
 

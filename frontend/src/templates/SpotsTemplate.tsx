@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {SafeAreaView, View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import LocationSummary from '@organisms/LocationSummary';
 import SpotsContainer from '@organisms/SpotsContainer';
 import {Spot, SpotRequest} from '~/pages/Spots';
