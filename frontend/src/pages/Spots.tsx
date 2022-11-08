@@ -1,8 +1,9 @@
 import {AxiosResponse} from 'axios';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, ScrollView, StatusBar, Text, View} from 'react-native';
+import {Alert, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
+import Geolocation from '@react-native-community/geolocation';
 
 export interface menu {
   menuName: string;
@@ -31,11 +32,16 @@ export interface Spot {
   tel: string | null;
 }
 export interface SpotRequest {
-  lat: number;
-  lng: number;
+  lat: number | undefined;
+  lng: number | undefined;
   searchValue: string;
   limitDistance: number;
   category: string;
+}
+
+type Geoloc = {
+  lat: number,
+  lng: number,
 }
 
 function Spots() {
@@ -48,6 +54,27 @@ function Spots() {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
+  
+  const [position, setPosition] = useState<Geoloc | null>({ lat: 0, lng: 0 });
+
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setSpotRequest({ ...spotRequest, lat: latitude, lng: longitude } as SpotRequest);
+        // setPosition({ lat: latitude, lng: longitude });
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        distanceFilter: 1,
+      },
+    )
+  };
+
 
   const getSpotList = async () => {
     const params = {
@@ -92,15 +119,17 @@ function Spots() {
   };
 
   const initSpotRequest = () => {
+    getLocation();
+    console.log(position?.lat, position?.lng);
     const requestBody: SpotRequest = {
-      lat: 0,
-      lng: 0,
+      lat: position?.lat,
+      lng: position?.lng,
       searchValue: '',
       limitDistance: 1000,
       category: '카페',
     };
 
-    setSpotRequest(requestBody);
+    setSpotRequest(requestBody as SpotRequest);
   };
 
   const getUserLocation = () => {
