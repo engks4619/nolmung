@@ -5,8 +5,7 @@ import com.a703.community.dto.response.*;
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.*;
-import com.a703.community.exception.CommunityException;
-import com.a703.community.exception.model.RegisterErrorCode;
+
 import com.a703.community.repository.*;
 import com.a703.community.type.CategoryType;
 import com.a703.community.util.ClientUtil;
@@ -81,7 +80,7 @@ public class CommunityService {
                 }
             }
         }catch (IOException e){
-            throw new CommunityException(RegisterErrorCode.FILE_UPLOAD_FAILED);
+
         }
     }
 

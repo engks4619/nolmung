@@ -77,7 +77,8 @@ public class ClientUtil {
 
     public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) {
 
-        String url = "http://localhost:8080/api/v1/test";
+        String url = String.format("http://nolmung.kr/api/user/dog/info");
+//        String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
