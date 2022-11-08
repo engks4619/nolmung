@@ -2,13 +2,15 @@ import React, {Dispatch, SetStateAction} from 'react';
 import {SafeAreaView, View} from 'react-native';
 import LocationSummary from '@organisms/LocationSummary';
 import SpotsContainer from '@organisms/SpotsContainer';
-import {Spot} from '~/pages/Spots';
+import {Spot, SpotRequest} from '~/pages/Spots';
 import SpotsFilter from '~/organisms/SpotsFilter';
 
 interface Props {
   spotList: Spot[];
+  page: number;
   totalPage: number;
   userLocation: string;
+  spotRequest: SpotRequest;
   onSearchSubmit: (val: string) => void;
   searchValue: string;
   onChangeSearchValue: (val: string) => void;
@@ -24,8 +26,10 @@ interface Props {
 
 function SpotsTemplate({
   spotList,
+  page,
   totalPage,
   userLocation,
+  spotRequest,
   onSearchSubmit,
   searchValue,
   onChangeSearchValue,
@@ -39,7 +43,7 @@ function SpotsTemplate({
   initSpotRequest,
 }: Props) {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
       <LocationSummary
         userLocation={userLocation}
         onSearchSubmit={onSearchSubmit}
@@ -55,7 +59,15 @@ function SpotsTemplate({
         setCategory={setCategory}
         initSpotRequest={initSpotRequest}
       />
-      <SpotsContainer spotList={spotList} loadMore={loadMore} />
+      <SpotsContainer
+        spotList={spotList}
+        loadMore={loadMore}
+        spotRequest={spotRequest}
+        page={page}
+        sort={sort}
+        limitDistance={limitDistance}
+        category={category}
+      />
     </SafeAreaView>
   );
 }

@@ -30,7 +30,7 @@ export interface Spot {
   spotId: string;
   tel: string | null;
 }
-interface SpotRequest {
+export interface SpotRequest {
   lat: number;
   lng: number;
   searchValue: string;
@@ -74,10 +74,11 @@ function Spots() {
     setSearchValue(val.trim());
   }, []);
 
-  const onSearchSubmit = () => {
+  const onSearchSubmit = (val: string) => {
+    setPage(0);
     setSpotRequest({
       ...spotRequest,
-      searchValue,
+      searchValue: val,
     } as SpotRequest);
   };
 
@@ -110,6 +111,7 @@ function Spots() {
 
   useEffect(() => {
     if (!spotRequest) return;
+    console.log(sort);
     getSpotList();
   }, [spotRequest, page, sort]);
 

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {forwardRef, useEffect, useImperativeHandle, useRef} from 'react';
 import {
   FlatList,
   ScrollView,
@@ -8,21 +8,35 @@ import {
   Button,
 } from 'react-native';
 import Squre from '~/atoms/Squre';
-import {Spot} from '~/pages/Spots';
+import {Spot, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
 
 interface Props {
   spotList: Spot[];
+  spotRequest: SpotRequest;
+  page: number;
+  sort: number;
+  limitDistance: number;
+  category: string;
   loadMore: Function;
 }
 
 const SPOT_IMG_URL = 'http://nolmung.kr/api/image/images/spot/';
 
-function SpotsContainer({spotList, loadMore}: Props) {
-  const flatListRef = useRef(null);
-  // const toTop = () => {
-  //   flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
-  // }
+function SpotsContainer({
+  spotList,
+  spotRequest,
+  page,
+  sort,
+  limitDistance,
+  category,
+  loadMore,
+}: Props) {
+  const flatListRef = useRef<FlatList>(null);
+
+  const toTop = () => {
+    flatListRef.current?.scrollToOffset({animated: true, offset: 0});
+  };
 
   const renderEmpty = () => (
     <View style={styles.emptyText}>
@@ -36,22 +50,25 @@ function SpotsContainer({spotList, loadMore}: Props) {
     return Math.floor(Math.random() * (max - min) + min);
   };
 
+  useEffect(() => {
+    if (page != 0) toTop();
+  }, [spotRequest, sort, limitDistance, category]);
+
   return (
     <FlatList
       ref={flatListRef}
       data={spotList}
       numColumns={2}
-      style={{marginTop: 10}}
       columnWrapperStyle={styles.row}
       keyExtractor={(item, idx) => idx.toString()}
       windowSize={30}
-      contentContainerStyle={{paddingBottom: 250}}
+      contentContainerStyle={{paddingBottom: 220}}
       renderItem={({item}) => (
-        <ScrollView key={item.spotId} style={styles.container}>
+        <View key={item.spotId} style={styles.container}>
           <View style={styles.imgContainer}>
             <Squre
-              width={130}
-              height={130}
+              width={150}
+              height={150}
               borderRadius={5}
               imageSource={
                 item.imgCnt != 0
@@ -77,7 +94,7 @@ function SpotsContainer({spotList, loadMore}: Props) {
               {item.reviewCnt}
             </Text>
           </View>
-        </ScrollView>
+        </View>
       )}
       ListEmptyComponent={renderEmpty}
       onEndReachedThreshold={0.2}
@@ -91,7 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingBottom: 15,
-    width: '100%',
+    // width: '100%',
+    maxWidth: '50%',
   },
   row: {
     flex: 1,
@@ -100,6 +118,7 @@ const styles = StyleSheet.create({
   imgContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   title: {
     fontSize: 13,
