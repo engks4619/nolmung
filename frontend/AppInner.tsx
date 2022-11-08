@@ -7,12 +7,7 @@ import Community from './src/pages/Community';
 import Main from './src/pages/Main';
 import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
-
-import MyPostList from './src/pages/MyPostList';
-import MyLikedList from './src/pages/MyLikedList';
-import MyLikedSpots from './src/pages/MyLikedSpots';
-import MyWalkingRecord from './src/pages/MyWalkingRecord';
-import MyDogs from './src/pages/MyDogs';
+import Maps from '@pages/maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -131,6 +126,7 @@ function AppInner() {
               ),
             }}
           />
+          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>

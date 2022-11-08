@@ -65,8 +65,6 @@ type Geoloc = {
   longitude: number;
 };
 
-// type GeolocList = Array<Geoloc>;
-
 function Maps() {
   // 산책 종료 로직
   // 산책 종료 버튼 클릭
@@ -78,71 +76,63 @@ function Maps() {
   // 현재 위치 변경시 지도 focus 변경과 동시에 Asynstorage에 저장
 
   const [myPosition, setMyPosition] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+    lat: number;
+    lng: number;
+  } | null>({lat: 37.502425, lng: 127.04069});
 
-  // useEffect(() => {
-  //   console.log('myposition1', myPosition);
-  //   Geolocation.watchPosition(
-  //     info => {
-  //       setMyPosition({
-  //         latitude: info.coords.latitude,
-  //         longitude: info.coords.longitude,
-  //       });
-  //       const latitude = info.coords.latitude;
-  //       console.log('latitude type', typeof latitude);
-  //       console.log('myposition2', myPosition);
-  //     },
-  //     console.error,
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       // distanceFilter: 10,
-  //       interval: 2,
-  //     },
-  //   );
-  // }, []);
+  console.log('myposition:', myPosition);
   useEffect(() => {
-    Geolocation.watchPosition(position => {
-      const {latitude, longitude} = position.coords;
-      console.log(latitude, longitude);
-      setMyPosition({latitude: latitude, longitude: longitude});
-    });
-  });
+    console.log('rendered');
+    Geolocation.watchPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        console.log('------new position:', latitude, longitude);
+        setMyPosition({lat: latitude, lng: longitude});
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        distanceFilter: 1,
+      },
+    );
+  }, []);
 
-  if (!myPosition || !myPosition.latitude) {
+  if (!myPosition || !myPosition.lat) {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
         <Text>내 위치를 로딩 중입니다. 권한을 허용했는지 확인해주세요.</Text>
       </View>
     );
   }
-  const a = {latitude: 37.502425, longitude: 127.04069};
+  // const a = {latitude: 37.502425, longitude: 127.04069};
   return (
-    <NaverMapView
-      style={{width: '100%', height: '100%'}}
-      zoomControl={true}
-      center={{
-        zoom: 10,
-        latitude: myPosition.latitude,
-        longitude: myPosition.longitude,
-      }}>
-      <Marker
-        // coordinate={{
-        //   latitude: myPosition.latitude,
-        //   longitude: myPosition.longitude,
-        // }}
-        coordinate={myPosition}
-        width={50}
-        height={50}
-        anchor={{x: 0.5, y: 0.5}}
-        caption={{text: '나'}}
-        image={require('@assets/logo.png')}
-      />
-      {/* <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
-<Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/> */}
-    </NaverMapView>
+    <View>
+      <Text>{myPosition.lat}</Text>
+      <Text>{myPosition.lng}</Text>
+      <NaverMapView
+        style={{width: '100%', height: '100%'}}
+        zoomControl={true}
+        center={{
+          zoom: 17,
+          latitude: myPosition.lat,
+          longitude: myPosition.lng,
+        }}>
+        <Marker
+          coordinate={{
+            latitude: myPosition.lat,
+            longitude: myPosition.lng,
+          }}
+          width={50}
+          height={50}
+          anchor={{x: 0.5, y: 0.5}}
+          caption={{text: '나'}}
+          image={require('@assets/logo.png')}
+        />
+      </NaverMapView>
+    </View>
   );
 }
 
