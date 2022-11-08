@@ -67,8 +67,8 @@ function SpotsContainer({
         <View key={item.spotId} style={styles.container}>
           <View style={styles.imgContainer}>
             <Squre
-              width={150}
-              height={150}
+              width={130}
+              height={130}
               borderRadius={5}
               imageSource={
                 item.imgCnt != 0
@@ -83,7 +83,11 @@ function SpotsContainer({
               {spotList.indexOf(item) + 1}. {item.name}
             </Text>
             <Text style={[styles.star, styles.right]}>
-              {item.star ? item.star.toString().slice(0, 3) : '0.0'}
+              {item.star
+                ? item.star.toString().length == 1
+                  ? item.star.toString() + '.0'
+                  : item.star.toString().slice(0, 3)
+                : '0.0'}
             </Text>
           </View>
           <View style={[styles.descContainer, styles.right]}></View>
@@ -123,7 +127,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '700',
-    paddingTop: 5,
     width: '80%',
   },
   descContainer: {
@@ -138,8 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   star: {
-    paddingTop: 5,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '500',
   },
   reviewContainer: {
