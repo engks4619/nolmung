@@ -142,7 +142,7 @@ public class SearchService {
             return WithDto.builder()
                             .postIdx(with.getPostIdx())
                             .writer(writerInfoDto.getNickname())
-                            .userImgUrl(writerInfoDto.getNickname())
+                            .userImgUrl(writerInfoDto.getProfileImage())
                             .subject(with.getSubject())
                             .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
                             .chatCnt(chatRepository.countChatByPost(with))
