@@ -5,9 +5,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import Main from './src/pages/Main';
-import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
-import Maps from '@pages/maps';
+import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
