@@ -8,13 +8,13 @@ import NaverMapView, {
   Polygon,
 } from 'react-native-nmap';
 import Geolocation from '@react-native-community/geolocation';
-import {MAIN_COLOR} from '~/const';
-import {
-  containsKey,
-  getData,
-  removeData,
-  storeData,
-} from '../utils/AsyncService';
+// import {MAIN_COLOR} from '~/const';
+// import {
+//   containsKey,
+//   getData,
+//   removeData,
+//   storeData,
+// } from '../utils/AsyncService';
 
 // var polylinePath = [
 //   {latitude:37.4526437, longitude: 126.49236},
@@ -65,7 +65,7 @@ type Geoloc = {
   longitude: number;
 };
 
-type GeolocList = Array<Geoloc>;
+// type GeolocList = Array<Geoloc>;
 
 function Maps() {
   // 산책 종료 로직
@@ -81,26 +81,35 @@ function Maps() {
     latitude: number;
     longitude: number;
   } | null>(null);
-  
-  useEffect(() => {
-    console.log('myposition1',myPosition)
-    Geolocation.watchPosition(
-      info => {
-        setMyPosition({
-          latitude: info.coords.latitude,
-          longitude: info.coords.longitude,
-        });
-        console.log('myposition2',myPosition);
-      },
-      console.error,
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        distanceFilter: 10,
 
-      },
-    );
-  }, []);
+  // useEffect(() => {
+  //   console.log('myposition1', myPosition);
+  //   Geolocation.watchPosition(
+  //     info => {
+  //       setMyPosition({
+  //         latitude: info.coords.latitude,
+  //         longitude: info.coords.longitude,
+  //       });
+  //       const latitude = info.coords.latitude;
+  //       console.log('latitude type', typeof latitude);
+  //       console.log('myposition2', myPosition);
+  //     },
+  //     console.error,
+  //     {
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       // distanceFilter: 10,
+  //       interval: 2,
+  //     },
+  //   );
+  // }, []);
+  useEffect(() => {
+    Geolocation.watchPosition(position => {
+      const {latitude, longitude} = position.coords;
+      console.log(latitude, longitude);
+      setMyPosition({latitude: latitude, longitude: longitude});
+    });
+  });
 
   if (!myPosition || !myPosition.latitude) {
     return (
@@ -109,32 +118,31 @@ function Maps() {
       </View>
     );
   }
-  const a = {"latitude": 37.502425, "longitude": 127.04069}
+  const a = {latitude: 37.502425, longitude: 127.04069};
   return (
     <NaverMapView
-    style={{width: '100%', height: '100%'}}
-    zoomControl={true}
-    center={{
-      zoom: 10,
-      latitude: myPosition.latitude,
-      longitude: myPosition.longitude
-    }}>
-<Marker
+      style={{width: '100%', height: '100%'}}
+      zoomControl={true}
+      center={{
+        zoom: 10,
+        latitude: myPosition.latitude,
+        longitude: myPosition.longitude,
+      }}>
+      <Marker
         // coordinate={{
         //   latitude: myPosition.latitude,
         //   longitude: myPosition.longitude,
         // }}
-        coordinate={a}
+        coordinate={myPosition}
         width={50}
         height={50}
         anchor={{x: 0.5, y: 0.5}}
         caption={{text: '나'}}
         image={require('@assets/logo.png')}
       />
-{/* <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
+      {/* <Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
 <Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/> */}
-</NaverMapView>
- 
+    </NaverMapView>
   );
 }
 
