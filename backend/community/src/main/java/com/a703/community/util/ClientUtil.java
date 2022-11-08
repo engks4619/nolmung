@@ -2,6 +2,7 @@ package com.a703.community.util;
 
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.dto.response.connection.UserInfoDto;
+import com.ctc.wstx.shaded.msv_core.util.Uri;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -77,8 +82,15 @@ public class ClientUtil {
 
     public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) {
 
-        String url = String.format("http://nolmung.kr/api/user/dog/info");
+//        String url = String.format("http://nolmung.kr/api/user/dog/info");
 //        String url = "http://localhost:8080/api/v1/test";
+        String targetUrl= UriComponentsBuilder.fromUriString("http://nolmung.kr/api/user/dog/info")
+                .queryParam("dogIdxList", dogIdx)
+                .build()
+                .encode()
+                .toUriString();
+
+
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -86,20 +98,24 @@ public class ClientUtil {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         // Body set
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("dogIdxList", dogIdx);
+//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+//        body.add("dogIdxList", dogIdx);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("dogIdxList",dogIdx);
 
         // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+        HttpEntity<?> requestMessage = new HttpEntity<>( httpHeaders);
 
         // Request
-//        ResponseEntity<DogInfoDto[]> response = restTemplate.getForEntity(url,DogInfoDto[].class);
-        ResponseEntity<DogInfoDto[]> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, DogInfoDto[].class);
+        ResponseEntity<DogInfoDto[]> response = restTemplate.getForEntity(targetUrl,DogInfoDto[].class);
+//        ResponseEntity<DogInfoDto[]> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, DogInfoDto[].class,params);
+//        DogInfoDto[] response = restTemplate.getForObject(targetUrl, DogInfoDto[].class);
 
         // Response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         List<DogInfoDto> dogInfoDto = Arrays.asList(response.getBody());
+        System.out.println(targetUrl);
 
         return dogInfoDto;
     }
