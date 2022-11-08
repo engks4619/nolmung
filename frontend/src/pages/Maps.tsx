@@ -18,15 +18,15 @@ import {MAIN_COLOR} from '~/const';
 // } from '../utils/AsyncService';
 
 // var polylinePath = [
-//   {latitude:37.4526437, longitude: 126.49236},
-//   {latitude:37.4768068, longitude: 126.4847975},
-//   {latitude:37.4988237, longitude: 126.4960839},
-//   {latitude:37.5176422, longitude: 126.5392841},
-//   {latitude: 37.5398154, longitude: 126.5708743},
-//   {latitude: 37.5457857, longitude: 126.5968815},
-//   {latitude: 37.5646413, longitude: 126.6502792},
-//   {latitude: 37.5708896, longitude: 126.7197823},
-//   {latitude: 37.5710499, longitude: 126.7444216},
+//   {latitude:33.8805, longitude: -118.2084},
+//   {latitude:33.7805, longitude: -118.2084},
+//   {latitude:33.6805, longitude: -118.2084},
+//   {latitude:33.5805, longitude: -118.2084},
+//   {latitude: 33.4805, longitude: -118.2084},
+//   {latitude: 33.3805, longitude: -118.2084},
+//   {latitude: 33.2805, longitude: -118.2084},
+//   {latitude: 33.1805, longitude: -118.2084},
+//   {latitude: 33.0805, longitude: -118.2084},]
 //   {latitude: 37.5770001, longitude: 126.7733532},
 //   {latitude: 37.5817724, longitude: 126.799401},
 //   {latitude: 37.5841817, longitude: 126.8167752},
@@ -79,61 +79,70 @@ function Maps() {
   const [myPosition, setMyPosition] = useState<{
     latitude: number;
     longitude: number;
-  } | null>({latitude: 37.502425, longitude: 127.04069});
+  } | null>({latitude: 33.8805, longitude: -118.2084});
   const [path, setPath] = useState<any>([
-    {latitude: 37.502425, longitude: 127.04069},
-    {latitude: 37.502425, longitude: 127.04069},
+    {latitude: 33.8805, longitude: -118.2084},
+    {latitude: 33.8805, longitude: -118.2084},
   ]);
-  // const addPath = (path, latitude: number, longitude: number) => {
+  // const addPath = (path:any, latitude: number, longitude: number) => {
   //   setPath([...path, {latitude: latitude, longitude: longitude}]);
   // };
 
-  // console.log('myposition:', myPosition);
-  // useEffect(() => {
-  //   console.log('rendered');
-  //   Geolocation.watchPosition(
-  //     position => {
-  //       const {latitude, longitude} = position.coords;
-  //       // console.log('------new position:', latitude, longitude);
-  //       setMyPosition({lat: latitude, lng: longitude});
-  //       // setPath([...path, {latitude: latitude, longitude: longitude}]);
-  //       addPath(path, latitude, longitude);
-  //       console.log('path!!!!', path);
-  //     },
-  //     error => {
-  //       console.log(error);
-  //     },
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       distanceFilter: 1,
-  //     },
-  //   );
-  // }, []);
+  console.log('myposition:', myPosition);
   useEffect(() => {
-    setInterval(() => {
-      Geolocation.getCurrentPosition(
-        position => {
-          const {latitude, longitude} = position.coords;
-          const obj = {
-            latitude: latitude,
-            longitude: longitude,
-          };
-          setMyPosition(obj);
-          // setPath([...oldPath, {latitude: latitude, longitude: longitude}]);
-        },
-        error => {
-          console.log(error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 20000,
-        },
-      );
-    }, 6000);
+    console.log('rendered');
+    Geolocation.watchPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        // console.log('------new position:', latitude, longitude);
+        setMyPosition({latitude: latitude, longitude: longitude});
+        // setPath([...path, {latitude: latitude, longitude: longitude}]);
+        // addPath(path, latitude, longitude);
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        interval:1000,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        distanceFilter: 1,
+      },
+    );
   }, []);
 
+  // useEffect(() => {
+  //   console.log("렌더시작")
+  //   setInterval(() => {
+  //     Geolocation.getCurrentPosition(
+  //       position => {
+  //         // const {latitude, longitude} = position.coords;
+  //         // const obj = {
+  //         //   latitude: latitude,
+  //         //   longitude: longitude,
+  //         // };
+  //         let a = position.coords.latitude
+  //         let b = position.coords.longitude
+  //         console.log('newposition',a,b)
+  //         setMyPosition({latitude:a, longitude:b});
+  //         // setPath([...oldPath, {latitude: latitude, longitude: longitude}]);
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       },
+  //       {
+  //         enableHighAccuracy: true,
+  //         timeout: 20000,
+  //         // maximumAge: 10,
+  //         // interval: 6000,
+  //       },
+  //     );
+  //   }, 8000);
+  // }, []);
+
   useEffect(() => {
+    console.log("useeffect2",path.length)
+    console.log("추가직전마포",myPosition)
     setPath([...path, myPosition]);
   }, [myPosition]);
 
@@ -144,11 +153,29 @@ function Maps() {
       </View>
     );
   }
+  const getC = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        console.log('newposition',latitude,longitude)
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+      },
+    );}
   // const a = {latitude: 37.502425, longitude: 127.04069};
   return (
     <View>
       <Text>{myPosition.latitude}</Text>
       <Text>{myPosition.longitude}</Text>
+      <Pressable
+      onPress={getC}>
+        <Text>현재위치콘솔</Text>
+      </Pressable>
       <NaverMapView
         style={{width: '100%', height: '100%'}}
         zoomControl={true}
@@ -169,6 +196,8 @@ function Maps() {
           image={require('@assets/logo.png')}
         />
         <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+        {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
+
       </NaverMapView>
     </View>
   );
