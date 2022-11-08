@@ -50,7 +50,7 @@ public class CommunityController {
     }
 
     @GetMapping("/with")
-    public ResponseEntity<WithListDto> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable){
+    public ResponseEntity<WithListDto> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable) throws Exception {
         WithListDto withLists = communityService.showWithList(pageable);
         return ResponseEntity.ok().body(withLists);
     }
@@ -74,8 +74,8 @@ public class CommunityController {
     }
 
     @GetMapping("/post-info/{postIdx}")
-    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws Exception {
-        PostDto postDto = communityService.showPost(postIdx,token);
+    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx) throws Exception {
+        PostDto postDto = communityService.showPost(postIdx);
         return ResponseEntity.ok().body(postDto);
     }
 

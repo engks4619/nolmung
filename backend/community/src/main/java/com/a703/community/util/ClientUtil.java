@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class ClientUtil {
 
 
-    public UserInfoDto requestUserInfo(String token) throws Exception {
+    public UserInfoDto requestUserInfo(String token) {
 
         String url = "http://nolmung.kr/api/user/my-info";
         RestTemplate restTemplate = new RestTemplate();
@@ -47,7 +48,7 @@ public class ClientUtil {
         return response.getBody();
     }
 
-    public List<Long> requestSearchDogInfo(int breedCode) throws Exception {
+    public List<Long> requestSearchDogInfo(int breedCode) {
 
         String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();
@@ -74,7 +75,7 @@ public class ClientUtil {
         return dogIdxList;
     }
 
-    public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) throws Exception {
+    public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) {
 
         String url = "http://localhost:8080/api/v1/test";
         RestTemplate restTemplate = new RestTemplate();
@@ -130,7 +131,30 @@ public class ClientUtil {
         return userName;
     }
 
-    public void saveImage(MultipartFile file,String savePath) throws Exception {
+    public UserInfoDto requestOtherUserInfo(Long userIdx) {
+
+        String url = String.format("http://nolmung.kr/api/user/info/%d", userIdx);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Header set
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        // Messag
+        HttpEntity<?> requestMessage = new HttpEntity<>(httpHeaders);
+
+        // Request
+        ResponseEntity<UserInfoDto> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, UserInfoDto.class);
+
+        // Response 파싱
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+//        UserInfoDto userInfoDto = objectMapper.readValue(response.getBody(), UserInfoDto.class);
+
+        return response.getBody();
+    }
+
+    public void saveImage(MultipartFile file,String savePath) throws IOException {
 
         String url = "http://nolmung.kr/api/image";
         RestTemplate restTemplate = new RestTemplate();
