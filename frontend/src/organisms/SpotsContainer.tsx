@@ -6,7 +6,7 @@ import Pencil from '@assets/pencil.svg';
 
 interface Props {
   spotList: Spot[];
-  spotRequest: SpotRequest;
+  spotRequest: SpotRequest | null;
   page: number;
   sort: number;
   limitDistance: number;

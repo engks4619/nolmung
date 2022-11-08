@@ -44,7 +44,7 @@ function Spots() {
   const [sort, setSort] = useState<number>(0);
   const [limitDistance, setLimitDistance] = useState<number>(1000);
   const [category, setCategory] = useState<string>('카페');
-  const [spotRequest, setSpotRequest] = useState<SpotRequest | null>();
+  const [spotRequest, setSpotRequest] = useState<SpotRequest | null>(null);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
@@ -132,8 +132,10 @@ function Spots() {
     <View>
       <SpotsTemplate
         spotList={spotList}
+        page={page}
         totalPage={totalPage}
         userLocation={userLocation}
+        spotRequest={spotRequest}
         onSearchSubmit={onSearchSubmit}
         searchValue={searchValue}
         onChangeSearchValue={onChangeSearchValue}

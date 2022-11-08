@@ -10,7 +10,7 @@ interface Props {
   page: number;
   totalPage: number;
   userLocation: string;
-  spotRequest: SpotRequest;
+  spotRequest: SpotRequest | null;
   onSearchSubmit: (val: string) => void;
   searchValue: string;
   onChangeSearchValue: (val: string) => void;
