@@ -2,9 +2,9 @@ package com.a703.user.controller;
 
 import com.a703.user.dto.UserDto;
 import com.a703.user.service.UserService;
+import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.RequestUser;
 import com.a703.user.vo.ResponseUser;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final Environment env;
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping("/health_check")
     public String status() {
@@ -52,13 +53,8 @@ public class UserController {
 
     @GetMapping("/my-info")
     public ResponseEntity<?> getMyInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
-        jwt = jwt.replace("Bearer ", "");
-        Long userIdx = Long.parseLong(Jwts.parser().setSigningKey(env.getProperty("token.secret"))
-                .parseClaimsJws(jwt).getBody()
-                .getSubject());
-
+        Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         UserDto userDto = userService.getUserByUserIdx(userIdx);
-
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);

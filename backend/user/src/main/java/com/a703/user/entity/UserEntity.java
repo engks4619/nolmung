@@ -1,7 +1,6 @@
 package com.a703.user.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -15,15 +14,26 @@ import javax.persistence.Table;
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity {
     @Id
-    Long userIdx;
+    private Long userIdx;
 
     @Column(nullable = false, length = 15, unique = true)
-    String phone;
+    private String phone;
     @Column(nullable = false)
-    String password;
-    @Setter
+    private String password;
     @Column(nullable = false, length = 20, unique = true)
-    String nickname;
+    private String nickname;
     @Column(nullable = false)
-    String profileImage;
+    private String profileImage;
+
+    public void modifyPassword(String encryptedPassword){
+        this.password = encryptedPassword;
+    }
+
+    public void modifyNickname(String nickname){
+        this.nickname = nickname;
+    }
+
+    public void modifyProfileImage(String profileImage){
+        this.profileImage = profileImage;
+    }
 }

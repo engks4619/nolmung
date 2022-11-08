@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,15 +44,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUserIdx(Long userIdx) {
-        UserEntity userEntity = userRepository.findByUserIdx(userIdx);
+        UserEntity userEntity = userRepository.findById(userIdx).orElseThrow(NoSuchElementException::new);
 
         if (userEntity == null) {
             throw new UsernameNotFoundException("User not found");
         }
 
-        UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
-
-        return userDto;
+        return new ModelMapper().map(userEntity, UserDto.class);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUserIdx((long) username.hashCode());
+        UserEntity userEntity = userRepository.findById((long) username.hashCode()).orElseThrow(NoSuchElementException::new);
 
         if (userEntity == null) {
             throw new UsernameNotFoundException(username);
