@@ -8,6 +8,7 @@ import NaverMapView, {
   Polygon,
 } from 'react-native-nmap';
 import Geolocation from '@react-native-community/geolocation';
+import {MAIN_COLOR} from '~/const';
 // import {MAIN_COLOR} from '~/const';
 // import {
 //   containsKey,
@@ -76,31 +77,67 @@ function Maps() {
   // 현재 위치 변경시 지도 focus 변경과 동시에 Asynstorage에 저장
 
   const [myPosition, setMyPosition] = useState<{
-    lat: number;
-    lng: number;
-  } | null>({lat: 37.502425, lng: 127.04069});
+    latitude: number;
+    longitude: number;
+  } | null>({latitude: 37.502425, longitude: 127.04069});
+  const [path, setPath] = useState<any>([
+    {latitude: 37.502425, longitude: 127.04069},
+    {latitude: 37.502425, longitude: 127.04069},
+  ]);
+  // const addPath = (path, latitude: number, longitude: number) => {
+  //   setPath([...path, {latitude: latitude, longitude: longitude}]);
+  // };
 
-  console.log('myposition:', myPosition);
+  // console.log('myposition:', myPosition);
+  // useEffect(() => {
+  //   console.log('rendered');
+  //   Geolocation.watchPosition(
+  //     position => {
+  //       const {latitude, longitude} = position.coords;
+  //       // console.log('------new position:', latitude, longitude);
+  //       setMyPosition({lat: latitude, lng: longitude});
+  //       // setPath([...path, {latitude: latitude, longitude: longitude}]);
+  //       addPath(path, latitude, longitude);
+  //       console.log('path!!!!', path);
+  //     },
+  //     error => {
+  //       console.log(error);
+  //     },
+  //     {
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       distanceFilter: 1,
+  //     },
+  //   );
+  // }, []);
   useEffect(() => {
-    console.log('rendered');
-    Geolocation.watchPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log('------new position:', latitude, longitude);
-        setMyPosition({lat: latitude, lng: longitude});
-      },
-      error => {
-        console.log(error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        distanceFilter: 1,
-      },
-    );
+    setInterval(() => {
+      Geolocation.getCurrentPosition(
+        position => {
+          const {latitude, longitude} = position.coords;
+          const obj = {
+            latitude: latitude,
+            longitude: longitude,
+          };
+          setMyPosition(obj);
+          // setPath([...oldPath, {latitude: latitude, longitude: longitude}]);
+        },
+        error => {
+          console.log(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+        },
+      );
+    }, 6000);
   }, []);
 
-  if (!myPosition || !myPosition.lat) {
+  useEffect(() => {
+    setPath([...path, myPosition]);
+  }, [myPosition]);
+
+  if (!myPosition || !myPosition.latitude) {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
         <Text>내 위치를 로딩 중입니다. 권한을 허용했는지 확인해주세요.</Text>
@@ -110,20 +147,20 @@ function Maps() {
   // const a = {latitude: 37.502425, longitude: 127.04069};
   return (
     <View>
-      <Text>{myPosition.lat}</Text>
-      <Text>{myPosition.lng}</Text>
+      <Text>{myPosition.latitude}</Text>
+      <Text>{myPosition.longitude}</Text>
       <NaverMapView
         style={{width: '100%', height: '100%'}}
         zoomControl={true}
         center={{
           zoom: 17,
-          latitude: myPosition.lat,
-          longitude: myPosition.lng,
+          latitude: myPosition.latitude,
+          longitude: myPosition.longitude,
         }}>
         <Marker
           coordinate={{
-            latitude: myPosition.lat,
-            longitude: myPosition.lng,
+            latitude: myPosition.latitude,
+            longitude: myPosition.longitude,
           }}
           width={50}
           height={50}
@@ -131,6 +168,7 @@ function Maps() {
           caption={{text: '나'}}
           image={require('@assets/logo.png')}
         />
+        <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
       </NaverMapView>
     </View>
   );
