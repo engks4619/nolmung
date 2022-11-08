@@ -74,11 +74,12 @@ function AppInner() {
             name="Spots"
             component={Spots}
             options={{
-              headerShown: false,
-              title: '애견 동반 스팟',
-              tabBarIcon: ({color}) => (
-                <SpotIcon width={25} height={25} fill={color} />
-              ),
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
             }}
           />
           <Tab.Screen
