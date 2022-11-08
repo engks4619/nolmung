@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DogInfoDto {
 
-    private String dogBreed;
+    private String breedCodeValue;
 
     private String dogName;
 
-    private String dogImgUrl;
+    private String image;
 
 
 }

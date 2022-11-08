@@ -1,19 +1,15 @@
 spring:
-  profiles:
-    include: db
   application:
-    name: community
+    name: image
 
 server:
   port: 0
-#  address: k7a703.p.ssafy.io
   servlet:
     context-path: /api
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
 
 resources:
   location: /images/
@@ -24,8 +20,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-#      defaultZone: http://nolmung.kr:8761/eureka
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://nolmung.kr:8761/eureka
+#      defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

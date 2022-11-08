@@ -20,7 +20,7 @@ public class ChatService {
 
     private final PostRepository postRepository;
 
-    public void saveChat(Long postIdx, Map<String,Object> token){
+    public void saveChat(Long postIdx, String token){
 
 //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
@@ -36,7 +36,7 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public List<ChatDto> getChatList(Map<String,Object> token){
+    public List<ChatDto> getChatList(String token){
         //        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
 //        Long userIdx = userInfoDto.getUserIdx();
         //통신필요

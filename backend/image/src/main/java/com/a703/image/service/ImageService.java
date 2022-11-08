@@ -1,77 +1,27 @@
-package com.a703.community.util;
+package com.a703.image.service;
 
-import com.a703.community.entity.Post;
-import com.a703.community.entity.PostPhoto;
-import com.a703.community.repository.PostPhotoRepository;
-import com.a703.community.repository.PostRepository;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
-import lombok.RequiredArgsConstructor;
 import org.imgscalr.Scalr;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.UUID;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+@Service
+public class ImageService {
 
-@RequiredArgsConstructor
-@Component
-public class FileUtil {
-
-    private final PostRepository postRepository;
-
-    private final PostPhotoRepository  postPhotoRepository;
-
-    private final ClientUtil clientUtil;
-
-
-    public void fileUpload(MultipartFile file,Long postIdx) throws IOException {
-
-
-//        String uploadPath = java.io.File.separator + "profile_images" + java.io.File.separator + "community";
-        String uploadPath = "/images/community";
-
-        try {
-            String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(file.getOriginalFilename());
-
-            Post post = postRepository.findByPostIdx(postIdx);
-
-            java.io.File check = new java.io.File(uploadPath);
-//            if (check.exists()) {
-//                java.io.File[] folder_list = check.listFiles(); //파일리스트 얻어오기
-//
-//                for (int j = 0; j < folder_list.length; j++) {
-//                    folder_list[j].delete();
-//                }
-//                if(folder_list.length == 0 && check.isDirectory()){
-//                    check.delete();
-//                }
-//            }
-            check.mkdir();
-//            Path path = Paths.get(savePath);
-//            file.transferTo(path);
-
-
-            // 이미지 리사이징
-//            resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
-
-
-            clientUtil.saveImage(file,savePath);
-            PostPhoto postPhoto = PostPhoto.builder()
-                    .post(post)
-                    .photoUrl("http://k7a703.p.ssafy.io:8081/api"+savePath)
-                    .build();
-            postPhotoRepository.save(postPhoto);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void uploadImg(MultipartFile file, String savePath) throws Exception {
+        Path path = Paths.get(savePath);
+//        file.transferTo(path);
+        resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
 
     }
 
@@ -79,7 +29,6 @@ public class FileUtil {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-
 
     private void resizeImageFile(MultipartFile file, String filePath, String formatName) throws Exception {
         // 이미지 읽어 오기
