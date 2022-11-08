@@ -5,15 +5,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import Main from './src/pages/Main';
-import Mypage from './src/pages/Mypage';
 import Spots from './src/pages/Spots';
-
-import MyPostList from './src/pages/MyPostList';
-import MyLikedList from './src/pages/MyLikedList';
-import MyLikedSpots from './src/pages/MyLikedSpots';
-import MyWalkingRecord from './src/pages/MyWalkingRecord';
-import MyDogs from './src/pages/MyDogs';
-import CommDetail from '~/pages/CommDetail';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -25,6 +17,8 @@ import HomeIcon from '@assets/home.svg';
 import UserIcon from '@assets/user.svg';
 import CommunityIcon from '@assets/community.svg';
 import SpotIcon from '@assets/spot.svg';
+
+import {MypageStackNavigator} from './src/pages/Mypage';
 
 // import {RootState} from "./src/store/reducer";
 
@@ -41,51 +35,6 @@ export type RootStackParamList = {
   SignIn: undefined;
   SignUp: undefined;
 };
-
-export type CommunityParamList = {
-  Community: undefined;
-  CommDetail: {postIdx: number};
-};
-
-const MypageStack = createNativeStackNavigator();
-const MypageStackNavigator = () => (
-  <MypageStack.Navigator>
-    <MypageStack.Screen
-      name="Mypage"
-      component={Mypage}
-      options={{headerShown: false}}
-    />
-    <MypageStack.Screen name="MyPostList" component={MyPostList} />
-    <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
-    <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
-    <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
-    <MypageStack.Screen name="MyDogs" component={MyDogs} />
-  </MypageStack.Navigator>
-);
-
-const CommunityStack = createNativeStackNavigator();
-
-const CommunityStackNavigator = () => (
-  <CommunityStack.Navigator>
-    <CommunityStack.Screen
-      name="Community"
-      component={Community}
-      options={{headerShown: false}}
-    />
-    <CommunityStack.Screen
-      name="CommDetail"
-      component={CommDetail}
-      options={{
-        headerTitle: '게시글',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
-      }}
-    />
-  </CommunityStack.Navigator>
-);
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
