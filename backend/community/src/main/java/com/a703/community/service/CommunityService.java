@@ -40,7 +40,6 @@ public class CommunityService {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();
-//        Long userIdx = 1L;
 
         List<Long> dogIdxList = registerPost.getDogIdx();
 
@@ -102,9 +101,9 @@ public class CommunityService {
 
     public void pushLike(Long postIdx,String token) throws Exception {
 
-//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-//        Long userIdx = userInfoDto.getUserIdx();
-        Long userIdx = 1L;
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+        Long userIdx = userInfoDto.getUserIdx();
+
         Post post=postRepository.findByPostIdx(postIdx);
 
         PostLikeId id = PostLikeId.builder()
@@ -119,15 +118,14 @@ public class CommunityService {
         postLikeRepository.save(postLike);
     }
 
-    public PostDto showPost(Long postIdx, String token) throws Exception {
-
-//        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-//        Long userIdx = userInfoDto.getUserIdx();
-        Long userIdx = 1L;
+    public PostDto showPost(Long postIdx) throws Exception {
 
         List<PostPhoto> postPhotos = postPhotoRepository.findByPostPostIdx(postIdx);
 
         Post post = postRepository.findByPostIdx(postIdx);
+
+        //유저 통신
+        UserInfoDto writerInfoDto = clientUtil.requestOtherUserInfo(post.getWriterIdx());
 
         List<LuckyDog> luckyDogList = luckyDogRepository.findByIdPostPostIdx(postIdx);
 
@@ -141,10 +139,10 @@ public class CommunityService {
 
         return PostDto.builder()
                 .postIdx(post.getPostIdx())
-                .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx))
+                .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(post.getWriterIdx(),postIdx))
                 .writerIdx(post.getWriterIdx())
-                .writer("통신필요")
-                .userImgUrl("통신필요")
+                .writer(writerInfoDto.getNickname())
+                .userImgUrl(writerInfoDto.getProfileImage())
                 .subject(post.getSubject())
                 .dogInfoList(dogInfoDto)
                 .photoUrl(postPhotoRepository.existsByPostPostIdx(post.getPostIdx()) ? convertPostPhotoListToUrlList(postPhotos) : null)
@@ -181,18 +179,18 @@ public class CommunityService {
                         .categoryType(main.getCategoryType())
                         .build())
                 .collect(Collectors.toList());
-        //배열 두개로 보내줘야
+
         return result;
     }
 
-    public WithListDto showWithList(Pageable pageable){
+    public WithListDto showWithList(Pageable pageable) {
 
         Page<Post> withLists = postRepository.findByCategoryType(CategoryType.WITH,pageable);
         int totalPages = withLists.getTotalPages();
 
         List<WithDto> withDtoList = withLists.stream().map(with-> WithDto.builder()
-                .writer("통신필요")
-                .userImgUrl("통신필요")
+                .writer(clientUtil.requestOtherUserInfo(with.getWriterIdx()).getNickname())
+                .userImgUrl(clientUtil.requestOtherUserInfo(with.getWriterIdx()).getProfileImage())
                 .postIdx(with.getPostIdx())
                 .subject(with.getSubject())
                 .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(with.getPostIdx())))
@@ -217,8 +215,8 @@ public class CommunityService {
         int totalPages = otherLists.getTotalPages();
 
         List<OtherDto> otherDtoList = otherLists.stream().map(other-> OtherDto.builder()
-                        .writer("통신필요")
-                        .userImgUrl("통신필요")
+                        .writer(clientUtil.requestOtherUserInfo(other.getWriterIdx()).getNickname())
+                        .userImgUrl(clientUtil.requestOtherUserInfo(other.getWriterIdx()).getProfileImage())
                         .postIdx(other.getPostIdx())
                         .subject(other.getSubject())
                         .likeCnt(Math.toIntExact(postLikeRepository.countReviewLikeByIdPostPostIdx(other.getPostIdx())))
