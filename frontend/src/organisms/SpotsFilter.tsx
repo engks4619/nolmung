@@ -85,7 +85,7 @@ function SpotsFilter({
         <Pressable onPress={() => setCategory('카페')}>
           <Text
             style={
-              category == '카페'
+              category === '카페'
                 ? [styles.text, styles.brownBorder]
                 : styles.text
             }>
@@ -95,7 +95,7 @@ function SpotsFilter({
         <Pressable onPress={() => setCategory('식당')}>
           <Text
             style={
-              category == '식당'
+              category === '식당'
                 ? [styles.text, styles.brownBorder]
                 : styles.text
             }>
