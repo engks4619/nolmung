@@ -111,7 +111,6 @@ function Spots() {
 
   useEffect(() => {
     if (!spotRequest) return;
-    console.log(sort);
     getSpotList();
   }, [spotRequest, page, sort]);
 
