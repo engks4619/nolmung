@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -26,6 +26,9 @@ import {CommunityStackNavigator} from './src/pages/Community';
 
 import usePermissions from '~/hooks/usePermissions';
 
+import {useDispatch} from 'react-redux';
+import {getLocation} from '~/slices/userSlice';
+
 export type LoggedInParamList = {
   Chats: undefined;
   Spots: undefined;
@@ -46,7 +49,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
+  const dispatch = useDispatch();
+
   const [isLoggedIn, setLoggedIn] = useState(true);
+
+  useEffect(() => {
+    getLocation(dispatch);
+  }, []);
+
   return (
     <NavigationContainer>
       {isLoggedIn ? (
@@ -75,12 +85,11 @@ function AppInner() {
             name="Spots"
             component={Spots}
             options={{
-              headerTitle: '놀면 멍하니',
-              headerTintColor: MAIN_COLOR,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 15,
-              },
+              headerShown: false,
+              title: '산책스팟',
+              tabBarIcon: ({color}) => (
+                <SpotIcon width={25} height={25} fill={color} />
+              ),
             }}
           />
           <Tab.Screen

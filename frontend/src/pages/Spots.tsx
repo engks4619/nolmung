@@ -1,8 +1,10 @@
 import {AxiosResponse} from 'axios';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, ScrollView, StatusBar, Text, View} from 'react-native';
+import {Alert, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 export interface menu {
   menuName: string;
@@ -31,8 +33,8 @@ export interface Spot {
   tel: string | null;
 }
 export interface SpotRequest {
-  lat: number;
-  lng: number;
+  lat: number | undefined;
+  lng: number | undefined;
   searchValue: string;
   limitDistance: number;
   category: string;
@@ -48,6 +50,9 @@ function Spots() {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
+
+  const lat = useSelector((state: RootState) => state.user.lat);
+  const lng = useSelector((state: RootState) => state.user.lng);
 
   const getSpotList = async () => {
     const params = {
@@ -93,23 +98,27 @@ function Spots() {
 
   const initSpotRequest = () => {
     const requestBody: SpotRequest = {
-      lat: 0,
-      lng: 0,
+      lat,
+      lng,
       searchValue: '',
       limitDistance: 1000,
       category: '카페',
     };
 
-    setSpotRequest(requestBody);
+    setSpotRequest(requestBody as SpotRequest);
   };
 
-  const getUserLocation = () => {
-    setUserLocation('동작/사당');
+  const getTextLocation = (): string => {
+    if (!lat || !lng || lat === 0 || lng === 0) {
+      return '알수없음';
+    }
+    // 실제 위치 주소 가져오기
+
+    return '동작/사당';
   };
 
   useEffect(() => {
     initSpotRequest();
-    getUserLocation();
   }, []);
 
   useEffect(() => {
@@ -120,13 +129,22 @@ function Spots() {
   }, [spotRequest, page, sort]);
 
   useEffect(() => {
+    if (!spotRequest) {
+      return;
+    }
     setPage(0);
     setSpotRequest({
       ...spotRequest,
+      lat,
+      lng,
       limitDistance,
       category,
     } as SpotRequest);
-  }, [limitDistance, category]);
+  }, [limitDistance, category, lat, lng]);
+
+  useEffect(() => {
+    setUserLocation(getTextLocation());
+  }, [lat, lng]);
 
   return (
     <View>
