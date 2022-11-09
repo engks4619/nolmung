@@ -1,4 +1,4 @@
-package com.a703.withdog.serrvice;
+package com.a703.withdog.service;
 
 import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.dto.WalkRes;
