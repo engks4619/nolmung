@@ -63,7 +63,7 @@ public class ClientUtil {
 
     public void saveImage(MultipartFile file, String savePath) throws IOException {
 
-        String url = "http://localhost:8000/api/image";
+        String url = "http://nolmung.kr/api/image";
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
