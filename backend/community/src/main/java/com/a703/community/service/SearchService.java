@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +40,7 @@ public class SearchService {
 
     private final ClientUtil clientUtil;
 
-    public OtherListDto searchOther(SearchRequest searchRequest, Pageable pageable) throws Exception {
+    public OtherListDto searchOther(SearchRequest searchRequest, Pageable pageable) {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
@@ -60,11 +59,7 @@ public class SearchService {
         }
 
         if (searchRequest.getDogBreed() != null){
-//            List<Long> dogIdxList =clientUtil.requestSearchDogInfo(searchRequest.getDogBreed());
-            //프론트 테스트용 추후 아래 삭제하고 위에꺼 사용
-            List<Long> dogIdxList = new ArrayList<>();
-            dogIdxList.add(Long.valueOf("1"));
-            dogIdxList.add(Long.valueOf("2"));
+            List<Long> dogIdxList =clientUtil.requestSearchDogInfo(searchRequest.getDogBreed());
 
             List<LuckyDog> luckyDogList = luckyDogRepository.findAllByIdDogIdxIn(dogIdxList);
             List<Long> findPostIdx = luckyDogList.stream().map(luckyDog -> {
@@ -104,7 +99,7 @@ public class SearchService {
                 .build();
     }
 
-    public WithListDto searchWith(SearchRequest searchRequest, Pageable pageable) throws Exception {
+    public WithListDto searchWith(SearchRequest searchRequest, Pageable pageable) {
 
         Specification<Post> spec = (root, query, criteriaBuilder) ->null;
 
@@ -118,12 +113,7 @@ public class SearchService {
             spec = spec.and(PostSpecification.lessThanWalkeDate(searchRequest.getEndWalkDate()));
         }
         if (searchRequest.getDogBreed() != null){
-//            List<Long> dogIdxList =clientUtil.requestSearchDogInfo(searchRequest.getDogBreed());
-            //프론트 테스트용 추후 아래 삭제하고 위에꺼 사용
-            List<Long> dogIdxList = new ArrayList<>();
-            dogIdxList.add(Long.valueOf("1"));
-            dogIdxList.add(Long.valueOf("2"));
-
+            List<Long> dogIdxList =clientUtil.requestSearchDogInfo(searchRequest.getDogBreed());
 
             List<LuckyDog> luckyDogList = luckyDogRepository.findAllByIdDogIdxIn(dogIdxList);
             List<Long> findPostIdx = luckyDogList.stream().map(luckyDog -> {

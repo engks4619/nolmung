@@ -29,7 +29,7 @@ public class CommunityController {
     private final ClientUtil clientUtil;
 
     @PostMapping
-    public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws Exception {
+    public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestPart(value = "files", required = false) List<MultipartFile> files) {
 
         communityService.registerPost(registerPost,token,files);
         return ResponseEntity.ok().body("success");
@@ -50,7 +50,7 @@ public class CommunityController {
     }
 
     @GetMapping("/with")
-    public ResponseEntity<WithListDto> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable) throws Exception {
+    public ResponseEntity<WithListDto> showWithList(@PageableDefault(sort = "modifyDate", direction = Sort.Direction.DESC,size = 10)Pageable pageable) {
         WithListDto withLists = communityService.showWithList(pageable);
         return ResponseEntity.ok().body(withLists);
     }
@@ -74,13 +74,13 @@ public class CommunityController {
     }
 
     @GetMapping("/post-info/{postIdx}")
-    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx) throws Exception {
+    public ResponseEntity<PostDto>showPost(@PathVariable Long postIdx) {
         PostDto postDto = communityService.showPost(postIdx);
         return ResponseEntity.ok().body(postDto);
     }
 
     @PutMapping("/like/{postIdx}")
-    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws Exception {
+    public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
 
         communityService.pushLike(postIdx,token);
         return ResponseEntity.ok().body("success");
