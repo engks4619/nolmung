@@ -6,6 +6,7 @@ import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
+import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -22,6 +23,8 @@ import {MypageStackNavigator} from './src/pages/Mypage';
 import {CommunityStackNavigator} from './src/pages/Community';
 
 // import {RootState} from "./src/store/reducer";
+
+import usePermissions from '~/hooks/usePermissions';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -41,6 +44,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
+  usePermissions(); //권한 요청 커스텀 훅
   // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
   const [isLoggedIn, setLoggedIn] = useState(true);
   return (
@@ -71,11 +75,12 @@ function AppInner() {
             name="Spots"
             component={Spots}
             options={{
-              headerShown: false,
-              title: '애견 동반 스팟',
-              tabBarIcon: ({color}) => (
-                <SpotIcon width={25} height={25} fill={color} />
-              ),
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
             }}
           />
           <Tab.Screen
@@ -122,6 +127,7 @@ function AppInner() {
               ),
             }}
           />
+          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>

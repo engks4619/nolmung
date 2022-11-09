@@ -5,9 +5,15 @@ interface Props {
   imageSource: string;
   width?: number;
   height?: number;
+  borderRadius?: number;
 }
 
-function Squre({imageSource, width = 100, height = 100}: Props) {
+function Squre({
+  imageSource,
+  width = 100,
+  height = 100,
+  borderRadius = 0,
+}: Props) {
   const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
 
   return (
@@ -16,6 +22,7 @@ function Squre({imageSource, width = 100, height = 100}: Props) {
         style={{
           width,
           height,
+          borderRadius,
         }}
         source={{
           uri: convertImagePath,
