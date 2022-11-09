@@ -8,11 +8,12 @@ interface Props {
 }
 
 function Profile({width = 70, height = 70, imageSource}: Props) {
+  const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
   return (
     <View>
       <Image
         style={[styles.roundImage, {width, height}]}
-        source={{uri: imageSource}}
+        source={{uri: convertImagePath}}
       />
     </View>
   );

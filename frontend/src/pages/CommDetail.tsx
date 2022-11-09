@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import CommDetailTemplate from '@templates/CommDetailTemplate';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommunityParamList} from '~/../AppInner';
+import {CommunityParamList} from '@pages/Community';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 
@@ -21,6 +21,7 @@ export interface DetailProps {
   walkDate: string;
   modifyDate: string;
   photoUrl: string[];
+  userImgUrl: string;
 }
 
 type CommScreenProp = NativeStackScreenProps<CommunityParamList, 'CommDetail'>;
