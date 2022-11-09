@@ -5,6 +5,7 @@ import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import Config from 'react-native-config';
 
 export interface menu {
   menuName: string;
@@ -54,6 +55,8 @@ function Spots() {
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
 
+  const API_KEY = Config.KAKAO_API_KEY;
+  console.log(API_KEY);
   const getSpotList = async () => {
     const params = {
       page,
