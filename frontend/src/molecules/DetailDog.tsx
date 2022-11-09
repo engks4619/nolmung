@@ -3,19 +3,21 @@ import {View, StyleSheet, Text} from 'react-native';
 import Profile from '@atoms/Profile';
 import {MAIN_COLOR} from '~/const';
 
-// export interface DetailDogProps {
-//   name: string;
-// }
+export interface DetailDogProps {
+  dogName: string;
+  breedCodeValue: string;
+  image: string;
+}
 
-function DetailDog() {
+function DetailDog({dogName, breedCodeValue, image}: DetailDogProps) {
   return (
     <View style={styles.container}>
       <View style={styles.imgCotainer}>
-        <Profile imageSource="/images/spot/default/default.png" />
+        <Profile imageSource={image} width={60} height={60} />
       </View>
       <View style={styles.textContainer}>
-        <Text>강아지이름</Text>
-        <Text>견종</Text>
+        <Text style={styles.textBold}>{dogName}</Text>
+        <Text style={styles.textBold}>{breedCodeValue}</Text>
       </View>
     </View>
   );
@@ -23,19 +25,23 @@ function DetailDog() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 150, // 강아지 사진 + 강아지 이름 + 견종 크기 알 수 잇는 방법은?
-    height: 80,
-    borderWidth: 1,
+    height: 70,
+    borderWidth: 1.5,
     borderColor: MAIN_COLOR,
     flexDirection: 'row',
     borderRadius: 10,
-    marginHorizontal: 5,
     marginVertical: 10,
-    justifyContent: 'center',
+    marginHorizontal: 5,
   },
   textContainer: {
-    justifyContent: 'center',
-    paddingLeft: 5,
+    justifyContent: 'space-around',
+    marginVertical: 10,
+    marginLeft: 5,
+    marginRight: 10,
+  },
+  textBold: {
+    fontSize: 13,
+    fontWeight: '800',
   },
   imgCotainer: {
     justifyContent: 'center',

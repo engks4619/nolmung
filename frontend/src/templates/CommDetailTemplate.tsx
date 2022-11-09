@@ -21,7 +21,7 @@ function CommDetailTemplate({detailContent}: Props) {
           modifyDate={detailContent.modifyDate}
           userImgUrl={detailContent.userImgUrl}
         />
-        <DetailDogs />
+        <DetailDogs dogInfoList={detailContent.dogInfoList} />
         <DetailWalk
           location={detailContent.location}
           walkDate={detailContent.walkDate}
@@ -33,7 +33,12 @@ function CommDetailTemplate({detailContent}: Props) {
           photoUrl={detailContent.photoUrl}
         />
       </View>
-      <DetailFooter />
+      <DetailFooter
+        categoryType={detailContent.categoryType}
+        pay={detailContent.pay}
+        isLiked={detailContent.getLike}
+        isWriter={true} // login 기능 추가후 비교
+      />
     </View>
   );
 }

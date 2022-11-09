@@ -103,12 +103,7 @@ function AppInner() {
             name="CommunityList"
             component={CommunityStackNavigator}
             options={{
-              headerTitle: '놀면 멍하니',
-              headerTintColor: MAIN_COLOR,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 15,
-              },
+              headerShown: false,
               title: '커뮤니티',
               tabBarIcon: ({color}) => (
                 <CommunityIcon width={25} height={25} fill={color} />

@@ -38,10 +38,11 @@ function DetailSubject({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    paddingHorizontal: 15,
-    height: 75,
+    paddingHorizontal: 20,
+    height: 90,
     justifyContent: 'space-between',
-    paddingVertical: 5,
+    paddingTop: 15,
+    paddingBottom: 10,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -52,10 +53,12 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: '700',
+    color: 'rgba(0, 0, 0, 0.7)',
   },
   namePadding: {
     paddingLeft: 5,
+    color: 'rgba(0, 0, 0, 0.7)',
   },
 });
 
