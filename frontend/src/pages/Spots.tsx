@@ -3,7 +3,8 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
-import Geolocation from '@react-native-community/geolocation';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 export interface menu {
   menuName: string;
@@ -55,27 +56,8 @@ function Spots() {
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const [position, setPosition] = useState<Geoloc | null>({lat: 0, lng: 0});
-
-  const getLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        // setSpotRequest({ ...spotRequest, lat: latitude, lng: longitude } as SpotRequest);
-        setPosition(() => ({lat: latitude, lng: longitude}));
-        //사용자 위치정보 주소로 받아오기
-        setUserLocation(getTextLocation(latitude, longitude));
-      },
-      error => {
-        console.log(error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        distanceFilter: 1,
-      },
-    );
-  };
+  const lat = useSelector((state: RootState) => state.user.lat);
+  const lng = useSelector((state: RootState) => state.user.lng);
 
   const getSpotList = async () => {
     const params = {
@@ -121,8 +103,8 @@ function Spots() {
 
   const initSpotRequest = () => {
     const requestBody: SpotRequest = {
-      lat: position?.lat,
-      lng: position?.lng,
+      lat,
+      lng,
       searchValue: '',
       limitDistance: 1000,
       category: '카페',
@@ -131,7 +113,7 @@ function Spots() {
     setSpotRequest(requestBody as SpotRequest);
   };
 
-  const getTextLocation = (lat: number, lng: number): string => {
+  const getTextLocation = (): string => {
     if (!lat || !lng || lat === 0 || lng === 0) {
       return '알수없음';
     }
@@ -141,12 +123,8 @@ function Spots() {
   };
 
   useEffect(() => {
-    getLocation();
-  }, []);
-
-  useEffect(() => {
     initSpotRequest();
-  }, [position]);
+  }, []);
 
   useEffect(() => {
     if (!spotRequest) {
@@ -162,10 +140,16 @@ function Spots() {
     setPage(0);
     setSpotRequest({
       ...spotRequest,
+      lat,
+      lng,
       limitDistance,
       category,
     } as SpotRequest);
-  }, [limitDistance, category]);
+  }, [limitDistance, category, lat, lng]);
+
+  useEffect(() => {
+    setUserLocation(getTextLocation());
+  }, [lat, lng]);
 
   return (
     <View>

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {ScrollView, Alert} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
-import {Geoloc} from '~/utils/type';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 
