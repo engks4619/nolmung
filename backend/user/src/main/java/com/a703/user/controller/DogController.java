@@ -35,7 +35,7 @@ public class DogController {
     public ResponseEntity<Object> registerDog(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt, @RequestPart(value = "file") MultipartFile file, @RequestPart(value = "dog") RequestDog dog) throws IOException {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
 
-        String savePath = String.format("/" + UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));
+        String savePath = String.format(env.getProperty("image.dog.path"), UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));
         commUtil.saveImage(file, savePath);
         dog.setImage(savePath);
 

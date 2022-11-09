@@ -30,7 +30,7 @@ public class CommUtil {
         ByteArrayResource byteFile = new ByteArrayResource(file.getBytes()){
             @Override
             public String getFilename(){
-                return file.getName();
+                return file.getOriginalFilename();
             }
         };
         body.add("file", byteFile);
