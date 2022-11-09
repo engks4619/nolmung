@@ -5,6 +5,7 @@ import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
+import {MAIN_COLOR} from '~/const';
 
 export type CommunityParamList = {
   Community: undefined;
@@ -18,7 +19,14 @@ export const CommunityStackNavigator = () => (
     <CommunityStack.Screen
       name="Community"
       component={Community}
-      options={{headerShown: false}}
+      options={{
+        headerTitle: '놀면 멍하니',
+        headerTintColor: MAIN_COLOR,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
     />
     <CommunityStack.Screen
       name="CommDetail"
@@ -44,6 +52,7 @@ export interface withPostListType {
   walkDate: string;
   likeCnt: number;
   thumbnailUrl: string;
+  userImgUrl: string;
 }
 
 export interface otherPostListType extends withPostListType {

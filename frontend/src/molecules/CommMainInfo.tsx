@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '800',
+    color: 'rgba(0, 0, 0, 0.7)',
   },
   dateContainer: {
     flexDirection: 'row',
