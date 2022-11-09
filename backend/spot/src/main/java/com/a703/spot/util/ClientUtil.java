@@ -4,14 +4,15 @@ import com.a703.spot.dto.response.connection.UserInfoDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,33 +21,76 @@ import java.util.Map;
 @Component
 public class ClientUtil {
 
+    public UserInfoDto requestUserInfo(String token) {
 
-    public UserInfoDto requestUserInfo(Map<String,Object> token) throws Exception {
-
-        String url = "http://localhost:8080/api/v1/test";
+        String url = "http://nolmung.kr/api/user/my-info";
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.add("Authorization",(String) token.get("authorization"));
+        httpHeaders.set(HttpHeaders.AUTHORIZATION,token);
 
         // Body set
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+
+        // Messag
+        HttpEntity<?> requestMessage = new HttpEntity<>(httpHeaders);
+
+        // Request
+        ResponseEntity<UserInfoDto> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, UserInfoDto.class);
+
+        return response.getBody();
+    }
+
+
+    public UserInfoDto requestOtherUserInfo(Long userIdx) {
+
+        String url = String.format("http://nolmung.kr/api/user/info/%d", userIdx);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Header set
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        // Messag
+        HttpEntity<?> requestMessage = new HttpEntity<>(httpHeaders);
+
+        // Request
+        ResponseEntity<UserInfoDto> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, UserInfoDto.class);
+
+        return response.getBody();
+    }
+
+    public void saveImage(MultipartFile file, String savePath) throws IOException {
+
+        String url = "http://nolmung.kr/api/image";
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Header set
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // Body set
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        ByteArrayResource contentsAsResource = new ByteArrayResource(file.getBytes()){
+            @Override
+            public String getFilename(){
+                return file.getOriginalFilename();
+            }
+        };
+//        body.add("file",new ByteArrayResource(file.getBytes()));
+//        body.add("file",file);
+        body.add("file",contentsAsResource);
+        body.add("savePath",savePath);
 
 
         // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+        HttpEntity<MultiValueMap<String,Object>> requestMessage = new HttpEntity<>(body, httpHeaders);
 
         // Request
-        HttpEntity<String> response = restTemplate.getForEntity(url,String.class);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestMessage, String.class);
 
-        // Response 파싱
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        UserInfoDto userInfoDto = objectMapper.readValue(response.getBody(), UserInfoDto.class);
-
-        return userInfoDto;
     }
 
 }

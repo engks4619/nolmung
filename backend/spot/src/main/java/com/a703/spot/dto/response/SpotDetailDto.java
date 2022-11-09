@@ -1,6 +1,6 @@
 package com.a703.spot.dto.response;
 
-import com.a703.spot.entity.SpotReview;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
