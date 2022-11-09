@@ -37,12 +37,20 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
 
-
         - id: user
           uri: lb://USER
           predicates:
             - Path=/api/user/**
             - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+
+
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user/**
+            - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
 
