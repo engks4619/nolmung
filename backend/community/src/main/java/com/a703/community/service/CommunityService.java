@@ -140,9 +140,7 @@ public class CommunityService {
             return a.getId().getDogIdx();
         }).collect(Collectors.toList());
 
-        //강아지 관련 api연결해야됨
-//        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
-        List<DogInfoDto> dogInfoDto = null;
+        List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
 
         return PostDto.builder()
                 .postIdx(post.getPostIdx())
@@ -170,7 +168,6 @@ public class CommunityService {
     }
 
     public List<MainListDto>[] showMainList(Pageable pageable){
-
 
         Page<Post> mainLists = postRepository.findAll(pageable);
         List<MainListDto>[] result = new List[2];
