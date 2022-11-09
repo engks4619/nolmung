@@ -16,6 +16,7 @@ import com.a703.spot.repository.SpotReviewRepository;
 import com.a703.spot.util.ClientUtil;
 import com.a703.spot.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SpotReviewServiceImpl implements SpotReviewService {
 
     private final SpotRepository spotRepository;
@@ -37,22 +39,24 @@ public class SpotReviewServiceImpl implements SpotReviewService {
     private final FileUtil fileUtil;
 
     @Override
-    public void registReview(SpotReviewRequest request, Map<String, Object> token, List<MultipartFile> files) {
+    public void registReview(SpotReviewRequest request,String token, List<MultipartFile> files) {
         try {
             // 리뷰 저장
-//            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
             SpotReviewDto spotReviewDto
                     = SpotReviewDto.builder()
                     .spotId(request.getSpotId())
                     .content(request.getContent())
                     .star(request.getStar())
-//                    .userIdx(userInfoDto.getUserIdx())
-                    .userInfoDto(UserInfoDto.builder()
-                            .userIdx(1L)
-                            .build())
+                    .nickname(userInfoDto.getNickname())
+                    .profileImage(userInfoDto.getProfileImage())
+                    .userIdx(userInfoDto.getUserIdx())
                     .deleted(false)
                     .build();
-            SpotReview spotReview = spotReviewRepository.save(SpotReviewMapper.mapper.toEntity(spotReviewDto));
+//
+            SpotReview spotReviewEntity = SpotReviewMapper.mapper.toEntity(spotReviewDto);
+//
+            SpotReview spotReview = spotReviewRepository.save(spotReviewEntity);
             
             //이미지 파일 업로드
             try {
@@ -71,13 +75,13 @@ public class SpotReviewServiceImpl implements SpotReviewService {
     }
 
     @Override
-    public void deleteReview(Long reviewIdx, Map<String, Object> token) {
+    public void deleteReview(Long reviewIdx, String token) {
         SpotReview spotReview = spotReviewRepository.findByReviewIdx(reviewIdx).orElseThrow(
                 () -> new SpotReviewException(ReviewErrorCode.REVIEW_NOT_FOUND)
         );
         try {
-//            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-            UserInfoDto userInfoDto = UserInfoDto.builder().userIdx(1L).build();
+            UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+//            UserInfoDto userInfoDto = UserInfoDto.builder().userIdx(1L).build();
 
             if(spotReview.getUserIdx() == userInfoDto.getUserIdx()) {
                 spotReview.setIsDeleted(true);

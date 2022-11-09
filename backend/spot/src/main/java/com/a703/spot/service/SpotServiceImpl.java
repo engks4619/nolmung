@@ -2,6 +2,7 @@ package com.a703.spot.service;
 
 import com.a703.spot.dto.request.SpotRequest;
 import com.a703.spot.dto.response.*;
+import com.a703.spot.dto.response.connection.UserInfoDto;
 import com.a703.spot.entity.ReviewPhoto;
 import com.a703.spot.entity.Spot;
 import com.a703.spot.entity.SpotReview;
@@ -35,6 +36,8 @@ public class SpotServiceImpl implements SpotService {
     private final ReviewPhotoRepository reviewPhotoRepository;
     private final SpotMapper spotMapper;
 
+    private final ClientUtil clientUtil;
+
     @Override
     public SpotListDto getSpotList(SpotRequest request, int page, int sort) {
 
@@ -65,6 +68,11 @@ public class SpotServiceImpl implements SpotService {
         List<SpotReviewDto> reviewList = new ArrayList<>();
         for(SpotReview spotReview : reviewEntityList) {
             SpotReviewDto spotReviewDto = SpotReviewMapper.mapper.toDto(spotReview);
+//            spotReviewDto.setUserInfoDto(clientUtil.requestOtherUserInfo(spotReview.getUserIdx()));
+            UserInfoDto userInfoDto = clientUtil.requestOtherUserInfo(spotReview.getUserIdx());
+            spotReviewDto.setNickname(userInfoDto.getNickname());
+            spotReviewDto.setProfileImage(userInfoDto.getProfileImage());
+            spotReviewDto.setUserIdx(userInfoDto.getUserIdx());
             List<String> photoList = new ArrayList<>();
             for(ReviewPhoto reviewPhoto : reviewPhotoRepository.findBySpotReview(spotReview)){
                 photoList.add(reviewPhoto.getPhotoUrl());

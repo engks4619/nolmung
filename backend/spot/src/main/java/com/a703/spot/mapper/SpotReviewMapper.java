@@ -16,5 +16,5 @@ public interface SpotReviewMapper extends EntitiyMapper<SpotReviewDto, SpotRevie
 
     @Override
     @Mapping(source = "spot.spotId", target = "spotId")
-    SpotReviewDto toDto(final SpotReview entitiy);
+    SpotReviewDto toDto(final SpotReview entity);
 }
