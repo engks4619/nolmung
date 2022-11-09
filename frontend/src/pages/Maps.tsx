@@ -8,6 +8,7 @@ import NaverMapView, {
   Polygon,
 } from 'react-native-nmap';
 import Geolocation from '@react-native-community/geolocation';
+import {MAIN_COLOR} from '~/const';
 // import {MAIN_COLOR} from '~/const';
 // import {
 //   containsKey,
@@ -17,15 +18,15 @@ import Geolocation from '@react-native-community/geolocation';
 // } from '../utils/AsyncService';
 
 // var polylinePath = [
-//   {latitude:37.4526437, longitude: 126.49236},
-//   {latitude:37.4768068, longitude: 126.4847975},
-//   {latitude:37.4988237, longitude: 126.4960839},
-//   {latitude:37.5176422, longitude: 126.5392841},
-//   {latitude: 37.5398154, longitude: 126.5708743},
-//   {latitude: 37.5457857, longitude: 126.5968815},
-//   {latitude: 37.5646413, longitude: 126.6502792},
-//   {latitude: 37.5708896, longitude: 126.7197823},
-//   {latitude: 37.5710499, longitude: 126.7444216},
+//   {latitude:33.8805, longitude: -118.2084},
+//   {latitude:33.7805, longitude: -118.2084},
+//   {latitude:33.6805, longitude: -118.2084},
+//   {latitude:33.5805, longitude: -118.2084},
+//   {latitude: 33.4805, longitude: -118.2084},
+//   {latitude: 33.3805, longitude: -118.2084},
+//   {latitude: 33.2805, longitude: -118.2084},
+//   {latitude: 33.1805, longitude: -118.2084},
+//   {latitude: 33.0805, longitude: -118.2084},]
 //   {latitude: 37.5770001, longitude: 126.7733532},
 //   {latitude: 37.5817724, longitude: 126.799401},
 //   {latitude: 37.5841817, longitude: 126.8167752},
@@ -60,11 +61,6 @@ import Geolocation from '@react-native-community/geolocation';
 //   {latitude: 37.2762087, longitude: 127.0808982}
 // ];
 
-type Geoloc = {
-  latitude: number;
-  longitude: number;
-};
-
 function Maps() {
   // 산책 종료 로직
   // 산책 종료 버튼 클릭
@@ -76,23 +72,26 @@ function Maps() {
   // 현재 위치 변경시 지도 focus 변경과 동시에 Asynstorage에 저장
 
   const [myPosition, setMyPosition] = useState<{
-    lat: number;
-    lng: number;
-  } | null>({lat: 37.502425, lng: 127.04069});
+    latitude: number;
+    longitude: number;
+  } | null>({latitude: 37.383, longitude: -122.0605});
+  const [path, setPath] = useState<any>([
+    {latitude: 37.383, longitude: -122.0605},
+    {latitude: 37.383, longitude: -122.0605},
+  ]);
 
   console.log('myposition:', myPosition);
   useEffect(() => {
-    console.log('rendered');
     Geolocation.watchPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        console.log('------new position:', latitude, longitude);
-        setMyPosition({lat: latitude, lng: longitude});
+        setMyPosition({latitude: latitude, longitude: longitude});
       },
       error => {
         console.log(error);
       },
       {
+        interval: 1000,
         enableHighAccuracy: true,
         timeout: 20000,
         distanceFilter: 1,
@@ -100,30 +99,53 @@ function Maps() {
     );
   }, []);
 
-  if (!myPosition || !myPosition.lat) {
+  useEffect(() => {
+    console.log('useeffect2', path.length);
+    console.log('추가직전마포', myPosition);
+    setPath([...path, myPosition]);
+  }, [myPosition]);
+
+  if (!myPosition || !myPosition.latitude) {
     return (
       <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
         <Text>내 위치를 로딩 중입니다. 권한을 허용했는지 확인해주세요.</Text>
       </View>
     );
   }
-  // const a = {latitude: 37.502425, longitude: 127.04069};
+  const getC = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        console.log('newposition', latitude, longitude);
+      },
+      error => {
+        console.log(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+      },
+    );
+  };
   return (
     <View>
-      <Text>{myPosition.lat}</Text>
-      <Text>{myPosition.lng}</Text>
+      <Text>{myPosition.latitude}</Text>
+      <Text>{myPosition.longitude}</Text>
+      <Pressable onPress={getC}>
+        <Text>현재위치콘솔</Text>
+      </Pressable>
       <NaverMapView
         style={{width: '100%', height: '100%'}}
         zoomControl={true}
         center={{
           zoom: 17,
-          latitude: myPosition.lat,
-          longitude: myPosition.lng,
+          latitude: myPosition.latitude,
+          longitude: myPosition.longitude,
         }}>
         <Marker
           coordinate={{
-            latitude: myPosition.lat,
-            longitude: myPosition.lng,
+            latitude: myPosition.latitude,
+            longitude: myPosition.longitude,
           }}
           width={50}
           height={50}
@@ -131,6 +153,8 @@ function Maps() {
           caption={{text: '나'}}
           image={require('@assets/logo.png')}
         />
+        <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+        {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
       </NaverMapView>
     </View>
   );
