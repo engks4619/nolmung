@@ -12,8 +12,8 @@ function DetailContent({content, photoUrl}: detailProps) {
     <View style={styles.container}>
       <ScrollView>
         <Text>{content}</Text>
-        {photoUrl.length > 0
-          ? photoUrl.map(path => <Squre imageSource={path} />)
+        {photoUrl?.length > 0
+          ? photoUrl.map((path, idx) => <Squre key={idx} imageSource={path} />)
           : null}
       </ScrollView>
     </View>
