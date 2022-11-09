@@ -6,7 +6,6 @@ import Chats from './src/pages/Chats';
 import Community from './src/pages/Community';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
-import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -17,7 +16,6 @@ import ChatIcon from '@assets/chat.svg';
 import HomeIcon from '@assets/home.svg';
 import UserIcon from '@assets/user.svg';
 import CommunityIcon from '@assets/community.svg';
-import SpotIcon from '@assets/spot.svg';
 
 import {MypageStackNavigator} from './src/pages/Mypage';
 import {CommunityStackNavigator} from './src/pages/Community';
@@ -127,7 +125,6 @@ function AppInner() {
               ),
             }}
           />
-          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>

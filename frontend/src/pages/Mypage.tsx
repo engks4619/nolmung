@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View} from 'react-native';
+import {View, Pressable, Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
@@ -10,6 +10,7 @@ import MyLikedList from '@pages/MyLikedList';
 import MyLikedSpots from '@pages/MyLikedSpots';
 import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
+import MapViewAlone from '@pages/MapViewAlone';
 
 //UserInfoType
 export type UserInfoType = {
@@ -24,7 +25,7 @@ const MypageStack = createNativeStackNavigator();
 export const MypageStackNavigator = () => (
   <MypageStack.Navigator>
     <MypageStack.Screen
-      name="Mypage"
+      name="MypageInit"
       component={Mypage}
       options={{headerShown: false}}
     />
@@ -33,6 +34,7 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen name="MyDogs" component={MyDogs} />
+    <MypageStack.Screen name="MapViewAlone" component={MapViewAlone} />
   </MypageStack.Navigator>
 );
 
@@ -110,6 +112,12 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
+      <Pressable
+        onPress={() => {
+          navigation.navigate('MapViewAlone');
+        }}>
+        <Text>산책시작하기</Text>
+      </Pressable>
     </View>
   );
 }
