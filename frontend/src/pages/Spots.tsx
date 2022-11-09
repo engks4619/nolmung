@@ -40,9 +40,9 @@ export interface SpotRequest {
 }
 
 type Geoloc = {
-  lat: number,
-  lng: number,
-}
+  lat: number;
+  lng: number;
+};
 
 function Spots() {
   const [spotList, setSpotList] = useState<Spot[]>([]);
@@ -54,15 +54,17 @@ function Spots() {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('알수없음');
   const [searchValue, setSearchValue] = useState<string>('');
-  
-  const [position, setPosition] = useState<Geoloc | null>({ lat: 0, lng: 0 });
+
+  const [position, setPosition] = useState<Geoloc | null>({lat: 0, lng: 0});
 
   const getLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        const { latitude, longitude } = position.coords;
-        setSpotRequest({ ...spotRequest, lat: latitude, lng: longitude } as SpotRequest);
-        // setPosition({ lat: latitude, lng: longitude });
+        const {latitude, longitude} = position.coords;
+        // setSpotRequest({ ...spotRequest, lat: latitude, lng: longitude } as SpotRequest);
+        setPosition(() => ({lat: latitude, lng: longitude}));
+        //사용자 위치정보 주소로 받아오기
+        setUserLocation(getTextLocation(latitude, longitude));
       },
       error => {
         console.log(error);
@@ -72,9 +74,8 @@ function Spots() {
         timeout: 20000,
         distanceFilter: 1,
       },
-    )
+    );
   };
-
 
   const getSpotList = async () => {
     const params = {
@@ -119,8 +120,6 @@ function Spots() {
   };
 
   const initSpotRequest = () => {
-    getLocation();
-    console.log(position?.lat, position?.lng);
     const requestBody: SpotRequest = {
       lat: position?.lat,
       lng: position?.lng,
@@ -132,14 +131,22 @@ function Spots() {
     setSpotRequest(requestBody as SpotRequest);
   };
 
-  const getUserLocation = () => {
-    setUserLocation('동작/사당');
+  const getTextLocation = (lat: number, lng: number): string => {
+    if (!lat || !lng || lat === 0 || lng === 0) {
+      return '알수없음';
+    }
+    // 실제 위치 주소 가져오기
+
+    return '동작/사당';
   };
 
   useEffect(() => {
-    initSpotRequest();
-    getUserLocation();
+    getLocation();
   }, []);
+
+  useEffect(() => {
+    initSpotRequest();
+  }, [position]);
 
   useEffect(() => {
     if (!spotRequest) {
@@ -149,6 +156,9 @@ function Spots() {
   }, [spotRequest, page, sort]);
 
   useEffect(() => {
+    if (!spotRequest) {
+      return;
+    }
     setPage(0);
     setSpotRequest({
       ...spotRequest,
