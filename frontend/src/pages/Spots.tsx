@@ -40,11 +40,6 @@ export interface SpotRequest {
   category: string;
 }
 
-type Geoloc = {
-  lat: number;
-  lng: number;
-};
-
 function Spots() {
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
