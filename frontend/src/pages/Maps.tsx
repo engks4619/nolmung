@@ -61,11 +61,6 @@ import {MAIN_COLOR} from '~/const';
 //   {latitude: 37.2762087, longitude: 127.0808982}
 // ];
 
-type Geoloc = {
-  latitude: number;
-  longitude: number;
-};
-
 function Maps() {
   // 산책 종료 로직
   // 산책 종료 버튼 클릭
@@ -79,31 +74,24 @@ function Maps() {
   const [myPosition, setMyPosition] = useState<{
     latitude: number;
     longitude: number;
-  } | null>({latitude: 33.8805, longitude: -118.2084});
+  } | null>({latitude: 37.383, longitude: -122.0605});
   const [path, setPath] = useState<any>([
-    {latitude: 33.8805, longitude: -118.2084},
-    {latitude: 33.8805, longitude: -118.2084},
+    {latitude: 37.383, longitude: -122.0605},
+    {latitude: 37.383, longitude: -122.0605},
   ]);
-  // const addPath = (path:any, latitude: number, longitude: number) => {
-  //   setPath([...path, {latitude: latitude, longitude: longitude}]);
-  // };
 
   console.log('myposition:', myPosition);
   useEffect(() => {
-    console.log('rendered');
     Geolocation.watchPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        // console.log('------new position:', latitude, longitude);
         setMyPosition({latitude: latitude, longitude: longitude});
-        // setPath([...path, {latitude: latitude, longitude: longitude}]);
-        // addPath(path, latitude, longitude);
       },
       error => {
         console.log(error);
       },
       {
-        interval:1000,
+        interval: 1000,
         enableHighAccuracy: true,
         timeout: 20000,
         distanceFilter: 1,
@@ -111,38 +99,9 @@ function Maps() {
     );
   }, []);
 
-  // useEffect(() => {
-  //   console.log("렌더시작")
-  //   setInterval(() => {
-  //     Geolocation.getCurrentPosition(
-  //       position => {
-  //         // const {latitude, longitude} = position.coords;
-  //         // const obj = {
-  //         //   latitude: latitude,
-  //         //   longitude: longitude,
-  //         // };
-  //         let a = position.coords.latitude
-  //         let b = position.coords.longitude
-  //         console.log('newposition',a,b)
-  //         setMyPosition({latitude:a, longitude:b});
-  //         // setPath([...oldPath, {latitude: latitude, longitude: longitude}]);
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       },
-  //       {
-  //         enableHighAccuracy: true,
-  //         timeout: 20000,
-  //         // maximumAge: 10,
-  //         // interval: 6000,
-  //       },
-  //     );
-  //   }, 8000);
-  // }, []);
-
   useEffect(() => {
-    console.log("useeffect2",path.length)
-    console.log("추가직전마포",myPosition)
+    console.log('useeffect2', path.length);
+    console.log('추가직전마포', myPosition);
     setPath([...path, myPosition]);
   }, [myPosition]);
 
@@ -157,7 +116,7 @@ function Maps() {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
-        console.log('newposition',latitude,longitude)
+        console.log('newposition', latitude, longitude);
       },
       error => {
         console.log(error);
@@ -166,14 +125,13 @@ function Maps() {
         enableHighAccuracy: true,
         timeout: 20000,
       },
-    );}
-  // const a = {latitude: 37.502425, longitude: 127.04069};
+    );
+  };
   return (
     <View>
       <Text>{myPosition.latitude}</Text>
       <Text>{myPosition.longitude}</Text>
-      <Pressable
-      onPress={getC}>
+      <Pressable onPress={getC}>
         <Text>현재위치콘솔</Text>
       </Pressable>
       <NaverMapView
@@ -197,7 +155,6 @@ function Maps() {
         />
         <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
         {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
-
       </NaverMapView>
     </View>
   );
