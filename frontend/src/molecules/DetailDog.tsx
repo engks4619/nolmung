@@ -26,7 +26,7 @@ function DetailDog({dogName, breedCodeValue, image}: DetailDogProps) {
 const styles = StyleSheet.create({
   container: {
     height: 70,
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderColor: MAIN_COLOR,
     flexDirection: 'row',
     borderRadius: 10,
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
   },
   imgCotainer: {
+    marginHorizontal: 5,
     justifyContent: 'center',
   },
 });

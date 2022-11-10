@@ -148,7 +148,6 @@ function Community({navigation}: any) {
   }, [categoryType]);
 
   return (
-    <View>
       <CommunityTemplate
         navigateWithPg={navigateWithPg}
         navigateOtherPg={navigateOtherPg}
@@ -158,7 +157,6 @@ function Community({navigation}: any) {
         loadMore={loadMore}
         navigation={navigation}
       />
-    </View>
   );
 }
 
