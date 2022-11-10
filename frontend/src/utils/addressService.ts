@@ -1,5 +1,6 @@
 import Config from 'react-native-config';
 import axios from 'axios';
+import {Alert} from 'react-native';
 
 const API_KEY = Config.KAKAO_API_KEY;
 const KAKAO_URL = Config.KAKAO_URL;
@@ -22,10 +23,13 @@ export const getTextAddress = async (
   const url = KAKAO_URL + `/v2/local/geo/coord2address?x=${lng}&y=${lat}`;
   try {
     const response = await axiosApiInstance.get(url, {
-      headers: headers,
+      headers,
     });
     return response;
-  } catch (error) {
-    console.log('kakao api error!!', error);
+  } catch (error: any) {
+    Alert.alert(
+      `에러코드 ${error.response.status}`,
+      '사용자 주소를 불러오는데 실패했습니다.',
+    );
   }
 };
