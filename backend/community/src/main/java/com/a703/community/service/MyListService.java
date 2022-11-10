@@ -33,7 +33,7 @@ public class MyListService {
 
     private final ClientUtil clientUtil;
 
-    public WithListDto showMyWithList(Pageable pageable, String token) throws Exception {
+    public WithListDto showMyWithList(Pageable pageable, String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long writerIdx = userInfoDto.getUserIdx();
@@ -60,7 +60,7 @@ public class MyListService {
                 .build();
     }
 
-    public OtherListDto showMyOtherList(Pageable pageable, String token) throws Exception {
+    public OtherListDto showMyOtherList(Pageable pageable, String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long writerIdx = userInfoDto.getUserIdx();
@@ -88,7 +88,7 @@ public class MyListService {
                 .build();
     }
 
-    public OtherListDto showMyLikeOtherList(Pageable pageable, String token) throws Exception {
+    public OtherListDto showMyLikeOtherList(Pageable pageable, String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();
@@ -121,7 +121,7 @@ public class MyListService {
                 .build();
     }
 
-    public WithListDto showMyLikeWithList(Pageable pageable, String token) throws Exception {
+    public WithListDto showMyLikeWithList(Pageable pageable, String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();

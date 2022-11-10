@@ -12,6 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class ClientUtil {
 
     public List<Long> requestSearchDogInfo(int breedCode) {
 
-        String url = "http://localhost:8080/api/v1/test";
+        String url = String.format("http://nolmung.kr/api/user/dog/list/breedcode?breedcode=%d", breedCode);
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -77,7 +78,15 @@ public class ClientUtil {
 
     public List<DogInfoDto> requestDogInfo(List<Long> dogIdx) {
 
-        String url = "http://localhost:8080/api/v1/test";
+//        String url = String.format("http://nolmung.kr/api/user/dog/info");
+//        String url = "http://localhost:8080/api/v1/test";
+        String targetUrl= UriComponentsBuilder.fromUriString("http://nolmung.kr/api/user/dog/info")
+                .queryParam("dogIdxList", dogIdx)
+                .build()
+                .encode()
+                .toUriString();
+
+
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -85,51 +94,28 @@ public class ClientUtil {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         // Body set
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("dogIdx", String.valueOf(dogIdx));
+//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+//        body.add("dogIdxList", dogIdx);
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("dogIdxList",dogIdx);
 
         // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
+        HttpEntity<?> requestMessage = new HttpEntity<>( httpHeaders);
 
         // Request
-        DogInfoDto[] response = restTemplate.getForObject(url,DogInfoDto[].class);
-
+        ResponseEntity<DogInfoDto[]> response = restTemplate.getForEntity(targetUrl,DogInfoDto[].class);
+//        ResponseEntity<DogInfoDto[]> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, DogInfoDto[].class,params);
+//        DogInfoDto[] response = restTemplate.getForObject(targetUrl, DogInfoDto[].class);
 
         // Response 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        List<DogInfoDto> dogInfoDto = Arrays.asList(response);
+        List<DogInfoDto> dogInfoDto = Arrays.asList(response.getBody());
+        System.out.println(targetUrl);
 
         return dogInfoDto;
     }
 
-    //목록 보여줄 때 유저인덱스 하나씩 보내서 통신하는 것보다 리스트로 받는게 좋을 것 같음
-    public String getUserName(int userIdx) throws Exception {
-
-        String url = "http://localhost:8080/api/v1/test";
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Header set
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        // Body set
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("userIdx", String.valueOf(userIdx));
-
-        // Message
-        HttpEntity<?> requestMessage = new HttpEntity<>(body, httpHeaders);
-
-        // Request
-        String response = restTemplate.getForObject(url,String.class);
-
-        // Response 파싱
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        String userName = response;
-
-        return userName;
-    }
 
     public UserInfoDto requestOtherUserInfo(Long userIdx) {
 
@@ -145,11 +131,6 @@ public class ClientUtil {
 
         // Request
         ResponseEntity<UserInfoDto> response = restTemplate.exchange(url, HttpMethod.GET, requestMessage, UserInfoDto.class);
-
-        // Response 파싱
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-//        UserInfoDto userInfoDto = objectMapper.readValue(response.getBody(), UserInfoDto.class);
 
         return response.getBody();
     }
@@ -183,11 +164,6 @@ public class ClientUtil {
 
         // Request
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestMessage, String.class);
-
-        // Response 파싱
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-//        UserInfoDto userInfoDto = objectMapper.readValue(response.getBody(), UserInfoDto.class);
 
     }
 
