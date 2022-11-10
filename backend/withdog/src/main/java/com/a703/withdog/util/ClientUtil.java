@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,7 @@ public class ClientUtil {
     public void saveImage(MultipartFile file, String savePath) throws IOException {
 
 //        String url = "http://nolmung.kr/api/image";
-        String url = "http://localhost:51041/api/image";
+        String url = "http://localhost:62343/api/image";
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -39,8 +40,13 @@ public class ClientUtil {
         // Message
         HttpEntity<MultiValueMap<String,Object>> requestMessage = new HttpEntity<>(body, httpHeaders);
 
-        // Request
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestMessage, String.class);
+        try {
+            // Request
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestMessage, String.class);
+        } catch (HttpStatusCodeException e) {
+            ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+                    .body(e.getResponseBodyAsString());
+        }
 
     }
 }

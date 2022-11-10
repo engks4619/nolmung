@@ -12,7 +12,7 @@ public interface WalkMongoDBRepository extends MongoRepository<WalkDTO, ObjectId
 
     public WalkDTO save(WalkDTO walk);
     public List<WalkDTO> findAllByOwnerIdx(Long ownerIdx);
-    public WalkDTO findByWalkIdx(ObjectId walkIdx);
+//    public WalkDTO findByWalkIdx(ObjectId walkIdx);
 
     @Query("{'walkedDogList': ?0 }")
     public List<WalkDTO> findAllByWalkedDogIdx(Long walkedDogIdx);

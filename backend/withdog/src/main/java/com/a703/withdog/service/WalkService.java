@@ -15,9 +15,9 @@ public class WalkService {
     @Autowired
     WalkMongoDBRepository walkMongoDBRepository;
 
-    public ObjectId saveWalk(WalkDTO walk){
+    public String saveWalk(WalkDTO walk){
         WalkDTO walkDTO = walkMongoDBRepository.save(walk);
-        return walkDTO.getWalkIdx();
+        return walkDTO.getWalkIdx().toString();
     }
 
     public List<WalkRes> findByOwnerIdx(Long ownerIdx) {
@@ -26,7 +26,7 @@ public class WalkService {
         List<WalkRes> walkResList = new ArrayList<>();
         for(WalkDTO walk : walkDTOList) {
             walkResList.add(WalkRes.builder()
-                            .walkIdx(walk.getWalkIdx())
+                            .walkIdx(walk.getWalkIdx().toString())
                             .ownerIdx(walk.getOwnerIdx())
                             .walkerIdx(walk.getWalkerIdx())
                             .distance(walk.getDistance())
@@ -47,7 +47,7 @@ public class WalkService {
         List<WalkRes> walkResList = new ArrayList<>();
         for(WalkDTO walk : walkDTOList) {
             walkResList.add(WalkRes.builder()
-                    .walkIdx(walk.getWalkIdx())
+                    .walkIdx(walk.getWalkIdx().toString())
                     .ownerIdx(walk.getOwnerIdx())
                     .walkerIdx(walk.getWalkerIdx())
                     .distance(walk.getDistance())

@@ -41,13 +41,12 @@ public class WalkController {
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
 
-        String courseImgUrl;
-
         if(image != null) {
-            courseImgUrl = fileUtil.fileUpload(image);
+            String courseImgUrl = fileUtil.fileUpload(image);
+            walk.setCourseImgUrl(courseImgUrl);
         }
-//        walk.setCourseImgUrl(courseImgUrl);
-        ObjectId walkIdx = walkService.saveWalk(walk);
+
+        String walkIdx = walkService.saveWalk(walk);
 
         return ResponseEntity.ok().body(walkIdx);
     }
