@@ -1,11 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import {Pressable, Text, View} from 'react-native';
-import MapViewAloneTemplate from '@templates/MapViewAloneTemplate';
+import React from 'react';
+import {View} from 'react-native';
+import MapViewTemplate from '@templates/MapViewTemplate';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 function MapViewAlone() {
+  const myPosition = useSelector(
+    (state: RootState) => state.myPosition.myPosition,
+  );
+  const path = useSelector((state: RootState) => state.myPosition.path);
   return (
     <View>
-      <MapViewAloneTemplate />
+      <MapViewTemplate myPosition={myPosition} path={path} />
     </View>
   );
 }

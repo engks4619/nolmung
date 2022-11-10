@@ -12,6 +12,10 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 
+//로깅시작함수
+import {startLogging} from '~/slices/myPositionSlice';
+import {useDispatch} from 'react-redux';
+
 //UserInfoType
 export type UserInfoType = {
   imageSource: string;
@@ -100,6 +104,12 @@ function Mypage({navigation}: any) {
     setIsEditing(!isEditing);
   };
 
+  const dispatch = useDispatch();
+  const startWalking = () => {
+    navigation.navigate('MapViewAlone');
+    startLogging(dispatch);
+  };
+
   return (
     <View>
       <MypageTemplate
@@ -112,10 +122,7 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable
-        onPress={() => {
-          navigation.navigate('MapViewAlone');
-        }}>
+      <Pressable onPress={startWalking}>
         <Text>산책시작하기</Text>
       </Pressable>
     </View>
