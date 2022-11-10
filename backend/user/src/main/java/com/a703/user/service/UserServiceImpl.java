@@ -46,10 +46,6 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserByUserIdx(Long userIdx) {
         UserEntity userEntity = userRepository.findById(userIdx).orElseThrow(NoSuchElementException::new);
 
-        if (userEntity == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
         return new ModelMapper().map(userEntity, UserDto.class);
     }
 
@@ -67,5 +63,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return new User(userEntity.getPhone(), userEntity.getPassword(), true, true, true, true, new ArrayList<>());
+    }
+
+    @Override
+    public boolean exist(String phone) {
+        return userRepository.existsById((long) phone.hashCode());
     }
 }
