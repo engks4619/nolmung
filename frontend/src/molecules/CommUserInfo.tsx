@@ -2,16 +2,21 @@ import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Heart from '@assets/heart.svg';
 import Chat from '@assets/chat.svg';
+import Profile from '~/atoms/Profile';
 
 interface Props {
   writer: string;
   likeCnt: number;
+  userImgUrl: string;
 }
 
-function CommUserInfo({writer, likeCnt}: Props) {
+function CommUserInfo({writer, likeCnt, userImgUrl}: Props) {
   return (
     <View style={styles.container}>
-      <Text>{writer}</Text>
+      <View style={styles.userContainer}>
+        <Profile imageSource={userImgUrl} width={15} height={15} />
+        <Text style={styles.writer}>{writer}</Text>
+      </View>
       <View style={styles.svgContainer}>
         <Chat width={20} height={20} fill={'black'} />
         <Text>13</Text>
@@ -29,6 +34,15 @@ const styles = StyleSheet.create({
   },
   svgContainer: {
     flexDirection: 'row',
+  },
+  userContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  writer: {
+    marginLeft: 5,
+    fontWeight: '700',
+    color: 'rgba(0, 0, 0, 0.7)',
   },
 });
 

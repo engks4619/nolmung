@@ -2,10 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {ScrollView, Alert} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 function Main() {
   const [mainPostList, setMainPostList] = useState([]);
   const [mainSpotList, setMainSpotList] = useState([]);
+  const lat = useSelector((state: RootState) => state.user.lat);
+  const lng = useSelector((state: RootState) => state.user.lng);
 
   const getMainPostList = async () => {
     try {
@@ -21,7 +25,7 @@ function Main() {
 
   const getMainSpotList = async () => {
     const params = {
-      page: 1,
+      page: 0,
       sort: 0,
     };
     try {
@@ -29,8 +33,8 @@ function Main() {
         method: 'post',
         url: 'spot',
         data: {
-          lat: null,
-          lng: null,
+          lat,
+          lng,
           searchValue: null,
           limitDistance: 0,
           category: null,
@@ -48,8 +52,12 @@ function Main() {
 
   useEffect(() => {
     getMainPostList();
-    getMainSpotList();
   }, []);
+
+  useEffect(() => {
+    getMainSpotList();
+  }, [lat, lng]);
+
   return (
     <ScrollView>
       <MainTemplate spots={mainSpotList} mainPostList={mainPostList} />

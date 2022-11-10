@@ -1,20 +1,31 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
 import Heart from '@assets/heart.svg';
 import MyButton from '@atoms/MyButton';
 
 const windowWidth = Dimensions.get('window').width;
 
-function DetailFooter() {
+interface footerProps {
+  categoryType: string;
+  pay?: number;
+  isWriter: Boolean;
+  isLiked: Boolean;
+}
+
+function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
   return (
     <View style={styles.container}>
-      <View style={styles.heartContainer}>
-        <Heart height={30} width={30} fill="black" />
-      </View>
+      <Pressable>
+        <View style={styles.heartContainer}>
+          <Heart height={25} width={25} fill={isLiked ? 'red' : 'black'} />
+        </View>
+      </Pressable>
       <View style={styles.infoContainer}>
-        <Text style={styles.textBold}>같이 산책🤎</Text>
+        <Text style={styles.textBold}>
+          {categoryType === 'WITH' ? '같이 산책🤎' : `${pay}원`}
+        </Text>
         <MyButton
-          btnText="채팅하기"
+          btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
           paddingVertical={10}
           onClick={() => console.log('채팅목록')}
