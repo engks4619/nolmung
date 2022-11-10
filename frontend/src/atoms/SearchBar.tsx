@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Pressable, Text, TextInput, View} from 'react-native';
-import {MAIN_COLOR} from '~/const';
+import {StyleSheet, Pressable, TextInput, View} from 'react-native';
 import Search from '@assets/search.svg';
 
 interface Props {
@@ -32,7 +31,7 @@ function SearchBar({onSearchSubmit, searchValue, onChangeSearchValue}: Props) {
       <Pressable
         style={styles.searchButton}
         onPress={() => onSearchSubmit(searchValue)}>
-        <Search width={20} height={20} fill={'black'} stroke={'black'} />
+        <Search width={17} height={17} fill={'black'} stroke={'black'} />
       </Pressable>
     </View>
   );
@@ -45,12 +44,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    flex: 1.5,
+    flex: 1,
     padding: 5,
-    width: '100%',
+    paddingHorizontal: 10,
   },
   searchButton: {
-    flex: 1,
+    paddingHorizontal: 10,
+    marginRight: 10,
   },
 });
 

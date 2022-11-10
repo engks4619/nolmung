@@ -3,6 +3,8 @@ import {FlatList, StyleSheet, View, Text} from 'react-native';
 import Squre from '~/atoms/Squre';
 import {Spot, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
+import {getTextAddress} from '~/utils/addressService';
+import {AxiosResponse} from 'axios';
 
 interface Props {
   spotList: Spot[];
@@ -13,8 +15,6 @@ interface Props {
   category: string;
   loadMore: Function;
 }
-
-const SPOT_IMG_URL = 'http://nolmung.kr/api/image/images/spot/';
 
 function SpotsContainer({
   spotList,
@@ -53,6 +53,18 @@ function SpotsContainer({
     return star.toString().slice(0, 3);
   };
 
+  const getSimpleAddress = (address: string): string => {
+    const arr = address.split(' ');
+    arr?.shift();
+    if (arr[0].charAt(arr[0].length - 1) === '시') {
+      arr?.shift();
+    }
+    while (arr.length > 2) {
+      arr.pop();
+    }
+    return arr.join(' ');
+  };
+
   useEffect(() => {
     if (page !== 0) {
       toTop();
@@ -77,8 +89,8 @@ function SpotsContainer({
               borderRadius={5}
               imageSource={
                 item.imgCnt !== 0
-                  ? SPOT_IMG_URL + item.spotId + '/0.jpg'
-                  : SPOT_IMG_URL + 'default/default.png'
+                  ? `/images/spot/${item.spotId}/0.jpg`
+                  : `/images/spot/default/default.png`
               }
             />
           </View>
@@ -92,7 +104,9 @@ function SpotsContainer({
             </Text>
           </View>
           <View style={styles.descContainer}>
-            <Text style={styles.desc}>동작/사당</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.desc}>
+              {getSimpleAddress(item.address)}
+            </Text>
             <Text style={styles.reviewContainer}>
               <Pencil width={10} height={10} fill={'black'} stroke={'black'} />
               {item.reviewCnt}
