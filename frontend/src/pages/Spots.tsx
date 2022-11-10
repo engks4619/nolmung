@@ -5,7 +5,7 @@ import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import Config from 'react-native-config';
+import {getTextAddress} from '~/utils/addressService';
 
 export interface menu {
   menuName: string;
@@ -49,14 +49,12 @@ function Spots() {
   const [category, setCategory] = useState<string>('카페');
   const [spotRequest, setSpotRequest] = useState<SpotRequest | null>(null);
   const [totalPage, setTotalPage] = useState<number>(0);
-  const [userLocation, setUserLocation] = useState<string>('알수없음');
+  const [userLocation, setUserLocation] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
 
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
 
-  const API_KEY = Config.KAKAO_API_KEY;
-  console.log(API_KEY);
   const getSpotList = async () => {
     const params = {
       page,
@@ -111,13 +109,17 @@ function Spots() {
     setSpotRequest(requestBody as SpotRequest);
   };
 
-  const getTextLocation = (): string => {
+  const getTextLocation = async () => {
     if (!lat || !lng || lat === 0 || lng === 0) {
-      return '알수없음';
+      setUserLocation('알수없음');
     }
     // 실제 위치 주소 가져오기
-
-    return '동작/사당';
+    const response = await getTextAddress(lat, lng);
+    const address = response?.data?.documents[0].address;
+    const firstArr = address?.region_2depth_name.split(' ');
+    const strAddress =
+      firstArr[firstArr.length - 1] + '/' + address?.region_3depth_name;
+    setUserLocation(strAddress);
   };
 
   useEffect(() => {
@@ -146,7 +148,7 @@ function Spots() {
   }, [limitDistance, category, lat, lng]);
 
   useEffect(() => {
-    setUserLocation(getTextLocation());
+    getTextLocation();
   }, [lat, lng]);
 
   return (
