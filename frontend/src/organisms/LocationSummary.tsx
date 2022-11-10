@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import SearchBar from '../atoms/SearchBar';
 
 interface Props {
   userLocation: string;
-  onSearchSubmit: (val:string) => void;
+  onSearchSubmit: (val: string) => void;
   searchValue: string;
-  onChangeSearchValue: (val:string) => void;
+  onChangeSearchValue: (val: string) => void;
 }
 
 function LocationSummary({
@@ -15,16 +15,23 @@ function LocationSummary({
   searchValue,
   onChangeSearchValue,
 }: Props) {
-  return(
+  return (
     <View style={styles.container}>
       <Text style={styles.locationTitle}>현재 표시되고 있는 위치는</Text>
       <View style={[styles.hContainer, styles.borderBottom]}>
-        <Text  style={styles.locationDesc}>{userLocation}</Text>
-        <SearchBar 
-          onSearchSubmit={onSearchSubmit}
-          searchValue={searchValue}
-          onChangeSearchValue={onChangeSearchValue}
-        />
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={styles.locationDesc}>
+          {userLocation}
+        </Text>
+        <View style={styles.searchBar}>
+          <SearchBar
+            onSearchSubmit={onSearchSubmit}
+            searchValue={searchValue}
+            onChangeSearchValue={onChangeSearchValue}
+          />
+        </View>
       </View>
     </View>
   );
@@ -32,26 +39,38 @@ function LocationSummary({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    // backgroundColor: 'blue',s
+    paddingHorizontal: 10,
   },
   hContainer: {
+    width: '100%',
+    // backgroundColor: 'cyan',
     alignItems: 'center',
-    flexDirection:'row',
+    flexDirection: 'row',
+    // paddingVertical: 5,
+    paddingHorizontal: 0,
+    marginHorizontal: 0,
   },
   borderBottom: {
     borderBottomWidth: 1,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
   locationTitle: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontSize: 12,
+    // backgroundColor: 'red',
+    // paddingHorizontal: 10,
+    paddingTop: 5,
+    fontSize: 10,
     fontWeight: '700',
   },
   locationDesc: {
-    paddingHorizontal: 20,
-    fontSize: 16,
+    // backgroundColor: 'yellow',
+    paddingLeft: 5,
+    width: '35%',
+    fontSize: 15,
     fontWeight: '900',
+  },
+  searchBar: {
+    width: '70%',
   },
 });
 
