@@ -1,10 +1,14 @@
 package com.a703.user.controller;
 
 import com.a703.user.dto.UserDto;
+import com.a703.user.entity.CertEntity;
+import com.a703.user.service.CertService;
 import com.a703.user.service.UserService;
+import com.a703.user.util.CommUtil;
 import com.a703.user.util.JwtUtil;
-import com.a703.user.vo.RequestUser;
-import com.a703.user.vo.ResponseUser;
+import com.a703.user.vo.request.RequestUser;
+import com.a703.user.vo.response.ResponseUser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -15,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -22,15 +28,59 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final Environment env;
     private final UserService userService;
+    private final CertService certService;
     private final JwtUtil jwtUtil;
+    private final CommUtil commUtil;
 
     @GetMapping("/health_check")
     public String status() {
-        return String.format("It's Working in User Service on local PORT %s", env.getProperty("local.server.port"));
+        return "It's Working in User Service";
+    }
+
+    @PostMapping("/cert")
+    public ResponseEntity<String> sendMsg(@RequestBody Map<String, String> body) throws JsonProcessingException {
+        String phone = body.get("phone");
+        String cert = String.format("%4d", (int) Math.floor(Math.random() * 10000));
+        HttpStatus status;
+        String msg;
+        if (userService.exist(phone)) {
+            status = HttpStatus.NOT_ACCEPTABLE;
+            msg = "이미 가입된 번호입니다!";
+        } else {
+            status = commUtil.sendSms(phone, cert);
+            if (status.value() == 202) {
+                certService.save(CertEntity.builder().phone(phone).cert(cert).build());
+                status = HttpStatus.OK;
+                msg = "인증문자가 발송되었습니다!";
+            } else {
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+                msg = "인증문자 발송을 실패했습니다!";
+            }
+        }
+        return ResponseEntity.status(status).body(msg);
+    }
+
+    @PostMapping("/cert/verify")
+    public ResponseEntity<String> verifyNumber(@RequestBody Map<String, String> body) {
+        String phone = body.get("phone");
+        String number = body.get("number");
+        HttpStatus status;
+        String msg;
+        if (!certService.exist(phone)) {
+            status = HttpStatus.REQUEST_TIMEOUT;
+            msg = "만료된 인증번호입니다!";
+        } else if (!certService.find(phone).getCert().equals(number)) {
+            status = HttpStatus.BAD_REQUEST;
+            msg = "인증번호를 잘못입력하셨습니다!";
+        } else {
+            status = HttpStatus.OK;
+            msg = "인증에 성공하였습니다!";
+        }
+        return ResponseEntity.status(status).body(msg);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user){
+    public ResponseEntity<ResponseUser> createUser(@RequestBody RequestUser user) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
 
@@ -43,7 +93,7 @@ public class UserController {
     }
 
     @GetMapping("/info/{userIdx}")
-    public ResponseEntity<?> getUserInfo(@PathVariable("userIdx") Long userIdx){
+    public ResponseEntity<?> getUserInfo(@PathVariable("userIdx") Long userIdx) {
         UserDto userDto = userService.getUserByUserIdx(userIdx);
 
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
@@ -52,7 +102,7 @@ public class UserController {
     }
 
     @GetMapping("/my-info")
-    public ResponseEntity<?> getMyInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+    public ResponseEntity<?> getMyInfo(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt) {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         UserDto userDto = userService.getUserByUserIdx(userIdx);
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);

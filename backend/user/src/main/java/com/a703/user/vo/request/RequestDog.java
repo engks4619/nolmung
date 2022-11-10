@@ -1,4 +1,4 @@
-package com.a703.user.vo;
+package com.a703.user.vo.request;
 
 import lombok.Data;
 

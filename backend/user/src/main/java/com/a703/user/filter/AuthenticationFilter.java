@@ -2,7 +2,7 @@ package com.a703.user.filter;
 
 import com.a703.user.dto.UserDto;
 import com.a703.user.service.UserService;
-import com.a703.user.vo.RequestLogin;
+import com.a703.user.vo.request.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

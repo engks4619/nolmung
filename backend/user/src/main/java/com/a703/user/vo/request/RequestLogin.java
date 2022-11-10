@@ -1,16 +1,16 @@
-package com.a703.user.vo;
-
+package com.a703.user.vo.request;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class RequestUser {
+public class RequestLogin {
 
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "Phone number cannot be null")
     private String phone;
 
     @NotNull(message = "Password cannot be null")
     private String password;
+
 }
