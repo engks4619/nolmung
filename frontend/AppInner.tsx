@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
-import Community from './src/pages/Community';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
 import Maps from '@pages/Maps';
@@ -22,20 +21,17 @@ import SpotIcon from '@assets/spot.svg';
 import {MypageStackNavigator} from './src/pages/Mypage';
 import {CommunityStackNavigator} from './src/pages/Community';
 
-// import {RootState} from "./src/store/reducer";
-
 import usePermissions from '~/hooks/usePermissions';
 
-import {useDispatch} from 'react-redux';
-import {getLocation} from '~/slices/userSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from './src/store/reducer';
+import {getLocation, setUser} from '~/slices/userSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type LoggedInParamList = {
   Chats: undefined;
   Spots: undefined;
   Main: undefined;
-  Community: undefined;
-  Mypage: undefined;
-  // Coummunity: {orderId: string};
 };
 
 export type RootStackParamList = {
@@ -48,13 +44,30 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
-  // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
+  const isLoggedIn = useSelector(
+    (state: RootState) => !!state.user.accessToken,
+  );
+  console.log(
+    'isLoggedIn',
+    useSelector((state: RootState) => state.user.accessToken),
+  );
   const dispatch = useDispatch();
 
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const getUserInfo = async () => {
+    try {
+      const userInfo = await AsyncStorage.getItem('userInfo');
+      dispatch(setUser(userInfo));
+      console.log('userInfo', userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     getLocation(dispatch);
+    getUserInfo();
   }, []);
 
   return (

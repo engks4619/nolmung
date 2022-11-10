@@ -1,15 +1,19 @@
 import Geolocation from '@react-native-community/geolocation';
-import {createSlice} from '@reduxjs/toolkit';
+import {AnyAction, createSlice, Dispatch} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {userInfoType} from '~/utils/type';
 
 const initialState = {
-  name: '',
-  email: '',
+  userIdx: '',
+  phone: '',
+  nickname: '',
+  profileImage: '',
   accessToken: '',
   lat: 0,
   lng: 0,
 };
 
-export const getLocation = (dispatch: any) => {
+export const getLocation = (dispatch: Dispatch<AnyAction>) => {
   Geolocation.getCurrentPosition(
     position => {
       const {latitude, longitude} = position.coords;
@@ -26,13 +30,28 @@ export const getLocation = (dispatch: any) => {
   );
 };
 
+export const storeUserInfo = async (
+  userInfo: userInfoType,
+  dispatch: Dispatch<AnyAction>,
+) => {
+  const stringUserInfo = JSON.stringify(userInfo);
+  try {
+    await AsyncStorage.setItem('userInfo', stringUserInfo);
+    dispatch(setUser(userInfo));
+  } catch (error) {
+    console.log('storeUserInfo', error);
+  }
+};
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     setUser(state, action) {
-      state.email = action.payload.email;
-      state.name = action.payload.name;
+      state.userIdx = action.payload.userIdx;
+      state.phone = action.payload.phone;
+      state.nickname = action.payload.nickname;
+      state.profileImage = action.payload.profileImage;
       state.accessToken = action.payload.accessToken;
     },
     setLocation(state, action) {
