@@ -52,7 +52,7 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
         List<SpotSimpleDto> content = queryFactory
                 .select(Projections.constructor(SpotSimpleDto.class,
                         spot.spotId, spot.name, spot.imgCnt,
-                        spot.lat, spot.lng, spot.category,
+                        spot.lat, spot.lng, spot.address, spot.category,
                         distanceExpression.as(String.valueOf(distanceDiff))
                     )
                 )
@@ -79,7 +79,7 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
         List<SpotSimpleDto> content = queryFactory
                 .select(Projections.constructor(SpotSimpleDto.class,
                         spot.spotId, spot.name, spot.imgCnt,
-                        spot.lat, spot.lng, spot.category,
+                        spot.lat, spot.lng, spot.address, spot.category,
                         distanceExpression.as(String.valueOf(distanceDiff))
                     )
                 )
@@ -110,7 +110,7 @@ public class SpotRepositoryImpl implements SpotRepositoryCustom {
         List<SpotSimpleDto> content = queryFactory
                 .select(Projections.constructor(SpotSimpleDto.class,
                         spot.spotId, spot.name, spot.imgCnt,
-                        spot.lat, spot.lng, spot.category,
+                        spot.lat, spot.lng, spot.address, spot.category,
                         distanceExpression.as(String.valueOf(distanceDiff))
                     )
                 )
