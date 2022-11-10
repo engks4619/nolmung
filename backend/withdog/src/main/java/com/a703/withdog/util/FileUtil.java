@@ -16,37 +16,22 @@ public class FileUtil {
     private final WalkMongoDBRepository walkMongoDBRepository;
     private final ClientUtil clientUtil;
 
-    public void fileUpload(MultipartFile image, ObjectId walkIdx){
+    public String fileUpload(MultipartFile image){
         String uploadPath = "/image/walk";
 
         try {
             String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(image.getOriginalFilename());
 
-            WalkDTO walkDTO = walkMongoDBRepository.findByWalkIdx(walkIdx);
-
             java.io.File check = new java.io.File(uploadPath);
             check.mkdir();
             clientUtil.saveImage(image, savePath);
 
-            WalkDTO walkImage = WalkDTO.builder()
-                    .walkIdx(walkDTO.getWalkIdx())
-                    .ownerIdx(walkDTO.getOwnerIdx())
-                    .walkerIdx(walkDTO.getWalkerIdx())
-                    .distance(walkDTO.getDistance())
-                    .time(walkDTO.getTime())
-                    .courseImgUrl(savePath)
-                    .startDate(walkDTO.getStartDate())
-                    .endDate(walkDTO.getEndDate())
-                    .walkedDogList(walkDTO.getWalkedDogList())
-                    .latitudes(walkDTO.getLatitudes())
-                    .longitudes(walkDTO.getLongitudes())
-                    .build();
-            walkMongoDBRepository.save(walkDTO);
+            return savePath;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return e.toString();
         }
-
     }
 
     private String extractExt(String originalFilename) {

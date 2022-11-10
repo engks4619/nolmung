@@ -56,4 +56,8 @@ public class WalkDTO {
         this.latitudes = latitudes;
         this.longitudes = longitudes;
     }
+
+    public void setCourseImgUrl(String courseImgUrl){
+
+    }
 }
