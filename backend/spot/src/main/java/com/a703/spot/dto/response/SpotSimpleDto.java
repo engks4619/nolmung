@@ -17,6 +17,7 @@ public class SpotSimpleDto {
     private Integer imgCnt;
     private Double lat;
     private Double lng;
+    private String address;
     private String category;
     private Double distance;
     private Double star;
@@ -31,12 +32,13 @@ public class SpotSimpleDto {
     public void setDistance(Double distance) { this.distance = distance; }
 
     @QueryProjection
-    public SpotSimpleDto(String spotId, String name, Integer imgCnt, Double lat, Double lng, String category, Double distance) {
+    public SpotSimpleDto(String spotId, String name, Integer imgCnt, Double lat, Double lng, String address, String category, Double distance) {
         this.spotId = spotId;
         this.name = name;
         this.imgCnt = imgCnt;
         this.lat = lat;
         this.lng = lng;
+        this.address = address;
         this.category = category;
         this.distance = distance;
     }
