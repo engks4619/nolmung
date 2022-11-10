@@ -39,31 +39,24 @@ function LocationSummary({
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'blue',s
     paddingHorizontal: 10,
   },
   hContainer: {
     width: '100%',
-    // backgroundColor: 'cyan',
     alignItems: 'center',
     flexDirection: 'row',
-    // paddingVertical: 5,
     paddingHorizontal: 0,
     marginHorizontal: 0,
   },
   borderBottom: {
     borderBottomWidth: 1,
-    // marginHorizontal: 10,
   },
   locationTitle: {
-    // backgroundColor: 'red',
-    // paddingHorizontal: 10,
     paddingTop: 5,
     fontSize: 10,
     fontWeight: '700',
   },
   locationDesc: {
-    // backgroundColor: 'yellow',
     paddingLeft: 5,
     width: '35%',
     fontSize: 15,
