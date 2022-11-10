@@ -5,6 +5,7 @@ import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
+import RegistArticle from './RegistArticle';
 import {MAIN_COLOR} from '~/const';
 
 export type CommunityParamList = {
@@ -40,6 +41,18 @@ export const CommunityStackNavigator = () => (
         },
       }}
     />
+    <CommunityStack.Screen
+      name="RegistArticle"
+      component={RegistArticle}
+      options={{
+        headerTitle: '놀면 멍하니',
+        headerTintColor: MAIN_COLOR,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
   </CommunityStack.Navigator>
 );
 
@@ -59,7 +72,7 @@ export interface otherPostListType extends withPostListType {
   pay: number;
 }
 
-function Community() {
+function Community({navigation}: any) {
   const [categoryType, setCategoryType] = useState<string>('WITH');
   const [withPgNum, setWithPgNum] = useState<number>(0);
   const [withPostList, setWithPostList] = useState<withPostListType[]>([]);
@@ -143,6 +156,7 @@ function Community() {
         withPostList={withPostList}
         otherPostList={otherPostList}
         loadMore={loadMore}
+        navigation={navigation}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
 import CommOtherPost from '@organisms/CommOtherPost';
@@ -16,6 +16,7 @@ interface Props extends CommunityTabType {
   withPostList: withPostListType[];
   loadMore: () => void;
   otherPostList: otherPostListType[];
+  navigation: any;
 }
 
 function CommunityTemplate({
@@ -25,6 +26,7 @@ function CommunityTemplate({
   withPostList,
   loadMore,
   otherPostList,
+  navigation,
 }: Props) {
   return (
     <View>
@@ -36,12 +38,16 @@ function CommunityTemplate({
       {categoryType === 'WITH' ? (
         <>
           <CommWithPost withPostList={withPostList} loadMore={loadMore} />
-          <EditBtn />
+          <Pressable onPress={() => navigation.navigate('RegistArticle')}>
+            <EditBtn />
+          </Pressable>
         </>
       ) : (
         <>
           <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
-          <EditBtn />
+          <Pressable onPress={() => navigation.navigate('RegistArticle')}>
+            <EditBtn />
+          </Pressable>
         </>
       )}
     </View>
