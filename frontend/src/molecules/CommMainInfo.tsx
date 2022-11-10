@@ -8,7 +8,7 @@ interface Props {
   modifyDate: string;
 }
 
-function elapsedTime(date: string) {
+export function elapsedTime(date: string) {
   const start: Date | any = new Date(date);
   const end: Date | any = new Date();
 
@@ -31,7 +31,7 @@ function elapsedTime(date: string) {
   return '방금 전';
 }
 
-function convertTime(time: string) {
+export function convertTime(time: string) {
   const [hour, minute] = time.split(':');
   if (Number(hour) < 12) {
     return `AM ${hour}:${minute}`;
@@ -65,8 +65,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingText: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '800',
+    color: 'rgba(0, 0, 0, 0.7)',
   },
   dateContainer: {
     flexDirection: 'row',

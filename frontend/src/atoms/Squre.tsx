@@ -8,7 +8,14 @@ interface Props {
   borderRadius?: number;
 }
 
-function Squre({imageSource, width = 100, height = 100, borderRadius = 0}: Props) {
+function Squre({
+  imageSource,
+  width = 100,
+  height = 100,
+  borderRadius = 0,
+}: Props) {
+  const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
+
   return (
     <View>
       <Image
@@ -18,7 +25,7 @@ function Squre({imageSource, width = 100, height = 100, borderRadius = 0}: Props
           borderRadius,
         }}
         source={{
-          uri: imageSource,
+          uri: convertImagePath,
         }}
       />
     </View>

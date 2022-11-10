@@ -1,8 +1,47 @@
 import React, {useState, useEffect} from 'react';
 import {View, Alert} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
+import CommDetail from '@pages/CommDetail';
+import {MAIN_COLOR} from '~/const';
+
+export type CommunityParamList = {
+  Community: undefined;
+  CommDetail: {postIdx: number};
+};
+
+const CommunityStack = createNativeStackNavigator();
+
+export const CommunityStackNavigator = () => (
+  <CommunityStack.Navigator>
+    <CommunityStack.Screen
+      name="Community"
+      component={Community}
+      options={{
+        headerTitle: '놀면 멍하니',
+        headerTintColor: MAIN_COLOR,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+    <CommunityStack.Screen
+      name="CommDetail"
+      component={CommDetail}
+      options={{
+        headerTitle: '게시글',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+  </CommunityStack.Navigator>
+);
 
 export interface withPostListType {
   postIdx: number;
@@ -13,6 +52,7 @@ export interface withPostListType {
   walkDate: string;
   likeCnt: number;
   thumbnailUrl: string;
+  userImgUrl: string;
 }
 
 export interface otherPostListType extends withPostListType {

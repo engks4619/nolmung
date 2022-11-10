@@ -16,8 +16,6 @@ interface Props {
   loadMore: Function;
 }
 
-const SPOT_IMG_URL = 'http://nolmung.kr/api/image/images/spot/';
-
 function SpotsContainer({
   spotList,
   spotRequest,
@@ -64,7 +62,6 @@ function SpotsContainer({
     while (arr.length > 2) {
       arr.pop();
     }
-    console.log(arr);
     return arr.join(' ');
   };
 
@@ -92,8 +89,8 @@ function SpotsContainer({
               borderRadius={5}
               imageSource={
                 item.imgCnt !== 0
-                  ? SPOT_IMG_URL + item.spotId + '/0.jpg'
-                  : SPOT_IMG_URL + 'default/default.png'
+                  ? `/images/spot/${item.spotId}/0.jpg`
+                  : `/images/spot/default/default.png`
               }
             />
           </View>

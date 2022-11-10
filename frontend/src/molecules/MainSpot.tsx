@@ -16,8 +16,8 @@ interface Props {
 function MainSpot({item}: Props) {
   const convertImgaePath =
     item.imgCnt === 0
-      ? 'default image'
-      : `http://nolmung.kr/api/images/spot/${item.spotId}/0.jpg`;
+      ? '/images/spot/default/default.png'
+      : `/images/spot/${item.spotId}/0.jpg`;
 
   const distance = item.distance.toString().split('.')[0];
   return (
