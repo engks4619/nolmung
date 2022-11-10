@@ -49,3 +49,12 @@ export const containsKey = async (key: string) => {
     console.error(e.message);
   }
 };
+export const getAllKeys = async () => {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    return keys
+  } catch (e: any) {
+    console.error(e.message);
+    return []
+  }
+};

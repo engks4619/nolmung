@@ -7,34 +7,42 @@ import {
   getData,
   removeData,
   containsKey,
+  getAllKeys,
 } from '~/utils/AsyncService';
 const initialState = {
   myPosition: null,
-  // path: [
-  //   {latitude: 37.383, longitude: -122.0605},
-  //   {latitude: 37.383, longitude: -122.0605},
-  // ],
   path: [],
 };
 
 //.toLocaleString('ko-KR')
 const initLog = async () => {
+  const allKeys = await getAllKeys()
+  const checkList = ['@StartDate','@LastUpdate','@WalkingLogs','@Dogs']
   // 지난 산책 기록이 있는가?
-  if ((await containsKey('startDate')) && (await containsKey('walkingLog'))) {
-    const loggedDate = new Date(await getData('startDate'));
-    loggedDate.setHours(loggedDate.getHours() + 2);
+  if (checkList.every(i=>allKeys.includes(i))) {
+    const loggedDate = new Date(await getData('@LastUpdate'));
+    loggedDate.setHours(loggedDate.getMinutes() + 30);
     const currentDate = new Date();
-    // 기록된 시간 +2시간 보다 지나있을 때
+    // 마지막 기록시간보다 30분 이상 지나 있을 때
     if (loggedDate >= currentDate) {
       Alert.alert(
-        '비정상 종료된 산책이 있습니다.',
-        '산책 시작 2시간이 경과하여 종료 시점까지 자동 저장 되었어요',
+        '지난 산책이 비정상 종료 되었습니다',
+        '종료 후 30분이 지나 산책을 이어 하실 수 없어요',
         [
           {
-            text: '확인',
+            text: '새로시작',
+            onPress:()=>{}, //저장X 새로시작
           },
+          {
+            text: '취소',
+            onPress:()=>{},
+          },
+          {
+            text: '저장 후 새로시작',
+            onPress:()=>{}, // 저장 후 새로 시작
+          }
         ],
-        {cancelable: true},
+        {cancelable: false},
       );
     } // 2시간 이내의 기내의 기록이 있을 때
     else {
@@ -58,13 +66,16 @@ const initLog = async () => {
     //     {text:''}
     //   ]
     // )
-  } //기록된 산책이 없다
+  } //기록된 산책이 없다 or 기록 중 일부가 삭제 되었다 => 새로시작
   else {
     console.log('awsdfasdf');
   }
 };
+//이전 로그 저장 함수
+//이전 로그 삭제
+//로그 시작(더하기)
 
-export const startLogging = async (dispatch: any) => {
+export const startLogging = async (dispatch: any, dogs) => {
   await initLog();
   Geolocation.watchPosition(
     position => {
@@ -77,7 +88,7 @@ export const startLogging = async (dispatch: any) => {
     },
     error => {
       console.log(error);
-    },
+    }, 
     {
       interval: 1000,
       enableHighAccuracy: true,

@@ -15,6 +15,13 @@ import MapViewAlone from '@pages/MapViewAlone';
 //로깅시작함수
 import {startLogging} from '~/slices/myPositionSlice';
 import {useDispatch} from 'react-redux';
+import {
+  storeData,
+  getData,
+  removeData,
+  containsKey,
+  getAllKeys,
+} from '~/utils/AsyncService';
 
 //UserInfoType
 export type UserInfoType = {
@@ -103,11 +110,25 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-
+  
+  // 산책 시작 예시 함수
+  const dogs = [
+  {
+    dog_idx:1,
+    user_idx:1,
+    dog_name:'강아지1',
+    image:'@assets/logo.png',
+  },
+  { dog_idx:2,
+    user_idx:1,
+    dog_name:'강아지2',
+    image:'@assets/logo.png',
+  }
+  ] // Dogs 객체 예시
   const dispatch = useDispatch();
   const startWalking = () => {
     navigation.navigate('MapViewAlone');
-    startLogging(dispatch);
+    startLogging(dispatch, dogs);
   };
 
   return (
@@ -124,6 +145,20 @@ function Mypage({navigation}: any) {
       />
       <Pressable onPress={startWalking}>
         <Text>산책시작하기</Text>
+      </Pressable>
+      <Pressable onPress={()=>{storeData('abc','def')}}>
+        <Text>storeData</Text>
+      </Pressable>
+      <Pressable onPress={async()=>{const a = await containsKey('abc')
+    console.log(a)}}>
+        <Text>containsKey</Text>
+      </Pressable>
+      <Pressable onPress={()=>{removeData('abc')}}>
+        <Text>removeData</Text>
+      </Pressable>
+      <Pressable onPress={async()=>{const a = await getAllKeys()
+    console.log(a)}}>
+        <Text>getAllKeys</Text>
       </Pressable>
     </View>
   );
