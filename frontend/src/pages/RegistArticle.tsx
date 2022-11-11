@@ -7,6 +7,7 @@ const RegistArticle = () => {
   const [rope, setRope] = useState<boolean>(true);
   const [poop, setPoop] = useState<boolean>(true);
   const [date, setDate] = useState<Date>(new Date());
+  const [place, setPlace] = useState<string>('');
   const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
   const [content, setContent] = useState<string>('');
   const [placeModalOpen, setPlaceModalOpen] = useState<boolean>(false);
@@ -31,6 +32,8 @@ const RegistArticle = () => {
       setPlaceModalOpen={setPlaceModalOpen}
       imageModalOpen={imageModalOpen}
       setImageModalOpen={setImageModalOpen}
+      place={place}
+      setPlace={setPlace}
     />
   );
 };

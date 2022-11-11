@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import 'moment/locale/ko';
 import ImageAddBtn from '~/molecules/ImageAddBtn';
 import PlaceModal from '~/organisms/PlaceModal';
+import ImageUploadModal from '~/organisms/ImageUploadModal';
 
 interface Props {
   category: string;
@@ -38,6 +39,8 @@ interface Props {
   setPlaceModalOpen: Dispatch<SetStateAction<boolean>>;
   imageModalOpen: boolean;
   setImageModalOpen: Dispatch<SetStateAction<boolean>>;
+  place: string;
+  setPlace: Dispatch<SetStateAction<string>>;
 }
 
 const dropdownIcon = (isOpened: boolean) => {
@@ -72,6 +75,8 @@ const RegistArticleTemplate = ({
   setPlaceModalOpen,
   imageModalOpen,
   setImageModalOpen,
+  place,
+  setPlace,
 }: Props) => {
   const moment = require('moment');
   moment.locale('kor');
@@ -102,6 +107,15 @@ const RegistArticleTemplate = ({
           setPlaceModalOpen(false);
         }}>
         <PlaceModal setPlaceModal={setPlaceModalOpen} />
+      </Modal>
+      <Modal
+        visible={imageModalOpen}
+        animationType={'slide'}
+        transparent={true}
+        onRequestClose={() => {
+          setImageModalOpen(false);
+        }}>
+        <ImageUploadModal setImageUploadModal={setImageModalOpen} />
       </Modal>
       <ScrollView>
         <SelectDropdown
