@@ -13,8 +13,7 @@ import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
 //로깅시작함수
-import {startWalking} from '~/slices/myPositionSlice';
-import {useDispatch} from 'react-redux';
+import {startWalking} from '~/utils/FuctionsForMypostionSlice';
 import {
   storeData,
   getData,
@@ -24,7 +23,7 @@ import {
   getAllKeys,
   getMultiple,
 } from '~/utils/AsyncService';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {RootState} from '~/store/reducer';
 
 //UserInfoType
@@ -49,8 +48,16 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen name="MyDogs" component={MyDogs} />
-    <MypageStack.Screen name="MapViewAlone" component={MapViewAlone} />
-    <MypageStack.Screen name="LogView" component={LogView} />
+    <MypageStack.Screen
+      name="MapViewAlone"
+      component={MapViewAlone}
+      options={{headerShown: false}}
+    />
+    <MypageStack.Screen
+      name="LogView"
+      component={LogView}
+      options={{headerShown: false}}
+    />
   </MypageStack.Navigator>
 );
 
@@ -117,24 +124,28 @@ function Mypage({navigation}: any) {
   };
 
   // 산책 시작 예시 함수
-  const isLogging = useSelector(
-    (state: RootState) => state.myPosition.isLogging,
-  );
-  const dogs = [
-    {
-      dog_idx: 1,
-      user_idx: 1,
-      dog_name: '강아지1',
-      image: '@assets/logo.png',
-    },
-    {dog_idx: 2, user_idx: 1, dog_name: '강아지2', image: '@assets/logo.png'},
-  ]; // Dogs 객체 예시
+  const myPositionState = useSelector((state: RootState) => state.myPosition);
   const dispatch = useDispatch();
   const goWalking = () => {
     // navigation.navigate('MapViewAlone');
-    startWalking(navigation, dispatch, dogs, isLogging);
+    startWalking(dispatch, navigation, myPositionState);
   };
-
+  // redux에 들어갈 예시 데이터
+  const polylinePath = [
+    {latitude: 33.8805, longitude: -118.2084},
+    {latitude: 33.7805, longitude: -118.2084},
+    {latitude: 33.6805, longitude: -118.2084},
+    {latitude: 33.5805, longitude: -118.2084},
+    {latitude: 33.4805, longitude: -118.2084},
+    {latitude: 33.3805, longitude: -118.2084},
+    {latitude: 33.2805, longitude: -118.2084},
+    {latitude: 33.1805, longitude: -118.2084},
+    {latitude: 33.0805, longitude: -118.2084},
+  ];
+  const dogs = [
+    {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
+    {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
+  ];
   return (
     <View>
       <MypageTemplate
@@ -153,22 +164,28 @@ function Mypage({navigation}: any) {
       <Pressable
         onPress={() => {
           const date = new Date();
-          storeData('@StartDate', '날짜');
-          storeData('@Dogs', [1, 2, 3]);
+          storeData('@StartDate', date);
           storeData('@LastUpdate', date);
+          storeData('@WalkingLogs', polylinePath);
+          storeData('@Dogs', dogs);
         }}>
         <Text>storeData</Text>
       </Pressable>
       <Pressable
         onPress={async () => {
-          const a = await containsKey('@abc');
+          const a = await containsKey('@StartDate');
           console.log(a);
         }}>
         <Text>containsKey</Text>
       </Pressable>
       <Pressable
         onPress={() => {
-          removeMultiple(['@StartDate', '@Dogs', '@LastUpdate']);
+          removeMultiple([
+            '@StartDate',
+            '@LastUpdate',
+            '@WalkingLogs',
+            '@Dogs',
+          ]);
         }}>
         <Text>removeMultiple</Text>
       </Pressable>
@@ -181,8 +198,13 @@ function Mypage({navigation}: any) {
       </Pressable>
       <Pressable
         onPress={async () => {
-          const a = await getMultiple(['@StartDate', '@Dogs', '@LastUpdate']);
-          console.log(typeof a, a);
+          const a = await getMultiple([
+            '@StartDate',
+            '@LastUpdate',
+            '@WalkingLogs',
+            '@Dogs',
+          ]);
+          console.log(a);
         }}>
         <Text>getMultiple</Text>
       </Pressable>

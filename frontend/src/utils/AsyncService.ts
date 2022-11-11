@@ -68,16 +68,21 @@ export const getAllKeys = async () => {
   }
 };
 
+// return list of values that parsed 아 이거 맞냐 진짜...
 export const getMultiple = async (keys: string[]) => {
-  let values;
   try {
-    values = await AsyncStorage.multiGet(keys);
-    return values != null ? JSON.parse(values) : null;
-  } catch (e) {
-    // read error
+    const returns: Array<any> = ['1'];
+    const pairs = await AsyncStorage.multiGet(keys);
+    if (pairs.length >= 1) {
+      pairs.forEach(pair => {
+        if (pair[1] != null) {
+          returns.push(JSON.parse(pair[1]));
+        }
+      });
+    }
+    return returns;
+  } catch (e: any) {
+    console.error(e.message);
+    console.log('에러야?');
   }
-  console.log(values);
-
-  // example console.log output:
-  // [ ['@MyApp_user', 'myUserValue'], ['@MyApp_key', 'myKeyValue'] ]
 };
