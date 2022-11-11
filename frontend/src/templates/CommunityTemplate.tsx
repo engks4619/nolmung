@@ -1,5 +1,12 @@
 import React from 'react';
-import {Pressable, View, StyleSheet} from 'react-native';
+import {
+  Pressable,
+  View,
+  StyleSheet,
+  Button,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
 import CommOtherPost from '@organisms/CommOtherPost';
@@ -38,18 +45,14 @@ function CommunityTemplate({
       {categoryType === 'WITH' ? (
         <>
           <CommWithPost withPostList={withPostList} loadMore={loadMore} />
-          <Pressable onPress={() => navigation.navigate('RegistArticle')}>
-            <EditBtn />
-          </Pressable>
         </>
       ) : (
         <>
           <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
-          <Pressable onPress={() => navigation.navigate('RegistArticle')}>
-            <EditBtn />
-          </Pressable>
         </>
       )}
+
+      <EditBtn onPress={() => navigation.navigate('RegistArticle')} />
     </View>
   );
 }

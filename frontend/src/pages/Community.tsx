@@ -7,6 +7,7 @@ import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
 import RegistArticle from './RegistArticle';
 import {MAIN_COLOR} from '~/const';
+import RegistHeader from '~/organisms/RegistHeader';
 
 export type CommunityParamList = {
   Community: undefined;
@@ -45,12 +46,7 @@ export const CommunityStackNavigator = () => (
       name="RegistArticle"
       component={RegistArticle}
       options={{
-        headerTitle: '놀면 멍하니',
-        headerTintColor: MAIN_COLOR,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
+        header: RegistHeader,
       }}
     />
   </CommunityStack.Navigator>
@@ -148,15 +144,15 @@ function Community({navigation}: any) {
   }, [categoryType]);
 
   return (
-      <CommunityTemplate
-        navigateWithPg={navigateWithPg}
-        navigateOtherPg={navigateOtherPg}
-        categoryType={categoryType}
-        withPostList={withPostList}
-        otherPostList={otherPostList}
-        loadMore={loadMore}
-        navigation={navigation}
-      />
+    <CommunityTemplate
+      navigateWithPg={navigateWithPg}
+      navigateOtherPg={navigateOtherPg}
+      categoryType={categoryType}
+      withPostList={withPostList}
+      otherPostList={otherPostList}
+      loadMore={loadMore}
+      navigation={navigation}
+    />
   );
 }
 
