@@ -9,9 +9,10 @@ import {DetailProps} from '@pages/CommDetail';
 
 interface Props {
   detailContent: DetailProps;
+  userIdx: number;
 }
 
-function CommDetailTemplate({detailContent}: Props) {
+function CommDetailTemplate({detailContent, userIdx}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -37,7 +38,7 @@ function CommDetailTemplate({detailContent}: Props) {
         categoryType={detailContent.categoryType}
         pay={detailContent.pay}
         isLiked={detailContent.getLike}
-        isWriter={true} // login 기능 추가후 비교
+        isWriter={detailContent.writerIdx === userIdx}
       />
     </View>
   );

@@ -6,6 +6,10 @@ import {CommunityParamList} from '@pages/Community';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {DetailDogProps} from '@molecules/DetailDog';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
+import {useAppDispatch} from '~/store';
+import {setPostInfo} from '~/slices/postSlice';
 
 export interface DetailProps {
   dogInfoList: DetailDogProps[];
@@ -23,12 +27,15 @@ export interface DetailProps {
   modifyDate: string;
   photoUrl: string[];
   userImgUrl: string;
+  writerIdx: number;
 }
 
 type CommScreenProp = NativeStackScreenProps<CommunityParamList, 'CommDetail'>;
 
 function CommDetail({route}: CommScreenProp) {
   const postIdx: number = route.params.postIdx;
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+  const dispatch = useAppDispatch();
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
 
@@ -39,6 +46,8 @@ function CommDetail({route}: CommScreenProp) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
+      const {writerIdx, pay, subject, photoUrl} = data;
+      dispatch(setPostInfo({postIdx, writerIdx, pay, subject, photoUrl}));
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -51,7 +60,7 @@ function CommDetail({route}: CommScreenProp) {
     getDetailPost(postIdx);
   }, [postIdx]);
 
-  return <CommDetailTemplate detailContent={detailContent} />;
+  return <CommDetailTemplate detailContent={detailContent} userIdx={userIdx} />;
 }
 
 export default CommDetail;

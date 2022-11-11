@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Chats from './src/pages/Chats';
+import {ChatsStackNavigator} from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
 import Maps from '@pages/Maps';
@@ -28,6 +28,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
+import useSocket from '~/hooks/useSocket';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -46,6 +47,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
+  const [socket, disconnect] = useSocket();
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
@@ -86,6 +88,33 @@ function AppInner() {
     getUserInfo();
   }, []);
 
+  useEffect(() => {
+    // const helloCallback = (data: any) => {
+    //   console.log(data);
+    // };
+    if (socket && isLoggedIn) {
+      const data = {ownerIdx: 1, postIdx: 1};
+      // socket.on('connect', socket => {
+      //   socket.join('room');
+      // });
+      socket.emit('newRoom', data);
+      // socket.emit('newRoom', data);
+      // socket.emit('login', 'hello');
+      // socket.on('hello', helloCallback);
+    }
+    return () => {
+      if (socket) {
+        // socket.off('hello', helloCallback);
+      }
+    };
+  }, [isLoggedIn, socket]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      disconnect();
+    }
+  }, [isLoggedIn, disconnect]);
+
   return (
     <NavigationContainer>
       {isLoggedIn ? (
@@ -100,8 +129,8 @@ function AppInner() {
             },
           }}>
           <Tab.Screen
-            name="Chats"
-            component={Chats}
+            name="ChatList"
+            component={ChatsStackNavigator}
             options={{
               headerShown: false,
               title: '채팅',

@@ -2,6 +2,10 @@ import React from 'react';
 import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
 import Heart from '@assets/heart.svg';
 import MyButton from '@atoms/MyButton';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {ChatsParamList} from '~/pages/Chats';
+import {useAppDispatch} from '~/store';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -12,7 +16,16 @@ interface footerProps {
   isLiked: Boolean;
 }
 
+type chatScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
+
 function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
+  const navigation = useNavigation<chatScreenProp>();
+  const dispatch = useAppDispatch();
+
+  const startChat = () => {
+    // dispatch()
+    navigation.navigate('ChatsDetail', {roomId: 3});
+  };
   return (
     <View style={styles.container}>
       <Pressable>
@@ -28,7 +41,9 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
           btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
           paddingVertical={10}
-          onClick={() => console.log('채팅목록')}
+          onClick={
+            isWriter ? () => navigation.navigate('Chats') : () => startChat()
+          }
         />
       </View>
     </View>
