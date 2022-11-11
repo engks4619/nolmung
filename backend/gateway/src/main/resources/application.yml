@@ -77,7 +77,6 @@ spring:
             - Path=/api/image/**
           filters:
             - RemoveRequestHeader=Cookie
-            - AuthorizationHeaderFilter
 
       default-filters:
         - name: GlobalFilter
