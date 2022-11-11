@@ -7,4 +7,5 @@ public interface UserService extends UserDetailsService {
     void createUser(UserDto userDto);
     UserDto getUserByUserIdx(Long userIdx);
     UserDto getUserByPhone(String phone);
+    boolean exist(String phone);
 }

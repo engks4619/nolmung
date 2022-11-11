@@ -2,11 +2,13 @@ package com.a703.user.filter;
 
 import com.a703.user.dto.UserDto;
 import com.a703.user.service.UserService;
-import com.a703.user.vo.RequestLogin;
+import com.a703.user.vo.request.RequestLogin;
+import com.a703.user.vo.response.ResponseUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -64,6 +66,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .compact();
 
         response.addHeader("token", token);
-        response.addHeader("userId", userDetails.getUserIdx().toString());
+        ResponseUser responseUser = new ModelMapper().map(userDetails, ResponseUser.class);
+        ObjectMapper mapper = new ObjectMapper();
+        response.getWriter().write(mapper.writeValueAsString(responseUser));
     }
 }
