@@ -26,6 +26,8 @@ connect();
 const room = io.of('/room');
 const chat = io.of('/chat');
 
+var login_ids = {};   // 로그인 id 매핑 (로그인 ID -> 소켓 ID)
+
 // 소켓 연결 및 이벤트
 io.on('connection', (socket) => {
 	console.log('소켓 연결 완료! socket 아이디 : ', socket.id);
@@ -33,6 +35,19 @@ io.on('connection', (socket) => {
 	socket.on('welcome', (msg) => {
 		console.log(msg);
 		socket.emit('reply', '서버에서 응답');
+	});
+
+	// 'login' 이벤트를 받았을 때의 처리
+    socket.on('login', function(login) {
+		// 기존 클라이언트 ID가 없으면 클라이언트 ID를 맵에 추가
+		console.log('접속한 소켓의 ID : ' + socket.id);
+		login_ids[login.id] = socket.id;
+		socket.login_id = login.id;
+  
+		console.log('접속한 클라이언트 ID 갯수 : %d', Object.keys(login_ids).length);
+  
+		// 응답 메시지 전송
+		// sendResponse(socket, 'login', '200', '로그인되었습니다.');
 	});
 
 	socket.on('disconnect', () => {
