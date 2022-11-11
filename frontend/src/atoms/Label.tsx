@@ -3,9 +3,9 @@ import {Text} from 'react-native';
 
 interface Props {
   labelText: string;
-  fontWeight: string;
-  fontSize: number;
-  marginBottom: number;
+  fontWeight?: string;
+  fontSize?: number;
+  marginBottom?: number;
 }
 
 function Label({
