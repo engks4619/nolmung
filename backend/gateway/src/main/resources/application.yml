@@ -14,12 +14,6 @@ spring:
   cloud:
     gateway:
       routes:
-#        - id: user
-#          uri: lb://USER
-#          predicates:
-#            - Path=/api/user/**
-#          filters:
-
         - id: user
           uri: lb://USER
           predicates:
@@ -36,12 +30,18 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
 
+        - id: user
+          uri: lb://USER
+          predicates:
+            - Path=/api/user/cert/**
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
 
         - id: user
           uri: lb://USER
           predicates:
             - Path=/api/user/**
-            - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
