@@ -22,11 +22,11 @@ import java.util.List;
 @Component
 public class ClientUtil {
 
+    private final RestTemplate restTemplate;
 
     public UserInfoDto requestUserInfo(String token) {
 
         String url = "http://USER/api/user/my-info";
-        RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -52,7 +52,6 @@ public class ClientUtil {
     public List<Long> requestSearchDogInfo(int breedCode) {
 
         String url = String.format("http://USER/api/user/dog/list/breedcode?breedcode=%d", breedCode);
-        RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -87,7 +86,6 @@ public class ClientUtil {
                 .toUriString();
 
 
-        RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -120,7 +118,6 @@ public class ClientUtil {
     public UserInfoDto requestOtherUserInfo(Long userIdx) {
 
         String url = String.format("http://USER/api/user/info/%d", userIdx);
-        RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -138,7 +135,6 @@ public class ClientUtil {
     public void saveImage(MultipartFile file,String savePath) throws IOException {
 
         String url = "http://IMAGE/api/image";
-        RestTemplate restTemplate = new RestTemplate();
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
