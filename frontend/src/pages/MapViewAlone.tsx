@@ -9,6 +9,7 @@ function MapViewAlone() {
     (state: RootState) => state.myPosition.myPosition,
   );
   const path = useSelector((state: RootState) => state.myPosition.path);
+  const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
   return (
     <View>
       <MapViewTemplate myPosition={myPosition} path={path} />

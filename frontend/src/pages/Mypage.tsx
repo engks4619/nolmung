@@ -11,17 +11,21 @@ import MyLikedSpots from '@pages/MyLikedSpots';
 import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
-
+import LogView from '@pages/LogView';
 //로깅시작함수
-import {startLogging} from '~/slices/myPositionSlice';
+import {startWalking} from '~/slices/myPositionSlice';
 import {useDispatch} from 'react-redux';
 import {
   storeData,
   getData,
   removeData,
+  removeMultiple,
   containsKey,
   getAllKeys,
+  getMultiple,
 } from '~/utils/AsyncService';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 //UserInfoType
 export type UserInfoType = {
@@ -46,6 +50,7 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen name="MyDogs" component={MyDogs} />
     <MypageStack.Screen name="MapViewAlone" component={MapViewAlone} />
+    <MypageStack.Screen name="LogView" component={LogView} />
   </MypageStack.Navigator>
 );
 
@@ -110,25 +115,24 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-  
+
   // 산책 시작 예시 함수
+  const isLogging = useSelector(
+    (state: RootState) => state.myPosition.isLogging,
+  );
   const dogs = [
-  {
-    dog_idx:1,
-    user_idx:1,
-    dog_name:'강아지1',
-    image:'@assets/logo.png',
-  },
-  { dog_idx:2,
-    user_idx:1,
-    dog_name:'강아지2',
-    image:'@assets/logo.png',
-  }
-  ] // Dogs 객체 예시
+    {
+      dog_idx: 1,
+      user_idx: 1,
+      dog_name: '강아지1',
+      image: '@assets/logo.png',
+    },
+    {dog_idx: 2, user_idx: 1, dog_name: '강아지2', image: '@assets/logo.png'},
+  ]; // Dogs 객체 예시
   const dispatch = useDispatch();
-  const startWalking = () => {
-    navigation.navigate('MapViewAlone');
-    startLogging(dispatch, dogs);
+  const goWalking = () => {
+    // navigation.navigate('MapViewAlone');
+    startWalking(navigation, dispatch, dogs, isLogging);
   };
 
   return (
@@ -143,22 +147,44 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable onPress={startWalking}>
+      <Pressable onPress={goWalking}>
         <Text>산책시작하기</Text>
       </Pressable>
-      <Pressable onPress={()=>{storeData('abc','def')}}>
+      <Pressable
+        onPress={() => {
+          const date = new Date();
+          storeData('@StartDate', '날짜');
+          storeData('@Dogs', [1, 2, 3]);
+          storeData('@LastUpdate', date);
+        }}>
         <Text>storeData</Text>
       </Pressable>
-      <Pressable onPress={async()=>{const a = await containsKey('abc')
-    console.log(a)}}>
+      <Pressable
+        onPress={async () => {
+          const a = await containsKey('@abc');
+          console.log(a);
+        }}>
         <Text>containsKey</Text>
       </Pressable>
-      <Pressable onPress={()=>{removeData('abc')}}>
-        <Text>removeData</Text>
+      <Pressable
+        onPress={() => {
+          removeMultiple(['@StartDate', '@Dogs', '@LastUpdate']);
+        }}>
+        <Text>removeMultiple</Text>
       </Pressable>
-      <Pressable onPress={async()=>{const a = await getAllKeys()
-    console.log(a)}}>
+      <Pressable
+        onPress={async () => {
+          const a = await getAllKeys();
+          console.log(a);
+        }}>
         <Text>getAllKeys</Text>
+      </Pressable>
+      <Pressable
+        onPress={async () => {
+          const a = await getMultiple(['@StartDate', '@Dogs', '@LastUpdate']);
+          console.log(typeof a, a);
+        }}>
+        <Text>getMultiple</Text>
       </Pressable>
     </View>
   );

@@ -37,7 +37,16 @@ export const removeData = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
   } catch (e: any) {
-    console.error(e.message);
+    console.error('removeDataError', e.message);
+  }
+};
+export const removeMultiple = async (keys: string[]) => {
+  try {
+    keys.forEach(elem => {
+      AsyncStorage.removeItem(elem);
+    });
+  } catch (e: any) {
+    console.log('remnoveMultipleError', e.message);
   }
 };
 
@@ -52,9 +61,23 @@ export const containsKey = async (key: string) => {
 export const getAllKeys = async () => {
   try {
     const keys = await AsyncStorage.getAllKeys();
-    return keys
+    return keys;
   } catch (e: any) {
     console.error(e.message);
-    return []
+    return [];
   }
+};
+
+export const getMultiple = async (keys: string[]) => {
+  let values;
+  try {
+    values = await AsyncStorage.multiGet(keys);
+    return values != null ? JSON.parse(values) : null;
+  } catch (e) {
+    // read error
+  }
+  console.log(values);
+
+  // example console.log output:
+  // [ ['@MyApp_user', 'myUserValue'], ['@MyApp_key', 'myKeyValue'] ]
 };
