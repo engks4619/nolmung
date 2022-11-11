@@ -57,6 +57,12 @@ function AppInner() {
     } catch (error) {}
   };
 
+  const removeUserInfo = async () => {
+    try {
+      await AsyncStorage.removeItem('accessToken');
+    } catch (error) {}
+  };
+
   const checkToken = async (token: string) => {
     try {
       const responese = await axios.get('user/my-info', {
@@ -69,6 +75,7 @@ function AppInner() {
       axios.defaults.headers.common['Authorization'] = token;
     } catch (error: any) {
       if (error.responese.status === 401) {
+        removeUserInfo();
         return;
       }
     }
