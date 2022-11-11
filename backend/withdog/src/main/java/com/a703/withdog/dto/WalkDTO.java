@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -54,5 +55,9 @@ public class WalkDTO {
         this.walkedDogList = walkedDogList;
         this.latitudes = latitudes;
         this.longitudes = longitudes;
+    }
+
+    public void setCourseImgUrl(String courseImgUrl){
+        this.courseImgUrl = courseImgUrl;
     }
 }
