@@ -16,11 +16,12 @@ import java.io.IOException;
 @Component
 public class ClientUtil {
 
+    private final RestTemplate restTemplate;
+
     public void saveImage(MultipartFile file, String savePath) throws IOException {
 
         String url = "http://IMAGE/api/image";
 //        String url = "http://localhost:62815/api/image";
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
