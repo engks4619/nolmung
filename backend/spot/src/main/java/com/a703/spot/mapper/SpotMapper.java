@@ -1,6 +1,7 @@
 package com.a703.spot.mapper;
 
 import com.a703.spot.dto.response.SpotDto;
+import com.a703.spot.dto.response.SpotSimpleDto;
 import com.a703.spot.dto.response.SpotTransferDto;
 import com.a703.spot.entity.Spot;
 import lombok.NoArgsConstructor;
@@ -59,6 +60,17 @@ public class SpotMapper {
                 .lng(entitiy.getLng())
                 .build();
     }
+
+    public SpotSimpleDto EntitiyToSimpleDto(Spot entity) {
+        return SpotSimpleDto.builder()
+                .spotId(entity.getSpotId())
+                .name(entity.getName())
+                .imgCnt(entity.getImgCnt())
+                .lat(entity.getLat())
+                .lng(entity.getLng())
+                .build();
+    }
+
     List<String> getDescList(String descStr) {
         if(descStr == null || descStr.equals("")) return null;
         List<String> descList = new ArrayList<String>();

@@ -7,6 +7,7 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://nolmung.kr:8761/eureka
+#      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
@@ -53,6 +54,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
+
         - id: withdog
           uri: lb://WITHDOG
           predicates:
@@ -60,6 +62,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
+
         - id: spot
           uri: lb://SPOT
           predicates:
@@ -67,6 +70,15 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
+
+        - id: image
+          uri: lb://IMAGE
+          predicates:
+            - Path=/api/image/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+
       default-filters:
         - name: GlobalFilter
           args:

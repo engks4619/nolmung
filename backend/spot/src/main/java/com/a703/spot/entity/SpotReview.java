@@ -1,9 +1,6 @@
 package com.a703.spot.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Getter
+@ToString
 @Table(name = "tbl_spot_review")
 public class SpotReview extends BaseTime {
     @Id
@@ -37,7 +35,7 @@ public class SpotReview extends BaseTime {
     private boolean deleted;
 
     @Column(name = "user_idx", columnDefinition = "BIGINT", nullable = false)
-    private long userIdx;
+    private Long userIdx;
 
     public void setIsDeleted(boolean flag) {
         this.deleted = flag;

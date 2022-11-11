@@ -11,16 +11,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificationExecutor<Post> {
+public interface PostRepository extends JpaRepository<Post,Long>, JpaSpecificationExecutor<Post>,PostRepositoryCustom {
 
     Page<Post> findByCategoryTypeAndWriterIdx(CategoryType categoryType, Long writerIdx, Pageable pageable);
 
     Page<Post> findByCategoryType(CategoryType categoryType, Pageable pageable);
 
-    Post findByPostIdx(Long postIdx);
+//    Post findByPostIdx(Long postIdx);
 
-    @Query(value = "SELECT * FROM tbl_post a " +
-            "WHERE a.post_idx in (SELECT b.post_idx FROM tbl_post_like b WHERE b.user_idx = :userIdx) " +
-            "AND a.category_type = :categoryType", nativeQuery = true)
+    @Query(value = "SELECT * FROM tbl_post " +
+            "WHERE tbl_post.post_idx in (SELECT tbl_post_like.post_idx FROM tbl_post_like WHERE tbl_post_like.user_idx = :userIdx) " +
+            "AND tbl_post.category_type = :categoryType", nativeQuery = true)
     Page<Post> findAllBySomething(@Param("userIdx") Long userIdx, @Param("categoryType") String categoryType, Pageable pageable);
 }

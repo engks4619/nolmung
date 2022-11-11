@@ -17,8 +17,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 
@@ -29,6 +27,8 @@ public class FileUtil {
     private final PostRepository postRepository;
 
     private final PostPhotoRepository  postPhotoRepository;
+
+    private final ClientUtil clientUtil;
 
 
     public void fileUpload(MultipartFile file,Long postIdx) throws IOException {
@@ -54,17 +54,18 @@ public class FileUtil {
 //                }
 //            }
             check.mkdir();
-            Path path = Paths.get(savePath);
-            file.transferTo(path);
+//            Path path = Paths.get(savePath);
+//            file.transferTo(path);
 
 
             // 이미지 리사이징
-            resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
+//            resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
 
 
+            clientUtil.saveImage(file,savePath);
             PostPhoto postPhoto = PostPhoto.builder()
                     .post(post)
-                    .photoUrl("http://k7a703.p.ssafy.io:8081"+savePath)
+                    .photoUrl(savePath)
                     .build();
             postPhotoRepository.save(postPhoto);
 

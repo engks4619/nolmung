@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserInfoDto {
+
     private Long userIdx;
-    private String userName;
-    private String userProfile;
+
+    private String nickname;
+
+    private String profileImage;
 }

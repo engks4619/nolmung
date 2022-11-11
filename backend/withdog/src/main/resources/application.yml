@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 0
   servlet:
     contextPath: /api/withdog
     encoding:
@@ -10,6 +10,18 @@ server:
 spring:
   profiles:
     include: db
+  application:
+    name: withdog
 #  data:
 #    mongodb:
 #      uri: mongodb://localhost:27017/test
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://nolmung.kr:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    include: db
+  application:
+    name: user
+
+server:
+  port: 0
+  servlet:
+    contextPath: /api
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://nolmung.kr:8761/eureka
+#      defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    com.a703.user: debug
+
+token:
+  expiration_time: 604800000
+  secret: user_token
+
+gateway:
+  ip: 172.18.0.4
+
+image:
+  url: http://nolmung.kr/api/image
+#  url: http://localhost:7554/api/image
+  dog:
+    path: /images/dog/%s

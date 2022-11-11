@@ -11,4 +11,8 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConfigurationProperties(prefix = "const")
 public class ConstProperties {
     private final int spotListSize;
+    private final Double defaultLat;
+    private final Double defaultLng;
+    private final Integer defaultLimitDistance;
+    private final String defaultCategory;
 }

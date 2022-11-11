@@ -16,7 +16,13 @@ public class PostDto {
 
     private List<DogInfoDto> dogInfoList;
 
+    private Long postIdx;
+
+    private Long writerIdx;
+
     private String writer;
+
+    private String userImgUrl;
 
     private Boolean getLike;
 
