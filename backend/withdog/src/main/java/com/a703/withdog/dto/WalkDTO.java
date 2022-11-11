@@ -58,6 +58,6 @@ public class WalkDTO {
     }
 
     public void setCourseImgUrl(String courseImgUrl){
-
+        this.courseImgUrl = courseImgUrl;
     }
 }

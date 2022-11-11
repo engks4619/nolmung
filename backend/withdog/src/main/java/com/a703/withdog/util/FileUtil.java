@@ -17,7 +17,7 @@ public class FileUtil {
     private final ClientUtil clientUtil;
 
     public String fileUpload(MultipartFile image){
-        String uploadPath = "/image/walk";
+        String uploadPath = "/images/walk-course";
 
         try {
             String savePath = uploadPath + java.io.File.separator + UUID.randomUUID() + "." + extractExt(image.getOriginalFilename());

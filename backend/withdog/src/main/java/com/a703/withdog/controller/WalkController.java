@@ -23,17 +23,6 @@ public class WalkController {
     private final WalkService walkService;
     private final FileUtil fileUtil;
 
-//    @PostMapping
-//    public ResponseEntity<?> saveWalk(@RequestBody WalkDTO walk) {
-//        /**
-//         * @Method Name : saveWalk
-//         * @Method 설명 : 산책 기록 저장 후 산책 id 반환
-//         */
-//        ObjectId walkIdx = walkService.saveWalk(walk);
-//
-//        return ResponseEntity.ok().body(walkIdx);
-//    }
-
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> saveWalk(@RequestPart WalkDTO walk, @RequestPart(value = "image", required = false) MultipartFile image) {
         /**
