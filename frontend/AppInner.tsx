@@ -27,6 +27,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from '~/utils/axios';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -44,26 +45,34 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
+  const dispatch = useDispatch();
+
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
   );
-  console.log(
-    'isLoggedIn',
-    useSelector((state: RootState) => state.user.accessToken),
-  );
-  const dispatch = useDispatch();
-
   const getUserInfo = async () => {
     try {
-      const userInfo = await AsyncStorage.getItem('userInfo');
-      dispatch(setUser(userInfo));
-      console.log('userInfo', userInfo);
-    } catch (error) {
-      console.log(error);
-    }
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      accessToken !== null ? checkToken(accessToken) : null;
+    } catch (error) {}
   };
 
-  // const [isLoggedIn, setLoggedIn] = useState(false);
+  const checkToken = async (token: string) => {
+    try {
+      const responese = await axios.get('user/my-info', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const userInfo = {accessToken: token, ...responese.data};
+      dispatch(setUser(userInfo));
+      axios.defaults.headers.common['Authorization'] = token;
+    } catch (error: any) {
+      if (error.responese.status === 401) {
+        return;
+      }
+    }
+  };
 
   useEffect(() => {
     getLocation(dispatch);

@@ -25,6 +25,7 @@ function SignIn({navigation}: SignInScreenProps) {
       const {userIdx, phone, nickname, profileImage} = response.data;
       const userInfo = {accessToken, userIdx, phone, nickname, profileImage};
       storeUserInfo(userInfo, dispatch);
+      axios.defaults.headers.common['Authorization'] = accessToken;
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,

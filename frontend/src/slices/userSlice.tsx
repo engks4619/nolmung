@@ -34,13 +34,10 @@ export const storeUserInfo = async (
   userInfo: userInfoType,
   dispatch: Dispatch<AnyAction>,
 ) => {
-  const stringUserInfo = JSON.stringify(userInfo);
   try {
-    await AsyncStorage.setItem('userInfo', stringUserInfo);
+    await AsyncStorage.setItem('accessToken', userInfo.accessToken);
     dispatch(setUser(userInfo));
-  } catch (error) {
-    console.log('storeUserInfo', error);
-  }
+  } catch (error) {}
 };
 
 const userSlice = createSlice({

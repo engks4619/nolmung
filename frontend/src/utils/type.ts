@@ -3,10 +3,10 @@ export type Geoloc = {
   lng: number;
 };
 
-export interface userInfoType {
+export type userInfoType = {
   accessToken: string;
   userIdx: number;
   phone: string;
   nickname: string;
   profileImage: string;
-}
+};
