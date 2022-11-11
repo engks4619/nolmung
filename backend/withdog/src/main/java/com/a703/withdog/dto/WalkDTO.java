@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.awt.geom.GeneralPath;
 import java.util.Date;
 import java.util.List;
 
@@ -35,14 +36,17 @@ public class WalkDTO {
     @Field("walked_dog_list")
     private List<Long> walkedDogList;    // 산책한 강아지들 ID
 
-    @Field("latitudes")
-    private List<Double> latitudes;   // 위도 리스트
+    @Field("gps_list")
+    List<Double>[] gpsList;     // {위도, 경도}
 
-    @Field("longitudes")
-    private List<Double> longitudes;  // 경도 리스트
+//    @Field("latitudes")
+//    private List<Double> latitudes;   // 위도 리스트
+//
+//    @Field("longitudes")
+//    private List<Double> longitudes;  // 경도 리스트
 
     @Builder
-    public WalkDTO(ObjectId walkIdx, Long ownerIdx, Long walkerIdx, double distance, int time, String courseImgUrl, Date startDate, Date endDate, List<Long> walkedDogList, List<Double> latitudes, List<Double> longitudes) {
+    public WalkDTO(ObjectId walkIdx, Long ownerIdx, Long walkerIdx, double distance, int time, String courseImgUrl, Date startDate, Date endDate, List<Long> walkedDogList, List<Double>[] gpsList) {
         this.walkIdx = walkIdx;
         this.ownerIdx = ownerIdx;
         this.walkerIdx = walkerIdx;
@@ -52,7 +56,8 @@ public class WalkDTO {
         this.startDate = startDate;
         this.endDate = endDate;
         this.walkedDogList = walkedDogList;
-        this.latitudes = latitudes;
-        this.longitudes = longitudes;
+        this.gpsList = gpsList;
+//        this.latitudes = latitudes;
+//        this.longitudes = longitudes;
     }
 }
