@@ -25,7 +25,7 @@ public class ClientUtil {
 
     public UserInfoDto requestUserInfo(String token) {
 
-        String url = "http://user/api/user/my-info";
+        String url = "http://USER/api/user/my-info";
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -51,7 +51,7 @@ public class ClientUtil {
 
     public List<Long> requestSearchDogInfo(int breedCode) {
 
-        String url = String.format("http://user/api/user/dog/list/breedcode?breedcode=%d", breedCode);
+        String url = String.format("http://USER/api/user/dog/list/breedcode?breedcode=%d", breedCode);
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -80,7 +80,7 @@ public class ClientUtil {
 
 //        String url = String.format("http://nolmung.kr/api/user/dog/info");
 //        String url = "http://localhost:8080/api/v1/test";
-        String targetUrl= UriComponentsBuilder.fromUriString("http://user/api/user/dog/info")
+        String targetUrl= UriComponentsBuilder.fromUriString("http://USER/api/user/dog/info")
                 .queryParam("dogIdxList", dogIdx)
                 .build()
                 .encode()
@@ -119,7 +119,7 @@ public class ClientUtil {
 
     public UserInfoDto requestOtherUserInfo(Long userIdx) {
 
-        String url = String.format("http://user/api/user/info/%d", userIdx);
+        String url = String.format("http://USER/api/user/info/%d", userIdx);
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
@@ -137,7 +137,7 @@ public class ClientUtil {
 
     public void saveImage(MultipartFile file,String savePath) throws IOException {
 
-        String url = "http://image/api/image";
+        String url = "http://IMAGE/api/image";
         RestTemplate restTemplate = new RestTemplate();
 
         // Header set
