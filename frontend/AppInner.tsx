@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
-import Community from './src/pages/Community';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
 import Maps from '@pages/Maps';
@@ -22,20 +21,18 @@ import SpotIcon from '@assets/spot.svg';
 import {MypageStackNavigator} from './src/pages/Mypage';
 import {CommunityStackNavigator} from './src/pages/Community';
 
-// import {RootState} from "./src/store/reducer";
-
 import usePermissions from '~/hooks/usePermissions';
 
-import {useDispatch} from 'react-redux';
-import {getLocation} from '~/slices/userSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from './src/store/reducer';
+import {getLocation, setUser} from '~/slices/userSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from '~/utils/axios';
 
 export type LoggedInParamList = {
   Chats: undefined;
   Spots: undefined;
   Main: undefined;
-  Community: undefined;
-  Mypage: undefined;
-  // Coummunity: {orderId: string};
 };
 
 export type RootStackParamList = {
@@ -48,13 +45,45 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
-  // const isLoggedIn = useSelector(( state:RootState) => !!state.user.email)
   const dispatch = useDispatch();
 
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const isLoggedIn = useSelector(
+    (state: RootState) => !!state.user.accessToken,
+  );
+  const getUserInfo = async () => {
+    try {
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      accessToken !== null ? checkToken(accessToken) : null;
+    } catch (error) {}
+  };
+
+  const removeUserInfo = async () => {
+    try {
+      await AsyncStorage.removeItem('accessToken');
+    } catch (error) {}
+  };
+
+  const checkToken = async (token: string) => {
+    try {
+      const responese = await axios.get('user/my-info', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const userInfo = {accessToken: token, ...responese.data};
+      dispatch(setUser(userInfo));
+      axios.defaults.headers.common['Authorization'] = token;
+    } catch (error: any) {
+      if (error.responese.status === 401) {
+        removeUserInfo();
+        return;
+      }
+    }
+  };
 
   useEffect(() => {
     getLocation(dispatch);
+    getUserInfo();
   }, []);
 
   return (

@@ -135,16 +135,14 @@ function Community() {
   }, [categoryType]);
 
   return (
-    <View>
-      <CommunityTemplate
-        navigateWithPg={navigateWithPg}
-        navigateOtherPg={navigateOtherPg}
-        categoryType={categoryType}
-        withPostList={withPostList}
-        otherPostList={otherPostList}
-        loadMore={loadMore}
-      />
-    </View>
+    <CommunityTemplate
+      navigateWithPg={navigateWithPg}
+      navigateOtherPg={navigateOtherPg}
+      categoryType={categoryType}
+      withPostList={withPostList}
+      otherPostList={otherPostList}
+      loadMore={loadMore}
+    />
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
 import CommOtherPost from '@organisms/CommOtherPost';
@@ -27,7 +27,7 @@ function CommunityTemplate({
   otherPostList,
 }: Props) {
   return (
-    <View>
+    <View style={styles.container}>
       <CommunityTab
         navigateWithPg={navigateWithPg}
         navigateOtherPg={navigateOtherPg}
@@ -47,5 +47,12 @@ function CommunityTemplate({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});
 
 export default CommunityTemplate;
