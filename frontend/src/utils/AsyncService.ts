@@ -13,8 +13,8 @@ export const storeData = async (key: string, value: any) => {
   // console.log(value);
   try {
     const svalue = JSON.stringify(value);
-    console.log(svalue);
     await AsyncStorage.setItem(key, svalue);
+    console.log(svalue);
   } catch (e) {
     console.log(e);
   }
@@ -71,7 +71,7 @@ export const getAllKeys = async () => {
 // return list of values that parsed 아 이거 맞냐 진짜...
 export const getMultiple = async (keys: string[]) => {
   try {
-    const returns: Array<any> = ['1'];
+    const returns: Array<any> = [];
     const pairs = await AsyncStorage.multiGet(keys);
     if (pairs.length >= 1) {
       pairs.forEach(pair => {

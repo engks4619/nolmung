@@ -138,7 +138,7 @@ const syncLogs = async (dispatch: any) => {
     const logsPair = {
       startDate: values[0],
       lastUpdate: values[1],
-      walkinglogs: values[2],
+      walkingLogs: values[2],
       dogs: values[3],
     };
     dispatch(setStates(logsPair));

@@ -10,7 +10,7 @@ const functions = [logsToServer]; //저장x,저장하기,이어하기,navigate�
 function LogView({route}: any) {
   const myPositionStates = useSelector((state: RootState) => state.myPosition);
   const isOver = route.params.isOver;
-  console.log('mpPath', myPositionStates.path);
+  console.log('mpPath', myPositionStates);
   return (
     <View>
       <LogViewTemplate
