@@ -1,22 +1,22 @@
 import React, {useCallback, useState} from 'react';
-import {Alert, Platform} from 'react-native';
+import {Alert} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../../App';
+import {RootStackParamList} from '~/../AppInner';
 import DismissKeyboardView from '../DismissKeyboardView';
 import SignUpTemplate from '~/templates/SignUpTemplate';
 
 type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
 function SignUp({navigation}: SignUpScreenProps) {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [isSend, setIsSend] = useState(false);
-  const [certificationNum, setCertificationNum] = useState('');
-  const [isCertificated, setIsCertificated] = useState(false);
-  const [btnName, setBtnName] = useState('인증하기');
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setPasswordCheck] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [isSend, setIsSend] = useState<Boolean>(false);
+  const [certificationNum, setCertificationNum] = useState<string>('');
+  const [isCertificated, setIsCertificated] = useState<Boolean>(false);
+  const [btnName, setBtnName] = useState<string>('인증하기');
+  const [password, setPassword] = useState<string>('');
+  const [passwordCheck, setPasswordCheck] = useState<string>('');
 
-  const onChangePhoneNumber = useCallback(text => {
+  const onChangePhoneNumber = useCallback((text: string) => {
     var phoneInput = text.replace(/[^0-9]/g, '');
     if (phoneInput.length > 11) {
       return;
@@ -49,17 +49,17 @@ function SignUp({navigation}: SignUpScreenProps) {
       // 다른 문자 번호로 인증할 경우 경고문만
     }
   }, [phoneNumber, certificationNum]);
-  const onChangeCertificationNum = useCallback(text => {
+  const onChangeCertificationNum = useCallback((text: string) => {
     var messageInput = text.replace(/[^0-9]/g, '');
     if (messageInput.length > 4) {
       return;
     }
     setCertificationNum(messageInput);
   }, []);
-  const onChangePassword = useCallback(text => {
+  const onChangePassword = useCallback((text: string) => {
     setPassword(text.trim());
   }, []);
-  const onChangePasswordCheck = useCallback(text => {
+  const onChangePasswordCheck = useCallback((text: string) => {
     setPasswordCheck(text.trim());
   }, []);
   const onSubmit = useCallback(() => {
