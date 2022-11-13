@@ -31,7 +31,10 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
     if (roomSocket && userIdx) {
       roomSocket.emit('newRoom', data);
       roomSocket.on('newRoomId', (roomId: string) =>
-        navigation.navigate('ChatsDetail', {roomId}),
+        navigation.navigate('ChatList', {
+          screen: 'ChatsDetail',
+          params: {roomId},
+        }),
       );
     }
   };
@@ -49,7 +52,7 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
         <MyButton
           btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
-          paddingVertical={10}
+          fontSize={14}
           onClick={
             isWriter ? () => navigation.navigate('Chats') : () => startChat()
           }
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingHorizontal: 15,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: 'gray',
+    borderColor: 'rgba(0, 0, 0, .5)',
   },
   heartContainer: {
     paddingHorizontal: 5,

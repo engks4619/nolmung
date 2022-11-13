@@ -28,7 +28,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
-import useSocket, {useRoomSocket} from '~/hooks/useSocket';
+import {useSocket, useRoomSocket} from '~/hooks/useSocket';
 
 export type LoggedInParamList = {
   Chats: undefined;

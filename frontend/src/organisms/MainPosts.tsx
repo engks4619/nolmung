@@ -33,7 +33,9 @@ function MainPosts({mainPostList}: Props) {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.headingText}>실시간 게시글</Text>
-        <Text onPress={() => navigation.navigate('Community')}>전체보기</Text>
+        <Text onPress={() => navigation.navigate('CommunityList')}>
+          전체보기
+        </Text>
       </View>
       <ScrollView
         onScroll={onchange}

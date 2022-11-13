@@ -21,7 +21,7 @@ function MainSpots({spots}: Props) {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.headingText}>주변 애완 동반 스팟</Text>
-        <Text onPress={() => navigation.navigate('Community')}>전체보기</Text>
+        <Text onPress={() => navigation.navigate('Spots')}>전체보기</Text>
       </View>
       <Carousel
         page={page}

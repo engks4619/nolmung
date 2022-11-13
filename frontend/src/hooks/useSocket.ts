@@ -2,7 +2,7 @@ import {useCallback} from 'react';
 import {io, Socket} from 'socket.io-client';
 
 let socket: Socket | undefined;
-const useSocket = (): [Socket | undefined, () => void] => {
+export const useSocket = (): [Socket | undefined, () => void] => {
   const disconnect = useCallback(() => {
     if (socket) {
       socket.disconnect();
@@ -35,4 +35,19 @@ export const useRoomSocket = (): [Socket | undefined, () => void] => {
   return [roomSocket, roomDisconnect];
 };
 
-export default useSocket;
+let chatSocket: Socket | undefined;
+export const useChatSocket = (): [Socket | undefined, () => void] => {
+  const chatDisconnect = useCallback(() => {
+    if (chatSocket) {
+      chatSocket.disconnect();
+      chatSocket = undefined;
+    }
+  }, []);
+  if (!chatSocket) {
+    chatSocket = io('http://192.168.0.102:5000/chat', {
+      transports: ['websocket'],
+    });
+    chatSocket.on('connect', () => console.log('chat...socket..connected'));
+  }
+  return [chatSocket, chatDisconnect];
+};
