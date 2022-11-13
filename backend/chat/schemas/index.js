@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { MONGO_ID, MONGO_PASSWORD, NODE_ENV } = process.env;
 // const MONGO_URL = `mongodb://${MONGO_ID}:${MONGO_PASSWORD}@localhost:27017/admin`;
-const MONGO_URL = `mongodb://127.0.0.1:27017/admin`;
+const MONGO_URL = `mongodb://nolmung.kr:27017/admin`;
 
 const connect = () => {
 	if (NODE_ENV !== 'production') {
