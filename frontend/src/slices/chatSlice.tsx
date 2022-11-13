@@ -11,18 +11,7 @@ const chatSlice = createSlice({
   name: 'chatInfo',
   initialState,
   reducers: {
-    initSocket(state) {
-      if (state.socket) {
-        state.socket.disconnect();
-        state.socket = undefined;
-      }
-      const socket: Socket = io('http://172.17.96.1:5000', {
-        transports: ['websocket'],
-      });
-      socket.on('connect', () => {
-        console.log('connected');
-      });
-    },
+    initRoom(state, action) {},
   },
 });
 
