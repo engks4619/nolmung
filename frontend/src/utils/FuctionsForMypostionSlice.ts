@@ -27,10 +27,6 @@ export const startWalking = async (
   navigation: any,
   myPositionState: any,
 ) => {
-  // Redux Check
-  // Local Check
-  // Alert ask => page 띄우기 뒤로가기 누르면 Main으로 가겠지?
-  // !!30분 언더 logView에서만 뒤로가기 막고 mapView로
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewAlone');
@@ -93,14 +89,9 @@ export const lastLogAlert = (
         text: '네 볼래요',
         onPress: async () => {
           const isOver = await checkLastUpdate();
-          if (isOver) {
-            await syncLogs(dispatch);
-            navigation.navigate('LogView', {isOver});
-          } else {
-            await syncLogs(dispatch);
-            navigation.navigate('LogView', {isOver});
-          }
-        }, // chekc 30U/O, logView page로
+          await syncLogs(dispatch);
+          navigation.navigate('LogView', {isOver})
+        },
       },
     ],
     {cancelable: false},

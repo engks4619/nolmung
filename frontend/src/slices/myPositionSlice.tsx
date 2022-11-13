@@ -13,19 +13,7 @@ const initialState = {
   ],
 };
 
-//이전 로그 전송 함수
-// const saveLogs = async () => {
-//   try {
-//     const response: AxiosResponse = await axios.post('로그저장주소');
-//     const data: DetailProps = response.data;
-//     setDetailContent(data);
-//   } catch (error: any) {
-//     Alert.alert(
-//       `에러코드 ${error.response.status}`,
-//       '죄송합니다. 다시 시도해주시길 바랍니다.',
-//     );
-//   }
-// };
+
 
 //.toLocaleString('ko-KR')
 const myPositionSlice = createSlice({

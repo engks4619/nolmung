@@ -51,7 +51,7 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen
       name="MapViewAlone"
       component={MapViewAlone}
-      options={{headerShown: false}}
+      options={{headerShown: true}}
     />
     <MypageStack.Screen
       name="LogView"
