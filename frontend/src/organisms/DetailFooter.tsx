@@ -27,7 +27,6 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
         <MyButton
           btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
-          paddingVertical={10}
           onClick={() => console.log('채팅목록')}
         />
       </View>

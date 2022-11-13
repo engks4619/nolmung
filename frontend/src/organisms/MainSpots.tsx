@@ -21,15 +21,19 @@ function MainSpots({spots}: Props) {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.headingText}>주변 애완 동반 스팟</Text>
-        <Text onPress={() => navigation.navigate('Community')}>전체보기</Text>
+        <Text
+          style={styles.naviTextContainer}
+          onPress={() => navigation.navigate('Spots')}>
+          전체보기
+        </Text>
       </View>
       <Carousel
         page={page}
         setPage={setPage}
-        gap={10}
-        offset={36}
+        gap={15}
+        offset={15}
         data={spots}
-        pageWidth={screenWidth - (10 + 36) * 2}
+        pageWidth={screenWidth - (15 + 15) * 2}
         RenderItem={MainSpot}
       />
     </View>
@@ -38,18 +42,19 @@ function MainSpots({spots}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    marginTop: 2,
+    marginHorizontal: 15,
   },
   headingText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 14,
+    color: 'black',
   },
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 5,
+    marginVertical: 15,
+  },
+  naviTextContainer: {
+    fontSize: 12,
   },
 });
 

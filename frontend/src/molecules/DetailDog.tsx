@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontSize: 13,
-    fontWeight: '800',
+    color: 'black',
+    fontWeight: '700',
   },
   imgCotainer: {
     marginHorizontal: 5,

@@ -22,13 +22,13 @@ function MainSpot({item}: Props) {
   const distance = item.distance.toString().split('.')[0];
   return (
     <View style={styles.spotContainer}>
-      <Squre imageSource={convertImgaePath} />
+      <Squre imageSource={convertImgaePath} width={90} height={90} />
       <Text style={styles.nameFont} numberOfLines={1} ellipsizeMode="tail">
         {item.name}
       </Text>
       <View style={styles.infoContainer}>
         <Text style={styles.distanceInfo}>{distance}km</Text>
-        <Text>[{item.category}]</Text>
+        <Text style={styles.categoryContainer}>[{item.category}]</Text>
       </View>
     </View>
   );
@@ -36,19 +36,25 @@ function MainSpot({item}: Props) {
 
 const styles = StyleSheet.create({
   spotContainer: {
-    paddingHorizontal: 10,
+    marginBottom: 10,
   },
   infoContainer: {
     flexDirection: 'row',
   },
   nameFont: {
-    fontSize: 14,
-    fontWeight: '800',
-    width: 100,
+    marginTop: 7,
+    fontSize: 12,
+    color: 'black',
+    fontWeight: 'bold',
+    width: 90,
   },
   distanceInfo: {
-    paddingRight: 3,
+    fontSize: 12,
+    marginRight: 6,
     color: MAIN_COLOR,
+  },
+  categoryContainer: {
+    fontSize: 12,
   },
 });
 

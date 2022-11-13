@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginTop: 2,
-    backgroundColor: 'white',
+    borderBottomColor: 'rgba(0, 0, 0, .5)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textActive: {
     color: MAIN_COLOR,
