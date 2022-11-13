@@ -23,11 +23,11 @@ function DetailSubject({
       <Text style={styles.heading}>{subject}</Text>
       <View style={styles.subContainer}>
         <View style={styles.rowContainer}>
-          <Profile imageSource={userImgUrl} width={20} height={20} />
+          <Profile imageSource={userImgUrl} width={17} height={17} />
           <Text style={styles.namePadding}>{writer}</Text>
         </View>
         <View style={styles.rowContainer}>
-          <Text>{convertDate}</Text>
+          <Text style={styles.namePadding}>{convertDate}</Text>
           <Text style={styles.namePadding}>{convertTime}</Text>
         </View>
       </View>
@@ -52,12 +52,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   heading: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: '700',
-    color: 'rgba(0, 0, 0, 0.7)',
+    color: 'black',
   },
   namePadding: {
-    paddingLeft: 5,
+    marginLeft: 5,
+    fontSize: 13,
     color: 'rgba(0, 0, 0, 0.7)',
   },
 });

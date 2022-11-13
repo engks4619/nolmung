@@ -11,6 +11,11 @@ function Main() {
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
 
+  const userName = useSelector((state: RootState) => state.user.nickname);
+  const profileImage = useSelector(
+    (state: RootState) => state.user.profileImage,
+  );
+
   const getMainPostList = async () => {
     try {
       const {data} = await axios.get('community/main');
@@ -60,7 +65,12 @@ function Main() {
 
   return (
     <ScrollView>
-      <MainTemplate spots={mainSpotList} mainPostList={mainPostList} />
+      <MainTemplate
+        spots={mainSpotList}
+        mainPostList={mainPostList}
+        userName={userName}
+        profileImage={profileImage}
+      />
     </ScrollView>
   );
 }
