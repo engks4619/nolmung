@@ -6,18 +6,18 @@ import CertificationForm from '../organisms/CertificationForm';
 
 interface Props {
   phoneNumber: string;
-  onChangePhoneNumber: Function;
+  onChangePhoneNumber: (text: string) => void;
   isSend: Boolean;
-  onSendMessageNumber: Function;
+  onSendMessageNumber: (text: string) => void;
   certificationNum: string;
   btnName: string;
-  onCheckMessageNumber: Function;
+  onCheckMessageNumber: (text: string) => void;
   password: string;
-  onChangePassword: Function;
+  onChangePassword: (text: string) => void;
   passwordCheck: string;
   onChangePasswordCheck: Function;
   onChangeCertificationNum: Function;
-  onSubmit: Function;
+  onSubmit: () => void;
 }
 
 function SignUpTemplate({
