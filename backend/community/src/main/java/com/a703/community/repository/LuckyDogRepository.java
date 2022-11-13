@@ -12,4 +12,5 @@ import java.util.List;
 public interface LuckyDogRepository extends JpaRepository<LuckyDog, LuckyDogId> , JpaSpecificationExecutor<LuckyDog> {
     List<LuckyDog> findByIdPostPostIdx(Long postIdx);
     List<LuckyDog> findAllByIdDogIdxIn(List<Long> dogIdx);
+    LuckyDog findFirstByIdPostPostIdx(Long postIdx);
 }

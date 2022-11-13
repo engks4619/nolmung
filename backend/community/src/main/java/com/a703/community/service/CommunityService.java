@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -194,6 +195,9 @@ public class CommunityService {
 
         List<WithDto> withDtoList = withLists.stream().map(with-> {
             UserInfoDto userInfoDto = clientUtil.requestOtherUserInfo(with.getWriterIdx());
+            String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl()
+                    : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(with.getPostIdx()).getId().getDogIdx())).get(0).getImage();
+
             return WithDto.builder()
                             .writer(userInfoDto.getNickname())
                             .userImgUrl(userInfoDto.getProfileImage())
@@ -203,7 +207,7 @@ public class CommunityService {
                             .chatCnt(chatRepository.countChatByPost(with))
                             .location(with.getLocation())
                             .modifyDate(with.getModifyDate())
-                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .thumbnailUrl(thumbnailUrl)
                             .walkDate(with.getWalkDate())
                             .build();
                 })
@@ -223,7 +227,10 @@ public class CommunityService {
 
         List<OtherDto> otherDtoList = otherLists.stream().map(other-> {
             UserInfoDto userInfoDto = clientUtil.requestOtherUserInfo(other.getWriterIdx());
-            return OtherDto.builder()
+            String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl()
+                    : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(other.getPostIdx()).getId().getDogIdx())).get(0).getImage();
+
+                    return OtherDto.builder()
                             .writer(userInfoDto.getNickname())
                             .userImgUrl(userInfoDto.getProfileImage())
                             .postIdx(other.getPostIdx())
