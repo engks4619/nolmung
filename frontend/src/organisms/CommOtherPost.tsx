@@ -34,7 +34,6 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
     <FlatList
       data={otherPostList}
       keyExtractor={item => String(item.postIdx)}
-      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviOtherDetail(item.postIdx)}
