@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {MAIN_COLOR} from '~/const';
 import Back from '@assets/back.svg';
 
-const RegistHeader = ({navigation}: any) => {
+interface Props {
+  navigation: any;
+  onRegistClicked: () => void;
+}
+
+// const RegistHeader = ({navigation}: any) => {
+const RegistHeader = ({navigation, onRegistClicked}: Props) => {
   return (
     <View style={styles.hContainer}>
       <View style={styles.goBackBtn}>
@@ -15,7 +21,7 @@ const RegistHeader = ({navigation}: any) => {
         <Text style={styles.title}>게시글 작성</Text>
       </View>
       <View style={styles.registBtn}>
-        <Pressable>
+        <Pressable onPress={onRegistClicked}>
           <Text style={styles.brown}>등록</Text>
         </Pressable>
       </View>

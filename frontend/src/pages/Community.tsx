@@ -42,13 +42,7 @@ export const CommunityStackNavigator = () => (
         },
       }}
     />
-    <CommunityStack.Screen
-      name="RegistArticle"
-      component={RegistArticle}
-      options={{
-        header: RegistHeader,
-      }}
-    />
+    <CommunityStack.Screen name="RegistArticle" component={RegistArticle} />
   </CommunityStack.Navigator>
 );
 

@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {
   Button,
   Modal,
@@ -7,6 +7,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Touchable,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -14,15 +17,17 @@ import {MAIN_COLOR} from '~/const';
 import Up from '@assets/up.svg';
 import Down from '@assets/down.svg';
 import DatePicker from 'react-native-date-picker';
-import * as moment from 'moment';
 import 'moment/locale/ko';
 import ImageAddBtn from '~/molecules/ImageAddBtn';
 import PlaceModal from '~/organisms/PlaceModal';
 import ImageUploadModal from '~/organisms/ImageUploadModal';
+import DogSelectBox from '~/organisms/DogSelectBox';
 
 interface Props {
   category: string;
   setCategory: Dispatch<SetStateAction<string>>;
+  subject: string;
+  setSubject: Dispatch<SetStateAction<string>>;
   dog: string;
   setDog: Dispatch<SetStateAction<string>>;
   rope: boolean;
@@ -39,26 +44,31 @@ interface Props {
   setPlaceModalOpen: Dispatch<SetStateAction<boolean>>;
   imageModalOpen: boolean;
   setImageModalOpen: Dispatch<SetStateAction<boolean>>;
-  place: string;
-  setPlace: Dispatch<SetStateAction<string>>;
+  location: string;
+  setLocation: Dispatch<SetStateAction<string>>;
+  price: number;
+  setPrice: Dispatch<SetStateAction<number>>;
+  images: any[];
+  setImages: Dispatch<SetStateAction<any[]>>;
+  selectedDog: any[];
+  setSelectedDog: Dispatch<SetStateAction<any[]>>;
+  DOG_DATA: any[];
+  CATEGORY_TYPES: string[];
 }
 
 const dropdownIcon = (isOpened: boolean) => {
   return isOpened ? (
-    <Up width={12} height={12} fill={'#A0A0A0'} />
+    <Up width={10} height={10} fill={'rgb(129,129,129)'} />
   ) : (
-    <Down width={12} height={12} fill={'#A0A0A0'} />
+    <Down width={10} height={10} fill={'rgb(129,129,129)'} />
   );
 };
-
-const categroyTypes = ['함께가요', '돌봐줘요'];
-const defaultCategoryMsg = '카테고리 선택';
-const dogList = ['뽀삐', '초코'];
-const defaultDogMsg = '강아지 선택';
 
 const RegistArticleTemplate = ({
   category,
   setCategory,
+  subject,
+  setSubject,
   dog,
   setDog,
   rope,
@@ -75,11 +85,20 @@ const RegistArticleTemplate = ({
   setPlaceModalOpen,
   imageModalOpen,
   setImageModalOpen,
-  place,
-  setPlace,
+  location,
+  setLocation,
+  price,
+  setPrice,
+  images,
+  setImages,
+  selectedDog,
+  setSelectedDog,
+  DOG_DATA,
+  CATEGORY_TYPES,
 }: Props) => {
   const moment = require('moment');
   moment.locale('kor');
+
   return (
     <View style={styles.container}>
       <DatePicker
@@ -106,7 +125,10 @@ const RegistArticleTemplate = ({
         onRequestClose={() => {
           setPlaceModalOpen(false);
         }}>
-        <PlaceModal setPlaceModal={setPlaceModalOpen} />
+        <PlaceModal
+          setPlaceModal={setPlaceModalOpen}
+          setLocation={setLocation}
+        />
       </Modal>
       <Modal
         visible={imageModalOpen}
@@ -115,11 +137,15 @@ const RegistArticleTemplate = ({
         onRequestClose={() => {
           setImageModalOpen(false);
         }}>
-        <ImageUploadModal setImageUploadModal={setImageModalOpen} />
+        <ImageUploadModal
+          setImageUploadModal={setImageModalOpen}
+          images={images}
+          setImages={setImages}
+        />
       </Modal>
       <ScrollView>
         <SelectDropdown
-          data={categroyTypes}
+          data={CATEGORY_TYPES}
           buttonStyle={styles.dropdownBtnStyle}
           buttonTextStyle={
             category === '' ? styles.txtStyleNone : styles.txtStyle
@@ -127,7 +153,7 @@ const RegistArticleTemplate = ({
           renderDropdownIcon={isOpened => {
             return dropdownIcon(isOpened);
           }}
-          defaultButtonText={defaultCategoryMsg}
+          defaultButtonText={'카테고리 선택'}
           dropdownStyle={styles.dropDownStyle}
           rowStyle={styles.rowStyle}
           rowTextStyle={styles.rowTextStyle}
@@ -143,28 +169,14 @@ const RegistArticleTemplate = ({
         />
         <TextInput
           placeholder="제목을 입력해주세요"
+          value={subject}
+          onChangeText={text => setSubject(text)}
           style={[styles.textInput, styles.borderBottom]}
         />
-        <SelectDropdown
-          data={dogList}
-          buttonStyle={styles.dropdownBtnStyle}
-          buttonTextStyle={dog === '' ? styles.txtStyleNone : styles.txtStyle}
-          renderDropdownIcon={isOpened => {
-            return dropdownIcon(isOpened);
-          }}
-          defaultButtonText={defaultDogMsg}
-          dropdownStyle={styles.dropDownStyle}
-          rowStyle={styles.rowStyle}
-          rowTextStyle={styles.rowTextStyle}
-          onSelect={(selectedItem, idx) => {
-            setDog(selectedItem);
-          }}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
+        <DogSelectBox
+          DOG_DATA={DOG_DATA}
+          selectedDog={selectedDog}
+          setSelectedDog={setSelectedDog}
         />
         <View style={[styles.hContainer, styles.borderBottom]}>
           <Text style={[styles.text, styles.black]}>리드줄</Text>
@@ -212,10 +224,39 @@ const RegistArticleTemplate = ({
             onPress={() => setPlaceModalOpen(true)}
             style={{width: '75%', alignItems: 'center'}}>
             <View>
-              <Text style={styles.text}>동까지만 표시됩니다</Text>
+              <Text style={styles.text}>
+                {location ? location : '동까지만 표시됩니다'}
+              </Text>
             </View>
           </Pressable>
         </View>
+        {category === '돌봐줘요' ? (
+          <View style={[styles.dateContainer, styles.borderBottom]}>
+            <View style={{width: '25%'}}>
+              <Text style={styles.text}> 가격 ￦</Text>
+            </View>
+            <View
+              style={{
+                width: '75%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 12,
+              }}>
+              <TextInput
+                placeholder="선택 사항"
+                style={{
+                  fontSize: 10,
+                  paddingVertical: 0,
+                }}
+                keyboardType={'number-pad'}
+                value={price ? price.toLocaleString() : '0'}
+                onChangeText={text =>
+                  setPrice(parseInt(text.replace(/[^0-9]/g, '')))
+                }
+              />
+            </View>
+          </View>
+        ) : null}
         <View style={styles.contentContainer}>
           <TextInput
             multiline={true}
@@ -323,9 +364,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   contentContainer: {
+    display: 'flex',
     alignSelf: 'center',
     width: '85%',
-    minHeight: 300,
+    minHeight: 500,
   },
   content: {
     fontSize: 10,
