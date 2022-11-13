@@ -16,5 +16,9 @@ public class MainListDto {
 
     private CategoryType categoryType;
 
+    private Integer likeCnt;
+
+    private Integer chatCnt;
+
 
 }
