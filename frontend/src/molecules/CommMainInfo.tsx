@@ -45,16 +45,18 @@ function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
   return (
     <View>
       <View style={styles.subjectContainer}>
-        <Text style={styles.headingText}>
-          {subject.length > 10 ? subject.slice(0, 10) + '...' : subject}
+        <Text style={styles.headingText} numberOfLines={1} ellipsizeMode="tail">
+          {subject}
         </Text>
-        <Text>{elapsedTime(modifyDate)}</Text>
+        <Text style={styles.smallFont}>{elapsedTime(modifyDate)}</Text>
       </View>
       <View style={styles.dateContainer}>
-        <Text>{walkDateJsDate}</Text>
-        <Text style={styles.time}>{convertTime(walkDateJsTime)}</Text>
+        <Text style={styles.smallFont}>{walkDateJsDate}</Text>
+        <Text style={[styles.time, styles.smallFont]}>
+          {convertTime(walkDateJsTime)}
+        </Text>
       </View>
-      <Text>{location}</Text>
+      <Text style={styles.smallFont}>{location}</Text>
     </View>
   );
 }
@@ -65,15 +67,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingText: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: 'rgba(0, 0, 0, 0.7)',
+    fontSize: 14,
+    color: 'black',
+    fontWeight: 'bold',
+    width: 220,
   },
   dateContainer: {
     flexDirection: 'row',
   },
   time: {
     paddingLeft: 5,
+  },
+  smallFont: {
+    fontSize: 12,
   },
 });
 

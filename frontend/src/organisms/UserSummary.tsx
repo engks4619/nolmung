@@ -9,11 +9,6 @@ interface Props {
   walkNumber: number;
   walkHour: number;
   walkDistance: number;
-  // isEditing?: boolean;
-  // value: string;
-  // onChangeText: Function;
-  // autoComplete: string;
-  // isPassword: Boolean;
 }
 
 function UserSummary({
@@ -25,17 +20,19 @@ function UserSummary({
 }: Props) {
   return (
     <View style={styles.container}>
-      <Profile imageSource={imageSource} />
-      <View style={styles.description}>
-        <Text style={styles.userName}>{userName}</Text>
-        <WalkSummary
-          firstLabel="산책 횟수"
-          firstText={walkNumber}
-          secondLabel="총 산책 시간"
-          secondeText={walkHour}
-          thirdLabel="총 산책 거리"
-          thridText={walkDistance}
-        />
+      <View style={styles.marginCotainer}>
+        <Profile imageSource={imageSource} width={55} height={55} />
+        <View style={styles.description}>
+          <Text style={styles.userName}>{userName}</Text>
+          <WalkSummary
+            firstLabel="산책 횟수"
+            firstText={walkNumber}
+            secondLabel="총 산책 시간"
+            secondeText={walkHour}
+            thirdLabel="총 산책 거리"
+            thridText={walkDistance}
+          />
+        </View>
       </View>
     </View>
   );
@@ -43,22 +40,26 @@ function UserSummary({
 
 const styles = StyleSheet.create({
   container: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(0, 0, 0, .5)',
+  },
+  marginCotainer: {
+    flex: 1,
+    marginHorizontal: 15,
+    marginVertical: 7,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    marginTop: 2,
-    paddingBottom: 7,
-    backgroundColor: 'white',
+    justifyContent: 'space-around',
   },
   userName: {
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
-    fontWeight: '700',
+    marginLeft: 10,
+    marginBottom: 5,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
   },
   description: {
-    width: 260,
-    height: 93,
+    height: 90,
   },
 });
 

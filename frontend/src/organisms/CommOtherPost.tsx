@@ -38,13 +38,14 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviOtherDetail(item.postIdx)}
-          underlayColor="#E2E2E2">
+          underlayColor="#E2E2E2"
+          style={styles.fullContainer}>
           <View style={styles.container}>
             <View style={styles.imgContainer}>
               <Squre
                 imageSource={item.thumbnailUrl}
-                width={85}
-                height={85}
+                width={88}
+                height={88}
                 borderRadius={5}
               />
             </View>
@@ -55,10 +56,13 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
                 location={item.location}
                 modifyDate={item.modifyDate}
               />
-              <Text style={styles.payText}>￦ {item.pay}원</Text>
+              <Text style={styles.payText}>
+                ￦ {item.pay?.toLocaleString('ko-KR')}원
+              </Text>
               <CommUserInfo
                 writer={item.writer}
                 likeCnt={item.likeCnt}
+                chatCnt={item.chatCnt}
                 userImgUrl={item.userImgUrl}
               />
             </View>
@@ -70,12 +74,15 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
   );
 }
 const styles = StyleSheet.create({
+  fullContainer: {
+    borderBottomColor: 'rgba(0, 0, 0, .5)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   container: {
     flexDirection: 'row',
-    height: 125,
-    backgroundColor: 'white',
+    height: 110,
     marginBottom: 4,
-    paddingHorizontal: 7,
+    marginHorizontal: 15,
   },
   imgContainer: {
     justifyContent: 'center',
@@ -83,12 +90,14 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 5,
+    marginLeft: 10,
+    marginVertical: 13,
     justifyContent: 'space-between',
   },
   payText: {
-    color: 'rgba(0, 0, 0, 0.7)',
-    fontWeight: '800',
+    color: 'black',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
 

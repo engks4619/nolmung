@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Alert} from 'react-native';
+import {Alert} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
@@ -56,6 +56,7 @@ export interface withPostListType {
   likeCnt: number;
   thumbnailUrl: string;
   userImgUrl: string;
+  chatCnt: number;
 }
 
 export interface otherPostListType extends withPostListType {
