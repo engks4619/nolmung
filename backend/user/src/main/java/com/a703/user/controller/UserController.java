@@ -9,6 +9,8 @@ import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.request.RequestUser;
 import com.a703.user.vo.response.ResponseUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -89,7 +92,13 @@ public class UserController {
 
         ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+        String token = Jwts.builder()
+                .setSubject(responseUser.getUserIdx().toString())
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
+                .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
+                .compact();
+
+        return ResponseEntity.status(HttpStatus.CREATED).header("token",token).body(responseUser);
     }
 
     @GetMapping("/info/{userIdx}")
