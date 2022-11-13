@@ -100,6 +100,22 @@ function AppInner() {
             },
           }}>
           <Tab.Screen
+            name="Main"
+            component={Main}
+            options={{
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
+              title: '홈',
+              tabBarIcon: ({color}) => (
+                <HomeIcon width={25} height={25} fill={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
             name="Chats"
             component={Chats}
             options={{
@@ -122,22 +138,6 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Main"
-            component={Main}
-            options={{
-              headerTitle: '놀면 멍하니',
-              headerTintColor: MAIN_COLOR,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 15,
-              },
-              title: '홈',
-              tabBarIcon: ({color}) => (
-                <HomeIcon width={25} height={25} fill={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
             name="CommunityList"
             component={CommunityStackNavigator}
             options={{
@@ -149,8 +149,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Mypage"
-            // component={Mypage}
+            name="MypageList"
             component={MypageStackNavigator}
             options={{
               headerShown: false,

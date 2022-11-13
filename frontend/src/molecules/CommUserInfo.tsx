@@ -8,9 +8,10 @@ interface Props {
   writer: string;
   likeCnt: number;
   userImgUrl: string;
+  chatCnt: number;
 }
 
-function CommUserInfo({writer, likeCnt, userImgUrl}: Props) {
+function CommUserInfo({writer, likeCnt, chatCnt, userImgUrl}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.userContainer}>
@@ -18,10 +19,10 @@ function CommUserInfo({writer, likeCnt, userImgUrl}: Props) {
         <Text style={styles.writer}>{writer}</Text>
       </View>
       <View style={styles.svgContainer}>
-        <Chat width={20} height={20} fill={'black'} />
-        <Text>13</Text>
-        <Heart width={20} height={20} fill={'black'} />
-        <Text>{likeCnt}</Text>
+        <Chat width={13} height={13} fill={'black'} />
+        <Text style={styles.svgMargin}>{chatCnt}</Text>
+        <Heart width={13} height={13} fill={'black'} />
+        <Text style={styles.svgMargin}>{likeCnt}</Text>
       </View>
     </View>
   );
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
   },
   svgContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   userContainer: {
     flexDirection: 'row',
@@ -41,8 +43,12 @@ const styles = StyleSheet.create({
   },
   writer: {
     marginLeft: 5,
-    fontWeight: '700',
+    fontWeight: 'bold',
+    fontSize: 13,
     color: 'rgba(0, 0, 0, 0.7)',
+  },
+  svgMargin: {
+    marginHorizontal: 3,
   },
 });
 
