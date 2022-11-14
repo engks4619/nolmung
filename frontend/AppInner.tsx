@@ -5,7 +5,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
-import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -71,7 +70,7 @@ function AppInner() {
         },
       });
       const userInfo = {accessToken: token, ...responese.data};
-      axios.defaults.headers.common['Authorization'] = token;
+      axios.defaults.headers.common.Authorization = token;
       dispatch(setUser(userInfo));
     } catch (error: any) {
       if (error.responese.status === 401) {
@@ -159,7 +158,6 @@ function AppInner() {
               ),
             }}
           />
-          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>
