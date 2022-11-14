@@ -27,7 +27,6 @@ function CommWithPost({withPostList, loadMore}: Props) {
     <FlatList
       data={withPostList}
       keyExtractor={item => String(item.postIdx)}
-      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviWithDetail(item.postIdx)}
