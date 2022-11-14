@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping("/cert")
     public ResponseEntity<String> sendMsg(@RequestBody Map<String, String> body) throws JsonProcessingException {
         String phone = body.get("phone");
-        String cert = String.format("%4d", (int) Math.floor(Math.random() * 10000));
+        String cert = String.format("%04d", (int) Math.floor(Math.random() * 10000));
         HttpStatus status;
         String msg;
         if (userService.exist(phone)) {

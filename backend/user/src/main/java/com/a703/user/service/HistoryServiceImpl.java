@@ -2,6 +2,7 @@ package com.a703.user.service;
 
 import com.a703.user.dto.HistoryDto;
 import com.a703.user.entity.HistoryEntity;
+import com.a703.user.entity.UserEntity;
 import com.a703.user.repository.HistoryRepository;
 import com.a703.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.modelmapper.config.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +23,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public HistoryDto registerReview(Long userIdx, HistoryDto historyDto) {
-        historyDto.setUser(userRepository.findById(userIdx).get());
+        Optional<UserEntity> userEntity = userRepository.findById(userIdx);
+        userEntity.ifPresent(historyDto::setUser);
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setFieldAccessLevel(Configuration.AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
         HistoryEntity historyEntity = mapper.map(historyDto, HistoryEntity.class);
