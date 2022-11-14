@@ -8,7 +8,6 @@ interface Props {
   onRegistClicked: () => void;
 }
 
-// const RegistHeader = ({navigation}: any) => {
 const RegistHeader = ({navigation, onRegistClicked}: Props) => {
   return (
     <View style={styles.hContainer}>

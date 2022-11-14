@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#EFEFEF',
-    // shadowColor: '#000',
   },
   placeholderStyle: {
     fontSize: 10,

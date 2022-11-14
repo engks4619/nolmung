@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {
+  Alert,
   Dimensions,
   FlatList,
   Image,
@@ -32,10 +33,9 @@ const ImageUploadModal = ({setImageUploadModal, images, setImages}: Props) => {
         cancelTitle: '취소',
         maxSelectedAssets: 10,
       });
-      console.log('response: ', response);
       setImages(response);
     } catch (e: any) {
-      console.log('error!!', e.code, e.message);
+      Alert.alert('이미지 업로드 실패!', e.code, e.message);
     }
   };
 
