@@ -5,15 +5,25 @@ import {MAIN_COLOR} from '~/const';
 import ChatInfoSummary from '~/organisms/ChatInfoSummary';
 import ReviewArticleSummary from '~/organisms/ReviewArticleSummary';
 import StarContainer from '~/organisms/StarContainer';
+import TextInputBox from '@atoms/TextInputBox';
 
 interface Props {
   star: number;
   setStar: Dispatch<SetStateAction<number>>;
   article: any;
   chatInfo: any;
+  content: string;
+  setContent: Dispatch<SetStateAction<string>>;
 }
 
-const WalkReviewTemplate = ({star, setStar, article, chatInfo}: Props) => {
+const WalkReviewTemplate = ({
+  star,
+  setStar,
+  article,
+  chatInfo,
+  content,
+  setContent,
+}: Props) => {
   useEffect(() => {
     console.log(star);
   }, [star]);
@@ -23,13 +33,12 @@ const WalkReviewTemplate = ({star, setStar, article, chatInfo}: Props) => {
       <ReviewArticleSummary article={article} />
       <ChatInfoSummary chatInfo={chatInfo} />
       <StarContainer star={star} setStar={setStar} />
-      <View style={styles.textContainer}>
-        <TextInput
-          multiline={true}
-          numberOfLines={8}
-          style={styles.textInput}
-        />
-      </View>
+      <TextInputBox
+        content={content}
+        setContent={setContent}
+        borderColor={MAIN_COLOR}
+        backgroundColor={'rgb(243,237,237)'}
+      />
     </ScrollView>
   );
 };
@@ -37,13 +46,6 @@ const WalkReviewTemplate = ({star, setStar, article, chatInfo}: Props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-  },
-  textContainer: {
-    marginHorizontal: 20,
-    marginVertical: 20,
-    backgroundColor: 'rgb(243,237,237)',
-    borderWidth: 1,
-    borderColor: MAIN_COLOR,
   },
   textInput: {
     paddingHorizontal: 20,

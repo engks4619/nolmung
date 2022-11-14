@@ -3,6 +3,7 @@ import WalkReviewTemplate from '~/templates/WalkReviewTemplate';
 
 const WalkReview = () => {
   const [star, setStar] = useState<number>(5);
+  const [content, setContent] = useState<string>('');
   // const [article, setArticle] = useState<any>();
   const article = {
     photoUrl: '/images/community/abacce5c-6364-4484-8fcc-0fad01ff1c70.jpg',
@@ -20,6 +21,8 @@ const WalkReview = () => {
       setStar={setStar}
       article={article}
       chatInfo={chatInfo}
+      content={content}
+      setContent={setContent}
     />
   );
 };
