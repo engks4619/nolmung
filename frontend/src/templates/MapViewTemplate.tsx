@@ -45,10 +45,7 @@ function MapView({myPosition, path, dogInfoList}: Props) {
           />
           {path.length >= 2 ? (
             <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-          ) : (
-            <></>
-          )}
-          {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
+          ) : null}
         </NaverMapView>
       </View>
     </View>
@@ -61,7 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapViewContainer: {
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     width: '90%',
     height: '80%',
