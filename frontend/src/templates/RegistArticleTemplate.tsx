@@ -46,8 +46,8 @@ interface Props {
   setImageModalOpen: Dispatch<SetStateAction<boolean>>;
   location: string;
   setLocation: Dispatch<SetStateAction<string>>;
-  price: number;
-  setPrice: Dispatch<SetStateAction<number>>;
+  price: number | null;
+  setPrice: Dispatch<SetStateAction<number | null>>;
   images: any[];
   setImages: Dispatch<SetStateAction<any[]>>;
   selectedDog: any[];
