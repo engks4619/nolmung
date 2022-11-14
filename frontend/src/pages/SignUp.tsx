@@ -75,7 +75,6 @@ function SignUp({navigation}: SignUpScreenProps) {
         setIsSend(false);
         Alert.alert('알림', '문자 인증이 완료되었습니다.');
       } catch (error: any) {
-        console.error(error.response);
         if (error.response.status === 408) {
           Alert.alert(
             '알림',
@@ -94,8 +93,6 @@ function SignUp({navigation}: SignUpScreenProps) {
           '죄송합니다. 다시 시도해주시길 바랍니다.',
         );
       }
-      // 시간이 지난 코드로 인증할 경우 setIsSend(false) && 문자 인증 1일 5회 제한
-      // 다른 문자 번호로 인증할 경우 경고문만
     }
   }, [phoneNumber, certificationNum]);
 
