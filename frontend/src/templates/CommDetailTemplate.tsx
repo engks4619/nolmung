@@ -9,9 +9,11 @@ import {DetailProps} from '@pages/CommDetail';
 
 interface Props {
   detailContent: DetailProps;
+  isLiked: Boolean;
+  putLike: () => void;
 }
 
-function CommDetailTemplate({detailContent}: Props) {
+function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -36,7 +38,8 @@ function CommDetailTemplate({detailContent}: Props) {
       <DetailFooter
         categoryType={detailContent.categoryType}
         pay={detailContent.pay}
-        isLiked={detailContent.getLike}
+        isLiked={isLiked}
+        putLike={putLike}
         isWriter={true} // login 기능 추가후 비교
       />
     </View>
