@@ -8,8 +8,9 @@ import {useSelector} from 'react-redux';
 import RegistHeader from '~/organisms/RegistHeader';
 import {RootState} from '~/store/reducer';
 import RegistArticleTemplate from '~/templates/RegistArticleTemplate';
-import {err} from 'react-native-svg/lib/typescript/xml';
-import RNFetchBlob from 'rn-fetch-blob';
+// import FormData from 'form-data';
+import {stringify} from 'query-string';
+import {Buffer} from 'buffer';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -55,9 +56,8 @@ const RegistArticle = ({navigation}: any) => {
     const registerPost = {
       dogIdx: [4],
       categoryType: 'OTHER',
-      subject: '산책 알바구합니다!',
-      content:
-        '개발하느라 산책시킬 시간이 나지 않아요,, 귀여운 강아지 대신 산책시켜주실 분? 우리 뽀삐 순해요!.',
+      subject: '테스트',
+      content: '테스트123',
       location: '서울시 관악구 신림',
       pay: 4000,
       leadLine: 'true',
@@ -71,9 +71,20 @@ const RegistArticle = ({navigation}: any) => {
     //   'Content-Type': 'multipart/form-data',
     //   Authorization: `Bearer ${token}`,
     // });
-    const formData = new FormData();
-    formData.append('registerPost', blob);
-    formData.append('files', {});
+    console.log(blob);
+    let formData = new FormData();
+    formData.append('registerPost', json);
+    const register = formData.getParts(
+      item => item.fieldName === 'registerPost',
+    );
+    console.log(register);
+    // formData.append('files', []);
+    // console.log('getBuffer!!', formData.getBuffer());
+    // formData.getParts().find(item => item.fieldName === 'registerPost');
+    // for (let key of formData.keys()) {
+    //   console.log("formData:", key, formData.get(key));
+    // }
+    // formData.append('files', {});
     // formData.append('registerPost', JSON.stringify(registerPost));
     // for ( let i = 0; i < images.length; i++){
     //   formData.append('files', );
@@ -82,11 +93,22 @@ const RegistArticle = ({navigation}: any) => {
     // console.log('json', json);
     // console.log('blob', blob);
     // formData.append('files', {});
+    // const response = await fetch('http://nolmung.kr/api/community', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'multipart/form-data',
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: formData.getBuffer(),
+    // })
+    //   .then(response => console.log(response))
+    //   .catch(err => console.log(err));
+    // console.log(response);
     axios({
       url: `http://nolmung.kr/api/community`,
       method: 'POST',
-
-      responseType: 'json',
+      // responseType: 'json',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
@@ -100,14 +122,13 @@ const RegistArticle = ({navigation}: any) => {
         // iOS: {"isTrusted": false, "lengthComputable": true, "loaded": 123, "total": 98902}
       },
       data: formData,
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
+    });
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
     // try {
     //   console.log('formData', formData);
     //   // const response = await axios({
@@ -119,7 +140,6 @@ const RegistArticle = ({navigation}: any) => {
     //   //   // },
     //   //   data: formData,
     //   // });
-
     //   const response: AxiosResponse = await axios.post(`community`, formData, {
     //     headers: {
     //       Accept: 'application/json',
