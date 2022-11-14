@@ -7,6 +7,11 @@ const roomSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	opponentIdx: {
+		// 채팅 상대방 ID (게시글작성자)
+		type: Number,
+		required: true,
+	},
 	createdAt: {
 		// 생성 시간
 		type: Date,
