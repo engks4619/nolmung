@@ -23,7 +23,7 @@ function LogViewTemplate({
   console.log('myposition', myPosition);
   if (isOver) {
     return (
-      <View>
+      <View style={styles.logViewContainer}>
         <DetailDogs dogInfoList={dogInfoList} />
         <View style={styles.mapViewContainer}>
           <NaverMapView
@@ -101,8 +101,12 @@ function LogViewTemplate({
   }
 }
 const styles = StyleSheet.create({
+  logViewContainer: {
+    alignItems: 'center',
+  },
   mapViewContainer: {
-    // justifyContent: 'flex-start',
+    borderColor: 'black',
+    borderWidth: 2,
     alignItems: 'center',
     width: '90%',
     height: '80%',

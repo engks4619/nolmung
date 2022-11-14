@@ -13,8 +13,6 @@ const initialState = {
   ],
 };
 
-
-
 //.toLocaleString('ko-KR')
 const myPositionSlice = createSlice({
   name: 'myPosition',

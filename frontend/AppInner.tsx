@@ -5,7 +5,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
-// import Maps from
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -72,7 +71,7 @@ function AppInner() {
       });
       const userInfo = {accessToken: token, ...responese.data};
       dispatch(setUser(userInfo));
-      axios.defaults.headers.common['Authorization'] = token;
+      axios.defaults.headers.common.Authorization = token;
     } catch (error: any) {
       if (error.responese.status === 401) {
         removeUserInfo();

@@ -1,22 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
 
-// export const storeData = async (key: string, value: any) => {
-//   try {
-//     const stringValue = JSON.stringify(value);
-//     console.log('12312312', stringValue);
-//     await AsyncStorage.setItem(key, stringValue);
-//   } catch (e: any) {
-//     console.error(e.message);
-//   }
-// };
 export const storeData = async (key: string, value: any) => {
-  // console.log(value);
   try {
     const svalue = JSON.stringify(value);
     await AsyncStorage.setItem(key, svalue);
     console.log(svalue);
   } catch (e) {
-    console.log(e);
+    Alert.alert('storeDataError', `${e}`);
   }
 };
 
@@ -29,7 +20,7 @@ export const getData = async (key: string) => {
       return data;
     }
   } catch (e: any) {
-    console.log(e.message);
+    Alert.alert('getDataError', `${e}`);
   }
 };
 
@@ -37,7 +28,7 @@ export const removeData = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
   } catch (e: any) {
-    console.error('removeDataError', e.message);
+    Alert.alert('removeDataError', `${e}`);
   }
 };
 export const removeMultiple = async (keys: string[]) => {
@@ -46,7 +37,7 @@ export const removeMultiple = async (keys: string[]) => {
       AsyncStorage.removeItem(elem);
     });
   } catch (e: any) {
-    console.log('remnoveMultipleError', e.message);
+    Alert.alert('removeMultipleError', `${e}`);
   }
 };
 
@@ -55,7 +46,7 @@ export const containsKey = async (key: string) => {
     const keys = await AsyncStorage.getAllKeys();
     return keys.includes(key);
   } catch (e: any) {
-    console.error(e.message);
+    Alert.alert('containKeyError', `${e}`);
   }
 };
 export const getAllKeys = async () => {
@@ -63,7 +54,7 @@ export const getAllKeys = async () => {
     const keys = await AsyncStorage.getAllKeys();
     return keys;
   } catch (e: any) {
-    console.error(e.message);
+    Alert.alert('getAllkeys', `${e}`);
     return [];
   }
 };
@@ -71,18 +62,16 @@ export const getAllKeys = async () => {
 // return list of values that parsed 아 이거 맞냐 진짜...
 export const getMultiple = async (keys: string[]) => {
   try {
-    const returns: Array<any> = [];
     const pairs = await AsyncStorage.multiGet(keys);
     if (pairs.length >= 1) {
-      pairs.forEach(pair => {
-        if (pair[1] != null) {
-          returns.push(JSON.parse(pair[1]));
+      const returns = pairs.map((pair: any) => {
+        if (pair[1] !== null) {
+          return JSON.parse(pair[1]);
         }
       });
+      return returns;
     }
-    return returns;
   } catch (e: any) {
-    console.error(e.message);
-    console.log('에러야?');
+    Alert.alert('getMultipleError', `${e}`);
   }
 };

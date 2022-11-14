@@ -13,7 +13,7 @@ import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
 //로깅시작함수
-import {startWalking} from '~/utils/FuctionsForMypostionSlice';
+import {startWalking} from '~/utils/MyPositionFunctions';
 import {
   storeData,
   getData,

@@ -1,20 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import NaverMapView, {Marker, Polyline} from 'react-native-nmap';
 import {MAIN_COLOR} from '~/const';
 import {Coord} from 'react-native-nmap';
 import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
-// var polylinePath = [
-//   {latitude:33.8805, longitude: -118.2084},
-//   {latitude:33.7805, longitude: -118.2084},
-//   {latitude:33.6805, longitude: -118.2084},
-//   {latitude:33.5805, longitude: -118.2084},
-//   {latitude: 33.4805, longitude: -118.2084},
-//   {latitude: 33.3805, longitude: -118.2084},
-//   {latitude: 33.2805, longitude: -118.2084},
-//   {latitude: 33.1805, longitude: -118.2084},
-//   {latitude: 33.0805, longitude: -118.2084},]
 
 interface Props {
   myPosition: Coord | null;
@@ -25,7 +15,7 @@ interface Props {
 function MapView({myPosition, path, dogInfoList}: Props) {
   if (!myPosition || !myPosition.latitude) {
     return (
-      <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+      <View style={styles.whileLoading}>
         <Text>내 위치를 로딩 중입니다. 권한을 허용했는지 확인해주세요.</Text>
       </View>
     );
@@ -65,6 +55,11 @@ function MapView({myPosition, path, dogInfoList}: Props) {
   );
 }
 const styles = StyleSheet.create({
+  whileLoading: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
   mapViewContainer: {
     // justifyContent: 'flex-start',
     alignItems: 'center',

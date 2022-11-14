@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import LogViewTemplate from '@templates/LogviewTemplate';
-import {logsToServer} from '~/utils/FuctionsForMypostionSlice';
+import {logsToServer} from '~/utils/MyPositionFunctions';
 
 const functions = [logsToServer]; //저장x,저장하기,이어하기,navigate뒤로가기 추가해야함
 
