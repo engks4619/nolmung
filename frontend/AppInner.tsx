@@ -71,8 +71,8 @@ function AppInner() {
         },
       });
       const userInfo = {accessToken: token, ...responese.data};
-      dispatch(setUser(userInfo));
       axios.defaults.headers.common['Authorization'] = token;
+      dispatch(setUser(userInfo));
     } catch (error: any) {
       if (error.responese.status === 401) {
         removeUserInfo();

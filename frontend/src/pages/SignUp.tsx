@@ -39,18 +39,22 @@ function SignUp({navigation}: SignUpScreenProps) {
     } else if (isCertificated) {
       return Alert.alert('알림', '인증이 완료되었습니다.');
     } else if (phoneNumber.length === 13) {
-      setIsSend(true);
       try {
         const response: AxiosResponse = await axios.post('user/cert', {
-          phone: passwordCheck,
+          phone: phoneNumber,
         });
         if (response.status === 200) {
+          setIsSend(true);
           Alert.alert(
             '알림',
             '문자가 발송되었습니다. \n5분 안에 입력해주세요!',
           );
         }
       } catch (error: any) {
+        if (error.response.status === 406) {
+          Alert.alert('알림', '이미 가입된 번호입니다.');
+          return;
+        }
         Alert.alert(
           `에러코드 ${error.response.status}`,
           '죄송합니다. 다시 시도해주시길 바랍니다.',
@@ -71,18 +75,19 @@ function SignUp({navigation}: SignUpScreenProps) {
         setIsSend(false);
         Alert.alert('알림', '문자 인증이 완료되었습니다.');
       } catch (error: any) {
-        console.error(error);
+        console.error(error.response);
         if (error.response.status === 408) {
           Alert.alert(
             '알림',
             '시간이 경과하여 재시도 해주시길 바랍니다. 문자 인증은 1일 5회만 가능합니다.',
           );
-          // setIsSend(false);
+          setIsSend(false);
           setCertificationNum('');
           return;
         } else if (error.response.status === 400) {
           Alert.alert('알림', '인증번호를 다시 확인해주시길 바랍니다.');
           setCertificationNum('');
+          return;
         }
         Alert.alert(
           `에러코드 ${error.response.status}`,
@@ -134,10 +139,11 @@ function SignUp({navigation}: SignUpScreenProps) {
         phone: phoneNumber,
         password,
       });
-      console.log('회원가입', response);
-      // const {userIdx, phone, nickname, profileImage} = response.data;
-      // const userInfo = {accessToken, userIdx, phone, nickname, profileImage};
-      // storeUserInfo(userInfo, dispatch);
+      const accessToken = response.headers.token;
+      const {userIdx, phone, nickname, profileImage} = response.data;
+      const userInfo = {accessToken, userIdx, phone, nickname, profileImage};
+      storeUserInfo(userInfo, dispatch);
+      axios.defaults.headers.common['Authorization'] = accessToken;
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
