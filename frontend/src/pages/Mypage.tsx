@@ -10,6 +10,7 @@ import MyLikedList from '@pages/MyLikedList';
 import MyLikedSpots from '@pages/MyLikedSpots';
 import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
+import WalkReview from './WalkReview';
 
 //UserInfoType
 export type UserInfoType = {
@@ -33,6 +34,18 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen name="MyDogs" component={MyDogs} />
+    <MypageStack.Screen
+      name="WalkReview"
+      component={WalkReview}
+      options={{
+        headerTitle: '상대방 이름',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
   </MypageStack.Navigator>
 );
 
@@ -72,6 +85,11 @@ const myPageListNavi = [
     name: 'MyDogs',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
+  },
+  {
+    name: 'WalkReview',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    btnText: '산책후기',
   },
 ];
 // 마이페이지 버튼탭 목록(다른동작)
