@@ -4,6 +4,9 @@ import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import {AxiosResponse} from 'axios';
+import {useAppDispatch} from '~/store';
+import {setDogsInfo} from '~/slices/dogsSlice';
 
 function Main() {
   const [mainPostList, setMainPostList] = useState([]);
@@ -12,6 +15,7 @@ function Main() {
   const lng = useSelector((state: RootState) => state.user.lng);
 
   const userName = useSelector((state: RootState) => state.user.nickname);
+  const dispatch = useAppDispatch();
   const profileImage = useSelector(
     (state: RootState) => state.user.profileImage,
   );
@@ -55,8 +59,14 @@ function Main() {
     }
   };
 
+  const getMyDogs = async () => {
+    const response: AxiosResponse = await axios.get('user/dog/mydogs');
+    dispatch(setDogsInfo(response.data));
+  };
+
   useEffect(() => {
     getMainPostList();
+    getMyDogs();
   }, []);
 
   useEffect(() => {

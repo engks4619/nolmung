@@ -1,11 +1,13 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import MyButton from '~/atoms/MyButton';
+import MainDogs from '~/molecules/MainDogs';
 
 function MainWalk() {
   return (
     <View style={styles.container}>
       <View style={styles.marginContainer}>
+        <MainDogs />
         <MyButton
           btnText="산책 시작하기"
           width={200}
@@ -25,6 +27,9 @@ const styles = StyleSheet.create({
   },
   marginContainer: {
     margin: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 });
 
