@@ -10,8 +10,8 @@ interface Props {
   btnText: string;
   value: string;
   autoComplete: string;
-  onChangeText: Function;
-  onClick: Function;
+  onChangeText: (text: string) => void;
+  onClick: () => void;
   keyboardType?: string;
 }
 
@@ -42,7 +42,6 @@ function CertificationForm({
         <MyButton
           btnText={btnText}
           width={70}
-          paddingVertical={10}
           fontWeight="normal"
           onClick={onClick}
         />
