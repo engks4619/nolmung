@@ -90,7 +90,7 @@ public class MyListService {
                             .modifyDate(other.getModifyDate())
                             .walkDate(other.getWalkDate())
                             .pay(other.getPay())
-                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .thumbnailUrl(thumbnailUrl)
                             .build();
                 })
                 .collect(Collectors.toList());
