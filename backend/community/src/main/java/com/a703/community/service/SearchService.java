@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,6 +77,9 @@ public class SearchService {
         List<OtherDto> otherDtoList = otherLists.stream().map(other-> {
 
             UserInfoDto writerInfoDto = clientUtil.requestOtherUserInfo(other.getWriterIdx());
+            String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl()
+                    : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(other.getPostIdx()).getId().getDogIdx())).get(0).getImage();
+
 
             return OtherDto.builder()
                             .postIdx(other.getPostIdx())
@@ -88,7 +92,7 @@ public class SearchService {
                             .modifyDate(other.getModifyDate())
                             .walkDate(other.getWalkDate())
                             .pay(other.getPay())
-                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(other.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(other.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .thumbnailUrl(thumbnailUrl)
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -129,7 +133,11 @@ public class SearchService {
 
         List<WithDto> withDtoList = withLists.stream().map(with-> {
             UserInfoDto writerInfoDto = clientUtil.requestOtherUserInfo(with.getWriterIdx());
-            return WithDto.builder()
+            String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl()
+                    : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(with.getPostIdx()).getId().getDogIdx())).get(0).getImage();
+
+
+                    return WithDto.builder()
                             .postIdx(with.getPostIdx())
                             .writer(writerInfoDto.getNickname())
                             .userImgUrl(writerInfoDto.getProfileImage())
@@ -138,7 +146,7 @@ public class SearchService {
                             .chatCnt(chatRepository.countChatByPost(with))
                             .location(with.getLocation())
                             .modifyDate(with.getModifyDate())
-                            .thumbnailUrl(postPhotoRepository.existsByPostPostIdx(with.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(with.getPostIdx()).get(0).getPhotoUrl() : null)
+                            .thumbnailUrl(thumbnailUrl)
                             .walkDate(with.getWalkDate())
                             .build();
                 })
