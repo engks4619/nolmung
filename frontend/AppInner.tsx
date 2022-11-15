@@ -5,7 +5,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ChatsStackNavigator} from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
-import Maps from '@pages/Maps';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -129,8 +128,24 @@ function AppInner() {
             },
           }}>
           <Tab.Screen
+            name="Main"
+            component={Main}
+            options={{
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
+              title: '홈',
+              tabBarIcon: ({color}) => (
+                <HomeIcon width={25} height={25} fill={color} />
+              ),
+            }}
+          />
+          <Tab.Screen
             name="ChatList"
-            component={ChatsStackNavigator}
+            component={Chats}
             options={{
               headerShown: false,
               title: '채팅',
@@ -151,22 +166,6 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Main"
-            component={Main}
-            options={{
-              headerTitle: '놀면 멍하니',
-              headerTintColor: MAIN_COLOR,
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                fontSize: 15,
-              },
-              title: '홈',
-              tabBarIcon: ({color}) => (
-                <HomeIcon width={25} height={25} fill={color} />
-              ),
-            }}
-          />
-          <Tab.Screen
             name="CommunityList"
             component={CommunityStackNavigator}
             options={{
@@ -178,8 +177,7 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Mypage"
-            // component={Mypage}
+            name="MypageList"
             component={MypageStackNavigator}
             options={{
               headerShown: false,
@@ -189,7 +187,6 @@ function AppInner() {
               ),
             }}
           />
-          <Tab.Screen name="maps" component={Maps} />
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>

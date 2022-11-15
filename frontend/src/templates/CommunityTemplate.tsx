@@ -16,6 +16,7 @@ interface Props extends CommunityTabType {
   withPostList: withPostListType[];
   loadMore: () => void;
   otherPostList: otherPostListType[];
+  navigation: any;
 }
 
 function CommunityTemplate({
@@ -25,6 +26,7 @@ function CommunityTemplate({
   withPostList,
   loadMore,
   otherPostList,
+  navigation,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -36,14 +38,14 @@ function CommunityTemplate({
       {categoryType === 'WITH' ? (
         <>
           <CommWithPost withPostList={withPostList} loadMore={loadMore} />
-          <EditBtn />
         </>
       ) : (
         <>
           <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
-          <EditBtn />
         </>
       )}
+
+      <EditBtn onPress={() => navigation.navigate('RegistArticle')} />
     </View>
   );
 }

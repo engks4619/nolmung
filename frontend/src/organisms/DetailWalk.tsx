@@ -18,20 +18,20 @@ function DetailWalk({location, walkDate, leadLine, poopBag}: DetailWalkProps) {
   return (
     <View style={styles.container}>
       <View style={[styles.infoContainer, styles.borderRight]}>
-        <Text style={styles.textCenter}>만남장소</Text>
+        <Text style={[styles.textCenter, styles.textBold]}>만남장소</Text>
         <Text style={styles.textCenter}>{location}</Text>
       </View>
       <View style={[styles.infoContainer, styles.borderRight]}>
-        <Text style={styles.textCenter}>산책 시간</Text>
+        <Text style={[styles.textCenter, styles.textBold]}>산책 시간</Text>
         <Text style={styles.textCenter}>{day}</Text>
         <Text style={styles.textCenter}>{time}</Text>
       </View>
       <View style={[styles.infoContainer, styles.borderRight]}>
-        <Text style={styles.textCenter}>리드줄</Text>
+        <Text style={[styles.textCenter, styles.textBold]}>리드줄</Text>
         <Text style={styles.textCenter}>{leadLine ? '유' : '무'}</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.textCenter}>배변봉투</Text>
+        <Text style={[styles.textCenter, styles.textBold]}>배변봉투</Text>
         <Text style={styles.textCenter}>{poopBag ? '유' : '무'}</Text>
       </View>
     </View>
@@ -53,8 +53,12 @@ const styles = StyleSheet.create({
   borderRight: {
     borderRightWidth: StyleSheet.hairlineWidth,
   },
+  textBold: {
+    fontWeight: 'bold',
+  },
   textCenter: {
     paddingTop: 5,
+    fontSize: 13,
     textAlign: 'center',
   },
 });

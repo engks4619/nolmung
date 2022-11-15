@@ -9,10 +9,12 @@ import {DetailProps} from '@pages/CommDetail';
 
 interface Props {
   detailContent: DetailProps;
+  isLiked: Boolean;
+  putLike: () => void;
   userIdx: number;
 }
 
-function CommDetailTemplate({detailContent, userIdx}: Props) {
+function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -37,7 +39,8 @@ function CommDetailTemplate({detailContent, userIdx}: Props) {
       <DetailFooter
         categoryType={detailContent.categoryType}
         pay={detailContent.pay}
-        isLiked={detailContent.getLike}
+        isLiked={isLiked}
+        putLike={putLike}
         isWriter={detailContent.writerIdx === userIdx}
       />
     </View>
