@@ -45,7 +45,6 @@ public class WalkController {
          * @Method Name : getWalkListByOwner
          * @Method 설명 : 견주 id로 산책 기록들 조회
          */
-        System.out.println("견주id : "+ownerIdx);
         List<WalkRes> walkResList = walkService.findByOwnerIdx(ownerIdx);
         if (!walkResList.isEmpty()) {
             return ResponseEntity.ok().body(walkResList);

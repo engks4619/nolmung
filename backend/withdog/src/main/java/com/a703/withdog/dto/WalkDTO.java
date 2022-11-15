@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.geom.GeneralPath;
 import java.util.Date;
 import java.util.List;
 
