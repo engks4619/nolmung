@@ -27,10 +27,8 @@ function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
         />
         <DetailDogs dogInfoList={detailContent.dogInfoList} />
         <DetailWalk
-          leadLine={detailContent.leadLine}
           location={detailContent.location}
           walkDate={detailContent.walkDate}
-          poopBag={detailContent.poopBag}
         />
         <DetailContent
           content={detailContent.content}

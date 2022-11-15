@@ -67,6 +67,10 @@ function Main() {
     }
   };
 
+  // const getMyInfo = async () => {
+
+  // }
+
   useEffect(() => {
     getMainPostList();
     getMyDogs();

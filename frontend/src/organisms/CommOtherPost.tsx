@@ -51,16 +51,14 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
             <View style={styles.infoContainer}>
               <CommMainInfo
                 subject={item.subject}
-                walkDate={item.walkDate}
                 location={item.location}
                 modifyDate={item.modifyDate}
               />
               <Text style={styles.payText}>
-                ￦ {item.pay?.toLocaleString('ko-KR')}원
+                {item.pay?.toLocaleString('ko-KR')}원
               </Text>
               <CommUserInfo
                 writer={item.writer}
-                likeCnt={item.likeCnt}
                 chatCnt={item.chatCnt}
                 userImgUrl={item.userImgUrl}
               />
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    height: 110,
+    height: 120,
     marginBottom: 4,
     marginHorizontal: 15,
   },
@@ -88,15 +86,15 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    flexDirection: 'column',
     marginLeft: 10,
     marginVertical: 13,
     justifyContent: 'space-between',
   },
   payText: {
     color: 'black',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'bold',
+    marginBottom: 0,
   },
 });
 
