@@ -78,6 +78,14 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
 
+        - id: chat
+          uri: lb://CHAT
+          predicates:
+            - Path=/api/chat/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+
       default-filters:
         - name: GlobalFilter
           args:
