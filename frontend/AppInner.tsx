@@ -144,7 +144,7 @@ function AppInner() {
           />
           <Tab.Screen
             name="ChatList"
-            component={Chats}
+            component={ChatsStackNavigator}
             options={{
               headerShown: false,
               title: '채팅',
