@@ -1,19 +1,19 @@
-import React, {Dispatch, SetStateAction, useEffect} from 'react';
-import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import {MAIN_COLOR} from '~/const';
+import React, {Dispatch, SetStateAction} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
+import {MAIN_COLOR, TEXT_INPUT_BACKGROUND_COLOR} from '~/const';
 import ChatInfoSummary from '~/organisms/ChatInfoSummary';
 import ReviewArticleSummary from '~/organisms/ReviewArticleSummary';
 import StarContainer from '~/organisms/StarContainer';
 import TextInputBox from '@atoms/TextInputBox';
+import {article} from '~/utils/type';
 
 interface Props {
   star: number;
   setStar: Dispatch<SetStateAction<number>>;
-  article: any;
+  article: article | null;
   chatInfo: any;
-  content: string;
-  setContent: Dispatch<SetStateAction<string>>;
+  review: string;
+  setReview: Dispatch<SetStateAction<string>>;
 }
 
 const WalkReviewTemplate = ({
@@ -21,23 +21,19 @@ const WalkReviewTemplate = ({
   setStar,
   article,
   chatInfo,
-  content,
-  setContent,
+  review,
+  setReview,
 }: Props) => {
-  useEffect(() => {
-    console.log(star);
-  }, [star]);
-
   return (
     <ScrollView style={styles.container}>
       <ReviewArticleSummary article={article} />
       <ChatInfoSummary chatInfo={chatInfo} />
       <StarContainer star={star} setStar={setStar} />
       <TextInputBox
-        content={content}
-        setContent={setContent}
+        content={review}
+        setContent={setReview}
         borderColor={MAIN_COLOR}
-        backgroundColor={'rgb(243,237,237)'}
+        backgroundColor={TEXT_INPUT_BACKGROUND_COLOR}
       />
     </ScrollView>
   );

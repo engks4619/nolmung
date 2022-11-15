@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 const ChatInfoSummary = ({chatInfo}: any) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
         {chatInfo.me} 님, {chatInfo.opponent} 님이 어떠셨나요?
       </Text>
     </View>

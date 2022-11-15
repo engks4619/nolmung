@@ -16,8 +16,8 @@ const StarContainer = ({star, setStar}: Props) => {
         </View>
         <Rating
           ratingCount={5}
-          jumpValue={0.5}
-          onFinishRating={(rating: number) => setStar(rating)}
+          jumpValue={0.1}
+          onSwipeRating={(rating: number) => setStar(rating)}
           fractions={5}
           startingValue={5}
         />
