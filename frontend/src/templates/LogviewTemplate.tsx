@@ -1,5 +1,12 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import DetailDogs from '@organisms/DetailDogs';
@@ -87,19 +94,62 @@ function LogViewTemplate({
   };
   if (isOver) {
     return (
-      <View style={styles.logViewContainer}>
-        <Pressable onPress={() => captureMap()}>
-          <Text>캡쳐하기</Text>
-        </Pressable>
-        <Pressable onPress={() => sendDatas()}>
-          <Text>사진전송</Text>
-        </Pressable>
-        <DetailDogs dogInfoList={dogInfoList} />
-        <ViewShot
-          ref={ref}
-          options={{format: 'jpg'}}
-          style={styles.mapViewContainer}>
-          <View style={styles.nmap}>
+      <ScrollView>
+        <View style={styles.logViewContainer}>
+          <Pressable onPress={() => captureMap()}>
+            <Text>캡쳐하기</Text>
+          </Pressable>
+          <Pressable onPress={() => sendDatas()}>
+            <Text>사진전송</Text>
+          </Pressable>
+          <DetailDogs dogInfoList={dogInfoList} />
+          <ViewShot
+            ref={ref}
+            options={{format: 'jpg'}}
+            style={styles.mapViewContainer}>
+            <View style={styles.nmap}>
+              <NaverMapView
+                style={styles.nmap}
+                zoomControl={true}
+                center={{
+                  zoom: 17,
+                  latitude: myPosition.latitude,
+                  longitude: myPosition.longitude,
+                }}>
+                <Marker
+                  coordinate={{
+                    latitude: myPosition.latitude,
+                    longitude: myPosition.longitude,
+                  }}
+                  width={50}
+                  height={50}
+                  anchor={{x: 0.5, y: 0.5}}
+                  caption={{text: '나'}}
+                  image={require('@assets/logo.png')}
+                />
+                {path.length >= 2 ? (
+                  <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+                ) : (
+                  <></>
+                )}
+              </NaverMapView>
+            </View>
+          </ViewShot>
+          <Pressable
+            onPress={() => {
+              functions[0];
+            }}>
+            <Text>저장x/저장O 버튼들</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    );
+  } else {
+    return (
+      <ScrollView>
+        <View>
+          <DetailDogs dogInfoList={dogInfoList} />
+          <View style={styles.mapViewContainer}>
             <NaverMapView
               style={styles.nmap}
               zoomControl={true}
@@ -124,54 +174,13 @@ function LogViewTemplate({
               ) : (
                 <></>
               )}
-              {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
             </NaverMapView>
           </View>
-        </ViewShot>
-        <Pressable
-          onPress={() => {
-            functions[0];
-          }}>
-          <Text>저장x/저장O 버튼들</Text>
-        </Pressable>
-      </View>
-    );
-  } else {
-    return (
-      <View>
-        <DetailDogs dogInfoList={dogInfoList} />
-        <View style={styles.mapViewContainer}>
-          <NaverMapView
-            style={styles.nmap}
-            zoomControl={true}
-            center={{
-              zoom: 17,
-              latitude: myPosition.latitude,
-              longitude: myPosition.longitude,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: myPosition.latitude,
-                longitude: myPosition.longitude,
-              }}
-              width={50}
-              height={50}
-              anchor={{x: 0.5, y: 0.5}}
-              caption={{text: '나'}}
-              image={require('@assets/logo.png')}
-            />
-            {path.length >= 2 ? (
-              <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-            ) : (
-              <></>
-            )}
-            {/* <Polyline coordinates={polylinePath} strokeColor={MAIN_COLOR} /> */}
-          </NaverMapView>
+          <Pressable>
+            <Text>저장x/저장O/이어하기 버튼들</Text>
+          </Pressable>
         </View>
-        <Pressable>
-          <Text>저장x/저장O/이어하기 버튼들</Text>
-        </Pressable>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -185,7 +194,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: 'center',
     width: '90%',
-    height: '80%',
+    height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',

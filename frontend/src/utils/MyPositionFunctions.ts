@@ -18,6 +18,7 @@ import {
   resetStates,
   setIsSavingOn,
   setIsSavingOff,
+  setWatchId,
 } from '~/slices/myPositionSlice';
 
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
@@ -46,7 +47,8 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any) => {
   dispatch(dispatch(setIsLoggingOn()));
-  Geolocation.watchPosition(
+
+  const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {
         latitude: position.coords.latitude,
@@ -59,13 +61,16 @@ export const startLogging = async (dispatch: any) => {
       console.log(error);
     },
     {
-      interval: 1000,
+      interval: 5000,
       enableHighAccuracy: true,
       timeout: 20000,
-      distanceFilter: 3,
+      distanceFilter: 5,
     },
   );
+  dispatch(setWatchId(watchId));
+  console.log('워치아이디', watchId);
 };
+
 // 비정상 기록 저장 여부 질문
 export const lastLogAlert = (
   navigation: any,
@@ -150,9 +155,19 @@ export const logsToServer = async () => {
   }
 };
 
+export const quitLogging = (watchID: number) => {
+  Geolocation.clearWatch(0);
+};
+
 // 산책 종료시 : logview이동, 저장API, local/redux 초기화
-const doneWalking = async (dispatch: any) => {
+export const doneWalking = async (
+  dispatch: any,
+  navigation: any,
+  watchId: number,
+) => {
+  quitLogging(watchId);
   dispatch(setIsSavingOn);
-  await logsToServer();
+  // await logsToServer();
   dispatch(setIsSavingOff);
+  navigation.navigate('LogView', true);
 };

@@ -56,20 +56,12 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen
       name="LogView"
       component={LogView}
-      options={{headerShown: false}}
+      options={{headerShown: true}}
     />
   </MypageStack.Navigator>
 );
 
 //dummy
-const userInfo: UserInfoType = {
-  imageSource:
-    'http://image.dongascience.com/Photo/2020/03/d2bb40617ababa299660cccc0442f993.jpg',
-  userName: '윤성도짱짱',
-  walkNumber: 10,
-  walkHour: 10,
-  walkDistance: 100,
-};
 
 // 마이페이지 버튼탭 목록(navi동작)
 const myPageListNavi = [
@@ -109,6 +101,14 @@ const myPageListFunc = [
 ];
 
 function Mypage({navigation}: any) {
+  const user = useSelector((state: RootState) => state.user);
+  const userInfo: UserInfoType = {
+    imageSource: user.profileImage,
+    userName: user.nickname,
+    walkNumber: 10,
+    walkHour: 10,
+    walkDistance: 100,
+  };
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
 
@@ -207,6 +207,12 @@ function Mypage({navigation}: any) {
           console.log(a);
         }}>
         <Text>getMultiple</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          removeMultiple(['accessToken']);
+        }}>
+        <Text>엑세스토큰제거</Text>
       </Pressable>
     </View>
   );

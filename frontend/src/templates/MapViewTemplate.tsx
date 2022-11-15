@@ -5,14 +5,23 @@ import {MAIN_COLOR} from '~/const';
 import {Coord} from 'react-native-nmap';
 import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
+import MyButton from '~/atoms/MyButton';
 
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
+  doneWalking: () => void;
+  navigation: any;
 }
 
-function MapView({myPosition, path, dogInfoList}: Props) {
+function MapView({
+  myPosition,
+  path,
+  dogInfoList,
+  doneWalking,
+  navigation,
+}: Props) {
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>
@@ -47,6 +56,12 @@ function MapView({myPosition, path, dogInfoList}: Props) {
             <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
           ) : null}
         </NaverMapView>
+        <MyButton
+          btnText="산책 종료"
+          width={200}
+          height={50}
+          onClick={doneWalking}
+        />
       </View>
     </View>
   );

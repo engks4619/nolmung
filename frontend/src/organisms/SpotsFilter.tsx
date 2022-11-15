@@ -14,8 +14,8 @@ interface Props {
 }
 
 const sorts = ['거리순', '별점순', '리뷰많은순'];
-const distances = ['1km', '10km', '30km', '제한없음'];
-const distanceArr = [1000, 10000, 30000, 0];
+const distances = ['5km', '10km', '30km', '제한없음'];
+const distanceArr = [5000, 10000, 30000, 99999999];
 
 function SpotsFilter({
   sort,
