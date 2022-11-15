@@ -5,7 +5,6 @@ import com.a703.community.dto.response.*;
 import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.*;
-
 import com.a703.community.repository.*;
 import com.a703.community.type.CategoryType;
 import com.a703.community.util.ClientUtil;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -39,8 +37,8 @@ public class CommunityService {
 
     private final ClientUtil clientUtil;
 
-    public void registerPost(RegisterPostRequest registerPost, String token, List<MultipartFile> files) {
-        try {
+    public Long registerPost(RegisterPostRequest registerPost, String token) throws IOException {
+
 
 
             UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
@@ -75,14 +73,7 @@ public class CommunityService {
 
             luckyDogRepository.saveAll(saveLuckyDog);
 
-            if (files != null) {
-                for (MultipartFile multipartFile : files) {
-                    fileUtil.fileUpload(multipartFile, savePost.getPostIdx());
-                }
-            }
-        }catch (IOException e){
-
-        }
+        return savePost.getPostIdx();
     }
 
     //진짜 삭제하지말기
