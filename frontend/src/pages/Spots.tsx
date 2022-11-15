@@ -44,6 +44,11 @@ export interface SpotRequest {
   category: string;
 }
 
+export type SpotDetailParamList = {
+  Spot: undefined;
+  SpotDetail: {spotId: string};
+};
+
 const SpotStack = createNativeStackNavigator();
 
 export const SpotStackNavigator = () => (
@@ -65,17 +70,17 @@ export const SpotStackNavigator = () => (
       component={SpotDetail}
       options={{
         headerTitle: '놀면 멍하니',
-        headerTintColor: MAIN_COLOR,
         headerTitleStyle: {
           fontWeight: 'bold',
           fontSize: 15,
+          color: MAIN_COLOR,
         },
       }}
     />
   </SpotStack.Navigator>
 );
 
-function Spots({navigation}: any) {
+function Spots() {
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
@@ -204,7 +209,6 @@ function Spots({navigation}: any) {
         category={category}
         setCategory={setCategory}
         initSpotRequest={initSpotRequest}
-        navigation={navigation}
       />
     </View>
   );

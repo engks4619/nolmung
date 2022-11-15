@@ -8,10 +8,12 @@ import {
   Pressable,
 } from 'react-native';
 import Squre from '~/atoms/Squre';
-import {Spot, SpotRequest} from '~/pages/Spots';
+import {Spot, SpotDetailParamList, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
 import {getTextAddress} from '~/utils/addressService';
 import {AxiosResponse} from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 interface Props {
   spotList: Spot[];
@@ -21,8 +23,12 @@ interface Props {
   limitDistance: number;
   category: string;
   loadMore: Function;
-  navigation: any;
 }
+
+type CommScreenProp = NativeStackNavigationProp<
+  SpotDetailParamList,
+  'SpotDetail'
+>;
 
 function SpotsContainer({
   spotList,
@@ -32,9 +38,9 @@ function SpotsContainer({
   limitDistance,
   category,
   loadMore,
-  navigation,
 }: Props) {
   const flatListRef = useRef<FlatList>(null);
+  const navigation = useNavigation<CommScreenProp>();
 
   const toTop = () => {
     flatListRef.current?.scrollToOffset({animated: true, offset: 0});
