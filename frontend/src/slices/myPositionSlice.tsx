@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  watchId: 0,
+  watchId: undefined,
   isSaving: false,
   isLogging: false,
   myPosition: null,
@@ -43,7 +43,7 @@ const myPositionSlice = createSlice({
       Object.assign(state, initialState);
     },
     setWatchId(state, action) {
-      state.watchId = action.payload.watchId;
+      state.watchId = action.payload;
     },
   },
   extraReducers: builder => {},

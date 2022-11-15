@@ -28,6 +28,7 @@ export const startWalking = async (
   navigation: any,
   myPositionState: any,
 ) => {
+  console.log('myPositionState', myPositionState);
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewAlone');
@@ -46,7 +47,7 @@ export const startWalking = async (
 };
 
 export const startLogging = async (dispatch: any) => {
-  dispatch(dispatch(setIsLoggingOn()));
+  dispatch(setIsLoggingOn());
 
   const watchId = Geolocation.watchPosition(
     position => {
@@ -54,6 +55,7 @@ export const startLogging = async (dispatch: any) => {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
+      console.log('watch 켜져있음', myPosition);
       dispatch(setMyPosition(myPosition));
       dispatch(addPath(myPosition));
     },
@@ -68,7 +70,6 @@ export const startLogging = async (dispatch: any) => {
     },
   );
   dispatch(setWatchId(watchId));
-  console.log('워치아이디', watchId);
 };
 
 // 비정상 기록 저장 여부 질문
@@ -156,18 +157,19 @@ export const logsToServer = async () => {
 };
 
 export const quitLogging = (watchID: number) => {
-  Geolocation.clearWatch(0);
+  Geolocation.clearWatch(watchID);
 };
 
 // 산책 종료시 : logview이동, 저장API, local/redux 초기화
 export const doneWalking = async (
   dispatch: any,
   navigation: any,
-  watchId: number,
+  watchId: number | undefined,
 ) => {
+  console.log('던워킹받은watchId:', watchId);
   quitLogging(watchId);
   dispatch(setIsSavingOn);
   // await logsToServer();
   dispatch(setIsSavingOff);
-  navigation.navigate('LogView', true);
+  navigation.navigate('LogView', {isOver: true});
 };

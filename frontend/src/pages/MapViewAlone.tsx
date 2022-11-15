@@ -15,6 +15,7 @@ function MapViewAlone({navigation}: any) {
   const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
   const dogs = useSelector((state: RootState) => state.myPosition.dogs);
   const watchId = useSelector((state: RootState) => state.myPosition.watchId);
+  // const mapViewFunc = (dispatch, navigation, watchId) => {doneWalking()}
   if (isSaving) {
     return <OnSaving />;
   } else {
@@ -27,7 +28,6 @@ function MapViewAlone({navigation}: any) {
           doneWalking={() => {
             doneWalking(dispatch, navigation, watchId);
           }}
-          navigation={navigation}
         />
       </View>
     );

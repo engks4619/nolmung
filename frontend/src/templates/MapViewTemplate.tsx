@@ -11,17 +11,10 @@ interface Props {
   myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
-  doneWalking: () => void;
-  navigation: any;
+  doneWalking: any;
 }
 
-function MapView({
-  myPosition,
-  path,
-  dogInfoList,
-  doneWalking,
-  navigation,
-}: Props) {
+function MapView({myPosition, path, dogInfoList, doneWalking}: Props) {
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>

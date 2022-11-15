@@ -7,7 +7,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
+import NaverMapView, {Marker, Polyline, Coord, Path} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import DetailDogs from '@organisms/DetailDogs';
 import {MAIN_COLOR} from '~/const';
@@ -96,6 +96,7 @@ function LogViewTemplate({
     return (
       <ScrollView>
         <View style={styles.logViewContainer}>
+          <Text>{path.length}</Text>
           <Pressable onPress={() => captureMap()}>
             <Text>캡쳐하기</Text>
           </Pressable>
@@ -128,11 +129,25 @@ function LogViewTemplate({
                   image={require('@assets/logo.png')}
                 />
                 {path.length >= 2 ? (
-                  <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-                ) : (
-                  <></>
-                )}
+                  <Path
+                    coordinates={path}
+                    color={MAIN_COLOR}
+                    outlineColor={MAIN_COLOR}
+                    outlineWidht={2}
+                    passedColor={MAIN_COLOR}
+                  />
+                ) : // <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+                null}
               </NaverMapView>
+              {path.length >= 2 ? (
+                <Text>렝스??</Text>
+              ) : (
+                // <Polyline
+                //   coordinates={polylinePath}
+                //   strokeColor={MAIN_COLOR}
+                // />
+                <Text>널</Text>
+              )}
             </View>
           </ViewShot>
           <Pressable
@@ -171,9 +186,7 @@ function LogViewTemplate({
               />
               {path.length >= 2 ? (
                 <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-              ) : (
-                <></>
-              )}
+              ) : null}
             </NaverMapView>
           </View>
           <Pressable>
