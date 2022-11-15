@@ -6,7 +6,7 @@ import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
 import com.a703.community.service.CommunityService;
-import com.a703.community.util.ClientUtil;
+import com.a703.community.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,12 +27,23 @@ public class CommunityController {
 
     private final CommunityService communityService;
 
-    private final ClientUtil clientUtil;
+    private final FileUtil fileUtil;
 
     @PostMapping
-    public ResponseEntity<?> registerPost(@RequestPart RegisterPostRequest registerPost, @RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+    public ResponseEntity<?> registerPost(@RequestBody RegisterPostRequest registerPost, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws IOException {
 
-        communityService.registerPost(registerPost,token,files);
+        Long postIdx =communityService.registerPost(registerPost,token);
+        return ResponseEntity.ok().body(postIdx);
+    }
+
+    @PostMapping("file/{postIdx}")
+    public ResponseEntity<?> registerFile(@RequestParam("files") List<MultipartFile> files, @RequestHeader(HttpHeaders.AUTHORIZATION) String token,@PathVariable Long postIdx) throws IOException {
+
+        if (files != null) {
+            for (MultipartFile multipartFile : files) {
+                fileUtil.fileUpload(multipartFile, postIdx);
+            }
+        }
         return ResponseEntity.ok().body("success");
     }
 
