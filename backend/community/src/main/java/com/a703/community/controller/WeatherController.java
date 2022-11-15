@@ -19,8 +19,8 @@ public class WeatherController {
     private final WeatherUtil weatherUtil;
 
     @GetMapping
-    public ResponseEntity<WeatherDto> weather( @RequestParam(name = "lat") int lat,
-                                               @RequestParam(name = "lng") int lng) throws IOException {
+    public ResponseEntity<WeatherDto> weather( @RequestParam(name = "lat") double lat,
+                                               @RequestParam(name = "lng") double lng) throws IOException {
         WeatherDto weatherDto = weatherUtil.lookUpWeather(lat,lng);
         return ResponseEntity.ok().body(weatherDto);
 
