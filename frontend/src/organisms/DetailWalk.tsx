@@ -7,11 +7,9 @@ const infoWidth = Dimensions.get('window').width * 0.97 * 0.25;
 interface DetailWalkProps {
   location: string;
   walkDate: string;
-  leadLine: boolean;
-  poopBag: boolean;
 }
 
-function DetailWalk({location, walkDate, leadLine, poopBag}: DetailWalkProps) {
+function DetailWalk({location, walkDate}: DetailWalkProps) {
   let day = walkDate?.split('T')[0];
   let time = walkDate ? convertTime(walkDate.split('T')[1]) : null;
 
@@ -21,18 +19,10 @@ function DetailWalk({location, walkDate, leadLine, poopBag}: DetailWalkProps) {
         <Text style={[styles.textCenter, styles.textBold]}>만남장소</Text>
         <Text style={styles.textCenter}>{location}</Text>
       </View>
-      <View style={[styles.infoContainer, styles.borderRight]}>
+      <View style={[styles.infoContainer]}>
         <Text style={[styles.textCenter, styles.textBold]}>산책 시간</Text>
         <Text style={styles.textCenter}>{day}</Text>
         <Text style={styles.textCenter}>{time}</Text>
-      </View>
-      <View style={[styles.infoContainer, styles.borderRight]}>
-        <Text style={[styles.textCenter, styles.textBold]}>리드줄</Text>
-        <Text style={styles.textCenter}>{leadLine ? '유' : '무'}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={[styles.textCenter, styles.textBold]}>배변봉투</Text>
-        <Text style={styles.textCenter}>{poopBag ? '유' : '무'}</Text>
       </View>
     </View>
   );
