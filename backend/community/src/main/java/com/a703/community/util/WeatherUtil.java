@@ -1,7 +1,6 @@
 package com.a703.community.util;
 
 
-import com.a703.community.dto.request.WeatherRequest;
 import com.a703.community.dto.response.WeatherDto;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -17,6 +16,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -24,11 +25,12 @@ import java.time.format.DateTimeFormatter;
 public class WeatherUtil {
     private String type = "json";    //조회하고 싶은 type(json, xml 중 고름)
 
-    public WeatherDto lookUpWeather(WeatherRequest weatherRequest) throws IOException, JSONException {
+    public WeatherDto lookUpWeather(double lat,double lng) throws IOException, JSONException {
 
-        String lat = String.valueOf(weatherRequest.getLat());
+        List<Integer> xy = latlngChange(lat,lng);
+        String x = String.valueOf(xy.get(0));
+        String y = String.valueOf(xy.get(1));
 
-        String lng = String.valueOf(weatherRequest.getLng());
 
         LocalDateTime nowDate = LocalDateTime.now(); // 현재시간전
         LocalDateTime ThreeHoursAgo = nowDate.minusHours(1).minusMinutes(41); // 3시간 11분
@@ -50,8 +52,8 @@ public class WeatherUtil {
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
-        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8")); //경도 x lng
-        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8")); //위도 y lat
+        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(x, "UTF-8")); //경도 x lng
+        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(y, "UTF-8")); //위도 y lat
         urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
         urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
         urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));    /* 타입 */
@@ -120,6 +122,44 @@ public class WeatherUtil {
         }
 
         return weatherDto;
+    }
+
+    private List<Integer> latlngChange(double lat, double lng){
+        List<Integer> xy = new ArrayList<>();
+        double RE = 6371.00877; // 지구 반경(km)
+        double GRID = 5.0; // 격자 간격(km)
+        double SLAT1 = 30.0; // 투영 위도1(degree)
+        double SLAT2 = 60.0; // 투영 위도2(degree)
+        double OLON = 126.0; // 기준점 경도(degree)
+        double OLAT = 38.0; // 기준점 위도(degree)
+        double XO = 43; // 기준점 X좌표(GRID)
+        double YO = 136; // 기1준점 Y좌표(GRID)
+
+        double re = RE/GRID;
+        double DEGRAD = Math.PI / 180.0;
+        double RADDEG = 180.0 / Math.PI;
+
+
+        double slat1 = SLAT1 * DEGRAD;
+        double slat2 = SLAT2 * DEGRAD;
+        double olon = OLON * DEGRAD;
+        double olat = OLAT * DEGRAD;
+        double sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+        sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+        double sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+        sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
+        double ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+        ro = re * sf / Math.pow(ro, sn);
+
+        double ra = Math.tan(Math.PI * 0.25 + (lat) * DEGRAD * 0.5);
+        ra = re * sf / Math.pow(ra, sn);
+        double theta = lng * DEGRAD - olon;
+        if (theta > Math.PI) theta -= 2.0 * Math.PI;
+        if (theta < -Math.PI) theta += 2.0 * Math.PI;
+        theta *= sn;
+        xy.add((int) Math.floor(ra * Math.sin(theta) + XO + 0.5));
+        xy.add((int) Math.floor(ro - ra * Math.cos(theta) + YO + 0.5));
+        return xy;
     }
 
 }
