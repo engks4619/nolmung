@@ -1,5 +1,12 @@
 import React, {useEffect, useRef} from 'react';
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  Pressable,
+} from 'react-native';
 import Squre from '~/atoms/Squre';
 import {Spot, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
@@ -14,6 +21,7 @@ interface Props {
   limitDistance: number;
   category: string;
   loadMore: Function;
+  navigation: any;
 }
 
 function SpotsContainer({
@@ -24,6 +32,7 @@ function SpotsContainer({
   limitDistance,
   category,
   loadMore,
+  navigation,
 }: Props) {
   const flatListRef = useRef<FlatList>(null);
 
@@ -65,6 +74,10 @@ function SpotsContainer({
     return arr.join(' ');
   };
 
+  const spotDetailNavigate = (spotId: string) => {
+    navigation.navigate('SpotDetail', spotId);
+  };
+
   useEffect(() => {
     if (page !== 0) {
       toTop();
@@ -82,36 +95,43 @@ function SpotsContainer({
       contentContainerStyle={{paddingBottom: 220}}
       renderItem={({item}) => (
         <View key={item.spotId} style={styles.container}>
-          <View style={styles.imgContainer}>
-            <Squre
-              width={130}
-              height={130}
-              borderRadius={5}
-              imageSource={
-                item.imgCnt !== 0
-                  ? `/images/spot/${item.spotId}/0.jpg`
-                  : `/images/spot/default/default.png`
-              }
-            />
-          </View>
+          <Pressable onPress={() => spotDetailNavigate(item.spotId)}>
+            <View style={styles.imgContainer}>
+              <Squre
+                width={130}
+                height={130}
+                borderRadius={5}
+                imageSource={
+                  item.imgCnt !== 0
+                    ? `/images/spot/${item.spotId}/0.jpg`
+                    : `/images/spot/default/default.png`
+                }
+              />
+            </View>
 
-          <View style={styles.descContainer}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-              {spotList.indexOf(item) + 1}. {item.name}
-            </Text>
-            <Text style={[styles.star, styles.right]}>
-              {getStringStar(item.star)}
-            </Text>
-          </View>
-          <View style={styles.descContainer}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.desc}>
-              {getSimpleAddress(item.address)}
-            </Text>
-            <Text style={styles.reviewContainer}>
-              <Pencil width={10} height={10} fill={'black'} stroke={'black'} />
-              {item.reviewCnt}
-            </Text>
-          </View>
+            <View style={styles.descContainer}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+                {spotList.indexOf(item) + 1}. {item.name}
+              </Text>
+              <Text style={[styles.star, styles.right]}>
+                {getStringStar(item.star)}
+              </Text>
+            </View>
+            <View style={styles.descContainer}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.desc}>
+                {getSimpleAddress(item.address)}
+              </Text>
+              <Text style={styles.reviewContainer}>
+                <Pencil
+                  width={10}
+                  height={10}
+                  fill={'black'}
+                  stroke={'black'}
+                />
+                {item.reviewCnt}
+              </Text>
+            </View>
+          </Pressable>
         </View>
       )}
       ListEmptyComponent={renderEmpty}

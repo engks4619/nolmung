@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Chats from './src/pages/Chats';
 import Main from './src/pages/Main';
-import Spots from './src/pages/Spots';
+import Spots, {SpotStackNavigator} from './src/pages/Spots';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -126,8 +126,8 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Spots"
-            component={Spots}
+            name="SpotList"
+            component={SpotStackNavigator}
             options={{
               headerShown: false,
               title: '산책스팟',

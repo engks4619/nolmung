@@ -22,6 +22,7 @@ interface Props {
   category: string;
   setCategory: Dispatch<SetStateAction<string>>;
   initSpotRequest: () => void;
+  navigation: any;
 }
 
 function SpotsTemplate({
@@ -41,6 +42,7 @@ function SpotsTemplate({
   category,
   setCategory,
   initSpotRequest,
+  navigation,
 }: Props) {
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
@@ -67,6 +69,7 @@ function SpotsTemplate({
         sort={sort}
         limitDistance={limitDistance}
         category={category}
+        navigation={navigation}
       />
     </SafeAreaView>
   );

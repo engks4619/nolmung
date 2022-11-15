@@ -6,6 +6,9 @@ import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {getTextAddress} from '~/utils/addressService';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MAIN_COLOR} from '~/const';
+import SpotDetail from './SpotDetail';
 
 export interface menu {
   menuName: string;
@@ -41,7 +44,38 @@ export interface SpotRequest {
   category: string;
 }
 
-function Spots() {
+const SpotStack = createNativeStackNavigator();
+
+export const SpotStackNavigator = () => (
+  <SpotStack.Navigator>
+    <SpotStack.Screen
+      name="Spots"
+      component={Spots}
+      options={{
+        headerTitle: '놀면 멍하니',
+        headerTintColor: MAIN_COLOR,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+    <SpotStack.Screen
+      name="SpotDetail"
+      component={SpotDetail}
+      options={{
+        headerTitle: '놀면 멍하니',
+        headerTintColor: MAIN_COLOR,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+  </SpotStack.Navigator>
+);
+
+function Spots({navigation}: any) {
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
@@ -170,6 +204,7 @@ function Spots() {
         category={category}
         setCategory={setCategory}
         initSpotRequest={initSpotRequest}
+        navigation={navigation}
       />
     </View>
   );
