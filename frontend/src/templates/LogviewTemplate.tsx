@@ -18,7 +18,7 @@ interface Props {
   path: Coord[];
   dogInfoList: DetailDogProps[];
   isOver: boolean;
-  myPosition: Coord;
+  // myPosition: Coord | null;
 }
 interface Photo {
   name: string;
@@ -29,8 +29,8 @@ function LogViewTemplate({
   path,
   dogInfoList,
   isOver,
-  myPosition,
-}: Props) {
+}: // myPosition,
+Props) {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const ref: any = useRef();
   const createFormData = (image: any, body: any = {}) => {
@@ -107,21 +107,14 @@ function LogViewTemplate({
           <ViewShot
             ref={ref}
             options={{format: 'jpg'}}
-            style={styles.mapViewContainer}>
+            style={styles.mapContainer}>
             <View style={styles.nmap}>
               <NaverMapView
                 style={styles.nmap}
                 zoomControl={true}
-                center={{
-                  zoom: 17,
-                  latitude: myPosition.latitude,
-                  longitude: myPosition.longitude,
-                }}>
+                center={path[path.length / 2]}>
                 <Marker
-                  coordinate={{
-                    latitude: myPosition.latitude,
-                    longitude: myPosition.longitude,
-                  }}
+                  coordinate={path[path.length - 1]}
                   width={50}
                   height={50}
                   anchor={{x: 0.5, y: 0.5}}
@@ -129,25 +122,9 @@ function LogViewTemplate({
                   image={require('@assets/logo.png')}
                 />
                 {path.length >= 2 ? (
-                  <Path
-                    coordinates={path}
-                    color={MAIN_COLOR}
-                    outlineColor={MAIN_COLOR}
-                    outlineWidht={2}
-                    passedColor={MAIN_COLOR}
-                  />
-                ) : // <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-                null}
+                  <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+                ) : null}
               </NaverMapView>
-              {path.length >= 2 ? (
-                <Text>렝스??</Text>
-              ) : (
-                // <Polyline
-                //   coordinates={polylinePath}
-                //   strokeColor={MAIN_COLOR}
-                // />
-                <Text>널</Text>
-              )}
             </View>
           </ViewShot>
           <Pressable
@@ -164,20 +141,13 @@ function LogViewTemplate({
       <ScrollView>
         <View>
           <DetailDogs dogInfoList={dogInfoList} />
-          <View style={styles.mapViewContainer}>
+          <View style={styles.mapContainer}>
             <NaverMapView
               style={styles.nmap}
               zoomControl={true}
-              center={{
-                zoom: 17,
-                latitude: myPosition.latitude,
-                longitude: myPosition.longitude,
-              }}>
+              center={path[path.length / 2]}>
               <Marker
-                coordinate={{
-                  latitude: myPosition.latitude,
-                  longitude: myPosition.longitude,
-                }}
+                coordinate={path[path.length - 1]}
                 width={50}
                 height={50}
                 anchor={{x: 0.5, y: 0.5}}
@@ -200,9 +170,10 @@ function LogViewTemplate({
 
 const styles = StyleSheet.create({
   logViewContainer: {
+    flex: 1,
     alignItems: 'center',
   },
-  mapViewContainer: {
+  mapContainer: {
     borderColor: 'black',
     borderWidth: 2,
     alignItems: 'center',

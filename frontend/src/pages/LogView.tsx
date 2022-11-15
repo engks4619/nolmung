@@ -18,7 +18,7 @@ function LogView({route}: any) {
         dogInfoList={myPositionStates.dogs}
         isOver={isOver}
         // myPosition={myPositionStates.path[0]}
-        myPosition={{latitude: 33.8805, longitude: -118.2084}}
+        // myPosition={myPositionStates.myPosition}
       />
     </View>
   );

@@ -5,6 +5,7 @@ import {Coord} from 'react-native-nmap';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {
+  storeData,
   removeMultiple,
   getAllKeys,
   getData,
@@ -48,16 +49,16 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any) => {
   dispatch(setIsLoggingOn());
-
+  storeData('@StartDate', new Date());
   const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      console.log('watch 켜져있음', myPosition);
       dispatch(setMyPosition(myPosition));
       dispatch(addPath(myPosition));
+      storeData('@LastUpdate', new Date());
     },
     error => {
       console.log(error);
@@ -166,7 +167,6 @@ export const doneWalking = async (
   navigation: any,
   watchId: number | undefined,
 ) => {
-  console.log('던워킹받은watchId:', watchId);
   quitLogging(watchId);
   dispatch(setIsSavingOn);
   // await logsToServer();

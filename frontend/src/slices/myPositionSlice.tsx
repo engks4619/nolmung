@@ -12,6 +12,7 @@ const initialState = {
     {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
     {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
   ],
+  timeCount: 0,
 };
 
 const myPositionSlice = createSlice({
@@ -45,6 +46,9 @@ const myPositionSlice = createSlice({
     setWatchId(state, action) {
       state.watchId = action.payload;
     },
+    increaseTimeCount(state) {
+      state.timeCount = state.timeCount + 1;
+    },
   },
   extraReducers: builder => {},
 });
@@ -58,5 +62,6 @@ export const {
   setIsSavingOn,
   setIsSavingOff,
   setWatchId,
+  increaseTimeCount,
 } = myPositionSlice.actions;
 export default myPositionSlice;
