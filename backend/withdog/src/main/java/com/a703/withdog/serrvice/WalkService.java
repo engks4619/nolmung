@@ -26,7 +26,7 @@ public class WalkService {
         List<WalkRes> walkResList = new ArrayList<>();
         for(WalkDTO walk : walkDTOList) {
             walkResList.add(WalkRes.builder()
-                            .walkIdx(walk.getWalkIdx())
+                            .walkIdx(walk.getWalkIdx().toString())
                             .ownerIdx(walk.getOwnerIdx())
                             .walkerIdx(walk.getWalkerIdx())
                             .distance(walk.getDistance())
@@ -34,6 +34,7 @@ public class WalkService {
                             .startDate(walk.getStartDate())
                             .endDate(walk.getEndDate())
                             .walkedDogList(walk.getWalkedDogList())
+                            .gpsList(walk.getGpsList())
                             .build());
         }
 
@@ -47,7 +48,7 @@ public class WalkService {
         List<WalkRes> walkResList = new ArrayList<>();
         for(WalkDTO walk : walkDTOList) {
             walkResList.add(WalkRes.builder()
-                    .walkIdx(walk.getWalkIdx())
+                    .walkIdx(walk.getWalkIdx().toString())
                     .ownerIdx(walk.getOwnerIdx())
                     .walkerIdx(walk.getWalkerIdx())
                     .distance(walk.getDistance())
@@ -55,6 +56,7 @@ public class WalkService {
                     .startDate(walk.getStartDate())
                     .endDate(walk.getEndDate())
                     .walkedDogList(walk.getWalkedDogList())
+                    .gpsList(walk.getGpsList())
                     .build());
         }
 

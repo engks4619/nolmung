@@ -26,8 +26,8 @@ public class WalkController {
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
         ObjectId walkIdx = walkService.saveWalk(walk);
-
-        return ResponseEntity.ok().body(walkIdx);
+        System.out.println(walkIdx.toString());
+        return ResponseEntity.ok().body(walkIdx.toString());
     }
 
     @GetMapping("/owner/{ownerIdx}")
@@ -36,6 +36,7 @@ public class WalkController {
          * @Method Name : getWalkListByOwner
          * @Method 설명 : 견주 id로 산책 기록들 조회
          */
+        System.out.println("견주id : "+ownerIdx);
         List<WalkRes> walkResList = walkService.findByOwnerIdx(ownerIdx);
         if (!walkResList.isEmpty()) {
             return ResponseEntity.ok().body(walkResList);

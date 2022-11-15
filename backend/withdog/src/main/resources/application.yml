@@ -12,9 +12,10 @@ spring:
     include: db
   application:
     name: withdog
-#  data:
-#    mongodb:
-#      uri: mongodb://localhost:27017/test
+  data:
+    mongodb:
+      uri: mongodb://nolmung.kr:27017/withdog
+
 
 eureka:
   client:

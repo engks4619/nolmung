@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class WalkRes {
-    private ObjectId walkIdx;
+    private String walkIdx;
     private Long ownerIdx;
     private Long walkerIdx;
     private double distance;
@@ -21,4 +21,5 @@ public class WalkRes {
     private Date startDate;
     private Date endDate;
     private List<Long> walkedDogList;
+    private List<Double>[] gpsList;
 }
