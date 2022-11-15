@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setDogsInfo} from '~/slices/dogsSlice';
+import {setDogsInfo, setSelectedMyDogs} from '~/slices/dogsSlice';
 
 function Main() {
   const [mainPostList, setMainPostList] = useState([]);
@@ -62,6 +62,9 @@ function Main() {
   const getMyDogs = async () => {
     const response: AxiosResponse = await axios.get('user/dog/mydogs');
     dispatch(setDogsInfo(response.data));
+    if (response.data.length >= 1) {
+      dispatch(setSelectedMyDogs([1]));
+    }
   };
 
   useEffect(() => {

@@ -21,6 +21,11 @@ function MainDogs({isSelecting, setIsSelecting}: Props) {
   const myDogs: dogInfo[] | undefined = useSelector(
     (state: RootState) => state.dogs.dogsInfo,
   );
+  const selectedMyDogs: number[] = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+
+  const mainImage = myDogs.filter(dog => dog.dogIdx === selectedMyDogs[0]);
 
   if (myDogs.length === 0) {
     return <Text>추가해주세욤</Text>;
@@ -32,7 +37,7 @@ function MainDogs({isSelecting, setIsSelecting}: Props) {
         <View
           style={isSelecting ? styles.selectingContainer : styles.container}>
           <View style={isSelecting ? styles.isSelectingStyle : null}>
-            <Profile imageSource={myDogs[0].image} width={70} height={70} />
+            <Profile imageSource={mainImage[0]?.image} width={70} height={70} />
           </View>
           <View style={styles.number}>
             {isSelecting ? (
