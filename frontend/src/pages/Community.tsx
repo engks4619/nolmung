@@ -5,7 +5,9 @@ import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
+import RegistArticle from './RegistArticle';
 import {MAIN_COLOR} from '~/const';
+import RegistHeader from '~/organisms/RegistHeader';
 
 export type CommunityParamList = {
   Community: undefined;
@@ -40,6 +42,7 @@ export const CommunityStackNavigator = () => (
         },
       }}
     />
+    <CommunityStack.Screen name="RegistArticle" component={RegistArticle} />
   </CommunityStack.Navigator>
 );
 
@@ -60,7 +63,7 @@ export interface otherPostListType extends withPostListType {
   pay: number;
 }
 
-function Community() {
+function Community({navigation}: any) {
   const [categoryType, setCategoryType] = useState<string>('WITH');
   const [withPgNum, setWithPgNum] = useState<number>(0);
   const [withPostList, setWithPostList] = useState<withPostListType[]>([]);
@@ -143,6 +146,7 @@ function Community() {
       withPostList={withPostList}
       otherPostList={otherPostList}
       loadMore={loadMore}
+      navigation={navigation}
     />
   );
 }
