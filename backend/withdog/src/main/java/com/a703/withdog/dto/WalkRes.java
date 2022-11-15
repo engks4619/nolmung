@@ -21,4 +21,5 @@ public class WalkRes {
     private Date startDate;
     private Date endDate;
     private List<Long> walkedDogList;
+    private List<Double>[] gpsList;
 }

@@ -34,6 +34,7 @@ public class WalkService {
                             .startDate(walk.getStartDate())
                             .endDate(walk.getEndDate())
                             .walkedDogList(walk.getWalkedDogList())
+                            .gpsList(walk.getGpsList())
                             .build());
         }
 
@@ -55,6 +56,7 @@ public class WalkService {
                     .startDate(walk.getStartDate())
                     .endDate(walk.getEndDate())
                     .walkedDogList(walk.getWalkedDogList())
+                    .gpsList(walk.getGpsList())
                     .build());
         }
 

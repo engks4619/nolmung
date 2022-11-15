@@ -29,7 +29,6 @@ public class WalkController {
          * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
-
         if(image != null) {
             String courseImgUrl = fileUtil.fileUpload(image);
             walk.setCourseImgUrl(courseImgUrl);
@@ -37,7 +36,7 @@ public class WalkController {
 
         String walkIdx = walkService.saveWalk(walk);
 
-        return ResponseEntity.ok().body(walkIdx);
+        return ResponseEntity.ok().body(walkIdx.toString());
     }
 
     @GetMapping("/owner/{ownerIdx}")
