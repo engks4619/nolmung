@@ -20,6 +20,7 @@ function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
         <DetailSubject
           subject={detailContent.subject}
           writer={detailContent.writer}
+          writerIdx={detailContent.writerIdx}
           modifyDate={detailContent.modifyDate}
           userImgUrl={detailContent.userImgUrl}
         />

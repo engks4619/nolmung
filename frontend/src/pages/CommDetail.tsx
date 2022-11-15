@@ -1,8 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import CommDetailTemplate from '@templates/CommDetailTemplate';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CommunityParamList} from '@pages/Community';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {DetailDogProps} from '@molecules/DetailDog';
@@ -11,6 +9,7 @@ export interface DetailProps {
   dogInfoList: DetailDogProps[];
   postIdx: number;
   writer: string;
+  writerIdx: number;
   getLike: boolean;
   categoryType: string;
   subject: string;
@@ -25,9 +24,7 @@ export interface DetailProps {
   userImgUrl: string;
 }
 
-type CommScreenProp = NativeStackScreenProps<CommunityParamList, 'CommDetail'>;
-
-function CommDetail({route}: CommScreenProp) {
+function CommDetail({route}: any) {
   const postIdx: number = route.params.postIdx;
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);

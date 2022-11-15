@@ -5,30 +5,35 @@ import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
-import RegistArticle from './RegistArticle';
+import RegistArticle from '@pages/RegistArticle';
 import {MAIN_COLOR} from '~/const';
+import Oppent from '@pages/Oppent';
 import RegistHeader from '~/organisms/RegistHeader';
 
 export type CommunityParamList = {
   Community: undefined;
   CommDetail: {postIdx: number};
+  RegistArticle: undefined;
+  Oppent: {oppentIdx: number};
 };
 
 const CommunityStack = createNativeStackNavigator();
+
+const headers = {
+  headerTitle: '놀면 멍하니',
+  headerTintColor: MAIN_COLOR,
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+};
 
 export const CommunityStackNavigator = () => (
   <CommunityStack.Navigator>
     <CommunityStack.Screen
       name="Community"
       component={Community}
-      options={{
-        headerTitle: '놀면 멍하니',
-        headerTintColor: MAIN_COLOR,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
-      }}
+      options={{headerShown: false}}
     />
     <CommunityStack.Screen
       name="CommDetail"
@@ -43,6 +48,7 @@ export const CommunityStackNavigator = () => (
       }}
     />
     <CommunityStack.Screen name="RegistArticle" component={RegistArticle} />
+    <CommunityStack.Screen name="Oppent" component={Oppent} />
   </CommunityStack.Navigator>
 );
 

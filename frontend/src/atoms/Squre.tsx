@@ -15,7 +15,6 @@ function Squre({
   borderRadius = 0,
 }: Props) {
   const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
-
   return (
     <View>
       <Image

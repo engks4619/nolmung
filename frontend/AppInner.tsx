@@ -42,6 +42,15 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const headers = {
+  headerTitle: '놀면 멍하니',
+  headerTintColor: MAIN_COLOR,
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+};
+
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
@@ -118,7 +127,12 @@ function AppInner() {
             name="Chats"
             component={Chats}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '채팅',
               tabBarIcon: ({color}) => (
                 <ChatIcon width={25} height={25} fill={color} />
@@ -129,7 +143,12 @@ function AppInner() {
             name="Spots"
             component={Spots}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '산책스팟',
               tabBarIcon: ({color}) => (
                 <SpotIcon width={25} height={25} fill={color} />
@@ -140,7 +159,12 @@ function AppInner() {
             name="CommunityList"
             component={CommunityStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '커뮤니티',
               tabBarIcon: ({color}) => (
                 <CommunityIcon width={25} height={25} fill={color} />
@@ -151,7 +175,12 @@ function AppInner() {
             name="MypageList"
             component={MypageStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '마이페이지',
               tabBarIcon: ({color}) => (
                 <UserIcon width={25} height={25} fill={color} />
