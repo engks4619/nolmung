@@ -1,14 +1,17 @@
-import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet} from 'react-native';
 import MyButton from '~/atoms/MyButton';
+import MainDogs from '~/molecules/MainDogs';
 
 function MainWalk() {
+  const [isSelecting, setIsSelecting] = useState<boolean>(false);
   return (
     <View style={styles.container}>
       <View style={styles.marginContainer}>
+        <MainDogs isSelecting={isSelecting} setIsSelecting={setIsSelecting} />
         <MyButton
-          btnText="산책 시작하기"
-          width={200}
+          btnText="산책 시작"
+          width={isSelecting ? 120 : 200}
           height={50}
           onClick={() => console.log('산책 시작')}
         />
@@ -24,7 +27,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, .5)',
   },
   marginContainer: {
-    margin: 15,
+    marginHorizontal: 30,
+    marginVertical: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 
