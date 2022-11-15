@@ -81,7 +81,7 @@ spring:
         - id: chat
           uri: lb://CHAT
           predicates:
-            - Path=/api/chat/**
+            - Path=/api/socket/**
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
