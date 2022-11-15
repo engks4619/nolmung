@@ -20,7 +20,6 @@ const io = SocketIO(httpServer, {
 });
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
-// app.set('port', process.env.PORT || 0);
 
 app.use('/', indexRouter);
 
@@ -47,9 +46,6 @@ io.on('connection', socket => {
       '접속한 클라이언트 ID 갯수 : %d',
       Object.keys(login_ids).length,
     );
-
-    // 응답 메시지 전송
-    // sendResponse(socket, 'login', '200', '로그인되었습니다.');
   });
 
   socket.on('disconnect', () => {
@@ -83,9 +79,6 @@ room.on('connection', socket => {
         });
 
         roomId = newRoom._id;
-        // console.log("DB 저장 완료");
-        // console.log('채팅방 생성되었습니다.');
-        // console.log("newRoom 아이디 : " + newRoom._id);
 
         socket.join(newRoom._id);
         room.to(login_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
@@ -141,10 +134,6 @@ chat.on('connection', socket => {
     }
   });
 });
-
-// httpServer.listen(app.get('port'), () => {
-// 	console.log(`server is running on port ${app.get('port')}`);
-// });
 
 const server = app.listen(0, () => {
   console.log('Listening on port:', server.address().port);
