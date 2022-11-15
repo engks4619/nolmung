@@ -1,6 +1,6 @@
 FROM node:lts
 
-COPY package*.jason ./
+COPY package*.json ./
 
 RUN npm install
 
