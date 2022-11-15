@@ -4,15 +4,10 @@ const router = express.Router();
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
 
-// 클라이언트가 최초 접속시 보여지는 화면
-// router.get("/", (req, res) => {
-//   res.render("index");
-//   // res.render("chat");
-// });
-router.get('/', async (req, res, next) => {
+router.get('/api/socket', async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.render('main', {rooms, title: 'GIF 채팅방'});
+    res.render('main', {rooms, title: '채팅방'});
   } catch (error) {
     console.error(error);
     next(error);
@@ -59,7 +54,7 @@ router.post('/api/socket/room', async (req, res, next) => {
 });
 
 // 해당 채팅방으로 이동. 페이징 함수.
-router.get('/room/:id/:page/:maxChat', async (req, res, next) => {
+router.get('/api/socket/room/:id/:page/:maxChat', async (req, res, next) => {
   console.log(req.query);
 
   // 프론트에서 요청하는 페이지번호, 요청하는 최대 채팅내역 숫자
@@ -128,7 +123,7 @@ router.get('/room/:id/:page/:maxChat', async (req, res, next) => {
 });
 
 // DB 저장 후 방에 뿌려줌.
-router.post('room/:id/chat', async (req, res, next) => {
+router.post('/api/socket/room/:id/chat', async (req, res, next) => {
   try {
     const chat = await Chat.create({
       room: req.params.id,
