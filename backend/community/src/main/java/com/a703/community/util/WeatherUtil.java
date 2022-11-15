@@ -1,7 +1,6 @@
 package com.a703.community.util;
 
 
-import com.a703.community.dto.request.WeatherRequest;
 import com.a703.community.dto.response.WeatherDto;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -24,11 +23,7 @@ import java.time.format.DateTimeFormatter;
 public class WeatherUtil {
     private String type = "json";    //조회하고 싶은 type(json, xml 중 고름)
 
-    public WeatherDto lookUpWeather(WeatherRequest weatherRequest) throws IOException, JSONException {
-
-        String lat = String.valueOf(weatherRequest.getLat());
-
-        String lng = String.valueOf(weatherRequest.getLng());
+    public WeatherDto lookUpWeather(int lat,int lng) throws IOException, JSONException {
 
         LocalDateTime nowDate = LocalDateTime.now(); // 현재시간전
         LocalDateTime ThreeHoursAgo = nowDate.minusHours(1).minusMinutes(41); // 3시간 11분
@@ -50,8 +45,8 @@ public class WeatherUtil {
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
-        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8")); //경도 x lng
-        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8")); //위도 y lat
+        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lng), "UTF-8")); //경도 x lng
+        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(lat), "UTF-8")); //위도 y lat
         urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
         urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8")); /* 조회하고싶은 시간 AM 02시부터 3시간 단위 */
         urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8"));    /* 타입 */
