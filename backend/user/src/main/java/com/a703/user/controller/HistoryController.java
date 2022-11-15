@@ -5,6 +5,7 @@ import com.a703.user.service.HistoryService;
 import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.request.RequestHistory;
 import com.a703.user.vo.response.ResponseHistory;
+import com.a703.user.vo.response.ResponseUser;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
@@ -25,17 +26,32 @@ public class HistoryController {
 
     @PostMapping
     public ResponseEntity<?> RegisterReview(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String jwt, @RequestBody RequestHistory requestHistory){
-        HistoryDto historyDto = new ModelMapper().map(requestHistory, HistoryDto.class);
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
-        HistoryDto savedData = historyService.registerReview(userIdx, historyDto);
+        HistoryDto historyDto = new ModelMapper().map(requestHistory, HistoryDto.class);
+        HistoryDto savedData = historyService.registerReview(userIdx, requestHistory.getPostIdx(), historyDto);
         return ResponseEntity.status(HttpStatus.OK).body(savedData);
     }
 
-    @GetMapping("/{userIdx}")
-    public ResponseEntity<?> GetReview(@PathVariable(value = "userIdx") Long userIdx){
-        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx);
+    @GetMapping("/reviewer/{userIdx}")
+    public ResponseEntity<?> GetReviewByReviewer(@PathVariable(value = "userIdx") Long userIdx){
+        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx, true);
+        return getResponseEntity(historyDtoList);
+    }
+
+    @GetMapping("/reviewee/{userIdx}")
+    public ResponseEntity<?> GetReviewByReviewee(@PathVariable(value = "userIdx") Long userIdx){
+        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx, false);
+        return getResponseEntity(historyDtoList);
+    }
+
+    private ResponseEntity<?> getResponseEntity(List<HistoryDto> historyDtoList) {
         List<ResponseHistory> returnValue = historyDtoList.stream()
-                .map(a -> new ModelMapper().map(a, ResponseHistory.class))
+                .map(historyDto -> {
+                    ResponseHistory responseHistory = new ModelMapper().map(historyDto, ResponseHistory.class);
+                    responseHistory.setReviewer(new ModelMapper().map(historyDto.getReviewer(), ResponseUser.class));
+                    responseHistory.setReviewee(new ModelMapper().map(historyDto.getReviewee(), ResponseUser.class));
+                    return responseHistory;
+                })
                 .collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }

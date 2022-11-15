@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 public class HistoryDto {
-    private UserEntity user;
+    private UserEntity reviewer;
+    private UserEntity reviewee;
     private Boolean owner;
     private Double star;
     private String review;
     private String recordIdx;
+    private String createdAt;
 }

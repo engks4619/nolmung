@@ -15,8 +15,12 @@ public class HistoryEntity extends BaseEntity{
     private Long historyIdx;
 
     @ManyToOne
-    @JoinColumn(name = "userIdx")
-    private UserEntity user;
+    @JoinColumn(referencedColumnName = "userIdx", name = "reviewer")
+    private UserEntity reviewer;
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "userIdx", name = "reviewee")
+    private UserEntity reviewee;
 
     private Boolean owner;
     private Double star;
