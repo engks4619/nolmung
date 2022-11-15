@@ -16,7 +16,6 @@ spring:
     mongodb:
       uri: mongodb://nolmung.kr:27017/withdog
 
-
 eureka:
   client:
     register-with-eureka: true

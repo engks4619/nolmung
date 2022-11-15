@@ -1,4 +1,4 @@
-package com.a703.withdog.serrvice;
+package com.a703.withdog.service;
 
 import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.dto.WalkRes;
@@ -15,9 +15,9 @@ public class WalkService {
     @Autowired
     WalkMongoDBRepository walkMongoDBRepository;
 
-    public ObjectId saveWalk(WalkDTO walk){
+    public String saveWalk(WalkDTO walk){
         WalkDTO walkDTO = walkMongoDBRepository.save(walk);
-        return walkDTO.getWalkIdx();
+        return walkDTO.getWalkIdx().toString();
     }
 
     public List<WalkRes> findByOwnerIdx(Long ownerIdx) {

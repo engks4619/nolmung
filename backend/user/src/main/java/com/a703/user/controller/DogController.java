@@ -2,6 +2,7 @@ package com.a703.user.controller;
 
 import com.a703.user.dto.DogDto;
 import com.a703.user.service.DogService;
+import com.a703.user.service.UserService;
 import com.a703.user.util.CommUtil;
 import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.request.RequestDog;
@@ -63,5 +64,26 @@ public class DogController {
         List<Long> returnValue = dogService.getDogIdxListByBreedCode(breedCode);
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
+    @GetMapping("/mydogs")
+    public ResponseEntity<?> getDogList(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+        Long userIdx = jwtUtil.jwtToUserIdx(jwt);
+        return ResponseEntity.status(HttpStatus.OK).body(dogService.getDogInfoByUserIdx(userIdx).stream()
+                .map(dogDto -> new ModelMapper()
+                        .typeMap(DogDto.class, ResponseDog.class)
+                        .addMapping(DogDto::getBreedCodeValue, ResponseDog::setBreedCodeValue)
+                        .map(dogDto))
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/info/{userIdx}")
+    public ResponseEntity<?> getDogListByUserIdx(@PathVariable(value = "userIdx") Long userIdx){
+        return ResponseEntity.status(HttpStatus.OK).body(dogService.getDogInfoByUserIdx(userIdx).stream()
+                .map(dogDto -> new ModelMapper()
+                        .typeMap(DogDto.class, ResponseDog.class)
+                        .addMapping(DogDto::getBreedCodeValue, ResponseDog::setBreedCodeValue)
+                        .map(dogDto))
+                .collect(Collectors.toList()));
     }
 }

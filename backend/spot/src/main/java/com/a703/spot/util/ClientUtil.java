@@ -21,10 +21,11 @@ import java.util.Map;
 @Component
 public class ClientUtil {
 
+    private final RestTemplate restTemplate;
+
     public UserInfoDto requestUserInfo(String token) {
 
-        String url = "http://nolmung.kr/api/user/my-info";
-        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://USER/api/user/my-info";
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -45,8 +46,8 @@ public class ClientUtil {
 
     public UserInfoDto requestOtherUserInfo(Long userIdx) {
 
-        String url = String.format("http://nolmung.kr/api/user/info/%d", userIdx);
-        RestTemplate restTemplate = new RestTemplate();
+        String url = String.format("http://USER/api/user/info/%d", userIdx);
+
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -63,8 +64,7 @@ public class ClientUtil {
 
     public void saveImage(MultipartFile file, String savePath) throws IOException {
 
-        String url = "http://nolmung.kr/api/image";
-        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://IMAGE/api/image";
 
         // Header set
         HttpHeaders httpHeaders = new HttpHeaders();

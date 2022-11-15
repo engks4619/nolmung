@@ -87,9 +87,10 @@ public class CommUtil {
         String body = mapper.writeValueAsString(requestSms);
         log.info(body);
         HttpEntity<String> httpEntity = new HttpEntity<>(body, headers);
-//        ResponseEntity<String> response = restTemplate.exchange(baseUrl + additionalUrl, HttpMethod.POST, httpEntity, String.class);
-//        return response.getStatusCode();
-        return HttpStatus.ACCEPTED;
+        RestTemplate rest = new RestTemplate();
+        ResponseEntity<String> response = rest.exchange(baseUrl + additionalUrl, HttpMethod.POST, httpEntity, String.class);
+        return response.getStatusCode();
+//        return HttpStatus.ACCEPTED;
     }
 
     public String makeSignature(String url, String timestamp, String accessKey) {

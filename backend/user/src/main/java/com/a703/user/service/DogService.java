@@ -10,4 +10,5 @@ public interface DogService {
     List<Long> getDogIdxListByBreedCode(Integer dogBreedCode);
     void registerDog(Long userIdx, DogDto dogDto);
     BreedEntity findBreed(Integer breedCode);
+    List<DogDto> getDogInfoByUserIdx(Long userIdx);
 }

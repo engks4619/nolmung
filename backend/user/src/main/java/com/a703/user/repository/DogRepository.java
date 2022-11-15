@@ -10,4 +10,5 @@ public interface DogRepository extends CrudRepository<DogEntity, Long> {
 
     Optional<DogEntity> findByDogIdx(Long dogIdx);
     List<DogEntity> findAllByBreedBreedCode(Integer breedCode);
+    List<DogEntity> findAllByUserUserIdx(Long userIdx);
 }

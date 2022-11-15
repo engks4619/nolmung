@@ -32,7 +32,9 @@ public class DogServiceImpl implements DogService{
 
     @Override
     public List<Long> getDogIdxListByBreedCode(Integer dogBreedCode) {
-        return dogRepository.findAllByBreedBreedCode(dogBreedCode).stream().map(DogEntity::getDogIdx).collect(Collectors.toList());
+        return dogRepository.findAllByBreedBreedCode(dogBreedCode).stream()
+                .map(DogEntity::getDogIdx)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,5 +50,12 @@ public class DogServiceImpl implements DogService{
     @Override
     public BreedEntity findBreed(Integer breedCode) {
         return breedRepository.findById(breedCode).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public List<DogDto> getDogInfoByUserIdx(Long userIdx) {
+        return dogRepository.findAllByUserUserIdx(userIdx).stream()
+                .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
+                .collect(Collectors.toList());
     }
 }

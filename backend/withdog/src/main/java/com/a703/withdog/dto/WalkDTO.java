@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.geom.GeneralPath;
 import java.util.Date;
@@ -51,5 +52,9 @@ public class WalkDTO {
         this.endDate = endDate;
         this.walkedDogList = walkedDogList;
         this.gpsList = gpsList;
+    }
+
+    public void setCourseImgUrl(String courseImgUrl){
+        this.courseImgUrl = courseImgUrl;
     }
 }
