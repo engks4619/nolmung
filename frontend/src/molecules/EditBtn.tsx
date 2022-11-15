@@ -1,12 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import Edit from '@assets/edit.svg';
 import {MAIN_COLOR} from '~/const';
 
-function EditBtn() {
+interface Props {
+  onPress: () => void;
+}
+function EditBtn({onPress}: Props) {
   return (
     <View style={styles.editForm}>
-      <Edit width={40} height={40} fill="black" />
+      <Pressable onPress={onPress}>
+        <Edit width={40} height={40} fill="black" />
+      </Pressable>
     </View>
   );
 }

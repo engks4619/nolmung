@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   textStyle: {
-    fontSize: 15,
+    fontSize: 14,
     color: 'rgba(0, 0, 0, 0.7)',
   },
   imgContainer: {

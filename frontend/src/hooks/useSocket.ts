@@ -10,7 +10,7 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     }
   }, []);
   if (!socket) {
-    socket = io('http://192.168.0.102:5000', {
+    socket = io('http://nolmung.kr/api/socket', {
       transports: ['websocket'],
     });
     socket.on('connect', () => console.log('socket..connected'));

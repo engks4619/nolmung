@@ -10,3 +10,9 @@ export type userInfoType = {
   nickname: string;
   profileImage: string;
 };
+
+export type photo = {
+  uri: string;
+  type: string;
+  name: string;
+};

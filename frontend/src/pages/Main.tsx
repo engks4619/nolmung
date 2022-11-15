@@ -4,12 +4,21 @@ import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import {AxiosResponse} from 'axios';
+import {useAppDispatch} from '~/store';
+import {setDogsInfo, setSelectedMyDogs} from '~/slices/dogsSlice';
 
 function Main() {
   const [mainPostList, setMainPostList] = useState([]);
   const [mainSpotList, setMainSpotList] = useState([]);
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
+
+  const userName = useSelector((state: RootState) => state.user.nickname);
+  const dispatch = useAppDispatch();
+  const profileImage = useSelector(
+    (state: RootState) => state.user.profileImage,
+  );
 
   const getMainPostList = async () => {
     try {
@@ -50,8 +59,17 @@ function Main() {
     }
   };
 
+  const getMyDogs = async () => {
+    const response: AxiosResponse = await axios.get('user/dog/mydogs');
+    dispatch(setDogsInfo(response.data));
+    if (response.data.length >= 1) {
+      dispatch(setSelectedMyDogs([1]));
+    }
+  };
+
   useEffect(() => {
     getMainPostList();
+    getMyDogs();
   }, []);
 
   useEffect(() => {
@@ -60,7 +78,12 @@ function Main() {
 
   return (
     <ScrollView>
-      <MainTemplate spots={mainSpotList} mainPostList={mainPostList} />
+      <MainTemplate
+        spots={mainSpotList}
+        mainPostList={mainPostList}
+        userName={userName}
+        profileImage={profileImage}
+      />
     </ScrollView>
   );
 }

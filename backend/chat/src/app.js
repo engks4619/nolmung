@@ -3,7 +3,6 @@ const http = require('http');
 const cors = require('cors');
 const SocketIO = require('socket.io');
 
-// const indexRouter = require('../routes');
 const connect = require('../schemas');
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
@@ -18,7 +17,7 @@ const io = SocketIO(httpServer, {
 });
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
-// app.use(indexRouter);
+
 const PORT = process.env.PORT || 5000;
 
 connect();
@@ -106,7 +105,7 @@ chat.on('connection', (socket) => {
 
     try {
       const chats = await Chat.find({ room: roomId }).sort('createdAt');
-      socket.emit('chats', chats);
+      socket.emit('chats', chats);    // 클라이언트에 채팅내역 전달
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +125,7 @@ chat.on('connection', (socket) => {
       console.log(data.chat);
       console.log('클라이언트로부터 message 이벤트를 받았습니다.');
   
-      chat.to(data.roomId).emit('messageC', data);
+      chat.to(data.roomId).emit('messageC', data);  // 클라이언트에 메시지 전달
 
     } catch (error) {
       console.error(error);

@@ -23,16 +23,15 @@ function CommWithPost({withPostList, loadMore}: Props) {
   const naviWithDetail = (postIdx: number) => {
     navigation.navigate('CommDetail', {postIdx});
   };
-
   return (
     <FlatList
       data={withPostList}
       keyExtractor={item => String(item.postIdx)}
-      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviWithDetail(item.postIdx)}
-          underlayColor="#E2E2E2">
+          underlayColor="#E2E2E2"
+          style={styles.fullContainer}>
           <View style={styles.container}>
             <View style={styles.imgContainer}>
               <Squre
@@ -53,6 +52,7 @@ function CommWithPost({withPostList, loadMore}: Props) {
                 writer={item.writer}
                 likeCnt={item.likeCnt}
                 userImgUrl={item.userImgUrl}
+                chatCnt={item.chatCnt}
               />
             </View>
           </View>
@@ -64,12 +64,15 @@ function CommWithPost({withPostList, loadMore}: Props) {
 }
 
 const styles = StyleSheet.create({
+  fullContainer: {
+    borderBottomColor: 'rgba(0, 0, 0, .5)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   container: {
     flexDirection: 'row',
     height: 110,
-    backgroundColor: 'white',
     marginBottom: 4,
-    paddingHorizontal: 13,
+    marginHorizontal: 15,
   },
   imgContainer: {
     justifyContent: 'center',
@@ -77,7 +80,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 5,
+    marginLeft: 10,
+    marginVertical: 11,
     justifyContent: 'space-between',
   },
 });

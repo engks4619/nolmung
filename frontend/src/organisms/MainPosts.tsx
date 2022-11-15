@@ -33,7 +33,9 @@ function MainPosts({mainPostList}: Props) {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.headingText}>실시간 게시글</Text>
-        <Text onPress={() => navigation.navigate('CommunityList')}>
+        <Text
+          style={styles.naviTextContainer}
+          onPress={() => navigation.navigate('CommunityList')}>
           전체보기
         </Text>
       </View>
@@ -66,18 +68,21 @@ function MainPosts({mainPostList}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    paddingBottom: 7,
     marginTop: 2,
+    borderBottomColor: 'rgba(0, 0, 0, .5)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   headingText: {
-    fontSize: 18,
+    color: 'black',
+    fontSize: 14,
     fontWeight: 'bold',
   },
   textContainer: {
+    paddingHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 5,
+    marginVertical: 15,
   },
   wrapDot: {
     bottom: 0,
@@ -91,6 +96,9 @@ const styles = StyleSheet.create({
   dot: {
     margin: 3,
     color: '#888',
+  },
+  naviTextContainer: {
+    fontSize: 12,
   },
 });
 
