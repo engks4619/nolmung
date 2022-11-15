@@ -27,7 +27,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
-import useSocket from '~/hooks/useSocket';
+import useSocket, {useRoomSocket} from '~/hooks/useSocket';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -47,10 +47,13 @@ function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
   const [socket, disconnect] = useSocket();
+  const [roomSocket, roomDisconnect] = useRoomSocket();
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
   );
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+
   const getUserInfo = async () => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
@@ -91,28 +94,24 @@ function AppInner() {
     // const helloCallback = (data: any) => {
     //   console.log(data);
     // };
-    if (socket && isLoggedIn) {
-      const data = {ownerIdx: 1, postIdx: 1};
-      // socket.on('connect', socket => {
-      //   socket.join('room');
-      // });
-      socket.emit('newRoom', data);
-      // socket.emit('newRoom', data);
-      // socket.emit('login', 'hello');
+    if (socket && isLoggedIn && userIdx) {
+      const data = {id: userIdx};
+      socket.emit('login', data);
       // socket.on('hello', helloCallback);
     }
     return () => {
       if (socket) {
-        // socket.off('hello', helloCallback);
+        socket.off('login');
       }
     };
-  }, [isLoggedIn, socket]);
+  }, [isLoggedIn, socket, userIdx]);
 
   useEffect(() => {
     if (!isLoggedIn) {
       disconnect();
+      roomDisconnect();
     }
-  }, [isLoggedIn, disconnect]);
+  }, [isLoggedIn, disconnect, roomDisconnect]);
 
   return (
     <NavigationContainer>

@@ -6,7 +6,9 @@ import MyButton from '@atoms/MyButton';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {ChatsParamList} from '~/pages/Chats';
-import {useAppDispatch} from '~/store';
+import {useRoomSocket} from '~/hooks/useSocket';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -18,15 +20,22 @@ interface footerProps {
   putLike: () => void;
 }
 
-type chatScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
+type chatsScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
 
 function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
-  const navigation = useNavigation<chatScreenProp>();
-  const dispatch = useAppDispatch();
+  const navigation = useNavigation<chatsScreenProp>();
+  const [roomSocket, roomDisconnect] = useRoomSocket();
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+  const postIdx = useSelector((state: RootState) => state.post.postIdx);
 
   const startChat = () => {
-    // dispatch()
-    navigation.navigate('ChatsDetail', {roomId: 3});
+    const data = {ownerIdx: userIdx, postIdx};
+    if (roomSocket && userIdx) {
+      roomSocket.emit('newRoom', data);
+      roomSocket.on('newRoomId', (roomId: string) =>
+        navigation.navigate('ChatsDetail', {roomId}),
+      );
+    }
   };
   return (
     <View style={styles.container}>

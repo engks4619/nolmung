@@ -6,7 +6,7 @@ import ChatsDetail from './ChatsDetail';
 
 export type ChatsParamList = {
   Chats: undefined;
-  ChatsDetail: {roomId: number};
+  ChatsDetail: {roomId: string};
 };
 
 const ChatsStack = createNativeStackNavigator();
