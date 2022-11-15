@@ -34,9 +34,9 @@ export function elapsedTime(date: string) {
 export function convertTime(time: string) {
   const [hour, minute] = time.split(':');
   if (Number(hour) < 12) {
-    return `AM ${hour}:${minute}`;
+    return `오전 ${hour}:${minute}`;
   }
-  return `PM ${Number(hour) - 12}:${minute}`;
+  return `오후 ${Number(hour) - 12}:${minute}`;
 }
 
 function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
