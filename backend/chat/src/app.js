@@ -21,6 +21,8 @@ const io = SocketIO(httpServer, {
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
 
+const PORT = process.env.PORT || 5000;
+
 app.use('/', indexRouter);
 
 connect();
@@ -135,8 +137,13 @@ chat.on('connection', socket => {
   });
 });
 
-const server = app.listen(0, () => {
-  console.log('Listening on port:', server.address().port);
+// const server = app.listen(0, () => {
+//   console.log('Listening on port:', server.address().port);
+// });
+
+httpServer.listen(PORT, () => {
+  console.log('Listening on port:', PORT);
 });
 
-eurekaHelper.registerWithEureka('chat', server.address().port);
+// eurekaHelper.registerWithEureka('chat', server.address().port);
+eurekaHelper.registerWithEureka('chat', PORT);

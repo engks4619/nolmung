@@ -23,18 +23,27 @@ public class WalkController {
     private final WalkService walkService;
     private final FileUtil fileUtil;
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> saveWalk(@RequestPart WalkDTO walk, @RequestPart(value = "image", required = false) MultipartFile image) {
+    @PostMapping
+    public ResponseEntity<?> saveWalk(@RequestPart WalkDTO walk) {
         /**
          * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
+        String walkIdx = walkService.saveWalk(walk);
+
+        return ResponseEntity.ok().body(walkIdx.toString());
+    }
+
+    @PostMapping(value = "/img/{walkIdx}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImg(@RequestPart(value = "image", required = false) MultipartFile image, @PathVariable String walkIdx) {
+        /**
+         * @Method Name : saveImg
+         * @Method 설명 : 산책코스 이미지 저장
+         */
         if(image != null) {
             String courseImgUrl = fileUtil.fileUpload(image);
-            walk.setCourseImgUrl(courseImgUrl);
+            walkService.updateImg(courseImgUrl, walkIdx);
         }
-
-        String walkIdx = walkService.saveWalk(walk);
 
         return ResponseEntity.ok().body(walkIdx.toString());
     }
