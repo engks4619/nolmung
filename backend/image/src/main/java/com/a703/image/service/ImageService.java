@@ -20,8 +20,8 @@ public class ImageService {
 
     public void uploadImg(MultipartFile file, String savePath) throws Exception {
         Path path = Paths.get(savePath);
-//        file.transferTo(path);
-        resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
+        file.transferTo(path);
+//        resizeImageFile(file, savePath, extractExt(file.getOriginalFilename()));
 
     }
 
