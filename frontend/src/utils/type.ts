@@ -23,3 +23,22 @@ export type dog = {
   image:string;
   breedCodeValue: string;
 }
+
+export type article = {
+  categoryType: string;
+  content: string;
+  dogInfoList: dog[];
+  getLike: boolean;
+  leadLine: boolean;
+  location: string;
+  modifyDate: string;
+  pay: number | null;
+  photoUrl: string[];
+  poopBag: boolean;
+  postIdx: number;
+  subject: string;
+  userImgUrl: string;
+  walkDate: string;
+  writer: string;
+  writerIdx: number;
+};

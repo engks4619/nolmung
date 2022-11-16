@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, Pressable, Text} from 'react-native';
+import {View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
@@ -12,16 +12,8 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
-import {
-  storeData,
-  getData,
-  removeData,
-  removeMultiple,
-  containsKey,
-  getAllKeys,
-  getMultiple,
-} from '~/utils/AsyncService';
-import {useSelector, useDispatch} from 'react-redux';
+import WalkReview from './WalkReview';
+import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 
 //UserInfoType
@@ -56,10 +48,20 @@ export const MypageStackNavigator = () => (
       component={LogView}
       options={{headerShown: true}}
     />
+    <MypageStack.Screen
+      name="WalkReview"
+      component={WalkReview}
+      options={{
+        headerTitle: '상대방 이름',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
   </MypageStack.Navigator>
 );
-
-//dummy
 
 // 마이페이지 버튼탭 목록(navi동작)
 const myPageListNavi = [
@@ -87,6 +89,11 @@ const myPageListNavi = [
     name: 'MyDogs',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
+  },
+  {
+    name: 'WalkReview',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    btnText: '산책후기',
   },
 ];
 // 마이페이지 버튼탭 목록(다른동작)
@@ -120,21 +127,6 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-  const polylinePath = [
-    {latitude: 33.8805, longitude: -118.2084},
-    {latitude: 33.7805, longitude: -118.2084},
-    {latitude: 33.6805, longitude: -118.2084},
-    {latitude: 33.5805, longitude: -118.2084},
-    {latitude: 33.4805, longitude: -118.2084},
-    {latitude: 33.3805, longitude: -118.2084},
-    {latitude: 33.2805, longitude: -118.2084},
-    {latitude: 33.1805, longitude: -118.2084},
-    {latitude: 33.0805, longitude: -118.2084},
-  ];
-  const dogs = [
-    {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
-    {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
-  ];
 
   return (
     <View>
@@ -148,59 +140,6 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable
-        onPress={() => {
-          const date = new Date();
-          storeData('@StartDate', date);
-          storeData('@LastUpdate', date);
-          storeData('@WalkingLogs', polylinePath);
-          storeData('@Dogs', dogs);
-        }}>
-        <Text>storeData</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await containsKey('@StartDate');
-          console.log(a);
-        }}>
-        <Text>containsKey</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          removeMultiple([
-            '@StartDate',
-            '@LastUpdate',
-            '@WalkingLogs',
-            '@Dogs',
-          ]);
-        }}>
-        <Text>removeMultiple</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await getAllKeys();
-          console.log(a);
-        }}>
-        <Text>getAllKeys</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await getMultiple([
-            '@StartDate',
-            '@LastUpdate',
-            '@WalkingLogs',
-            '@Dogs',
-          ]);
-          console.log(a);
-        }}>
-        <Text>getMultiple</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          removeMultiple(['accessToken']);
-        }}>
-        <Text>엑세스토큰제거</Text>
-      </Pressable>
     </View>
   );
 }

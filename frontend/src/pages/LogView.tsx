@@ -17,6 +17,9 @@ function LogView({route}: any) {
   const selectedDogs: number[] = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
+  const myPosition = useSelector(
+    (state: RootState) => state.myPosition.myPosition,
+  );
   // dogs type import해와서 지정
   const dogs: dogInfo[] = [];
   dogsInfo.forEach(elem => {
@@ -32,6 +35,7 @@ function LogView({route}: any) {
         path={path}
         dogInfoList={dogs}
         isOver={isOver}
+        myPosition={myPosition}
       />
     </View>
   );

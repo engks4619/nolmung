@@ -33,6 +33,7 @@ const myPositionSlice = createSlice({
       state.startDate = action.payload.startDate;
       state.lastUpdate = action.payload.lastUpdate;
       state.path = action.payload.walkingLogs;
+      state.myPosition = action.payload.myPosition;
     },
     resetStates(state) {
       Object.assign(state, initialState);
