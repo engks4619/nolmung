@@ -42,16 +42,20 @@ function MainSpots({spots}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 15,
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   headingText: {
     fontSize: 14,
+    fontWeight: 'bold',
     color: 'black',
   },
   textContainer: {
+    marginHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 15,
+    marginTop: 15,
+    marginBottom: 35,
   },
   naviTextContainer: {
     fontSize: 12,

@@ -36,13 +36,9 @@ function CommunityTemplate({
         categoryType={categoryType}
       />
       {categoryType === 'WITH' ? (
-        <>
-          <CommWithPost withPostList={withPostList} loadMore={loadMore} />
-        </>
+        <CommWithPost withPostList={withPostList} loadMore={loadMore} />
       ) : (
-        <>
-          <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
-        </>
+        <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
       )}
 
       <EditBtn onPress={() => navigation.navigate('RegistArticle')} />
@@ -53,7 +49,6 @@ function CommunityTemplate({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
 });
 

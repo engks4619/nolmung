@@ -63,8 +63,8 @@ function CommWithPost({withPostList, loadMore}: Props) {
 
 const styles = StyleSheet.create({
   fullContainer: {
-    borderBottomColor: 'rgba(0, 0, 0, .5)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   container: {
     flexDirection: 'row',

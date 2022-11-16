@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Profile from '@atoms/Profile';
-import {elapsedTime} from '@molecules/CommMainInfo';
 import Poop from '@assets/poop.svg';
 import Lead from '@assets/lead.svg';
 
