@@ -16,3 +16,10 @@ export type photo = {
   type: string;
   name: string;
 };
+
+export type dog = {
+  dogIdx: number;
+  dogName: string;
+  image:string;
+  breedCodeValue: string;
+}

@@ -52,7 +52,7 @@ interface Props {
   setImages: Dispatch<SetStateAction<any[]>>;
   selectedDog: any[];
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
-  DOG_DATA: any[];
+  DOG_DATA: {label: string; value: number}[];
   CATEGORY_TYPES: string[];
 }
 
