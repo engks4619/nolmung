@@ -9,7 +9,7 @@ import {Alert} from 'react-native';
 import {AxiosResponse} from 'axios';
 
 const WalkReview = ({navigation}: any) => {
-  const [star, setStar] = useState<number>(5);
+  const [star, setStar] = useState<number>(0);
   const [review, setReview] = useState<string>('');
   const [clicked, setClicked] = useState<boolean>(false);
   const [article, setArticle] = useState<article | null>(null);
