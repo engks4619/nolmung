@@ -15,6 +15,7 @@ function MapViewAlone({navigation}: any) {
   const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
   const watchId = useSelector((state: RootState) => state.myPosition.watchId);
   const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
+  const distance = useSelector((state: RootState) => state.myPosition.distance);
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
@@ -42,6 +43,8 @@ function MapViewAlone({navigation}: any) {
           doneWalking={() => {
             doneWalking(dispatch, navigation, watchId);
           }}
+          distance={distance}
+          dispatch={dispatch}
         />
       </View>
     );

@@ -8,6 +8,8 @@ const initialState = {
   startDate: null,
   lastUpdate: null,
   path: [],
+  second: 0,
+  distance: 0,
 };
 
 const myPositionSlice = createSlice({
@@ -41,6 +43,15 @@ const myPositionSlice = createSlice({
     setWatchId(state, action) {
       state.watchId = action.payload;
     },
+    setStartDate(state, action) {
+      state.startDate = action.payload;
+    },
+    setSecond(state, action) {
+      state.second = action.payload;
+    },
+    addDistance(state, action) {
+      state.distance = state.distance + action.payload;
+    },
   },
   extraReducers: builder => {},
 });
@@ -54,5 +65,8 @@ export const {
   setIsSavingOn,
   setIsSavingOff,
   setWatchId,
+  setStartDate,
+  setSecond,
+  addDistance,
 } = myPositionSlice.actions;
 export default myPositionSlice;

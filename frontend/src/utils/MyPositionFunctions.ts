@@ -20,8 +20,10 @@ import {
   setIsSavingOn,
   setIsSavingOff,
   setWatchId,
+  setStartDate,
 } from '~/slices/myPositionSlice';
 import {setSelectedMyDogs} from '~/slices/dogsSlice';
+const haversine = require('haversine');
 
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
@@ -50,7 +52,10 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
+  const startDate = new Date();
+  startDate.toString();
   storeData('@StartDate', new Date());
+  dispatch(setStartDate(startDate));
   storeData('@Dogs', dogs);
   const hasLog = await containsKey('@WalkingLogs');
   if (!hasLog) {
