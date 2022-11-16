@@ -18,7 +18,6 @@ interface Props {
   path: Coord[];
   dogInfoList: DetailDogProps[];
   isOver: boolean;
-  // myPosition: Coord | null;
 }
 interface Photo {
   name: string;
@@ -71,17 +70,6 @@ Props) {
     fetch('http://nolmung.kr/api/withdog/walk', {
       method: 'POST',
       body: b,
-      // body: createFormData(photo, {
-      //   ownerIdx: -1650769681,
-      //   walkerIdx: -1650769681,
-      //   distance: 100.0,
-      //   time: 5,
-      //   startDate: '2022.10.26 00:00:00',
-      //   endDate: '2022.10.26 00:00:00',
-      //   walkedDogList: [1, 2, 3],
-      //   latitudes: [1.1, 2.1],
-      //   longitudes: [2.4, 3.4],
-      // }),
     })
       .then(response => response.json())
       .then(response => {

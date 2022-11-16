@@ -48,9 +48,13 @@ function Main({navigation}: any) {
   );
   // 산책 시작 함수
   const myPositionState = useSelector((state: RootState) => state.myPosition);
-  // const dispatch = useDispatch();
+  // const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
+  const selectedDogs = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+
   const goWalking = () => {
-    startWalking(dispatch, navigation, myPositionState);
+    startWalking(dispatch, navigation, myPositionState, selectedDogs);
   };
   const getMainPostList = async () => {
     try {

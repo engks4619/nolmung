@@ -28,6 +28,7 @@ export const startWalking = async (
   dispatch: any,
   navigation: any,
   myPositionState: any,
+  dogs: any[],
 ) => {
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
@@ -40,15 +41,16 @@ export const startWalking = async (
       lastLogAlert(navigation, dispatch, localList);
     } else {
       // redux,local 둘다 없음 => 그냥 새로 시작
-      startLogging(dispatch);
+      startLogging(dispatch, dogs);
       navigation.navigate('MapViewAlone');
     }
   }
 };
 
-export const startLogging = async (dispatch: any) => {
+export const startLogging = async (dispatch: any, dogs: any[]) => {
   dispatch(setIsLoggingOn());
   storeData('@StartDate', new Date());
+  storeData('@Dogs', dogs);
   const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {

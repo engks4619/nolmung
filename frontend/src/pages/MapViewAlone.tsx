@@ -5,7 +5,6 @@ import OnSaving from '@pages/OnSaving';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {doneWalking} from '~/utils/MyPositionFunctions';
-import {increaseTimeCount} from '~/slices/myPositionSlice';
 
 function MapViewAlone({navigation}: any) {
   const dispatch = useDispatch();
@@ -14,20 +13,17 @@ function MapViewAlone({navigation}: any) {
   );
   const path = useSelector((state: RootState) => state.myPosition.path);
   const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
+  const watchId = useSelector((state: RootState) => state.myPosition.watchId);
+  const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
-  const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
-  const watchId = useSelector((state: RootState) => state.myPosition.watchId);
-  const count = useSelector((state: RootState) => state.myPosition.timeCount);
-
-  const selectedDogsInfo: any[] = [];
+  const dogs: any[] = [];
   dogsInfo.forEach(elem => {
     if (selectedDogs.includes(elem.dogIdx)) {
-      selectedDogsInfo.push(elem);
+      dogs.push(elem);
     }
   });
-  console.log(selectedDogsInfo);
   if (isSaving) {
     return <OnSaving />;
   } else {
@@ -36,13 +32,9 @@ function MapViewAlone({navigation}: any) {
         <MapViewTemplate
           myPosition={myPosition}
           path={path}
-          dogInfoList={selectedDogsInfo}
+          dogInfoList={dogs}
           doneWalking={() => {
             doneWalking(dispatch, navigation, watchId);
-          }}
-          count={count}
-          increaseCount={() => {
-            dispatch(increaseTimeCount);
           }}
         />
       </View>

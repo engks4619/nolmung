@@ -10,12 +10,22 @@ const functions = [logsToServer]; //저장x,저장하기,이어하기,navigate�
 function LogView({route}: any) {
   const myPositionStates = useSelector((state: RootState) => state.myPosition);
   const isOver = route.params.isOver;
+  const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
+  const selectedDogs = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+  const dogs: any[] = [];
+  dogsInfo.forEach(elem => {
+    if (selectedDogs.includes(elem.dogIdx)) {
+      dogs.push(elem);
+    }
+  });
   return (
     <View>
       <LogViewTemplate
         functions={functions}
         path={myPositionStates.path}
-        dogInfoList={myPositionStates.dogs}
+        dogInfoList={dogs}
         isOver={isOver}
         // myPosition={myPositionStates.path[0]}
         // myPosition={myPositionStates.myPosition}

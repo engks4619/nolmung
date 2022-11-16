@@ -6,25 +6,15 @@ import {Coord} from 'react-native-nmap';
 import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
-import Timer from '@organisms/Timer';
 
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
   doneWalking: any;
-  count: number;
-  increaseCount: () => void;
 }
 
-function MapView({
-  myPosition,
-  path,
-  dogInfoList,
-  doneWalking,
-  count,
-  increaseCount,
-}: Props) {
+function MapView({myPosition, path, dogInfoList, doneWalking}: Props) {
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>
@@ -32,7 +22,6 @@ function MapView({
       </View>
     );
   }
-  console.log(dogInfoList);
   return (
     <View>
       <ScrollView>
@@ -70,7 +59,6 @@ function MapView({
             onClick={doneWalking}
           />
           {/* <Timer count={count} increaseCount={increaseCount}></Timer> */}
-          <Timer />
         </View>
       </ScrollView>
     </View>

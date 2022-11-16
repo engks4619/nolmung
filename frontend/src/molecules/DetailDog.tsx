@@ -7,7 +7,6 @@ export interface DetailDogProps {
   dogName: string;
   breedCodeValue: string;
   image: string;
-  dogIdx: number;
 }
 
 function DetailDog({dogName, breedCodeValue, image}: DetailDogProps) {

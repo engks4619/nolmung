@@ -8,7 +8,6 @@ const initialState = {
   startDate: null,
   lastUpdate: null,
   path: [],
-  timeCount: 0,
 };
 
 const myPositionSlice = createSlice({
@@ -34,16 +33,12 @@ const myPositionSlice = createSlice({
       state.startDate = action.payload.startDate;
       state.lastUpdate = action.payload.lastUpdate;
       state.path = action.payload.walkingLogs;
-      state.dogs = action.payload.dogs;
     },
     resetStates(state) {
       Object.assign(state, initialState);
     },
     setWatchId(state, action) {
       state.watchId = action.payload;
-    },
-    increaseTimeCount(state) {
-      state.timeCount = state.timeCount + 1;
     },
   },
   extraReducers: builder => {},
@@ -58,6 +53,5 @@ export const {
   setIsSavingOn,
   setIsSavingOff,
   setWatchId,
-  increaseTimeCount,
 } = myPositionSlice.actions;
 export default myPositionSlice;
