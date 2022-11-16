@@ -2,16 +2,30 @@ import React from 'react';
 import {View} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import {doneWalking} from '~/utils/MyPositionFunctions';
 
-function MapViewAlone() {
+function MapViewAlone({navigation}: any) {
+  const dispatch = useDispatch();
   const myPosition = useSelector(
     (state: RootState) => state.myPosition.myPosition,
   );
   const path = useSelector((state: RootState) => state.myPosition.path);
   const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
-  const dogs = useSelector((state: RootState) => state.myPosition.dogs);
+  const watchId = useSelector((state: RootState) => state.myPosition.watchId);
+  const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
+  const selectedDogs = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+  // LogView 함수 만들어서 import하기
+  const dogs: any[] = [];
+  dogsInfo.forEach(elem => {
+    if (selectedDogs.includes(elem.dogIdx)) {
+      dogs.push(elem);
+    }
+  });
+
   if (isSaving) {
     return <OnSaving />;
   } else {
@@ -21,6 +35,9 @@ function MapViewAlone() {
           myPosition={myPosition}
           path={path}
           dogInfoList={dogs}
+          doneWalking={() => {
+            doneWalking(dispatch, navigation, watchId);
+          }}
         />
       </View>
     );

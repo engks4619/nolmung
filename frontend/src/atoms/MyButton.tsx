@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   btn: {
     borderRadius: 10,
     justifyContent: 'center',
+    elevation: 3,
   },
   fontStyle: {
     color: 'white',

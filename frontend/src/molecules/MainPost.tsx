@@ -12,7 +12,6 @@ interface postInfo {
   postIdx: number;
   subject: string;
   chatCnt: number;
-  likeCnt: number;
 }
 
 interface Props {
@@ -57,8 +56,6 @@ function MainPost({mainPosts, mainPostPgNum}: Props) {
                 <View style={styles.svgContainer}>
                   <Chat width={13} height={13} fill={'black'} />
                   <Text style={styles.svgMargin}>{post.chatCnt}</Text>
-                  <Heart width={13} height={13} fill={'black'} />
-                  <Text style={styles.svgMargin}>{post.likeCnt}</Text>
                 </View>
               </View>
             </View>
