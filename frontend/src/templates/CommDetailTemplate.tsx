@@ -23,13 +23,13 @@ function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
           writerIdx={detailContent.writerIdx}
           modifyDate={detailContent.modifyDate}
           userImgUrl={detailContent.userImgUrl}
+          leadLine={detailContent.leadLine}
+          poopBag={detailContent.poopBag}
         />
         <DetailDogs dogInfoList={detailContent.dogInfoList} />
         <DetailWalk
           location={detailContent.location}
           walkDate={detailContent.walkDate}
-          leadLine={detailContent.leadLine}
-          poopBag={detailContent.poopBag}
         />
         <DetailContent
           content={detailContent.content}

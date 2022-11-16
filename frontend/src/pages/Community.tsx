@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, Button} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
@@ -19,34 +19,16 @@ export type CommunityParamList = {
 
 const CommunityStack = createNativeStackNavigator();
 
-const headers = {
-  headerTitle: '놀면 멍하니',
-  headerTintColor: MAIN_COLOR,
-  headerTitleStyle: {
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-};
-
 export const CommunityStackNavigator = () => (
   <CommunityStack.Navigator>
     <CommunityStack.Screen
       name="Community"
       component={Community}
-      options={{headerShown: false}}
-    />
-    <CommunityStack.Screen
-      name="CommDetail"
-      component={CommDetail}
       options={{
-        headerTitle: '게시글',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
+        headerShown: false,
       }}
     />
+    <CommunityStack.Screen name="CommDetail" component={CommDetail} />
     <CommunityStack.Screen name="RegistArticle" component={RegistArticle} />
     <CommunityStack.Screen name="Oppent" component={Oppent} />
   </CommunityStack.Navigator>

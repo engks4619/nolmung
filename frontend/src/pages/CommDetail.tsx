@@ -4,6 +4,7 @@ import CommDetailTemplate from '@templates/CommDetailTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {DetailDogProps} from '@molecules/DetailDog';
+import CommDetailHeader from '~/molecules/CommDetailHeader';
 
 export interface DetailProps {
   dogInfoList: DetailDogProps[];
@@ -24,11 +25,12 @@ export interface DetailProps {
   userImgUrl: string;
 }
 
-function CommDetail({route}: any) {
+function CommDetail({route, navigation}: any) {
   const postIdx: number = route.params.postIdx;
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
   const [isLiked, setIsLiked] = useState<Boolean>(false);
+  const [category, setCategory] = useState<string>('');
 
   const getDetailPost = async (postId: number) => {
     try {
@@ -38,6 +40,7 @@ function CommDetail({route}: any) {
       const data: DetailProps = response.data;
       setDetailContent(data);
       setIsLiked(data.getLike);
+      setCategory(data.categoryType);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -63,6 +66,15 @@ function CommDetail({route}: any) {
   useEffect(() => {
     getDetailPost(postIdx);
   }, [postIdx]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <CommDetailHeader navigation={navigation} category={category} />
+      ),
+    });
+  }, [navigation, category]);
+
   return (
     <CommDetailTemplate
       detailContent={detailContent}

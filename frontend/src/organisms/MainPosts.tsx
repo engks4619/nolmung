@@ -70,8 +70,7 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 7,
     marginTop: 2,
-    borderBottomColor: 'rgba(0, 0, 0, .5)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: 'white',
   },
   headingText: {
     color: 'black',
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     flexDirection: 'row',
     alignSelf: 'center',
+    marginVertical: 5,
   },
   dotActive: {
     margin: 3,

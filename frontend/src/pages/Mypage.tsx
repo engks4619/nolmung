@@ -12,8 +12,6 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
-//로깅시작함수
-import {startWalking} from '~/utils/MyPositionFunctions';
 import {
   storeData,
   getData,
@@ -56,20 +54,12 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen
       name="LogView"
       component={LogView}
-      options={{headerShown: false}}
+      options={{headerShown: true}}
     />
   </MypageStack.Navigator>
 );
 
 //dummy
-const userInfo: UserInfoType = {
-  imageSource:
-    'http://image.dongascience.com/Photo/2020/03/d2bb40617ababa299660cccc0442f993.jpg',
-  userName: '윤성도짱짱',
-  walkNumber: 10,
-  walkHour: 10,
-  walkDistance: 100,
-};
 
 // 마이페이지 버튼탭 목록(navi동작)
 const myPageListNavi = [
@@ -109,6 +99,14 @@ const myPageListFunc = [
 ];
 
 function Mypage({navigation}: any) {
+  const user = useSelector((state: RootState) => state.user);
+  const userInfo: UserInfoType = {
+    imageSource: user.profileImage,
+    userName: user.nickname,
+    walkNumber: 10,
+    walkHour: 10,
+    walkDistance: 100,
+  };
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
 
@@ -122,15 +120,6 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-
-  // 산책 시작 예시 함수
-  const myPositionState = useSelector((state: RootState) => state.myPosition);
-  const dispatch = useDispatch();
-  const goWalking = () => {
-    // navigation.navigate('MapViewAlone');
-    startWalking(dispatch, navigation, myPositionState);
-  };
-  // redux에 들어갈 예시 데이터
   const polylinePath = [
     {latitude: 33.8805, longitude: -118.2084},
     {latitude: 33.7805, longitude: -118.2084},
@@ -146,6 +135,7 @@ function Mypage({navigation}: any) {
     {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
     {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
   ];
+
   return (
     <View>
       <MypageTemplate
@@ -158,9 +148,6 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable onPress={goWalking}>
-        <Text>산책시작하기</Text>
-      </Pressable>
       <Pressable
         onPress={() => {
           const date = new Date();
@@ -207,6 +194,12 @@ function Mypage({navigation}: any) {
           console.log(a);
         }}>
         <Text>getMultiple</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          removeMultiple(['accessToken']);
+        }}>
+        <Text>엑세스토큰제거</Text>
       </Pressable>
     </View>
   );
