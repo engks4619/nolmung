@@ -4,31 +4,44 @@ import {Alert} from 'react-native';
 import OppentTemplate from '~/templates/OppentTemplate';
 import axios from '~/utils/axios';
 
+export interface reviewerType {
+  nickname: string;
+  phone: string;
+  profileImage: string;
+  userIdx: number;
+}
 interface reviewDataType {
+  createdAt: string;
   owner: boolean;
   recoredIdx: string;
   review: string;
-  start: number;
+  star: number;
+  reviewer: reviewerType;
+  reviewee: reviewerType;
 }
 
 function Oppent({route}: any) {
   const oppentIdx = route.params.oppentIdx;
-  const [reviews, setRevies] = useState<reviewDataType[]>([]);
-  const [partTimeNum, setPartTimeNum] = useState<number>(0);
+  const [isOwner, setIsOwner] = useState<boolean>(true);
+  const [ownerReviews, setOwnerReviews] = useState<reviewDataType[]>([]);
+  const [ptReviews, setPtReviews] = useState<reviewDataType[]>([]);
+  const [oppentInfo, setOppentInfo] = useState<reviewerType>();
 
-  const getOppentInfo = async (oppentId: number) => {
+  const getOppentInfo = async (oppentId: number, owner: boolean) => {
     try {
       const response: AxiosResponse = await axios.get(
-        `user/history/${oppentId}`,
+        `user/history/reviewee/${oppentId}/${owner}`,
       );
       const reviewData: reviewDataType[] = response.data;
-      setRevies(reviewData);
       console.log(reviewData);
-      const notOwner = reviewData.reduce((cnt, review) => {
-        !review.owner ? cnt++ : null;
-        return cnt;
-      }, 0);
-      setPartTimeNum(notOwner);
+      console.log('=============================');
+      if (isOwner) {
+        setOwnerReviews(reviewData);
+        setOppentInfo(reviewData[0]?.reviewee);
+      } else {
+        setIsOwner(false);
+        setPtReviews(reviewData);
+      }
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -38,13 +51,16 @@ function Oppent({route}: any) {
   };
 
   useEffect(() => {
-    getOppentInfo(-1650769681);
+    getOppentInfo(-1113611723, true);
   }, []);
 
   return (
     <OppentTemplate
-      partTimeNum={partTimeNum}
-      useNum={reviews?.length - partTimeNum}
+      isOwner={isOwner}
+      ownerReviews={ownerReviews}
+      ptReviews={ptReviews}
+      oppentInfo={oppentInfo}
+      setIsOwner={setIsOwner}
     />
   );
 }

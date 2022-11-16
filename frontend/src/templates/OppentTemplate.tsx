@@ -1,13 +1,25 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import Review from '~/molecules/Review';
+import OppentReview from '~/molecules/OppentReview';
 import ReviewProfile from '~/molecules/ReviewProfile';
 
-function OppentTemplate({partTimeNum, useNum}) {
+function OppentTemplate({
+  isOwner,
+  ownerReviews,
+  ptReviews,
+  oppentInfo,
+  setIsOwner,
+}) {
   return (
     <View style={styles.container}>
-      <ReviewProfile partTimeNum={partTimeNum} useNum={useNum} />
-      <Review />
+      <ReviewProfile
+        isOwner={isOwner}
+        ptReviewsNum={ptReviews.length}
+        ownerReviews={ownerReviews.length}
+        oppentInfo={oppentInfo}
+        setIsOwner={setIsOwner}
+      />
+      <OppentReview />
     </View>
   );
 }

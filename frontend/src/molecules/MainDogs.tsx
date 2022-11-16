@@ -1,4 +1,4 @@
-import React, {Dispatch} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import Profile from '~/atoms/Profile';
