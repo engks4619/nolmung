@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, Pressable, Text} from 'react-native';
+import {View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
@@ -12,16 +12,7 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
-import {
-  storeData,
-  getData,
-  removeData,
-  removeMultiple,
-  containsKey,
-  getAllKeys,
-  getMultiple,
-} from '~/utils/AsyncService';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 
 //UserInfoType
@@ -58,8 +49,6 @@ export const MypageStackNavigator = () => (
     />
   </MypageStack.Navigator>
 );
-
-//dummy
 
 // 마이페이지 버튼탭 목록(navi동작)
 const myPageListNavi = [
@@ -120,21 +109,6 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-  const polylinePath = [
-    {latitude: 33.8805, longitude: -118.2084},
-    {latitude: 33.7805, longitude: -118.2084},
-    {latitude: 33.6805, longitude: -118.2084},
-    {latitude: 33.5805, longitude: -118.2084},
-    {latitude: 33.4805, longitude: -118.2084},
-    {latitude: 33.3805, longitude: -118.2084},
-    {latitude: 33.2805, longitude: -118.2084},
-    {latitude: 33.1805, longitude: -118.2084},
-    {latitude: 33.0805, longitude: -118.2084},
-  ];
-  const dogs = [
-    {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
-    {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
-  ];
 
   return (
     <View>
