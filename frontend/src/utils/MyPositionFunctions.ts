@@ -1,3 +1,4 @@
+import {containsKey} from './AsyncService';
 import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Coord} from 'react-native-nmap';
@@ -51,7 +52,10 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
   storeData('@StartDate', new Date());
   storeData('@Dogs', dogs);
-  storeData('@WalkingLogs', []);
+  const hasLog = await containsKey('@WalkingLogs');
+  if (!hasLog) {
+    storeData('@WalkingLogs', []);
+  }
   const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {
@@ -185,5 +189,5 @@ export const doneWalking = async (
   dispatch(setIsSavingOn);
   // await logsToServer();
   dispatch(setIsSavingOff);
-  navigation.navigate('LogView', {isOver: true});
+  navigation.navigate('LogView', {isOver: false});
 };

@@ -18,6 +18,9 @@ function MapViewAlone({navigation}: any) {
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
+  const startDate = useSelector(
+    (state: RootState) => state.myPosition.startDate,
+  );
   // LogView 함수 만들어서 import하기
   const dogs: any[] = [];
   dogsInfo.forEach(elem => {
@@ -35,6 +38,7 @@ function MapViewAlone({navigation}: any) {
           myPosition={myPosition}
           path={path}
           dogInfoList={dogs}
+          startDate={startDate}
           doneWalking={() => {
             doneWalking(dispatch, navigation, watchId);
           }}

@@ -6,15 +6,26 @@ import {Coord} from 'react-native-nmap';
 import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
-
+import Timer from '@organisms/Timer';
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
+  startDate: Date | null;
   doneWalking: any;
 }
 
-function MapView({myPosition, path, dogInfoList, doneWalking}: Props) {
+function MapView({
+  myPosition,
+  path,
+  dogInfoList,
+  doneWalking,
+  startDate,
+}: Props) {
+  const defaultSec =
+    startDate !== undefined && startDate !== null
+      ? (new Date().getTime() - startDate.getTime()) / 1000
+      : 0;
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>
@@ -52,13 +63,13 @@ function MapView({myPosition, path, dogInfoList, doneWalking}: Props) {
               ) : null}
             </NaverMapView>
           </View>
+          <Timer sec={defaultSec} />
           <MyButton
             btnText="산책 종료"
             width={200}
             height={50}
             onClick={doneWalking}
           />
-          {/* <Timer count={count} increaseCount={increaseCount}></Timer> */}
         </View>
       </ScrollView>
     </View>
