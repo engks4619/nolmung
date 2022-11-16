@@ -148,59 +148,6 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable
-        onPress={() => {
-          const date = new Date();
-          storeData('@StartDate', date);
-          storeData('@LastUpdate', date);
-          storeData('@WalkingLogs', polylinePath);
-          storeData('@Dogs', dogs);
-        }}>
-        <Text>storeData</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await containsKey('@StartDate');
-          console.log(a);
-        }}>
-        <Text>containsKey</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          removeMultiple([
-            '@StartDate',
-            '@LastUpdate',
-            '@WalkingLogs',
-            '@Dogs',
-          ]);
-        }}>
-        <Text>removeMultiple</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await getAllKeys();
-          console.log(a);
-        }}>
-        <Text>getAllKeys</Text>
-      </Pressable>
-      <Pressable
-        onPress={async () => {
-          const a = await getMultiple([
-            '@StartDate',
-            '@LastUpdate',
-            '@WalkingLogs',
-            '@Dogs',
-          ]);
-          console.log(a);
-        }}>
-        <Text>getMultiple</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          removeMultiple(['accessToken']);
-        }}>
-        <Text>엑세스토큰제거</Text>
-      </Pressable>
     </View>
   );
 }
