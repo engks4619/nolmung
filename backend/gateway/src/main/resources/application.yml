@@ -81,7 +81,7 @@ spring:
         - id: chat
           uri: http://nolmung.kr:5000
           predicates:
-            - Path=/
+            - Path=/**
           filters:
             - RemoveRequestHeader=Cookie
 
