@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {MAIN_COLOR, TEXT_INPUT_BACKGROUND_COLOR} from '~/const';
+import {BORDER_COLOR, MAIN_COLOR, TEXT_INPUT_BACKGROUND_COLOR} from '~/const';
 import ChatInfoSummary from '~/organisms/ChatInfoSummary';
 import ReviewArticleSummary from '~/organisms/ReviewArticleSummary';
 import StarContainer from '~/organisms/StarContainer';
@@ -34,8 +34,7 @@ const WalkReviewTemplate = ({
       <TextInputBox
         content={review}
         setContent={setReview}
-        borderColor={MAIN_COLOR}
-        backgroundColor={TEXT_INPUT_BACKGROUND_COLOR}
+        borderColor={BORDER_COLOR}
       />
     </ScrollView>
   );

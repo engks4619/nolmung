@@ -4,24 +4,19 @@ import {StyleSheet, TextInput, View} from 'react-native';
 interface Props {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
-  backgroundColor: string;
   borderColor: string;
 }
 
-const TextInutBox = ({
-  content,
-  setContent,
-  backgroundColor,
-  borderColor,
-}: Props) => {
+const TextInutBox = ({content, setContent, borderColor}: Props) => {
   return (
     <View
       style={{
         marginHorizontal: 20,
         marginVertical: 20,
-        backgroundColor,
         borderWidth: 1,
         borderColor,
+        borderRadius: 5,
+        minHeight: 250,
       }}>
       <TextInput
         multiline={true}
