@@ -51,6 +51,7 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
   storeData('@StartDate', new Date());
   storeData('@Dogs', dogs);
+  storeData('@WalkingLogs', []);
   const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {
@@ -60,6 +61,7 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
       dispatch(setMyPosition(myPosition));
       dispatch(addPath(myPosition));
       storeData('@LastUpdate', new Date());
+      addPathToAsync(myPosition);
     },
     error => {
       Alert.alert('알림', '죄송합니다. 위치정보 기록이 중단되었습니다.');
@@ -72,9 +74,15 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
       distanceFilter: 5,
     },
   );
-  if (watchId) {
+  if (typeof watchId === 'number') {
     dispatch(setWatchId(watchId));
   }
+};
+//asyncStorage에 path추가
+const addPathToAsync = async (position: Coord) => {
+  let path = await getData('@WalkingLogs');
+  path.push(position);
+  await storeData('@WalkingLogs', path);
 };
 
 // 비정상 기록 저장 여부 질문
@@ -142,6 +150,7 @@ const syncLogs = async (dispatch: any) => {
       startDate: values[0],
       lastUpdate: values[1],
       walkingLogs: values[2],
+      myPosition: values[2][values[2].length - 1],
     };
     dispatch(setSelectedMyDogs(values[3]));
     dispatch(setStates(logsPair));
