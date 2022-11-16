@@ -24,12 +24,12 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public HistoryDto registerReview(Long userIdx, Long postIdx, HistoryDto historyDto) {
         var map = commUtil.getPostInfo(postIdx);
-        if(userIdx == map.get("writer")){
-            historyDto.setOwner(true);
-            historyDto.setReviewee(userRepository.findById((Long) map.get("alba")).get());
-        }else{
+        if(userIdx == map.get("writerIdx")){
             historyDto.setOwner(false);
-            historyDto.setReviewee(userRepository.findById((Long) map.get("writer")).get());
+            historyDto.setReviewee(userRepository.findById((Long) map.get("albaIdx")).get());
+        }else{
+            historyDto.setOwner(true);
+            historyDto.setReviewee(userRepository.findById((Long) map.get("writerIdx")).get());
         }
         historyDto.setReviewer(userRepository.findById(userIdx).get());
         ModelMapper mapper = new ModelMapper();
