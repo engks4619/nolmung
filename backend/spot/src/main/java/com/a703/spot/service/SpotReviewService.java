@@ -8,6 +8,6 @@ import java.util.Map;
 
 public interface SpotReviewService {
 
-    void registReview(SpotReviewRequest request, String token, List<MultipartFile> files);
+    Long registReview(SpotReviewRequest request, String token);
     void deleteReview(Long request,String token);
 }

@@ -39,7 +39,7 @@ public class SpotReviewServiceImpl implements SpotReviewService {
     private final FileUtil fileUtil;
 
     @Override
-    public void registReview(SpotReviewRequest request,String token, List<MultipartFile> files) {
+    public Long registReview(SpotReviewRequest request,String token) {
         try {
             // 리뷰 저장
             UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
@@ -58,16 +58,8 @@ public class SpotReviewServiceImpl implements SpotReviewService {
 //
             SpotReview spotReview = spotReviewRepository.save(spotReviewEntity);
             
-            //이미지 파일 업로드
-            try {
-                if (files != null) {
-                    for (MultipartFile multipartFile : files) {
-                        fileUtil.fileUpload(multipartFile, spotReview.getReviewIdx());
-                    }
-                }
-            }catch (NoSuchFileException e) {
-                throw new SpotReviewException(ReviewErrorCode.FILE_UPLOAD_FAILED);
-            }
+            return spotReview.getReviewIdx();
+
         }catch (Exception e) {
             throw new SpotReviewException(AccountErrorCode.ACCOUNT_NOT_FOUND);
         }
