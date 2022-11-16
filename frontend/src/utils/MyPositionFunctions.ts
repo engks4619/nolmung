@@ -1,7 +1,6 @@
 import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Coord} from 'react-native-nmap';
-
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {
@@ -21,6 +20,7 @@ import {
   setIsSavingOff,
   setWatchId,
 } from '~/slices/myPositionSlice';
+import {setSelectedMyDogs} from '~/slices/dogsSlice';
 
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
@@ -28,7 +28,7 @@ export const startWalking = async (
   dispatch: any,
   navigation: any,
   myPositionState: any,
-  dogs: any[],
+  dogs: number[],
 ) => {
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
@@ -38,7 +38,7 @@ export const startWalking = async (
     const localStatus = await checkLocal(localList);
     if (localStatus) {
       // local에는 존재 redux에는 없음 => 비정상 종료
-      lastLogAlert(navigation, dispatch, localList);
+      lastLogAlert(navigation, dispatch, localList, dogs);
     } else {
       // redux,local 둘다 없음 => 그냥 새로 시작
       startLogging(dispatch, dogs);
@@ -47,7 +47,7 @@ export const startWalking = async (
   }
 };
 
-export const startLogging = async (dispatch: any, dogs: any[]) => {
+export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
   storeData('@StartDate', new Date());
   storeData('@Dogs', dogs);
@@ -62,7 +62,8 @@ export const startLogging = async (dispatch: any, dogs: any[]) => {
       storeData('@LastUpdate', new Date());
     },
     error => {
-      console.log(error);
+      Alert.alert('알림', '죄송합니다. 위치정보 기록이 중단되었습니다.');
+      console.error(error);
     },
     {
       interval: 5000,
@@ -71,7 +72,9 @@ export const startLogging = async (dispatch: any, dogs: any[]) => {
       distanceFilter: 5,
     },
   );
-  dispatch(setWatchId(watchId));
+  if (watchId) {
+    dispatch(setWatchId(watchId));
+  }
 };
 
 // 비정상 기록 저장 여부 질문
@@ -79,6 +82,7 @@ export const lastLogAlert = (
   navigation: any,
   dispatch: any,
   removeList: string[],
+  dogs: number[],
 ) => {
   Alert.alert(
     '비정상 종료된 산책이 있습니다',
@@ -90,7 +94,7 @@ export const lastLogAlert = (
           await removeMultiple(removeList);
           await dispatch(resetStates);
           navigation.navigate('MapViewAlone');
-          startLogging(dispatch);
+          startLogging(dispatch, dogs);
         }, //local 지우기, navigate mapView
       },
       {
@@ -138,8 +142,8 @@ const syncLogs = async (dispatch: any) => {
       startDate: values[0],
       lastUpdate: values[1],
       walkingLogs: values[2],
-      dogs: values[3],
     };
+    dispatch(setSelectedMyDogs(values[3]));
     dispatch(setStates(logsPair));
   }
 };
@@ -166,7 +170,7 @@ export const quitLogging = (watchID: number) => {
 export const doneWalking = async (
   dispatch: any,
   navigation: any,
-  watchId: number | undefined,
+  watchId: number,
 ) => {
   quitLogging(watchId);
   dispatch(setIsSavingOn);

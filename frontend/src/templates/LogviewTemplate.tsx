@@ -7,7 +7,7 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import NaverMapView, {Marker, Polyline, Coord, Path} from 'react-native-nmap';
+import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import DetailDogs from '@organisms/DetailDogs';
 import {MAIN_COLOR} from '~/const';
@@ -32,6 +32,7 @@ function LogViewTemplate({
 Props) {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const ref: any = useRef();
+  // 여기부터 수정
   const createFormData = (image: any, body: any = {}) => {
     const data = new FormData();
 
@@ -80,6 +81,7 @@ Props) {
         console.log('error1', error);
       });
   };
+  // 여기까지 수정
   if (isOver) {
     return (
       <ScrollView>

@@ -12,8 +12,6 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
-//로깅시작함수
-import {startWalking} from '~/utils/MyPositionFunctions';
 import {
   storeData,
   getData,
@@ -150,9 +148,6 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      {/* <Pressable onPress={goWalking}>
-        <Text>산책시작하기</Text>
-      </Pressable> */}
       <Pressable
         onPress={() => {
           const date = new Date();

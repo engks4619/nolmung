@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {ScrollView, Alert} from 'react-native';
 import MainTemplate from '@templates/MainTemplate';
 import axios from '~/utils/axios';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
@@ -48,7 +48,6 @@ function Main({navigation}: any) {
   );
   // 산책 시작 함수
   const myPositionState = useSelector((state: RootState) => state.myPosition);
-  // const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
@@ -56,6 +55,7 @@ function Main({navigation}: any) {
   const goWalking = () => {
     startWalking(dispatch, navigation, myPositionState, selectedDogs);
   };
+
   const getMainPostList = async () => {
     try {
       const {data} = await axios.get('community/main');

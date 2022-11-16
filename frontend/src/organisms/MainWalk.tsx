@@ -17,7 +17,7 @@ function MainWalk({goWalking}: Props) {
           btnText="산책 시작"
           width={isSelecting ? 120 : 200}
           height={50}
-          onClick={goWalking}
+          onClick={() => goWalking()}
         />
       </View>
     </View>

@@ -18,12 +18,14 @@ function MapViewAlone({navigation}: any) {
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
+  // LogView 함수 만들어서 import하기
   const dogs: any[] = [];
   dogsInfo.forEach(elem => {
     if (selectedDogs.includes(elem.dogIdx)) {
       dogs.push(elem);
     }
   });
+
   if (isSaving) {
     return <OnSaving />;
   } else {
