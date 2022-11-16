@@ -35,3 +35,6 @@ image:
 #  url: http://localhost:7554/api/image
   dog:
     path: /images/dog/%s
+
+community:
+  url: http://COMMUNITY/api/community

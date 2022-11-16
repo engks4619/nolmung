@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface HistoryRepository extends CrudRepository<HistoryEntity, Long> {
-    List<HistoryEntity> findAllByUserUserIdx(Long userIdx);
+    List<HistoryEntity> findAllByRevieweeUserIdx(Long userIdx);
+    List<HistoryEntity> findAllByReviewerUserIdx(Long userIdx);
 }

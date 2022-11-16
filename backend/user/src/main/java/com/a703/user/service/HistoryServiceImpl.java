@@ -5,6 +5,7 @@ import com.a703.user.entity.HistoryEntity;
 import com.a703.user.entity.UserEntity;
 import com.a703.user.repository.HistoryRepository;
 import com.a703.user.repository.UserRepository;
+import com.a703.user.util.CommUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
@@ -20,21 +21,31 @@ public class HistoryServiceImpl implements HistoryService {
 
     private final HistoryRepository historyRepository;
     private final UserRepository userRepository;
+    private final CommUtil commUtil;
 
     @Override
-    public HistoryDto registerReview(Long userIdx, HistoryDto historyDto) {
-        Optional<UserEntity> userEntity = userRepository.findById(userIdx);
-        userEntity.ifPresent(historyDto::setUser);
+    public HistoryDto registerReview(Long userIdx, Long postIdx, HistoryDto historyDto) {
+        var map = commUtil.getPostInfo(postIdx);
+        if(userIdx == map.get("writer")){
+            historyDto.setOwner(true);
+            historyDto.setReviewee(userRepository.findById((Long) map.get("alba")).get());
+        }else{
+            historyDto.setOwner(false);
+            historyDto.setReviewee(userRepository.findById((Long) map.get("writer")).get());
+        }
+        historyDto.setReviewer(userRepository.findById(userIdx).get());
         ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setFieldAccessLevel(Configuration.AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
+        mapper.getConfiguration().setSkipNullEnabled(true).setFieldAccessLevel(Configuration.AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
         HistoryEntity historyEntity = mapper.map(historyDto, HistoryEntity.class);
         HistoryEntity savedReview = historyRepository.save(historyEntity);
         return mapper.map(savedReview, HistoryDto.class);
     }
 
     @Override
-    public List<HistoryDto> getReviewList(Long userIdx) {
-        List<HistoryEntity> historyEntityList = historyRepository.findAllByUserUserIdx(userIdx);
+    public List<HistoryDto> getReviewList(Long userIdx, boolean reviewer) {
+        List<HistoryEntity> historyEntityList;
+        if(reviewer) historyEntityList = historyRepository.findAllByReviewerUserIdx(userIdx);
+        else historyEntityList = historyRepository.findAllByRevieweeUserIdx(userIdx);
         return historyEntityList.stream()
                 .map(a -> new ModelMapper().map(a, HistoryDto.class))
                 .collect(Collectors.toList());
