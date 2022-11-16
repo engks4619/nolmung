@@ -31,7 +31,7 @@ export interface DetailProps {
 
 function CommDetail({route, navigation}: any) {
   const postIdx: number = route.params.postIdx;
-  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+  const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
   const dispatch = useAppDispatch();
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
@@ -45,13 +45,15 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
-      const {writerIdx, pay, subject, photoUrl} = data;
-      dispatch(setPostInfo({postIdx, writerIdx, pay, subject, photoUrl}));
+      const {writerIdx, pay, subject, photoUrl, userImgUrl} = data;
+      dispatch(
+        setPostInfo({postIdx, writerIdx, pay, subject, photoUrl, userImgUrl}),
+      );
       setIsLiked(data.getLike);
       setCategory(data.categoryType);
     } catch (error: any) {
       Alert.alert(
-        `에러코드 ${error.response.status}`,
+        `에러코드 ${error?.response?.status}`,
         '죄송합니다. 다시 시도해주시길 바랍니다.',
       );
     }
@@ -65,7 +67,7 @@ function CommDetail({route, navigation}: any) {
       }
     } catch (error: any) {
       Alert.alert(
-        `에러코드 ${error.response.status}`,
+        `에러코드 ${error?.response?.status}`,
         '죄송합니다. 다시 시도해주시길 바랍니다.',
       );
     }

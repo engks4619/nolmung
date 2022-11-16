@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userInfoType} from '~/utils/type';
 
 const initialState = {
-  userIdx: '',
+  userIdx: 0,
   phone: '',
   nickname: '',
   profileImage: '',

@@ -10,7 +10,7 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     }
   }, []);
   if (!socket) {
-    socket = io('http://nolmung.kr/api/socket', {
+    socket = io('http://nolmung.kr', {
       transports: ['websocket'],
     });
     socket.on('connect', () => console.log('socket..connected'));
@@ -27,7 +27,7 @@ export const useRoomSocket = (): [Socket | undefined, () => void] => {
     }
   }, []);
   if (!roomSocket) {
-    roomSocket = io('http://192.168.0.102:5000/room', {
+    roomSocket = io('http://nolmung.kr/room', {
       transports: ['websocket'],
     });
     roomSocket.on('connect', () => console.log('room...socket..connected'));
@@ -44,7 +44,7 @@ export const useChatSocket = (): [Socket | undefined, () => void] => {
     }
   }, []);
   if (!chatSocket) {
-    chatSocket = io('http://192.168.0.102:5000/chat', {
+    chatSocket = io('http://nolmung.kr/chat', {
       transports: ['websocket'],
     });
     chatSocket.on('connect', () => console.log('chat...socket..connected'));

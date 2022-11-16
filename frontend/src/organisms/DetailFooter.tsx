@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Pressable,
+  Alert,
+} from 'react-native';
 import Heart from '@assets/heart.svg';
 import RedHeart from '@assets/redHeart.svg';
 import MyButton from '@atoms/MyButton';
@@ -22,14 +29,21 @@ interface footerProps {
 
 type chatsScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
 
-function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
+function DetailFooter({
+  categoryType,
+  pay,
+  isWriter,
+  isLiked,
+  putLike,
+}: footerProps) {
   const navigation = useNavigation<chatsScreenProp>();
   const [roomSocket, roomDisconnect] = useRoomSocket();
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
   const postIdx = useSelector((state: RootState) => state.post.postIdx);
+  const opponentIdx = useSelector((state: RootState) => state.post.writerIdx);
 
   const startChat = () => {
-    const data = {ownerIdx: userIdx, postIdx};
+    const data = {ownerIdx: userIdx, postIdx, opponentIdx};
     if (roomSocket && userIdx) {
       roomSocket.emit('newRoom', data);
       roomSocket.on('newRoomId', (roomId: string) =>
@@ -45,9 +59,9 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
       <Pressable onPress={() => putLike()}>
         <View style={styles.heartContainer}>
           {isLiked ? (
-            <Heart height={25} width={25} fill="black" />
-          ) : (
             <RedHeart height={25} width={25} fill="red" />
+          ) : (
+            <Heart height={25} width={25} fill="black" />
           )}
         </View>
       </Pressable>
@@ -62,7 +76,9 @@ function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
           width={100}
           fontSize={14}
           onClick={
-            isWriter ? () => navigation.navigate('Chats') : () => startChat()
+            isWriter
+              ? () => () => Alert.alert('알림', '구현중입니다..')
+              : () => startChat()
           }
         />
       </View>

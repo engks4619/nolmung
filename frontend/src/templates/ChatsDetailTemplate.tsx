@@ -11,6 +11,7 @@ function ChatsDetailTemplate({
   submitMsg,
   serverMsg,
   user,
+  oppentImg,
 }) {
   return (
     <View style={styles.container}>
@@ -19,8 +20,7 @@ function ChatsDetailTemplate({
         postImgae={postInfo.postImage}
         postPay={postInfo.postPay}
       />
-
-      <ChatField serverMsg={serverMsg} user={user} />
+      <ChatField serverMsg={serverMsg} user={user} oppentImg={oppentImg} />
       <View style={styles.inputContainer}>
         <ChatInput
           msgInput={msgInput}

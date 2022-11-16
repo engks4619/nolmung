@@ -16,14 +16,28 @@ function ChatsDetail({route}: ChatsScreenProp) {
   const postImage = useSelector((state: RootState) => state.post.postImage);
   const postPay = useSelector((state: RootState) => state.post.pay);
   const user = useSelector((state: RootState) => state.user.userIdx);
+  const oppentImg = useSelector((state: RootState) => state.post.writerImg);
 
   const [msgInput, setMsgInput] = useState<String>('');
   const [serverMsg, setServerMsg] = useState<any[]>([]);
 
   useEffect(() => {
+    // serverMsg 안바뀌는 문제
     if (chatSocket && roomId) {
       chatSocket.emit('join', roomId);
       chatSocket.on('chats', serverChats => setServerMsg(serverChats));
+      chatSocket.on('messageC', data => {
+        if (data.roomId === roomId) {
+          const now = new Date().toString();
+          const newData = {
+            chat: data.chat,
+            user: data.sender,
+            _id: now,
+            createdAt: now,
+          };
+          setServerMsg([...serverMsg, newData]);
+        }
+      });
     }
   }, [chatSocket, roomId]);
 
@@ -41,7 +55,7 @@ function ChatsDetail({route}: ChatsScreenProp) {
     };
     if (chatSocket && chat) {
       chatSocket.emit('messageS', data);
-      setServerMsg([...serverMsg, {chat, user, _id: now, createdAt: now}]);
+      // setServerMsg([...serverMsg, {chat, user, _id: now, createdAt: now}]);
     }
     setMsgInput('');
   };
@@ -54,6 +68,7 @@ function ChatsDetail({route}: ChatsScreenProp) {
       submitMsg={submitMsg}
       serverMsg={serverMsg}
       user={user}
+      oppentImg={oppentImg}
     />
   );
 }

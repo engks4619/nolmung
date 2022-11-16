@@ -6,6 +6,7 @@ const initialState = {
   subject: '',
   pay: undefined,
   writerIdx: undefined,
+  writerImg: '',
 };
 
 const postSlice = createSlice({
@@ -18,6 +19,7 @@ const postSlice = createSlice({
       state.subject = action.payload.subject;
       state.writerIdx = action.payload.writerIdx;
       state.pay = action.payload?.pay;
+      state.writerImg = action.payload.userImgUrl;
     },
   },
 });

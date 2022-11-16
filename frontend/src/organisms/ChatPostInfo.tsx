@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import MyButton from '~/atoms/MyButton';
 import Squre from '~/atoms/Squre';
 
@@ -16,16 +16,18 @@ function ChatPostInfo({postSubject, postImgae, postPay}: chatsPostInfoProps) {
         <Squre imageSource={postImgae} width={70} height={70} />
         <View style={styles.textContainer}>
           <Text style={styles.bold}>{postSubject}</Text>
-          <Text style={styles.bold}>{postPay?.toLocaleString('ko-KR')}원</Text>
+          <Text style={styles.bold}>
+            {postPay !== null ? `${postPay.toLocaleString('ko-KR')}원` : null}
+          </Text>
         </View>
       </View>
       <View style={styles.btnContainer}>
         <MyButton
-          btnText="산책 확정하기"
-          width={110}
+          btnText="산책 확정"
+          width={100}
           height={45}
           fontSize={14}
-          onClick={() => console.log('btn')}
+          onClick={() => Alert.alert('not yet')}
         />
       </View>
     </View>
@@ -37,7 +39,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: 'rgba(0, 0, 0, .5)',
-    flexDirection: 'row',
     justifyContent: 'space-between',
   },
   postInfoContainer: {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: '600',
-    fontSize: 15,
+    fontSize: 14,
     color: 'black',
   },
   btnContainer: {
