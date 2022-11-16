@@ -3,7 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 
 interface Props {
   subject: string;
-  walkDate: string;
   location: string;
   modifyDate: string;
 }
@@ -34,14 +33,12 @@ export function elapsedTime(date: string) {
 export function convertTime(time: string) {
   const [hour, minute] = time.split(':');
   if (Number(hour) < 12) {
-    return `AM ${hour}:${minute}`;
+    return `오전 ${hour}:${minute}`;
   }
-  return `PM ${Number(hour) - 12}:${minute}`;
+  return `오후 ${Number(hour) - 12}:${minute}`;
 }
 
-function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
-  let [walkDateJsDate, walkDateJsTime] = walkDate.split('T');
-
+function CommMainInfo({subject, location, modifyDate}: Props) {
   return (
     <View>
       <View style={styles.subjectContainer}>
@@ -49,12 +46,6 @@ function CommMainInfo({subject, walkDate, location, modifyDate}: Props) {
           {subject}
         </Text>
         <Text style={styles.smallFont}>{elapsedTime(modifyDate)}</Text>
-      </View>
-      <View style={styles.dateContainer}>
-        <Text style={styles.smallFont}>{walkDateJsDate}</Text>
-        <Text style={[styles.time, styles.smallFont]}>
-          {convertTime(walkDateJsTime)}
-        </Text>
       </View>
       <Text style={styles.smallFont}>{location}</Text>
     </View>
@@ -67,19 +58,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingText: {
-    fontSize: 14,
+    fontSize: 15,
     color: 'black',
     fontWeight: 'bold',
-    width: 220,
+    width: 190,
   },
   dateContainer: {
     flexDirection: 'row',
   },
-  time: {
-    paddingLeft: 5,
-  },
   smallFont: {
-    fontSize: 12,
+    fontSize: 13,
   },
 });
 
