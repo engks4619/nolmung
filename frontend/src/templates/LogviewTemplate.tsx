@@ -108,17 +108,7 @@ Props) {
                   zoom: 17,
                   latitude: myPosition.latitude,
                   longitude: myPosition.longitude,
-                }}
-                //   center={
-                //     path !== undefined
-                //       ? {
-                //           zoom: 17,
-                //           latitude: path[path.length / 2].latitude,
-                //           longitude: path[path.length / 2].longitude,
-                //         }
-                //       : {zoom: 17, latitude: 0, longitude: 0}
-                //   }
-              >
+                }}>
                 <Marker
                   coordinate={path[path.length - 1]}
                   width={50}
