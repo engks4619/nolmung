@@ -122,15 +122,6 @@ function Mypage({navigation}: any) {
     }
     setIsEditing(!isEditing);
   };
-
-  // 산책 시작 예시 함수
-  const myPositionState = useSelector((state: RootState) => state.myPosition);
-  const dispatch = useDispatch();
-  const goWalking = () => {
-    // navigation.navigate('MapViewAlone');
-    startWalking(dispatch, navigation, myPositionState);
-  };
-  // redux에 들어갈 예시 데이터
   const polylinePath = [
     {latitude: 33.8805, longitude: -118.2084},
     {latitude: 33.7805, longitude: -118.2084},
@@ -146,6 +137,7 @@ function Mypage({navigation}: any) {
     {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
     {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
   ];
+
   return (
     <View>
       <MypageTemplate
@@ -158,9 +150,9 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
       />
-      <Pressable onPress={goWalking}>
+      {/* <Pressable onPress={goWalking}>
         <Text>산책시작하기</Text>
-      </Pressable>
+      </Pressable> */}
       <Pressable
         onPress={() => {
           const date = new Date();

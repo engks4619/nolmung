@@ -14,10 +14,20 @@ function MapViewAlone({navigation}: any) {
   );
   const path = useSelector((state: RootState) => state.myPosition.path);
   const isSaving = useSelector((state: RootState) => state.myPosition.isSaving);
-  const dogs = useSelector((state: RootState) => state.myPosition.dogs);
+  const selectedDogs = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+  const dogsInfo = useSelector((state: RootState) => state.dogs.dogsInfo);
   const watchId = useSelector((state: RootState) => state.myPosition.watchId);
-  const count = useSelector((state: RootState) => state.myPosition.count);
-  // const mapViewFunc = (dispatch, navigation, watchId) => {doneWalking()}
+  const count = useSelector((state: RootState) => state.myPosition.timeCount);
+
+  const selectedDogsInfo: any[] = [];
+  dogsInfo.forEach(elem => {
+    if (selectedDogs.includes(elem.dogIdx)) {
+      selectedDogsInfo.push(elem);
+    }
+  });
+  console.log(selectedDogsInfo);
   if (isSaving) {
     return <OnSaving />;
   } else {
@@ -26,7 +36,7 @@ function MapViewAlone({navigation}: any) {
         <MapViewTemplate
           myPosition={myPosition}
           path={path}
-          dogInfoList={dogs}
+          dogInfoList={selectedDogsInfo}
           doneWalking={() => {
             doneWalking(dispatch, navigation, watchId);
           }}

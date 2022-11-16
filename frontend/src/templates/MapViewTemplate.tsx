@@ -32,6 +32,7 @@ function MapView({
       </View>
     );
   }
+  console.log(dogInfoList);
   return (
     <View>
       <ScrollView>

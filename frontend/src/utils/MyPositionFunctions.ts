@@ -29,7 +29,6 @@ export const startWalking = async (
   navigation: any,
   myPositionState: any,
 ) => {
-  console.log('myPositionState', myPositionState);
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewAlone');

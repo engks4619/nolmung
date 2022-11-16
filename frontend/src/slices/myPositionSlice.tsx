@@ -8,10 +8,6 @@ const initialState = {
   startDate: null,
   lastUpdate: null,
   path: [],
-  dogs: [
-    {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
-    {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
-  ],
   timeCount: 0,
 };
 
