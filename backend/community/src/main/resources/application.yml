@@ -3,6 +3,10 @@ spring:
     include: db
   application:
     name: community
+  servlet:
+    multipart:
+      maxFileSize: 30MB
+      maxRequestSize: 30MB
 
 server:
   port: 0
