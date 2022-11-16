@@ -1,23 +1,25 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Profile from '@atoms/Profile';
-import {elapsedTime} from '@molecules/CommMainInfo';
+import Poop from '@assets/poop.svg';
+import Lead from '@assets/lead.svg';
 
 interface DetailSubjectProps {
   subject: string;
   writer: string;
   modifyDate: string;
   userImgUrl: string;
+  leadLine: boolean;
+  poopBag: boolean;
 }
 
 function DetailSubject({
   subject,
   writer,
-  modifyDate,
   userImgUrl,
+  leadLine,
+  poopBag,
 }: DetailSubjectProps) {
-  let convertDate = modifyDate?.split('T')[0];
-  let convertTime = elapsedTime(modifyDate);
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{subject}</Text>
@@ -27,8 +29,10 @@ function DetailSubject({
           <Text style={styles.namePadding}>{writer}</Text>
         </View>
         <View style={styles.rowContainer}>
-          <Text style={styles.namePadding}>{convertDate}</Text>
-          <Text style={styles.namePadding}>{convertTime}</Text>
+          {leadLine ? <Poop width={30} height={30} fill="black" /> : null}
+          <View style={styles.svgContainer}>
+            {poopBag ? <Lead width={30} height={30} fill="black" /> : null}
+          </View>
         </View>
       </View>
     </View>
@@ -50,6 +54,7 @@ const styles = StyleSheet.create({
   subContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   heading: {
     fontSize: 15,
@@ -60,6 +65,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 13,
     color: 'rgba(0, 0, 0, 0.7)',
+  },
+  svgContainer: {
+    marginHorizontal: 3,
   },
 });
 

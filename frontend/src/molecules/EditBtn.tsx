@@ -1,8 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable, Dimensions} from 'react-native';
 import Edit from '@assets/edit.svg';
 import {MAIN_COLOR} from '~/const';
 
+const RIGHT = Dimensions.get('window').width * 0.05;
+const BOTTOM = Dimensions.get('screen').height * 0.1;
 interface Props {
   onPress: () => void;
 }
@@ -26,8 +28,8 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     alignItems: 'center',
     justifyContent: 'center',
-    right: 20,
-    bottom: 100,
+    right: RIGHT,
+    bottom: BOTTOM,
   },
 });
 

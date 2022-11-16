@@ -18,6 +18,7 @@ import CommunityIcon from '@assets/community.svg';
 import SpotIcon from '@assets/spot.svg';
 
 import {MypageStackNavigator} from './src/pages/Mypage';
+import {MainPageNavigator} from './src/pages/Main';
 import {CommunityStackNavigator} from './src/pages/Community';
 
 import usePermissions from '~/hooks/usePermissions';
@@ -128,7 +129,7 @@ function AppInner() {
           }}>
           <Tab.Screen
             name="Main"
-            component={Main}
+            component={MainPageNavigator}
             options={{
               headerTitle: '놀면 멍하니',
               headerTintColor: MAIN_COLOR,
@@ -168,7 +169,12 @@ function AppInner() {
             name="CommunityList"
             component={CommunityStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '커뮤니티',
               tabBarIcon: ({color}) => (
                 <CommunityIcon width={25} height={25} fill={color} />
