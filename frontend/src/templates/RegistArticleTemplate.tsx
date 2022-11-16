@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import {MAIN_COLOR} from '~/const';
+import {FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Up from '@assets/up.svg';
 import Down from '@assets/down.svg';
 import DatePicker from 'react-native-date-picker';
@@ -143,7 +143,7 @@ const RegistArticleTemplate = ({
           setImages={setImages}
         />
       </Modal>
-      <ScrollView>
+      <ScrollView style={{paddingHorizontal: 30}}>
         <SelectDropdown
           data={CATEGORY_TYPES}
           buttonStyle={styles.dropdownBtnStyle}
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   dropdownBtnStyle: {
-    width: '85%',
+    width: '100%',
     backgroundColor: 'white',
     alignSelf: 'center',
     borderBottomWidth: 1,
@@ -293,13 +293,13 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'left',
     paddingLeft: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   txtStyle: {
     color: 'black',
     textAlign: 'left',
     paddingLeft: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   dropDownStyle: {
     backgroundColor: '#EFEFEF',
@@ -310,18 +310,17 @@ const styles = StyleSheet.create({
     height: 30,
   },
   rowTextStyle: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   textInput: {
-    width: '85%',
+    width: '100%',
     alignSelf: 'center',
     paddingHorizontal: 25,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     paddingLeft: 25,
     height: 40,
   },
   hContainer: {
-    width: '85%',
     flexDirection: 'row',
     paddingVertical: 5,
     alignSelf: 'center',
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     paddingHorizontal: 15,
   },
   borderBrown: {
@@ -360,17 +359,16 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: '85%',
     paddingVertical: 10,
   },
   contentContainer: {
     display: 'flex',
     alignSelf: 'center',
-    width: '85%',
+    width: '100%',
     minHeight: 500,
   },
   content: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
 });
 

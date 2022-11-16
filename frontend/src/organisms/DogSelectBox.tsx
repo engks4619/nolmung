@@ -2,6 +2,7 @@ import React, {Dispatch} from 'react';
 import {SetStateAction} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {MultiSelect} from 'react-native-element-dropdown';
+import {FONT_SIZE_S} from '~/const';
 
 const renderDogList = (dog: {label: string; value: string}) => {
   return (
@@ -71,19 +72,19 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   selectedTextStyle: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   dropdown: {
-    width: '85%',
+    width: '100%',
     alignSelf: 'center',
     height: 40,
     backgroundColor: 'white',
-    paddingLeft: 12,
+    marginLeft: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#EFEFEF',
   },
   placeholderStyle: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     paddingLeft: 13,
   },
   textSelectedStyle: {
@@ -99,8 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   selectedBoxStyle: {
-    backgroundColor: 'yellow',
-    width: '85%',
+    width: '100%',
     alignSelf: 'center',
   },
 });
