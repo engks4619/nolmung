@@ -8,7 +8,34 @@ import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
 import {setDogsInfo, setSelectedMyDogs} from '~/slices/dogsSlice';
 
-function Main() {
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+//로깅시작함수
+import {startWalking} from '~/utils/MyPositionFunctions';
+import MapViewAlone from '@pages/MapViewAlone';
+import LogView from '@pages/LogView';
+
+const MainPageStack = createNativeStackNavigator();
+export const MainPageNavigator = () => (
+  <MainPageStack.Navigator>
+    <MainPageStack.Screen
+      name="MainPage"
+      component={Main}
+      options={{headerShown: false}}
+    />
+    <MainPageStack.Screen
+      name="MapViewAlone"
+      component={MapViewAlone}
+      options={{headerShown: true}}
+    />
+    <MainPageStack.Screen
+      name="LogView"
+      component={LogView}
+      options={{headerShown: true}}
+    />
+  </MainPageStack.Navigator>
+);
+
+function Main({navigation}: any) {
   const [mainPostList, setMainPostList] = useState([]);
   const [mainSpotList, setMainSpotList] = useState([]);
   const lat = useSelector((state: RootState) => state.user.lat);
@@ -19,6 +46,15 @@ function Main() {
   const profileImage = useSelector(
     (state: RootState) => state.user.profileImage,
   );
+  // 산책 시작 함수
+  const myPositionState = useSelector((state: RootState) => state.myPosition);
+  const selectedDogs = useSelector(
+    (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+
+  const goWalking = () => {
+    startWalking(dispatch, navigation, myPositionState, selectedDogs);
+  };
 
   const getMainPostList = async () => {
     try {
@@ -87,6 +123,7 @@ function Main() {
         mainPostList={mainPostList}
         userName={userName}
         profileImage={profileImage}
+        goWalking={goWalking}
       />
     </ScrollView>
   );

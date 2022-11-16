@@ -1,16 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+  watchId: undefined,
   isSaving: false,
   isLogging: false,
   myPosition: null,
   startDate: null,
   lastUpdate: null,
   path: [],
-  dogs: [
-    {dogName: '멍멍이1', breedCodeValue: '견종', image: 'imagePath'},
-    {dogName: '멍멍이2', breedCodeValue: '견종', image: 'imagePath'},
-  ],
 };
 
 const myPositionSlice = createSlice({
@@ -36,10 +33,12 @@ const myPositionSlice = createSlice({
       state.startDate = action.payload.startDate;
       state.lastUpdate = action.payload.lastUpdate;
       state.path = action.payload.walkingLogs;
-      state.dogs = action.payload.dogs;
     },
     resetStates(state) {
       Object.assign(state, initialState);
+    },
+    setWatchId(state, action) {
+      state.watchId = action.payload;
     },
   },
   extraReducers: builder => {},
@@ -53,5 +52,6 @@ export const {
   resetStates,
   setIsSavingOn,
   setIsSavingOff,
+  setWatchId,
 } = myPositionSlice.actions;
 export default myPositionSlice;

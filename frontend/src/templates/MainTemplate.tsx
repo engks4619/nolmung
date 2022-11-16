@@ -10,12 +10,19 @@ interface Props {
   mainPostList: any[];
   userName: string;
   profileImage: string;
+  goWalking: () => void;
 }
 
-function MainTemplate({spots, mainPostList, userName, profileImage}: Props) {
+function MainTemplate({
+  spots,
+  mainPostList,
+  userName,
+  profileImage,
+  goWalking,
+}: Props) {
   return (
     <View>
-      <MainWalk />
+      <MainWalk goWalking={goWalking} />
       <UserSummary
         imageSource={profileImage}
         userName={userName}

@@ -3,7 +3,11 @@ import {View, StyleSheet} from 'react-native';
 import MyButton from '~/atoms/MyButton';
 import MainDogs from '~/molecules/MainDogs';
 
-function MainWalk() {
+interface Props {
+  goWalking: () => void;
+}
+
+function MainWalk({goWalking}: Props) {
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
   return (
     <View style={styles.container}>
@@ -13,7 +17,7 @@ function MainWalk() {
           btnText="산책 시작"
           width={isSelecting ? 120 : 200}
           height={50}
-          onClick={() => console.log('산책 시작')}
+          onClick={() => goWalking()}
         />
       </View>
     </View>
