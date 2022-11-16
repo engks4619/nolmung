@@ -81,7 +81,7 @@ function SpotsContainer({
   };
 
   const spotDetailNavigate = (spotId: string) => {
-    navigation.navigate('SpotDetail', spotId);
+    navigation.navigate('SpotDetail', {spotId});
   };
 
   useEffect(() => {

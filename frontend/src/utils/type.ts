@@ -20,9 +20,9 @@ export type photo = {
 export type dog = {
   dogIdx: number;
   dogName: string;
-  image:string;
+  image: string;
   breedCodeValue: string;
-}
+};
 
 export type article = {
   categoryType: string;
@@ -41,4 +41,25 @@ export type article = {
   walkDate: string;
   writer: string;
   writerIdx: number;
+};
+
+export type spot = {
+  spotId: string;
+  name: string;
+  imgCnt: number;
+  address: string;
+  tel: string;
+  tag: string;
+  descList: string[];
+  time: {
+    (string: string) : (string: string)
+  };
+  menu: {
+    (string: string) : (string: string)
+  };
+  lat: number;
+  lng: number;
+  distance: number;
+  star: number;
+  reviewCnt: number;
 };

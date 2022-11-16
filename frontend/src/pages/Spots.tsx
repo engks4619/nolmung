@@ -65,18 +65,7 @@ export const SpotStackNavigator = () => (
         },
       }}
     />
-    <SpotStack.Screen
-      name="SpotDetail"
-      component={SpotDetail}
-      options={{
-        headerTitle: '놀면 멍하니',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-          color: MAIN_COLOR,
-        },
-      }}
-    />
+    <SpotStack.Screen name="SpotDetail" component={SpotDetail} />
   </SpotStack.Navigator>
 );
 
