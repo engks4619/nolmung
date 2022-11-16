@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
 import Heart from '@assets/heart.svg';
+import RedHeart from '@assets/redHeart.svg';
 import MyButton from '@atoms/MyButton';
 
 const windowWidth = Dimensions.get('window').width;
@@ -10,19 +11,32 @@ interface footerProps {
   pay?: number;
   isWriter: Boolean;
   isLiked: Boolean;
+  putLike: () => void;
 }
 
-function DetailFooter({categoryType, pay, isWriter, isLiked}: footerProps) {
+function DetailFooter({
+  categoryType,
+  pay,
+  isWriter,
+  isLiked,
+  putLike,
+}: footerProps) {
   return (
     <View style={styles.container}>
-      <Pressable>
+      <Pressable onPress={() => putLike()}>
         <View style={styles.heartContainer}>
-          <Heart height={25} width={25} fill={isLiked ? 'red' : 'black'} />
+          {isLiked ? (
+            <Heart height={25} width={25} fill="black" />
+          ) : (
+            <RedHeart height={25} width={25} fill="red" />
+          )}
         </View>
       </Pressable>
       <View style={styles.infoContainer}>
         <Text style={styles.textBold}>
-          {categoryType === 'WITH' ? '같이 산책🤎' : `${pay}원`}
+          {categoryType === 'WITH'
+            ? '같이 산책🤎'
+            : `${pay?.toLocaleString('ko-KR')}원`}
         </Text>
         <MyButton
           btnText={isWriter ? '채팅목록' : '채팅하기'}
@@ -62,6 +76,7 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontWeight: '800',
+    color: 'black',
   },
 });
 

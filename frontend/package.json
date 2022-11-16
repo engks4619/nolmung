@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "rm -rf node_modules/expo/node_modules/react-native-safe-area-context"
+    "postinstall": "rm -rf node_modules/expo/node_modules/react-native-safe-area-context",
+    "apk:android": "npm ci && cd android && ./gradlew assembleRelease && cd .. && open android/app/build/outputs/apk/release"
   },
   "dependencies": {
     "@actbase/react-daum-postcode": "^1.0.4",
@@ -39,6 +40,7 @@
     "react-native-select-dropdown": "^3.0.1",
     "react-native-svg": "^13.5.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-view-shot": "^3.5.0",
     "react-native-webview": "^11.23.1",
     "react-redux": "^8.0.4",
     "rn-async-storage-flipper": "^0.0.10",

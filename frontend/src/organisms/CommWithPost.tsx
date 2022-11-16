@@ -27,7 +27,6 @@ function CommWithPost({withPostList, loadMore}: Props) {
     <FlatList
       data={withPostList}
       keyExtractor={item => String(item.postIdx)}
-      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviWithDetail(item.postIdx)}
@@ -45,13 +44,11 @@ function CommWithPost({withPostList, loadMore}: Props) {
             <View style={styles.infoContainer}>
               <CommMainInfo
                 subject={item.subject}
-                walkDate={item.walkDate}
                 location={item.location}
                 modifyDate={item.modifyDate}
               />
               <CommUserInfo
                 writer={item.writer}
-                likeCnt={item.likeCnt}
                 userImgUrl={item.userImgUrl}
                 chatCnt={item.chatCnt}
               />
@@ -66,8 +63,8 @@ function CommWithPost({withPostList, loadMore}: Props) {
 
 const styles = StyleSheet.create({
   fullContainer: {
-    borderBottomColor: 'rgba(0, 0, 0, .5)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   container: {
     flexDirection: 'row',
@@ -83,6 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 10,
     marginVertical: 11,
+    height: 85,
     justifyContent: 'space-between',
   },
 });

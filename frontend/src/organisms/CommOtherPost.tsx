@@ -34,7 +34,6 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
     <FlatList
       data={otherPostList}
       keyExtractor={item => String(item.postIdx)}
-      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item}) => (
         <TouchableHighlight
           onPress={() => naviOtherDetail(item.postIdx)}
@@ -52,16 +51,14 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
             <View style={styles.infoContainer}>
               <CommMainInfo
                 subject={item.subject}
-                walkDate={item.walkDate}
                 location={item.location}
                 modifyDate={item.modifyDate}
               />
               <Text style={styles.payText}>
-                ￦ {item.pay?.toLocaleString('ko-KR')}원
+                {item.pay?.toLocaleString('ko-KR')}원
               </Text>
               <CommUserInfo
                 writer={item.writer}
-                likeCnt={item.likeCnt}
                 chatCnt={item.chatCnt}
                 userImgUrl={item.userImgUrl}
               />
@@ -75,12 +72,12 @@ function CommOtherPost({otherPostList, loadMore}: Props) {
 }
 const styles = StyleSheet.create({
   fullContainer: {
-    borderBottomColor: 'rgba(0, 0, 0, .5)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   container: {
     flexDirection: 'row',
-    height: 110,
+    height: 120,
     marginBottom: 4,
     marginHorizontal: 15,
   },
@@ -89,15 +86,15 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    flexDirection: 'column',
     marginLeft: 10,
     marginVertical: 13,
     justifyContent: 'space-between',
   },
   payText: {
     color: 'black',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'bold',
+    marginBottom: 0,
   },
 });
 
