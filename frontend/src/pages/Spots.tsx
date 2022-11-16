@@ -100,7 +100,7 @@ function Spots() {
       sort,
     };
     try {
-      const response: AxiosResponse = await axios.post(`spot`, spotRequest, {
+      const response: AxiosResponse = await axios.post('spot', spotRequest, {
         params,
       });
       if (response.status === 200) {
@@ -114,7 +114,7 @@ function Spots() {
         setTotalPage(data?.totalPage);
       }
     } catch (error: any) {
-      Alert.alert(`에러코드 ${error}`, `산책스팟 리스트 조회 실패`);
+      Alert.alert(`에러코드 ${error}`, '산책스팟 리스트 조회 실패');
     }
   };
 
@@ -157,7 +157,7 @@ function Spots() {
     const address = response?.data?.documents[0].address;
     const firstArr = address?.region_2depth_name.split(' ');
     const strAddress =
-      firstArr[firstArr.length - 1] + '/' + address?.region_3depth_name;
+      firstArr[firstArr?.length - 1] + '/' + address?.region_3depth_name;
     setUserLocation(strAddress);
   };
 

@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
-import {MAIN_COLOR} from '~/const';
+import {FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Up from '@assets/up.svg';
 import Down from '@assets/down.svg';
 import DatePicker from 'react-native-date-picker';
@@ -52,7 +52,7 @@ interface Props {
   setImages: Dispatch<SetStateAction<any[]>>;
   selectedDog: any[];
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
-  DOG_DATA: any[];
+  DOG_DATA: {label: string; value: number}[] | null;
   CATEGORY_TYPES: string[];
 }
 
@@ -143,7 +143,7 @@ const RegistArticleTemplate = ({
           setImages={setImages}
         />
       </Modal>
-      <ScrollView>
+      <ScrollView style={styles.optionContainer}>
         <SelectDropdown
           data={CATEGORY_TYPES}
           buttonStyle={styles.dropdownBtnStyle}
@@ -203,12 +203,12 @@ const RegistArticleTemplate = ({
           </View>
         </View>
         <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '25%'}}>
+          <View style={{width: '30%'}}>
             <Text style={styles.text}>산책 날짜</Text>
           </View>
           <Pressable
             onPress={() => setDateModalOpen(true)}
-            style={{width: '75%', alignItems: 'center'}}>
+            style={{width: '70%', alignItems: 'center'}}>
             <View>
               <Text style={styles.text}>
                 {moment(date).format('YYYY-MM-DD ddd A hh:mm')}
@@ -217,12 +217,12 @@ const RegistArticleTemplate = ({
           </Pressable>
         </View>
         <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '25%'}}>
+          <View style={{width: '30%'}}>
             <Text style={styles.text}>만남 장소</Text>
           </View>
           <Pressable
             onPress={() => setPlaceModalOpen(true)}
-            style={{width: '75%', alignItems: 'center'}}>
+            style={{width: '70%', alignItems: 'center'}}>
             <View>
               <Text style={styles.text}>
                 {location ? location : '동까지만 표시됩니다'}
@@ -232,12 +232,12 @@ const RegistArticleTemplate = ({
         </View>
         {category === '돌봐줘요' ? (
           <View style={[styles.dateContainer, styles.borderBottom]}>
-            <View style={{width: '25%'}}>
+            <View style={{width: '30%'}}>
               <Text style={styles.text}> 가격 ￦</Text>
             </View>
             <View
               style={{
-                width: '75%',
+                width: '70%',
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 12,
@@ -277,8 +277,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
   },
+  optionContainer: {
+    paddingHorizontal: 20,
+  },
   dropdownBtnStyle: {
-    width: '85%',
+    width: '100%',
     backgroundColor: 'white',
     alignSelf: 'center',
     borderBottomWidth: 1,
@@ -293,13 +296,13 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'left',
     paddingLeft: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   txtStyle: {
     color: 'black',
     textAlign: 'left',
     paddingLeft: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   dropDownStyle: {
     backgroundColor: '#EFEFEF',
@@ -310,18 +313,17 @@ const styles = StyleSheet.create({
     height: 30,
   },
   rowTextStyle: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
   textInput: {
-    width: '85%',
+    width: '100%',
     alignSelf: 'center',
     paddingHorizontal: 25,
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     paddingLeft: 25,
     height: 40,
   },
   hContainer: {
-    width: '85%',
     flexDirection: 'row',
     paddingVertical: 5,
     alignSelf: 'center',
@@ -329,7 +331,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     paddingHorizontal: 15,
   },
   borderBrown: {
@@ -360,17 +362,16 @@ const styles = StyleSheet.create({
   dateContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: '85%',
     paddingVertical: 10,
   },
   contentContainer: {
     display: 'flex',
     alignSelf: 'center',
-    width: '85%',
+    width: '100%',
     minHeight: 500,
   },
   content: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
   },
 });
 

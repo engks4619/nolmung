@@ -21,7 +21,7 @@ function UserSummary({
   return (
     <View style={styles.container}>
       <View style={styles.marginCotainer}>
-        <Profile imageSource={imageSource} width={55} height={55} />
+        <Profile imageSource={imageSource} width={70} height={70} />
         <View style={styles.description}>
           <Text style={styles.userName}>{userName}</Text>
           <WalkSummary
@@ -40,13 +40,12 @@ function UserSummary({
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(0, 0, 0, .5)',
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   marginCotainer: {
     flex: 1,
-    marginHorizontal: 15,
-    marginVertical: 7,
+    margin: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',

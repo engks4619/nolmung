@@ -1,4 +1,4 @@
-import React, {Dispatch} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
 import Profile from '~/atoms/Profile';
@@ -30,7 +30,7 @@ function MainDogs({isSelecting, setIsSelecting}: Props) {
   if (myDogs.length === 0) {
     return <Text>추가해주세욤</Text>;
   } else if (myDogs.length === 1) {
-    return <Profile imageSource={myDogs[0].image} width={50} height={50} />;
+    return <Profile imageSource={myDogs[0].image} width={70} height={70} />;
   } else {
     return (
       <Pressable onPress={() => setIsSelecting(true)}>

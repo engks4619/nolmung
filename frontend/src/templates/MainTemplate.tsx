@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import MainPosts from '@organisms/MainPosts';
 import MainSpots from '@organisms/MainSpots';
@@ -10,29 +10,36 @@ interface Props {
   mainPostList: any[];
   userName: string;
   profileImage: string;
+  goWalking: () => void;
+  totalDistance: number;
+  totalTime: number;
+  totalWalk: number;
 }
 
-function MainTemplate({spots, mainPostList, userName, profileImage}: Props) {
+function MainTemplate({
+  spots,
+  mainPostList,
+  userName,
+  profileImage,
+  goWalking,
+  totalDistance,
+  totalTime,
+  totalWalk,
+}: Props) {
   return (
-    <View style={styles.container}>
-      <MainWalk />
+    <View>
+      <MainWalk goWalking={goWalking} />
       <UserSummary
         imageSource={profileImage}
         userName={userName}
-        walkNumber={13}
-        walkHour={500}
-        walkDistance={500}
+        walkNumber={totalWalk}
+        walkHour={totalTime}
+        walkDistance={totalDistance}
       />
       <MainPosts mainPostList={mainPostList} />
       <MainSpots spots={spots} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
-});
 
 export default MainTemplate;

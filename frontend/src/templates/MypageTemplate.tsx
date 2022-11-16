@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, GestureResponderEvent} from 'react-native';
+import {View, GestureResponderEvent, StyleSheet} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import type {UserInfoType} from '../pages/Mypage';
 import MyButton from '@atoms/MyButton';
@@ -25,27 +25,28 @@ const logout = () => {
 function MypageTemplate(props: Props) {
   return (
     <View>
-      {props.isEditing ? (
-        <UserEditForm
-          imageSource={props.userInfo.imageSource}
-          userName={props.userInfo.userName}
-          value={props.value}
-          onChangeText={props.onChangeNickname}
-          isPassword={false}
-        />
-      ) : (
-        <UserSummary
-          imageSource={props.userInfo.imageSource}
-          userName={props.userInfo.userName}
-          walkNumber={props.userInfo.walkNumber}
-          walkHour={props.userInfo.walkHour}
-          walkDistance={props.userInfo.walkHour}
-        />
-      )}
+      <View style={styles.profileContainer}>
+        {props.isEditing ? (
+          <UserEditForm
+            imageSource={props.userInfo.imageSource}
+            userName={props.userInfo.userName}
+            value={props.value}
+            onChangeText={props.onChangeNickname}
+            isPassword={false}
+          />
+        ) : (
+          <UserSummary
+            imageSource={props.userInfo.imageSource}
+            userName={props.userInfo.userName}
+            walkNumber={props.userInfo.walkNumber}
+            walkHour={props.userInfo.walkHour}
+            walkDistance={props.userInfo.walkHour}
+          />
+        )}
+      </View>
       <MyButton
         btnText={props.isEditing ? '수정 완료' : '프로필 수정'}
         width={350}
-        paddingVertical={3}
         onClick={props.profileEdit}
         backgroundColor="#D9D9D9"
         height={25}
@@ -62,5 +63,7 @@ function MypageTemplate(props: Props) {
     </View>
   );
 }
-
+const styles = StyleSheet.create({
+  profileContainer: {backgroundColor: 'white'},
+});
 export default MypageTemplate;
