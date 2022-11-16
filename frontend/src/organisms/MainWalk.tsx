@@ -22,9 +22,8 @@ function MainWalk() {
 
 const styles = StyleSheet.create({
   container: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: 'rgba(0, 0, 0, .5)',
+    backgroundColor: 'white',
+    marginTop: 2,
   },
   marginContainer: {
     marginHorizontal: 30,

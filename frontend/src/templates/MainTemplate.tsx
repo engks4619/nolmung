@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import MainPosts from '@organisms/MainPosts';
 import MainSpots from '@organisms/MainSpots';
@@ -14,7 +14,7 @@ interface Props {
 
 function MainTemplate({spots, mainPostList, userName, profileImage}: Props) {
   return (
-    <View style={styles.container}>
+    <View>
       <MainWalk />
       <UserSummary
         imageSource={profileImage}
@@ -28,11 +28,5 @@ function MainTemplate({spots, mainPostList, userName, profileImage}: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
-});
 
 export default MainTemplate;
