@@ -103,6 +103,10 @@ function Main({navigation}: any) {
     }
   };
 
+  // const getMyInfo = async () => {
+
+  // }
+
   useEffect(() => {
     getMainPostList();
     getMyDogs();
