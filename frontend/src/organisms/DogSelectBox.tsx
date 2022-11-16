@@ -13,7 +13,7 @@ const renderDogList = (dog: {label: string; value: string}) => {
 };
 
 interface Props {
-  DOG_DATA: any[];
+  DOG_DATA: {label: string; value: number}[] | null;
   selectedDog: any[];
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
 }
@@ -26,7 +26,7 @@ const DogSelectBox = ({DOG_DATA, selectedDog, setSelectedDog}: Props) => {
       selectedTextStyle={styles.selectedTextStyle}
       inputSearchStyle={styles.inputSearchStyle}
       iconStyle={styles.iconStyle}
-      data={DOG_DATA}
+      data={DOG_DATA ?? []}
       labelField="label"
       valueField="value"
       placeholder="강아지 선택"

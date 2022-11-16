@@ -52,7 +52,7 @@ interface Props {
   setImages: Dispatch<SetStateAction<any[]>>;
   selectedDog: any[];
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
-  DOG_DATA: {label: string; value: number}[];
+  DOG_DATA: {label: string; value: number}[] | null;
   CATEGORY_TYPES: string[];
 }
 
@@ -143,7 +143,7 @@ const RegistArticleTemplate = ({
           setImages={setImages}
         />
       </Modal>
-      <ScrollView style={{paddingHorizontal: 30}}>
+      <ScrollView style={styles.optionContainer}>
         <SelectDropdown
           data={CATEGORY_TYPES}
           buttonStyle={styles.dropdownBtnStyle}
@@ -203,12 +203,12 @@ const RegistArticleTemplate = ({
           </View>
         </View>
         <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '25%'}}>
+          <View style={{width: '30%'}}>
             <Text style={styles.text}>산책 날짜</Text>
           </View>
           <Pressable
             onPress={() => setDateModalOpen(true)}
-            style={{width: '75%', alignItems: 'center'}}>
+            style={{width: '70%', alignItems: 'center'}}>
             <View>
               <Text style={styles.text}>
                 {moment(date).format('YYYY-MM-DD ddd A hh:mm')}
@@ -217,12 +217,12 @@ const RegistArticleTemplate = ({
           </Pressable>
         </View>
         <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '25%'}}>
+          <View style={{width: '30%'}}>
             <Text style={styles.text}>만남 장소</Text>
           </View>
           <Pressable
             onPress={() => setPlaceModalOpen(true)}
-            style={{width: '75%', alignItems: 'center'}}>
+            style={{width: '70%', alignItems: 'center'}}>
             <View>
               <Text style={styles.text}>
                 {location ? location : '동까지만 표시됩니다'}
@@ -232,12 +232,12 @@ const RegistArticleTemplate = ({
         </View>
         {category === '돌봐줘요' ? (
           <View style={[styles.dateContainer, styles.borderBottom]}>
-            <View style={{width: '25%'}}>
+            <View style={{width: '30%'}}>
               <Text style={styles.text}> 가격 ￦</Text>
             </View>
             <View
               style={{
-                width: '75%',
+                width: '70%',
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 12,
@@ -276,6 +276,9 @@ const RegistArticleTemplate = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+  },
+  optionContainer: {
+    paddingHorizontal: 20,
   },
   dropdownBtnStyle: {
     width: '100%',

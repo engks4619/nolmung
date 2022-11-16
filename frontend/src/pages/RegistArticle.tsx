@@ -25,7 +25,9 @@ const RegistArticle = ({navigation}: any) => {
   const [images, setImages] = useState<any[]>([]);
   const [selectedDog, setSelectedDog] = useState<any[]>([]);
   const [clicked, setClicked] = useState<boolean>(false);
-  const [DOG_DATA, setDogData] = useState<{label: string; value: number}[]>();
+  const [DOG_DATA, setDogData] = useState<
+    {label: string; value: number}[] | null
+  >(null);
   const dogList = useSelector((state: RootState) => state.dogs.dogsInfo);
 
   const CATEGORY_TYPES = ['함께가요', '돌봐줘요'];
@@ -97,11 +99,9 @@ const RegistArticle = ({navigation}: any) => {
   }, [clicked]);
 
   useEffect(() => {
-    const data: any[] = [];
-    dogList.map((dog: any) => {
-      data.push({label: dog.dogName, value: dog.dogIdx});
-    });
-    setDogData(data);
+    setDogData(
+      dogList.map((dog: any) => ({label: dog.dogName, value: dog.dogIdx})),
+    );
   }, [dogList]);
 
   return (
