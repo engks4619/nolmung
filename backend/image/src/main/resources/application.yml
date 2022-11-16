@@ -1,6 +1,10 @@
 spring:
   application:
     name: image
+  servlet:
+    multipart:
+      maxFileSize: 30MB
+      maxRequestSize: 30MB
 
 server:
   port: 0
@@ -25,3 +29,5 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+
