@@ -25,14 +25,14 @@ const WalkReview = ({navigation}: any) => {
 
   const registReview = async () => {
     const requestBody = {
-      owner: article?.writerIdx === parseInt(userIdx),
+      postIdx: article?.postIdx,
       star,
       review,
-      recordIdx: '',
+      recordIdx: '1', // 나중에 받아와야함!
     };
     try {
       const response: AxiosResponse = await axios.post(
-        `http://nolmung.kr/api/user/history`,
+        `user/history`,
         requestBody,
       );
       if (response.status === 200) {
@@ -40,15 +40,23 @@ const WalkReview = ({navigation}: any) => {
         navigation.goBack();
       }
     } catch (error: any) {
-      Alert.alert('리뷰 작성 실패!', error.code);
+      Alert.alert('리뷰 작성 실패!', error);
+      setClicked(false);
     }
   };
-
+  const validateRegist = () => {
+    if (!review || review === '') {
+      setClicked(false);
+      Alert.alert('입력을 완료해주세요!');
+      return;
+    }
+    registReview();
+  };
   useEffect(() => {
     if (!clicked) {
       return;
     }
-    registReview();
+    validateRegist();
   }, [clicked]);
 
   useEffect(() => {
