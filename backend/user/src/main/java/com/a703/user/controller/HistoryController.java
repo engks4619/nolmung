@@ -34,13 +34,13 @@ public class HistoryController {
 
     @GetMapping("/reviewer/{userIdx}")
     public ResponseEntity<?> GetReviewByReviewer(@PathVariable(value = "userIdx") Long userIdx){
-        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx, true);
+        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx);
         return getResponseEntity(historyDtoList);
     }
 
-    @GetMapping("/reviewee/{userIdx}")
-    public ResponseEntity<?> GetReviewByReviewee(@PathVariable(value = "userIdx") Long userIdx){
-        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx, false);
+    @GetMapping("/reviewee/{userIdx}/{owner}")
+    public ResponseEntity<?> GetReviewByReviewee(@PathVariable(value = "userIdx") Long userIdx, @PathVariable(value = "owner") boolean owner){
+        List<HistoryDto> historyDtoList = historyService.getReviewList(userIdx, owner);
         return getResponseEntity(historyDtoList);
     }
 
