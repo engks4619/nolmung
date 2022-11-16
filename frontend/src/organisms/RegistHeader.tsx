@@ -1,6 +1,6 @@
 import React, {Dispatch} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {MAIN_COLOR} from '~/const';
+import {FONT_SIZE_M, FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Back from '@assets/back.svg';
 
 interface Props {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   title: {
-    fontSize: 12,
+    fontSize: FONT_SIZE_M,
     fontWeight: '700',
     color: 'black',
     paddingVertical: 5,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   brown: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_S,
     color: MAIN_COLOR,
     fontWeight: '700',
   },
