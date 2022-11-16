@@ -34,9 +34,6 @@ function DetailSubject({
   const naviOppent = (oppentIdx: number) => {
     navigation.navigate('Oppent', {oppentIdx});
   };
-
-  let convertDate = modifyDate?.split('T')[0];
-  let convertTime = elapsedTime(modifyDate);
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{subject}</Text>

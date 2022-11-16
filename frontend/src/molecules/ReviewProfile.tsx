@@ -37,7 +37,7 @@ function ReviewProfile({
               : [styles.selectContainer, styles.active]
           }
           onPress={() => setIsOwner(!isOwner)}>
-          <Text style={styles.infoStyle}>알바횟수</Text>
+          <Text style={styles.infoStyle}>알바후기</Text>
           <Text style={styles.numberStyle}>{ptReviewsNum}</Text>
         </Pressable>
         <Pressable
@@ -47,7 +47,7 @@ function ReviewProfile({
               : styles.selectContainer
           }
           onPress={() => setIsOwner(!isOwner)}>
-          <Text style={styles.infoStyle}>알바이용횟수</Text>
+          <Text style={styles.infoStyle}>견주후기</Text>
           <Text style={styles.numberStyle}>{ownerReviews}</Text>
         </Pressable>
       </View>
@@ -79,8 +79,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingLeft: 10,
     paddingRight: 5,
+    borderColor: '#f0f0f0',
+    backgroundColor: '#f0f0f0',
   },
   active: {
+    backgroundColor: 'white',
     borderColor: MAIN_COLOR,
   },
   nameStyle: {

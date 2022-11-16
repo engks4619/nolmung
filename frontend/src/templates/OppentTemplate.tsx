@@ -1,7 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import OppentReview from '~/molecules/OppentReview';
+import {View, StyleSheet} from 'react-native';
 import ReviewProfile from '~/molecules/ReviewProfile';
+import OppentReviews from '~/organisms/OppentReviews';
+import {reviewDataType, reviewerType} from '~/pages/Oppent';
+
+interface Props {
+  isOwner: boolean;
+  ownerReviews: reviewDataType[];
+  ptReviews: reviewDataType[];
+  oppentInfo: reviewerType;
+  setIsOwner: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 function OppentTemplate({
   isOwner,
@@ -9,7 +18,7 @@ function OppentTemplate({
   ptReviews,
   oppentInfo,
   setIsOwner,
-}) {
+}: Props) {
   return (
     <View style={styles.container}>
       <ReviewProfile
@@ -19,7 +28,7 @@ function OppentTemplate({
         oppentInfo={oppentInfo}
         setIsOwner={setIsOwner}
       />
-      <OppentReview />
+      <OppentReviews reviews={isOwner ? ownerReviews : ptReviews} />
     </View>
   );
 }
