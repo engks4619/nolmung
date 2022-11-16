@@ -2,8 +2,10 @@ package com.a703.user.controller;
 
 import com.a703.user.dto.UserDto;
 import com.a703.user.entity.CertEntity;
+import com.a703.user.entity.UserVariableEntity;
 import com.a703.user.service.CertService;
 import com.a703.user.service.UserService;
+import com.a703.user.service.UserVariableService;
 import com.a703.user.util.CommUtil;
 import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.request.RequestUser;
@@ -22,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 @RestController
@@ -32,6 +35,7 @@ public class UserController {
     private final Environment env;
     private final UserService userService;
     private final CertService certService;
+    private final UserVariableService userVariableService;
     private final JwtUtil jwtUtil;
     private final CommUtil commUtil;
 
@@ -117,5 +121,16 @@ public class UserController {
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+    }
+
+    @GetMapping("home")
+    public ResponseEntity<?> homeData(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+        Long userIdx = jwtUtil.jwtToUserIdx(jwt);
+        UserVariableEntity userVariableEntity = userVariableService.getWalkData(userIdx);
+        Map<String, Object> body = new IdentityHashMap<>();
+        body.put("totalWalk", userVariableEntity.getCntWalk());
+        body.put("totalDistance", userVariableEntity.getTotalDistance());
+        body.put("totalTime", userVariableEntity.getTotalTime());
+        return ResponseEntity.ok(body);
     }
 }
