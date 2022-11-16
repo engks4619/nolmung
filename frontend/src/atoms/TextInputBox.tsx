@@ -9,24 +9,29 @@ interface Props {
 
 const TextInutBox = ({content, setContent, borderColor}: Props) => {
   return (
-    <View
-      style={{
-        marginHorizontal: 20,
-        marginVertical: 20,
-        borderWidth: 1,
-        borderColor,
-        borderRadius: 5,
-        minHeight: 250,
-      }}>
+    <View style={[styles.container, {borderColor}]}>
       <TextInput
         multiline={true}
         numberOfLines={8}
-        style={{paddingHorizontal: 20}}
+        style={styles.textInput}
         value={content}
         onChangeText={text => setContent(text)}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    borderWidth: 1,
+    borderRadius: 5,
+    minHeight: 250,
+  },
+  textInput: {
+    paddingHorizontal: 20,
+  },
+});
 
 export default TextInutBox;
