@@ -16,6 +16,7 @@ public class WalkService {
 
     public String saveWalk(WalkDTO walk){
         WalkDTO walkDTO = walkMongoDBRepository.save(walk);
+
         return walkDTO.getWalkIdx().toString();
     }
 

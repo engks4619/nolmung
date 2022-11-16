@@ -24,7 +24,7 @@ public class WalkController {
     private final FileUtil fileUtil;
 
     @PostMapping
-    public ResponseEntity<?> saveWalk(@RequestPart WalkDTO walk) {
+    public ResponseEntity<?> saveWalk(@RequestBody WalkDTO walk) {
         /**
          * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
@@ -40,8 +40,10 @@ public class WalkController {
          * @Method Name : saveImg
          * @Method 설명 : 산책코스 이미지 저장
          */
+        log.info("이미지 업로드 시작");
         if(image != null) {
             String courseImgUrl = fileUtil.fileUpload(image);
+            log.info("이미지URL : "+courseImgUrl);
             walkService.updateImg(courseImgUrl, walkIdx);
         }
 
