@@ -39,8 +39,9 @@ Props) {
   const ref: any = useRef();
   const capture = () => {
     captureRef(ref, {
-      format: 'jpg',
+      format: 'png',
       quality: 0.9,
+      result: 'data-uri',
     }).then(
       res => {
         console.log('이미지uri', res);
@@ -104,7 +105,7 @@ Props) {
       <ScrollView>
         <View style={styles.logViewContainer}>
           <Text>{path.length}</Text>
-          <Pressable onPress={() => captureMap()}>
+          <Pressable onPress={() => capture()}>
             <Text>캡쳐하기</Text>
           </Pressable>
           <Pressable onPress={() => sendDatas()}>
@@ -144,6 +145,13 @@ Props) {
             }}>
             <Text>저장x/저장O 버튼들</Text>
           </Pressable>
+          <View>
+            {uri ? (
+              <Image style={styles.img} source={{uri: uri}} />
+            ) : (
+              <Text>null이다 이자식아</Text>
+            )}
+          </View>
         </View>
       </ScrollView>
     );
