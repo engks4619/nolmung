@@ -100,16 +100,12 @@ public class CommunityService {
     }
 
     @Transactional
-    public Boolean pushLike(Long postIdx,String token) {
+    public Boolean pushLike(Long postIdx,Long userIdx) {
 
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-        Long userIdx = userInfoDto.getUserIdx();
 
         if(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx)) {
             postLikeRepository.deleteByIdUserIdxAndIdPostPostIdx(userIdx,postIdx);
             return false;
-
-
         }else{
             Post post = postRepository.findByPostIdx(postIdx);
 
