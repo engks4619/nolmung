@@ -17,13 +17,12 @@ const SpotDetail = ({route, navigation}: SpotDetailProp) => {
 
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
-  const [spot, setSpot] = useState<spot>();
+  const [spot, setSpot] = useState<spot | null>(null);
 
   const getSpotDetail = async (spotId: string) => {
     const response = await axios.get(`spot/${spotId}?lat=${lat}&lng=${lng}`);
     if (response.status === 200) {
       setSpot(response?.data?.spotDto);
-      console.log(spot);
     } else {
       Alert.alert('상세 정보를 불러오지 못했습니다.');
     }

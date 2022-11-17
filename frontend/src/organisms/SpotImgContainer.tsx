@@ -1,5 +1,7 @@
-import React from 'react';
-import {Dimensions, FlatList, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, View} from 'react-native';
+import SpotImg from '@molecules/SpotImg';
+import Carousel from '@organisms/Carousel';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const offset = 15;
@@ -7,24 +9,44 @@ const gap = 15;
 const pageWidth = screenWidth - (15 + 15) * 2;
 
 interface Props {
+  spotId: string;
   imgCnt: number;
 }
 
-const SpotImgContainer = ({imgCnt}: Props) => {
+const SPOT_IMG_URL_PREFIX = '/images/spot/';
+
+const SpotImgContainer = ({spotId, imgCnt}: Props) => {
+  const [page, setPage] = useState<number>(0);
+  const [imgList, setImgList] = useState<string[]>([]);
+
+  const initImgData = (spotId: string, imgCnt: number) => {
+    if (!spotId || spotId === '' || !imgCnt || imgCnt === 0) {
+      setImgList([]);
+      return;
+    }
+    const list = [];
+    for (let i = 0; i < imgCnt; i++) {
+      list.push(SPOT_IMG_URL_PREFIX + spotId + '/' + i + '.jpg');
+    }
+    setImgList(list);
+  };
+
+  useEffect(() => {
+    initImgData(spotId, imgCnt);
+  }, [spotId, imgCnt]);
+
   return (
-    <FlatList
-      contentContainerStyle={{
-        paddingHorizontal: (offset + gap) / 4,
-      }}
-      data={['', '']}
-      decelerationRate="fast"
-      snapToInterval={pageWidth + gap}
-      snapToAlignment="start"
-      horizontal
-      showsHorizontalScrollIndicator={true}
-      keyExtractor={(item, idx) => String(idx)}
-      renderItem={(item) =>(<View></View>)}
-    />
+    <View>
+      <Carousel
+        page={page}
+        setPage={setPage}
+        gap={0}
+        offset={0}
+        data={imgList}
+        pageWidth={screenWidth - (15 + 15) * 2}
+        RenderItem={SpotImg}
+      />
+    </View>
   );
 };
 

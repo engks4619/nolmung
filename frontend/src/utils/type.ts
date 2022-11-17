@@ -55,7 +55,7 @@ export type spot = {
     (string: string) : (string: string)
   };
   menu: {
-    (string: string) : (string: string)
+    (menu: string) : (price: string)
   };
   lat: number;
   lng: number;
