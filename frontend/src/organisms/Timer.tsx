@@ -67,7 +67,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Text, StyleSheet} from 'react-native';
 
-var _interval;
 interface HookType {
   (callback: () => void, sec: number): void;
 }
@@ -77,7 +76,6 @@ interface Props {
 const Timer = ({sec}: Props) => {
   const [second, setSecond] = useState(sec);
   const [delay, setDelay] = useState(1000);
-  const [isRunning, setIsRunning] = useState(true);
 
   useInterval(() => {
     setSecond(second + 1);

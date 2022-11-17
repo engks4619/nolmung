@@ -191,8 +191,8 @@ export const doneWalking = async (
   watchId: number,
 ) => {
   quitLogging(watchId);
-  dispatch(setIsSavingOn);
+  // dispatch(setIsSavingOn);
   // await logsToServer();
-  dispatch(setIsSavingOff);
+  // dispatch(setIsSavingOff);
   navigation.navigate('LogView', {isOver: false});
 };

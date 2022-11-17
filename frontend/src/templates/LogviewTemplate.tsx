@@ -6,12 +6,13 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
+  Image,
 } from 'react-native';
 import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import DetailDogs from '@organisms/DetailDogs';
 import {MAIN_COLOR} from '~/const';
-import ViewShot from 'react-native-view-shot';
+import ViewShot, {captureRef} from 'react-native-view-shot';
 
 interface Props {
   functions: Array<Function>;
@@ -33,7 +34,21 @@ function LogViewTemplate({
 }: // myPosition,
 Props) {
   const [photo, setPhoto] = useState<Photo | null>(null);
+  const [uri, setUri] = useState<string | null>(null);
+  // 캡쳐관련
   const ref: any = useRef();
+  const capture = () => {
+    captureRef(ref, {
+      format: 'jpg',
+      quality: 0.9,
+    }).then(
+      res => {
+        console.log('이미지uri', res);
+        setUri(res);
+      },
+      error => console.log('스샷에러', error),
+    );
+  };
   // 여기부터 수정
   const createFormData = (image: any, body: any = {}) => {
     const data = new FormData();
@@ -137,27 +152,43 @@ Props) {
       <ScrollView>
         <View>
           <DetailDogs dogInfoList={dogInfoList} />
-          <View style={styles.mapContainer}>
-            <NaverMapView
-              style={styles.nmap}
-              zoomControl={true}
-              center={path[path.length / 2]}>
-              <Marker
-                coordinate={path[path.length - 1]}
-                width={50}
-                height={50}
-                anchor={{x: 0.5, y: 0.5}}
-                caption={{text: '나'}}
-                image={require('@assets/logo.png')}
-              />
-              {path.length >= 2 ? (
-                <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-              ) : null}
-            </NaverMapView>
-          </View>
+          <ViewShot ref={ref} style={styles.viewShot}>
+            <View style={styles.mapContainer}>
+              {/* <Image
+                style={styles.img}
+                source={{uri: 'https://reactnative.dev/img/tiny_logo.png'}}
+              /> */}
+              <NaverMapView
+                style={styles.nmap}
+                zoomControl={true}
+                center={path[path.length / 2]}>
+                <Marker
+                  coordinate={path[path.length - 1]}
+                  width={50}
+                  height={50}
+                  anchor={{x: 0.5, y: 0.5}}
+                  caption={{text: '나'}}
+                  image={require('@assets/logo.png')}
+                />
+                {path.length >= 2 ? (
+                  <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+                ) : null}
+              </NaverMapView>
+            </View>
+          </ViewShot>
           <Pressable>
             <Text>저장x/저장O/이어하기 버튼들</Text>
           </Pressable>
+          <Pressable onPress={capture}>
+            <Text>캡처</Text>
+          </Pressable>
+          <View>
+            {uri ? (
+              <Image style={styles.img} source={{uri: uri}} />
+            ) : (
+              <Text>null이다 이자식아</Text>
+            )}
+          </View>
         </View>
       </ScrollView>
     );
@@ -169,17 +200,23 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  viewShot: {
+    backgroundColor: '#fff',
+  },
   mapContainer: {
     borderColor: 'black',
     borderWidth: 2,
     alignItems: 'center',
     width: '90%',
-    height: Dimensions.get('window').height / 2,
+    height: Dimensions.get('window').height / 4,
   },
   nmap: {
     justifySelf: 'center',
     width: '100%',
     height: '100%',
+  },
+  img: {
+    height: 400,
   },
 });
 export default LogViewTemplate;

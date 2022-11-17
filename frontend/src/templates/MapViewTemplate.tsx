@@ -16,6 +16,7 @@ interface Props {
   doneWalking: any;
   distance: number;
   dispatch: any;
+  second: number;
 }
 
 function MapView({
@@ -23,14 +24,14 @@ function MapView({
   path,
   dogInfoList,
   doneWalking,
-  startDate,
   distance,
   dispatch,
+  second,
 }: Props) {
-  const defaultSec =
-    startDate !== undefined && startDate !== null
-      ? (new Date().getTime() - startDate.getTime()) / 1000
-      : 0;
+  // const defaultSec =
+  //   startDate !== undefined && startDate !== null
+  //     ? (new Date().getTime() - startDate.getTime()) / 1000
+  //     : 0;
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>
@@ -68,11 +69,8 @@ function MapView({
               ) : null}
             </NaverMapView>
           </View>
-          <Timer sec={defaultSec} />
-          <Distance
-            path={path}
-            distance={distance}
-            dispatch={dispatch}></Distance>
+          <Timer sec={second} />
+          <Distance path={path} distance={distance} dispatch={dispatch} />
           <MyButton
             btnText="산책 종료"
             width={200}

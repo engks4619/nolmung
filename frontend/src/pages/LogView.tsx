@@ -20,6 +20,7 @@ function LogView({route}: any) {
   const myPosition = useSelector(
     (state: RootState) => state.myPosition.myPosition,
   );
+  // const;
   // dogs type import해와서 지정
   const dogs: dogInfo[] = [];
   dogsInfo.forEach(elem => {
@@ -27,6 +28,38 @@ function LogView({route}: any) {
       dogs.push(elem);
     }
   });
+
+  //img,데이터 전송
+  // const submitLogs = async () => {
+  //   const registerPost = {
+  //     ownerIdx: 4,
+  //   walkerIdx: 4,
+  //   "distance": 100.00,
+  //   "time": 5,
+  //   "startDate": "2022.10.26 00:00:00",
+  //   "endDate": ""2022.10.26 00:00:00",
+  //   "walkedDogList": [1, 2, 3],
+  //   "latitudes": [1.1, 2.1],
+  //   "longitudes": [2.4, 3.4]
+  //   };
+
+  //   try {
+  //     const response = await axios.post(`community`, registerPost);
+  //     if (response?.status === 200) {
+  //       const postIdx = response?.data;
+  //       if (images?.length > 0) {
+  //         images.map(async (image, idx) => {
+  //           await uploadImg(image, `community/file/${postIdx}`);
+  //         });
+  //       }
+  //       Alert.alert('게시글 작성완료!');
+  //       navigation.navigate('Community');
+  //     }
+  //   } catch (err: any) {
+  //     Alert.alert('게시글 작성 실패!', err);
+  //     setClicked(false);
+  //   }
+  // };
 
   return (
     <View>
