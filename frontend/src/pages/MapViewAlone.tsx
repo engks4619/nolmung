@@ -32,8 +32,9 @@ function MapViewAlone({navigation}: any) {
   });
   //시간계산
   const defaultSec =
-    startDate !== undefined && startDate !== null
-      ? (new Date().getTime() - startDate.getTime()) / 1000
+    // startDate !== undefined && startDate !== null
+    typeof startDate === 'string'
+      ? (new Date().getTime() - new Date(startDate).getTime()) / 1000
       : 0;
   //거리계산
   useEffect(() => {

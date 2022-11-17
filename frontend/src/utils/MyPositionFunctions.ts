@@ -21,6 +21,7 @@ import {
   setIsSavingOff,
   setWatchId,
   setStartDate,
+  setLastUpdate,
 } from '~/slices/myPositionSlice';
 import {setSelectedMyDogs} from '~/slices/dogsSlice';
 const haversine = require('haversine');
@@ -52,9 +53,8 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
-  const startDate = new Date();
-  startDate.toString();
-  storeData('@StartDate', new Date());
+  const startDate = new Date().toString();
+  storeData('@StartDate', startDate);
   dispatch(setStartDate(startDate));
   storeData('@Dogs', dogs);
   const hasLog = await containsKey('@WalkingLogs');
@@ -67,9 +67,11 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
+      const UpdateDate = new Date().toString();
       dispatch(setMyPosition(myPosition));
       dispatch(addPath(myPosition));
-      storeData('@LastUpdate', new Date());
+      storeData('@LastUpdate', UpdateDate);
+      dispatch(setLastUpdate(UpdateDate));
       addPathToAsync(myPosition);
     },
     error => {
@@ -194,5 +196,10 @@ export const doneWalking = async (
   // dispatch(setIsSavingOn);
   // await logsToServer();
   // dispatch(setIsSavingOff);
-  navigation.navigate('LogView', {isOver: false});
+  navigation.replace('LogView', {isOver: false});
 };
+
+//저장x 새로 시작
+//저장o 새로 시작
+
+//이어하기

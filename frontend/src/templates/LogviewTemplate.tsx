@@ -20,10 +20,7 @@ interface Props {
   dogInfoList: DetailDogProps[];
   isOver: boolean;
   myPosition: Coord;
-}
-interface Photo {
-  name: string;
-  uri: any;
+  saveAndGo: (ref: any) => void;
 }
 function LogViewTemplate({
   functions,
@@ -31,74 +28,26 @@ function LogViewTemplate({
   dogInfoList,
   isOver,
   myPosition,
+  saveAndGo,
 }: // myPosition,
 Props) {
-  const [photo, setPhoto] = useState<Photo | null>(null);
-  const [uri, setUri] = useState<string | null>(null);
-  // 캡쳐관련
-  const ref: any = useRef();
+  const ref = useRef<ViewShot>(null);
   const capture = () => {
     captureRef(ref, {
       format: 'jpg',
       quality: 0.9,
     }).then(
-      res => {
-        console.log('이미지uri', res);
-        setUri(res);
+      uri => {
+        console.log('이미지uri', uri);
+        setPhoto({
+          name: `${userIdx},${startDate}`,
+          mime: 'images/jpeg',
+          path: uri,
+        });
       },
       error => console.log('스샷에러', error),
     );
   };
-  // 여기부터 수정
-  const createFormData = (image: any, body: any = {}) => {
-    const data = new FormData();
-
-    data.append('photo', {
-      name: image.name,
-      uri: image.uri.replace('file://', ''),
-    });
-
-    Object.keys(body).forEach(key => {
-      data.append(key, body[key]);
-    });
-
-    return data;
-  };
-  const captureMap = () => {
-    ref.current.capture().then((uri: any) => {
-      console.log('uri', uri);
-      setPhoto({
-        name: 'imageName',
-        uri: uri,
-      });
-    });
-  };
-  const sendDatas = () => {
-    const b = createFormData(photo, {
-      ownerIdx: -1650769681,
-      walkerIdx: -1650769681,
-      distance: 100.0,
-      time: 5,
-      startDate: '2022.10.26 00:00:00',
-      endDate: '2022.10.26 00:00:00',
-      walkedDogList: [1, 2, 3],
-      latitudes: [1.1, 2.1],
-      longitudes: [2.4, 3.4],
-    });
-    fetch('http://nolmung.kr/api/withdog/walk', {
-      method: 'POST',
-      body: b,
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log('response', response);
-      })
-      .catch(error => {
-        console.log('formData', b);
-        console.log('error1', error);
-      });
-  };
-  // 여기까지 수정
   if (isOver) {
     return (
       <ScrollView>
@@ -161,7 +110,11 @@ Props) {
               <NaverMapView
                 style={styles.nmap}
                 zoomControl={true}
-                center={path[path.length / 2]}>
+                center={{
+                  zoom: 17,
+                  latitude: myPosition.latitude,
+                  longitude: myPosition.longitude,
+                }}>
                 <Marker
                   coordinate={path[path.length - 1]}
                   width={50}
@@ -179,16 +132,12 @@ Props) {
           <Pressable>
             <Text>저장x/저장O/이어하기 버튼들</Text>
           </Pressable>
-          <Pressable onPress={capture}>
-            <Text>캡처</Text>
+          <Pressable
+            onPress={() => {
+              saveAndGo(ref);
+            }}>
+            <Text>저장하기</Text>
           </Pressable>
-          <View>
-            {uri ? (
-              <Image style={styles.img} source={{uri: uri}} />
-            ) : (
-              <Text>null이다 이자식아</Text>
-            )}
-          </View>
         </View>
       </ScrollView>
     );

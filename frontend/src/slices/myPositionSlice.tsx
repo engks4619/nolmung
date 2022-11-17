@@ -52,6 +52,9 @@ const myPositionSlice = createSlice({
     addDistance(state, action) {
       state.distance = state.distance + action.payload;
     },
+    setLastUpdate(state, action) {
+      state.lastUpdate = action.payload;
+    },
   },
   extraReducers: builder => {},
 });
@@ -66,6 +69,7 @@ export const {
   setIsSavingOff,
   setWatchId,
   setStartDate,
+  setLastUpdate,
   setSecond,
   addDistance,
 } = myPositionSlice.actions;
