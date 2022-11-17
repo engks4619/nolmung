@@ -119,12 +119,9 @@ public class CommUtil {
         }
     }
 
-    public Map<String, Object> getPostInfo(Long postIdx){
-        String url = env.getProperty("community.url") + "/post-info/" + postIdx;
+    public Map getPostInfo(Long postIdx){
+        String url = env.getProperty("community.url") + "/alba/" + postIdx;
         ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);
-        Map<String, Object> result = new HashMap<>();
-        result.put("writer", response.getBody().get("writerIdx"));
-        result.put("alba", response.getBody().get("albaIdx"));
-        return result;
+        return response.getBody();
     }
 }
