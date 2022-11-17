@@ -10,6 +10,7 @@ export interface DetailProps {
   dogInfoList: DetailDogProps[];
   postIdx: number;
   writer: string;
+  writerIdx: number;
   getLike: boolean;
   categoryType: string;
   subject: string;
