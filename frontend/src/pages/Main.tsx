@@ -13,6 +13,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {startWalking} from '~/utils/MyPositionFunctions';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
+import {setWalkSummury} from '~/slices/userSlice';
 
 const MainPageStack = createNativeStackNavigator();
 export const MainPageNavigator = () => (
@@ -46,11 +47,16 @@ function Main({navigation}: any) {
   const profileImage = useSelector(
     (state: RootState) => state.user.profileImage,
   );
-  // 산책 시작 함수
   const myPositionState = useSelector((state: RootState) => state.myPosition);
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
   );
+
+  const totalDistance = useSelector(
+    (state: RootState) => state.user.totalDistance,
+  );
+  const totalTime = useSelector((state: RootState) => state.user.totalTime);
+  const totalWalk = useSelector((state: RootState) => state.user.totalWalk);
 
   const goWalking = () => {
     startWalking(dispatch, navigation, myPositionState, selectedDogs);
@@ -103,13 +109,17 @@ function Main({navigation}: any) {
     }
   };
 
-  // const getMyInfo = async () => {
-
-  // }
+  const getMyInfo = async () => {
+    try {
+      const response: AxiosResponse = await axios.get('user/home');
+      dispatch(setWalkSummury(response.data));
+    } catch (error) {}
+  };
 
   useEffect(() => {
     getMainPostList();
     getMyDogs();
+    getMyInfo();
   }, []);
 
   useEffect(() => {
@@ -124,6 +134,9 @@ function Main({navigation}: any) {
         userName={userName}
         profileImage={profileImage}
         goWalking={goWalking}
+        totalDistance={totalDistance}
+        totalTime={totalTime}
+        totalWalk={totalWalk}
       />
     </ScrollView>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import OppentReview from '~/molecules/OppentReview';
 import {reviewDataType} from '~/pages/Oppent';
 
@@ -10,7 +10,7 @@ interface Props {
 function OppentReviews({reviews}: Props) {
   console.log(reviews.length);
   return (
-    <View>
+    <ScrollView>
       {reviews?.length ? (
         <View>
           {reviews.map((review, idx) => (
@@ -27,7 +27,7 @@ function OppentReviews({reviews}: Props) {
           <Text>리뷰가 존재하지 않습니다.</Text>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
 

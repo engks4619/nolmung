@@ -1,14 +1,15 @@
-import React, {Dispatch} from 'react';
+import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {FONT_SIZE_M, FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Back from '@assets/back.svg';
+import {BORDER_COLOR, MAIN_COLOR} from '~/const';
 
 interface Props {
   navigation: any;
-  onRegistClicked: () => void;
+  onBtnClicked: () => void;
+  opponent: string;
 }
 
-const RegistHeader = ({navigation, onRegistClicked}: Props) => {
+const WalkReviewHeader = ({navigation, onBtnClicked, opponent}: Props) => {
   return (
     <View style={styles.hContainer}>
       <View style={styles.goBackBtn}>
@@ -17,10 +18,10 @@ const RegistHeader = ({navigation, onRegistClicked}: Props) => {
         </Pressable>
       </View>
       <View>
-        <Text style={styles.title}>게시글 작성</Text>
+        <Text style={styles.title}>{opponent}</Text>
       </View>
       <View style={styles.registBtn}>
-        <Pressable onPress={onRegistClicked}>
+        <Pressable onPress={onBtnClicked}>
           <Text style={styles.brown}>등록</Text>
         </Pressable>
       </View>
@@ -35,11 +36,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     height: 50,
-    borderBottomColor: '#A0A0A0',
+    borderBottomColor: BORDER_COLOR,
     borderBottomWidth: 1,
   },
   title: {
-    fontSize: FONT_SIZE_M,
+    fontSize: 13,
     fontWeight: '700',
     color: 'black',
     paddingVertical: 5,
@@ -53,10 +54,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   brown: {
-    fontSize: FONT_SIZE_S,
+    fontSize: 11,
     color: MAIN_COLOR,
     fontWeight: '700',
   },
 });
 
-export default RegistHeader;
+export default WalkReviewHeader;

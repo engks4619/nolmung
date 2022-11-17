@@ -4,13 +4,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {userInfoType} from '~/utils/type';
 
 const initialState = {
-  userIdx: '',
+  userIdx: 0,
   phone: '',
   nickname: '',
   profileImage: '',
   accessToken: '',
   lat: 0,
   lng: 0,
+  totalDistance: 0,
+  totalTime: 0,
+  totalWalk: 0,
 };
 
 export const getLocation = (dispatch: Dispatch<AnyAction>) => {
@@ -55,9 +58,14 @@ const userSlice = createSlice({
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },
+    setWalkSummury(state, action) {
+      state.totalDistance = action.payload.totalDistance;
+      state.totalTime = action.payload.totalTime;
+      state.totalWalk = action.payload.totalWalk;
+    },
   },
   extraReducers: builder => {},
 });
 
-export const {setUser, setLocation} = userSlice.actions;
+export const {setUser, setLocation, setWalkSummury} = userSlice.actions;
 export default userSlice;

@@ -1,8 +1,21 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions, Pressable} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Pressable,
+  Alert,
+} from 'react-native';
 import Heart from '@assets/heart.svg';
 import RedHeart from '@assets/redHeart.svg';
 import MyButton from '@atoms/MyButton';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
+import {ChatsParamList} from '~/pages/Chats';
+import {useRoomSocket} from '~/hooks/useSocket';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -14,6 +27,8 @@ interface footerProps {
   putLike: () => void;
 }
 
+type chatsScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
+
 function DetailFooter({
   categoryType,
   pay,
@@ -21,14 +36,32 @@ function DetailFooter({
   isLiked,
   putLike,
 }: footerProps) {
+  const navigation = useNavigation<chatsScreenProp>();
+  const [roomSocket, roomDisconnect] = useRoomSocket();
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+  const postIdx = useSelector((state: RootState) => state.post.postIdx);
+  const opponentIdx = useSelector((state: RootState) => state.post.writerIdx);
+
+  const startChat = () => {
+    const data = {ownerIdx: userIdx, postIdx, opponentIdx};
+    if (roomSocket && userIdx) {
+      roomSocket.emit('newRoom', data);
+      roomSocket.on('newRoomId', (roomId: string) =>
+        navigation.navigate('ChatList', {
+          screen: 'ChatsDetail',
+          params: {roomId},
+        }),
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <Pressable onPress={() => putLike()}>
         <View style={styles.heartContainer}>
           {isLiked ? (
-            <Heart height={25} width={25} fill="black" />
-          ) : (
             <RedHeart height={25} width={25} fill="red" />
+          ) : (
+            <Heart height={25} width={25} fill="black" />
           )}
         </View>
       </Pressable>
@@ -41,7 +74,12 @@ function DetailFooter({
         <MyButton
           btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
-          onClick={() => console.log('채팅목록')}
+          fontSize={14}
+          onClick={
+            isWriter
+              ? () => () => Alert.alert('알림', '구현중입니다..')
+              : () => startChat()
+          }
         />
       </View>
     </View>
@@ -59,7 +97,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     paddingHorizontal: 15,
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: 'gray',
+    borderColor: 'rgba(0, 0, 0, .5)',
   },
   heartContainer: {
     paddingHorizontal: 5,

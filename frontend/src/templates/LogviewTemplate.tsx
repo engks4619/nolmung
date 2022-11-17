@@ -18,6 +18,7 @@ interface Props {
   path: Coord[];
   dogInfoList: DetailDogProps[];
   isOver: boolean;
+  myPosition: Coord;
 }
 interface Photo {
   name: string;
@@ -28,6 +29,7 @@ function LogViewTemplate({
   path,
   dogInfoList,
   isOver,
+  myPosition,
 }: // myPosition,
 Props) {
   const [photo, setPhoto] = useState<Photo | null>(null);
@@ -102,7 +104,11 @@ Props) {
               <NaverMapView
                 style={styles.nmap}
                 zoomControl={true}
-                center={path[path.length / 2]}>
+                center={{
+                  zoom: 17,
+                  latitude: myPosition.latitude,
+                  longitude: myPosition.longitude,
+                }}>
                 <Marker
                   coordinate={path[path.length - 1]}
                   width={50}

@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Chats from './src/pages/Chats';
+import {ChatsStackNavigator} from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
 
@@ -28,6 +28,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
+import {useSocket, useRoomSocket} from '~/hooks/useSocket';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -55,10 +56,14 @@ const headers = {
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
+  const [socket, disconnect] = useSocket();
+  const [roomSocket, roomDisconnect] = useRoomSocket();
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
   );
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+
   const getUserInfo = async () => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
@@ -80,8 +85,8 @@ function AppInner() {
         },
       });
       const userInfo = {accessToken: token, ...responese.data};
-      axios.defaults.headers.common.Authorization = token;
       dispatch(setUser(userInfo));
+      axios.defaults.headers.common['Authorization'] = token;
     } catch (error: any) {
       if (error.responese.status === 401) {
         removeUserInfo();
@@ -94,6 +99,29 @@ function AppInner() {
     getLocation(dispatch);
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    // const helloCallback = (data: any) => {
+    //   console.log(data);
+    // };
+    if (socket && isLoggedIn && userIdx) {
+      const data = {id: userIdx};
+      socket.emit('login', data);
+      // socket.on('hello', helloCallback);
+    }
+    return () => {
+      if (socket) {
+        socket.off('login');
+      }
+    };
+  }, [isLoggedIn, socket, userIdx]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      disconnect();
+      roomDisconnect();
+    }
+  }, [isLoggedIn, disconnect, roomDisconnect]);
 
   return (
     <NavigationContainer>
@@ -125,8 +153,8 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Chats"
-            component={Chats}
+            name="ChatList"
+            component={ChatsStackNavigator}
             options={{
               headerTitle: '놀면 멍하니',
               headerTintColor: MAIN_COLOR,

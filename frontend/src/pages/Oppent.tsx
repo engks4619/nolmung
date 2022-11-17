@@ -1,9 +1,13 @@
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
+<<<<<<< HEAD
 import {useSelector} from 'react-redux';
 import CustomHeader from '~/headers/CustomHeader';
 import {RootState} from '~/store/reducer';
+=======
+import CustomHeader from '~/headers/CustomHeader';
+>>>>>>> 912725ee9fdbd89818f10f1ea69e211ecefc5e00
 import OppentTemplate from '~/templates/OppentTemplate';
 import axios from '~/utils/axios';
 
