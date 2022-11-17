@@ -5,13 +5,18 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.connection.UserInfoDto;
+import com.a703.community.entity.Post;
+import com.a703.community.repository.PostRepository;
 import com.a703.community.service.CommunityService;
+import com.a703.community.util.ClientUtil;
 import com.a703.community.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +33,10 @@ public class CommunityController {
     private final CommunityService communityService;
 
     private final FileUtil fileUtil;
+
+    private final ClientUtil clientUtil;
+
+    private final PostRepository postRepository;
 
     @PostMapping
     public ResponseEntity<?> registerPost(@RequestBody RegisterPostRequest registerPost, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) throws IOException {
@@ -93,9 +102,23 @@ public class CommunityController {
 
     @PutMapping("/like/{postIdx}")
     public ResponseEntity<?> pushLike(@PathVariable Long postIdx, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        HttpStatus status;
+        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
+        Long userIdx = userInfoDto.getUserIdx();
+        Post post = postRepository.findByPostIdx(postIdx);
+        Long writerIdx = post.getWriterIdx();
+        Boolean flag;
 
-        communityService.pushLike(postIdx,token);
-        return ResponseEntity.ok().body("success");
+        System.out.println(userIdx+"****"+writerIdx);
+        if(userIdx.equals(writerIdx)){
+            flag = null;
+            status = HttpStatus.BAD_REQUEST;
+        }else{
+            flag = communityService.pushLike(postIdx,userIdx);
+            status = HttpStatus.OK;
+        }
+
+        return ResponseEntity.status(status).body(flag);
     }
 
 }
