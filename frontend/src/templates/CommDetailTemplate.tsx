@@ -11,9 +11,10 @@ interface Props {
   detailContent: DetailProps;
   isLiked: Boolean;
   putLike: () => void;
+  userIdx: number;
 }
 
-function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
+function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -41,7 +42,7 @@ function CommDetailTemplate({detailContent, isLiked, putLike}: Props) {
         pay={detailContent.pay}
         isLiked={isLiked}
         putLike={putLike}
-        isWriter={true} // login 기능 추가후 비교
+        isWriter={detailContent.writerIdx === userIdx}
       />
     </View>
   );

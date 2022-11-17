@@ -4,6 +4,10 @@ import CommDetailTemplate from '@templates/CommDetailTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {DetailDogProps} from '@molecules/DetailDog';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
+import {useAppDispatch} from '~/store';
+import {setPostInfo} from '~/slices/postSlice';
 import CommDetailHeader from '~/molecules/CommDetailHeader';
 
 export interface DetailProps {
@@ -23,10 +27,13 @@ export interface DetailProps {
   modifyDate: string;
   photoUrl: string[];
   userImgUrl: string;
+  writerIdx: number;
 }
 
 function CommDetail({route, navigation}: any) {
   const postIdx: number = route.params.postIdx;
+  const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
+  const dispatch = useAppDispatch();
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
   const [isLiked, setIsLiked] = useState<Boolean>(false);
@@ -39,11 +46,15 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
+      const {writerIdx, pay, subject, photoUrl, userImgUrl} = data;
+      dispatch(
+        setPostInfo({postIdx, writerIdx, pay, subject, photoUrl, userImgUrl}),
+      );
       setIsLiked(data.getLike);
       setCategory(data.categoryType);
     } catch (error: any) {
       Alert.alert(
-        `에러코드 ${error.response.status}`,
+        `에러코드 ${error?.response?.status}`,
         '죄송합니다. 다시 시도해주시길 바랍니다.',
       );
     }
@@ -57,7 +68,7 @@ function CommDetail({route, navigation}: any) {
       }
     } catch (error: any) {
       Alert.alert(
-        `에러코드 ${error.response.status}`,
+        `에러코드 ${error?.response?.status}`,
         '죄송합니다. 다시 시도해주시길 바랍니다.',
       );
     }
@@ -80,6 +91,7 @@ function CommDetail({route, navigation}: any) {
       detailContent={detailContent}
       isLiked={isLiked}
       putLike={putLike}
+      userIdx={userIdx}
     />
   );
 }
