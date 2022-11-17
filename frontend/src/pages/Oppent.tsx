@@ -1,7 +1,7 @@
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
-import CustomHeader from '~/headers/customHeader';
+import CustomHeader from '~/headers/CustomHeader';
 import OppentTemplate from '~/templates/OppentTemplate';
 import axios from '~/utils/axios';
 
