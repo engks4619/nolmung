@@ -135,11 +135,15 @@ chat.on('connection', socket => {
       console.error(error);
     }
   });
-});
 
-// const server = app.listen(0, () => {
-//   console.log('Listening on port:', server.address().port);
-// });
+  // 산책 확정
+  socket.on('decide', roomId => {
+    console.log('산책 확정');
+    chat.to(roomId).emit('decided', '산책이 확정되었습니다.');
+
+    // 커뮤니티 서버에 산책 확정 보내기
+  });
+});
 
 httpServer.listen(PORT, () => {
   console.log('Listening on port:', PORT);
