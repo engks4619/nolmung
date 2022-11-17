@@ -28,17 +28,11 @@ function SpotDetailInfoSummary({spot}: Props) {
           </View>
           <View style={styles.right}>
             <View style={styles.tagContainer}>
-              <FlatList
-                horizontal
-                keyExtractor={(item, idx) => String(idx)}
-                data={spot?.descList ?? []}
-                renderItem={({item}) => (
-                  <View style={styles.border}>
-                    <Text style={styles.text}>{item}</Text>
-                  </View>
-                )}
-                showsHorizontalScrollIndicator={false}
-              />
+              {spot?.descList.map((item, idx) => (
+                <View style={styles.border} key={idx}>
+                  <Text style={styles.text}>{item}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </View>
@@ -108,6 +102,7 @@ const styles = StyleSheet.create({
   tagContainer: {
     flexDirection: 'row',
     width: '100%',
+    flexWrap: 'wrap',
   },
   head: {
     borderBottomWidth: 1,
@@ -139,6 +134,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 2,
     marginRight: 4,
+    marginTop: 4,
   },
 });
 export default SpotDetailInfoSummary;
