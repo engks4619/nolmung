@@ -3,6 +3,7 @@ package com.a703.withdog.service;
 import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.dto.WalkRes;
 import com.a703.withdog.repository.WalkMongoDBRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,8 @@ public class WalkService {
     }
 
     public void updateImg(String courseImgUrl, String walkIdx) {
-
-        WalkDTO walkDTO = walkMongoDBRepository.findByWalkIdx(walkIdx);
+        ObjectId oId = new ObjectId(walkIdx);
+        WalkDTO walkDTO = walkMongoDBRepository.findById(oId).get();
         walkDTO.setCourseImgUrl(courseImgUrl);
 
         walkMongoDBRepository.save(walkDTO);
