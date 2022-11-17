@@ -31,10 +31,10 @@ public class AlbaService {
     }
 
     public AlbaDto showAlba(Long postIdx){
-
+        Post post = postRepository.findByPostIdx(postIdx);
         return AlbaDto.builder()
-                .writerIdx(postRepository.findByPostIdx(postIdx).getWriterIdx())
-                .albaIdx(postRepository.findByPostIdx(postIdx).getAlbaIdx())
+                .writerIdx(post.getWriterIdx())
+                .albaIdx(post.getAlbaIdx())
                 .build();
     }
 }
