@@ -26,10 +26,10 @@ public class HistoryServiceImpl implements HistoryService {
         var map = commUtil.getPostInfo(postIdx);
         if(userIdx == map.get("writerIdx")){
             historyDto.setOwner(false);
-            historyDto.setReviewee(userRepository.findById((Long) map.get("albaIdx")).get());
+            historyDto.setReviewee(userRepository.findById(((Number) map.get("albaIdx")).longValue()).get());
         }else{
             historyDto.setOwner(true);
-            historyDto.setReviewee(userRepository.findById((Long) map.get("writerIdx")).get());
+            historyDto.setReviewee(userRepository.findById(((Number) map.get("writerIdx")).longValue()).get());
         }
         historyDto.setReviewer(userRepository.findById(userIdx).get());
         ModelMapper mapper = new ModelMapper();
