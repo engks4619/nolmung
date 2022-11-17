@@ -71,7 +71,6 @@ function CommDetail({route, navigation}: any) {
     try {
       const response = await axios.put(`community/like/${postIdx}`);
       if (response.status === 200) {
-        console.log(response.data);
         setIsLiked(response.data);
       }
     } catch (error: any) {
