@@ -18,10 +18,11 @@ export type photo = {
 };
 
 export type dog = {
-  breedCodeVlaue: string;
+  dogIdx: number;
   dogName: string;
-  image: string;
-};
+  image:string;
+  breedCodeValue: string;
+}
 
 export type article = {
   categoryType: string;

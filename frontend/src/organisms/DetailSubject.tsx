@@ -1,8 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Profile from '@atoms/Profile';
 import Poop from '@assets/poop.svg';
 import Lead from '@assets/lead.svg';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {CommunityParamList} from '~/pages/Community';
+import {useNavigation} from '@react-navigation/native';
 
 interface DetailSubjectProps {
   subject: string;
@@ -11,23 +14,36 @@ interface DetailSubjectProps {
   userImgUrl: string;
   leadLine: boolean;
   poopBag: boolean;
+  writerIdx: number;
 }
 
+type CommScreenProp = NativeStackNavigationProp<
+  CommunityParamList,
+  'Community'
+>;
 function DetailSubject({
   subject,
   writer,
   userImgUrl,
   leadLine,
   poopBag,
+  writerIdx,
 }: DetailSubjectProps) {
+  const navigation = useNavigation<CommScreenProp>();
+
+  const naviOppent = (oppentIdx: number) => {
+    navigation.navigate('Oppent', {oppentIdx});
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{subject}</Text>
       <View style={styles.subContainer}>
-        <View style={styles.rowContainer}>
+        <Pressable
+          style={styles.rowContainer}
+          onPress={() => naviOppent(writerIdx)}>
           <Profile imageSource={userImgUrl} width={17} height={17} />
           <Text style={styles.namePadding}>{writer}</Text>
-        </View>
+        </Pressable>
         <View style={styles.rowContainer}>
           {leadLine ? <Poop width={30} height={30} fill="black" /> : null}
           <View style={styles.svgContainer}>

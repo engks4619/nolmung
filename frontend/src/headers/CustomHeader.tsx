@@ -1,14 +1,16 @@
-import React, {Dispatch} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {FONT_SIZE_M, FONT_SIZE_S, MAIN_COLOR} from '~/const';
+import React from 'react';
+import {Pressable, StyleSheet, View, Text} from 'react-native';
 import Back from '@assets/back.svg';
+import {MAIN_COLOR} from '~/const';
 
 interface Props {
   navigation: any;
-  onRegistClicked: () => void;
+  middleText: string;
+  endText?: string;
+  endFunc?: () => void;
 }
 
-const RegistHeader = ({navigation, onRegistClicked}: Props) => {
+function CustomHeader({navigation, middleText, endText, endFunc}: Props) {
   return (
     <View style={styles.hContainer}>
       <View style={styles.goBackBtn}>
@@ -17,16 +19,18 @@ const RegistHeader = ({navigation, onRegistClicked}: Props) => {
         </Pressable>
       </View>
       <View>
-        <Text style={styles.title}>게시글 작성</Text>
+        <Text style={styles.title}>{middleText}</Text>
       </View>
       <View style={styles.registBtn}>
-        <Pressable onPress={onRegistClicked}>
-          <Text style={styles.brown}>등록</Text>
-        </Pressable>
+        {endText ? (
+          <Pressable onPress={endFunc}>
+            <Text style={styles.brown}>{endText}</Text>
+          </Pressable>
+        ) : null}
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   hContainer: {
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   title: {
-    fontSize: FONT_SIZE_M,
+    fontSize: 12,
     fontWeight: '700',
     color: 'black',
     paddingVertical: 5,
@@ -53,10 +57,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   brown: {
-    fontSize: FONT_SIZE_S,
+    fontSize: 10,
     color: MAIN_COLOR,
     fontWeight: '700',
   },
 });
 
-export default RegistHeader;
+export default CustomHeader;

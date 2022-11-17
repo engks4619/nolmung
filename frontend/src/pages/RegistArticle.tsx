@@ -1,16 +1,13 @@
-import {Axios, AxiosResponse} from 'axios';
-import axios from 'axios';
-// import axios from '~/utils/axios';
+import axios from 'utils/axios';
 import React, {useState} from 'react';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
-import {useSelector} from 'react-redux';
 import RegistHeader from '~/organisms/RegistHeader';
-import {RootState} from '~/store/reducer';
 import RegistArticleTemplate from '~/templates/RegistArticleTemplate';
-// import FormData from 'form-data';
-import {stringify} from 'query-string';
-import {Buffer} from 'buffer';
+import {uploadImg} from '~/utils/imgService';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
+import {dog} from '~/utils/type';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -27,150 +24,58 @@ const RegistArticle = ({navigation}: any) => {
   const [price, setPrice] = useState<number | null>(null);
   const [images, setImages] = useState<any[]>([]);
   const [selectedDog, setSelectedDog] = useState<any[]>([]);
-  const token = useSelector((state: RootState) => state.user.accessToken);
   const [clicked, setClicked] = useState<boolean>(false);
+  const [DOG_DATA, setDogData] = useState<
+    {label: string; value: number}[] | null
+  >(null);
+  const dogList = useSelector((state: RootState) => state.dogs.dogsInfo);
 
   const CATEGORY_TYPES = ['함께가요', '돌봐줘요'];
 
-  const DOG_DATA = [
-    {label: '뽀삐', value: 1},
-    {label: '초코', value: 2},
-    {label: '강아지1', value: 3},
-    {label: '강아지2', value: 4},
-    {label: '강아지3', value: 5},
-    {label: '강아지4', value: 6},
-  ];
-
   const registSubmit = async () => {
-    // const registerPost = {
-    //   dogIdx: selectedDog,
-    //   categoryType: category === '함께가요' ? 'WITH' : 'OTHER',
-    //   subject: subject.trim(),
-    //   content: content.trim(),
-    //   location,
-    //   pay: price,
-    //   leadLine: rope,
-    //   poopBag: poop,
-    //   walkDate: date,
-    // };
     const registerPost = {
-      dogIdx: [4],
-      categoryType: 'OTHER',
-      subject: '테스트',
-      content: '테스트123',
-      location: '서울시 관악구 신림',
-      pay: 4000,
-      leadLine: 'true',
-      poopBag: 'true',
-      walkDate: '2022-11-27T19:31:36',
+      dogIdx: selectedDog,
+      categoryType: category === '함께가요' ? 'WITH' : 'OTHER',
+      subject: subject.trim(),
+      content: content.trim(),
+      location,
+      pay: price,
+      leadLine: rope,
+      poopBag: poop,
+      walkDate: date,
     };
-    const json = JSON.stringify(registerPost);
-    const blob = new Blob([json], {type: 'application/json'});
-    // RNFetchBlob.fetch('POST', `http://nolmung.kr/api/community`, {
-    //   Accept: 'application/json',
-    //   'Content-Type': 'multipart/form-data',
-    //   Authorization: `Bearer ${token}`,
-    // });
-    console.log(blob);
-    let formData = new FormData();
-    formData.append('registerPost', json);
-    const register = formData.getParts(
-      item => item.fieldName === 'registerPost',
-    );
-    console.log(register);
-    // formData.append('files', []);
-    // console.log('getBuffer!!', formData.getBuffer());
-    // formData.getParts().find(item => item.fieldName === 'registerPost');
-    // for (let key of formData.keys()) {
-    //   console.log("formData:", key, formData.get(key));
-    // }
-    // formData.append('files', {});
-    // formData.append('registerPost', JSON.stringify(registerPost));
-    // for ( let i = 0; i < images.length; i++){
-    //   formData.append('files', );
-    // }
-    // console.log('registerPost', registerPost);
-    // console.log('json', json);
-    // console.log('blob', blob);
-    // formData.append('files', {});
-    // const response = await fetch('http://nolmung.kr/api/community', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'multipart/form-data',
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: formData.getBuffer(),
-    // })
-    //   .then(response => console.log(response))
-    //   .catch(err => console.log(err));
-    // console.log(response);
-    axios({
-      url: `http://nolmung.kr/api/community`,
-      method: 'POST',
-      // responseType: 'json',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-      transformRequest: (data, headers) => {
-        return data;
-      },
-      onUploadProgress: progressEvent => {
-        // use upload data, since it's an upload progress
-        // iOS: {"isTrusted": false, "lengthComputable": true, "loaded": 123, "total": 98902}
-      },
-      data: formData,
-    });
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-    // try {
-    //   console.log('formData', formData);
-    //   // const response = await axios({
-    //   //   url: 'community',
-    //   //   method: 'POST',
-    //   //   // headers: {
-    //   //   //   Authorization: `Bearer ${token}`,
-    //   //   //   // 'Content-Type': 'multipart/form-data',
-    //   //   // },
-    //   //   data: formData,
-    //   // });
-    //   const response: AxiosResponse = await axios.post(`community`, formData, {
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'multipart/form-data',
-    //       // 'Content-Type': 'application/json',
-    //       // Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   console.log('response', response);
-    // } catch (error: any) {
-    //   console.error(error.response);
-    //   console.error(error.response.status);
-    //   // Alert.alert('error!', error);
-    // }
+
+    try {
+      const response = await axios.post(`community`, registerPost);
+      if (response?.status === 200) {
+        const postIdx = response?.data;
+        if (images?.length > 0) {
+          images.map(async (image, idx) => {
+            await uploadImg(image, `community/file/${postIdx}`);
+          });
+        }
+        Alert.alert('게시글 작성완료!');
+        navigation.navigate('Community');
+      }
+    } catch (err: any) {
+      Alert.alert('게시글 작성 실패!', err);
+      setClicked(false);
+    }
   };
 
-  // const registSubmit = async () => {};
-
   const validateVal = () => {
-    // if (
-    //   category === '' ||
-    //   !subject ||
-    //   selectedDog.length === 0 ||
-    //   !date ||
-    //   !location ||
-    //   !content
-    // ) {
-    //   Alert.alert('입력을 완료해주세요!');
-    //   setClicked(false);
-    //   return; // 검증 실패
-    // }
+    if (
+      category === '' ||
+      !subject ||
+      selectedDog.length === 0 ||
+      !date ||
+      !location ||
+      !content
+    ) {
+      Alert.alert('입력을 완료해주세요!');
+      setClicked(false);
+      return; // 검증 실패
+    }
     //axios 요청 보내기
     registSubmit();
   };
@@ -192,6 +97,12 @@ const RegistArticle = ({navigation}: any) => {
     }
     validateVal();
   }, [clicked]);
+
+  useEffect(() => {
+    setDogData(
+      dogList.map((dog: any) => ({label: dog.dogName, value: dog.dogIdx})),
+    );
+  }, [dogList]);
 
   return (
     <RegistArticleTemplate
