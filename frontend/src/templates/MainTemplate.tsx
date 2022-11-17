@@ -11,6 +11,9 @@ interface Props {
   userName: string;
   profileImage: string;
   goWalking: () => void;
+  totalDistance: number;
+  totalTime: number;
+  totalWalk: number;
 }
 
 function MainTemplate({
@@ -19,6 +22,9 @@ function MainTemplate({
   userName,
   profileImage,
   goWalking,
+  totalDistance,
+  totalTime,
+  totalWalk,
 }: Props) {
   return (
     <View>
@@ -26,9 +32,9 @@ function MainTemplate({
       <UserSummary
         imageSource={profileImage}
         userName={userName}
-        walkNumber={13}
-        walkHour={500}
-        walkDistance={500}
+        walkNumber={totalWalk}
+        walkHour={totalTime}
+        walkDistance={totalDistance}
       />
       <MainPosts mainPostList={mainPostList} />
       <MainSpots spots={spots} />

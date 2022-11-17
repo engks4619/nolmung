@@ -12,6 +12,7 @@ import MyWalkingRecord from '@pages/MyWalkingRecord';
 import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
+import WalkReview from './WalkReview';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 
@@ -47,6 +48,18 @@ export const MypageStackNavigator = () => (
       component={LogView}
       options={{headerShown: true}}
     />
+    <MypageStack.Screen
+      name="WalkReview"
+      component={WalkReview}
+      options={{
+        headerTitle: '상대방 이름',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
   </MypageStack.Navigator>
 );
 
@@ -76,6 +89,11 @@ const myPageListNavi = [
     name: 'MyDogs',
     icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
+  },
+  {
+    name: 'WalkReview',
+    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    btnText: '산책후기',
   },
 ];
 // 마이페이지 버튼탭 목록(다른동작)
