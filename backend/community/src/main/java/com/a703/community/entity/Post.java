@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 public class Post extends BaseEntity{
 
     @Id
@@ -56,6 +55,17 @@ public class Post extends BaseEntity{
     private Boolean poopBag;
 
     private Integer reRegister;
+
+    public void setAlbaIdx(Long albaIdx) {
+        this.albaIdx = albaIdx;
+    }
+
+    public void setGetCompleted(Boolean flag){this.getCompleted = flag;}
+
+    public void setGetDeleted(Boolean flag){this.getDeleted = flag;}
+
+    public void setReRegister(int cnt){this.reRegister = cnt;}
+
 
 
 }

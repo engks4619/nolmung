@@ -145,5 +145,4 @@ httpServer.listen(PORT, () => {
   console.log('Listening on port:', PORT);
 });
 
-// eurekaHelper.registerWithEureka('chat', server.address().port);
 eurekaHelper.registerWithEureka('chat', PORT);

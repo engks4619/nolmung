@@ -2,7 +2,9 @@ package com.a703.user.service;
 
 import com.a703.user.dto.UserDto;
 import com.a703.user.entity.UserEntity;
+import com.a703.user.entity.UserVariableEntity;
 import com.a703.user.repository.UserRepository;
+import com.a703.user.repository.UserVariableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -23,6 +25,7 @@ import java.util.NoSuchElementException;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserVariableRepository userVariableRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -39,7 +42,8 @@ public class UserServiceImpl implements UserService {
                 .setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = mapper.map(userDto, UserEntity.class);
 
-        userRepository.save(userEntity);
+        UserEntity result = userRepository.save(userEntity);
+        userVariableRepository.save(UserVariableEntity.builder().userIdx(result.getUserIdx()).build());
     }
 
     @Override

@@ -79,12 +79,11 @@ spring:
             - RemoveRequestHeader=Cookie
 
         - id: chat
-          uri: lb://CHAT
+          uri: http://nolmung.kr:5000
           predicates:
-            - Path=/api/socket/**
+            - Path=/**
           filters:
             - RemoveRequestHeader=Cookie
-            - AuthorizationHeaderFilter
 
       default-filters:
         - name: GlobalFilter

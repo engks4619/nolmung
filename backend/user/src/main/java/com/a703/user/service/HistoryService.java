@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface HistoryService {
     HistoryDto registerReview(Long userIdx, Long postIdx, HistoryDto historyDto);
-    List<HistoryDto> getReviewList(Long userIdx, boolean reviewer);
+    List<HistoryDto> getReviewList(Long userIdx, boolean owner);
+    List<HistoryDto> getReviewList(Long userIdx);
 }
