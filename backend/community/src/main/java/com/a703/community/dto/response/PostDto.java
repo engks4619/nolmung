@@ -45,4 +45,6 @@ public class PostDto {
     private LocalDateTime modifyDate;
 
     private List<String> photoUrl;
+
+    private String thumbnailUrl;
 }

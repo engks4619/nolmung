@@ -134,7 +134,12 @@ public class CommunityService {
 
         List<DogInfoDto> dogInfoDto = clientUtil.requestDogInfo(dogIdxList);
 
+        String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(post.getPostIdx()) ? postPhotoRepository.findByPostPostIdx(post.getPostIdx()).get(0).getPhotoUrl()
+                : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(post.getPostIdx()).getId().getDogIdx())).get(0).getImage();
+
+
         return PostDto.builder()
+                .thumbnailUrl(thumbnailUrl)
                 .postIdx(post.getPostIdx())
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(post.getWriterIdx(),postIdx))
                 .writerIdx(post.getWriterIdx())
