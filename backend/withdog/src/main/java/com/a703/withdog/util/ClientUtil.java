@@ -19,7 +19,6 @@ public class ClientUtil {
     private final RestTemplate restTemplate;
 
     public void saveImage(MultipartFile file, String savePath) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
         String url = "http://IMAGE/api/image";
 //        String url = "http://nolmung.kr/api/image";
 
