@@ -27,7 +27,7 @@ export interface DetailProps {
   modifyDate: string;
   photoUrl: string[];
   userImgUrl: string;
-  writerIdx: number;
+  thumbnailUrl: string;
 }
 
 function CommDetail({route, navigation}: any) {
@@ -46,9 +46,16 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
-      const {writerIdx, pay, subject, photoUrl, userImgUrl} = data;
+      const {writerIdx, pay, subject, thumbnailUrl, userImgUrl} = data;
       dispatch(
-        setPostInfo({postIdx, writerIdx, pay, subject, photoUrl, userImgUrl}),
+        setPostInfo({
+          postIdx,
+          writerIdx,
+          pay,
+          subject,
+          thumbnailUrl,
+          userImgUrl,
+        }),
       );
       setIsLiked(data.getLike);
       setCategory(data.categoryType);
@@ -64,9 +71,14 @@ function CommDetail({route, navigation}: any) {
     try {
       const response = await axios.put(`community/like/${postIdx}`);
       if (response.status === 200) {
-        setIsLiked(!isLiked);
+        console.log(response.data);
+        setIsLiked(response.data);
       }
     } catch (error: any) {
+      if (error.response.status === 400) {
+        Alert.alert('알림', '본인 게시글에는 좋아요를 누를 수 없습니다.');
+        return;
+      }
       Alert.alert(
         `에러코드 ${error?.response?.status}`,
         '죄송합니다. 다시 시도해주시길 바랍니다.',
