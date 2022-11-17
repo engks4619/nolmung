@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -17,8 +16,8 @@ public class WalkRes {
     private double distance;
     private int time;
     private String courseImgUrl;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
     private List<Long> walkedDogList;
-    private List<Double>[] gpsList;
+    private List<GPS> gpsList;
 }
