@@ -3,8 +3,8 @@ import {View, Image} from 'react-native';
 
 interface Props {
   imageSource: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   borderRadius?: number;
 }
 
