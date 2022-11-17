@@ -7,7 +7,6 @@ import {reviewerType} from '@pages/Oppent';
 interface Props {
   ptReviewsNum: number;
   ownerReviews: number;
-  oppentInfo: reviewerType;
   isOwner: boolean;
   setIsOwner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -16,18 +15,17 @@ function ReviewProfile({
   isOwner,
   ptReviewsNum,
   ownerReviews,
-  oppentInfo,
   setIsOwner,
 }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Profile
+        {/* <Profile
           imageSource={oppentInfo?.profileImage}
           width={50}
           height={50}
         />
-        <Text style={styles.nameStyle}>{oppentInfo?.nickname}</Text>
+        <Text style={styles.nameStyle}>{oppentInfo?.nickname}</Text> */}
       </View>
       <View style={styles.reviewContainer}>
         <Pressable

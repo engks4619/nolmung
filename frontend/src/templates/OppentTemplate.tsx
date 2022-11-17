@@ -8,24 +8,16 @@ interface Props {
   isOwner: boolean;
   ownerReviews: reviewDataType[];
   ptReviews: reviewDataType[];
-  oppentInfo: reviewerType;
   setIsOwner: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function OppentTemplate({
-  isOwner,
-  ownerReviews,
-  ptReviews,
-  oppentInfo,
-  setIsOwner,
-}: Props) {
+function OppentTemplate({isOwner, ownerReviews, ptReviews, setIsOwner}: Props) {
   return (
     <View style={styles.container}>
       <ReviewProfile
         isOwner={isOwner}
         ptReviewsNum={ptReviews.length}
         ownerReviews={ownerReviews.length}
-        oppentInfo={oppentInfo}
         setIsOwner={setIsOwner}
       />
       <OppentReviews reviews={isOwner ? ownerReviews : ptReviews} />
