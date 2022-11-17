@@ -1,8 +1,10 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const dotenv = require('dotenv');
 const SocketIO = require('socket.io');
 
+dotenv.config();
 const connect = require('../schemas');
 const indexRouter = require('../routes');
 const Room = require('../schemas/room');
@@ -38,16 +40,21 @@ io.on('connection', socket => {
   console.log('소켓 연결 완료! socket 아이디 : ', socket.id);
 
   // 'login' 이벤트를 받았을 때의 처리
-  socket.on('login', function (login) {
+  socket.on('login', async login => {
     // 기존 클라이언트 ID가 없으면 클라이언트 ID를 맵에 추가
     console.log('접속한 소켓의 ID : ' + socket.id);
     login_ids[login.id] = socket.id;
     socket.login_id = login.id;
 
-    console.log(
-      '접속한 클라이언트 ID 갯수 : %d',
-      Object.keys(login_ids).length,
-    );
+    try {
+      const rooms = await Room.find({
+        $or: [{ownerIdx: socket.login_id}, {opponentIdx: socket.login_id}],
+      }).sort('-createdAt');
+
+      io.to(socket.id).emit('rooms', rooms);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   socket.on('disconnect', () => {
