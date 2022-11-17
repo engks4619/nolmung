@@ -7,12 +7,15 @@ import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
 import Timer from '@organisms/Timer';
+import Distance from '@organisms/Distance';
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
   startDate: Date | null;
   doneWalking: any;
+  distance: number;
+  dispatch: any;
 }
 
 function MapView({
@@ -21,6 +24,8 @@ function MapView({
   dogInfoList,
   doneWalking,
   startDate,
+  distance,
+  dispatch,
 }: Props) {
   const defaultSec =
     startDate !== undefined && startDate !== null
@@ -64,6 +69,10 @@ function MapView({
             </NaverMapView>
           </View>
           <Timer sec={defaultSec} />
+          <Distance
+            path={path}
+            distance={distance}
+            dispatch={dispatch}></Distance>
           <MyButton
             btnText="산책 종료"
             width={200}
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
   mapContainer: {
     alignItems: 'center',
     width: '90%',
-    height: Dimensions.get('window').height / 2,
+    height: Dimensions.get('window').height / 4,
   },
   nmap: {
     justifySelf: 'center',
