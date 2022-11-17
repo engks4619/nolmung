@@ -1,9 +1,7 @@
 package com.a703.withdog.util;
 
-import com.a703.withdog.dto.WalkDTO;
 import com.a703.withdog.repository.WalkMongoDBRepository;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -4,10 +4,20 @@ const router = express.Router();
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
 
+// router.get('/', async (req, res, next) => {
+//   try {
+//     const rooms = await Room.find({});
+//     res.render('main', {rooms, title: '채팅방'});
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// });
+
 router.get('/api/socket', async (req, res, next) => {
   try {
     const rooms = await Room.find({});
-    res.render('main', {rooms, title: '채팅방'});
+    // res.render('main', {rooms, title: '채팅방'});
   } catch (error) {
     console.error(error);
     next(error);

@@ -17,7 +17,16 @@ public class WalkService {
 
     public String saveWalk(WalkDTO walk){
         WalkDTO walkDTO = walkMongoDBRepository.save(walk);
+
         return walkDTO.getWalkIdx().toString();
+    }
+
+    public void updateImg(String courseImgUrl, String walkIdx) {
+        ObjectId oId = new ObjectId(walkIdx);
+        WalkDTO walkDTO = walkMongoDBRepository.findById(oId).get();
+        walkDTO.setCourseImgUrl(courseImgUrl);
+
+        walkMongoDBRepository.save(walkDTO);
     }
 
     public List<WalkRes> findByOwnerIdx(Long ownerIdx) {

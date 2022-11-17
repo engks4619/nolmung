@@ -19,9 +19,8 @@ public class ClientUtil {
     private final RestTemplate restTemplate;
 
     public void saveImage(MultipartFile file, String savePath) throws IOException {
-
         String url = "http://IMAGE/api/image";
-//        String url = "http://localhost:62815/api/image";
+//        String url = "http://nolmung.kr/api/image";
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);

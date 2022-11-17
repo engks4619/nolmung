@@ -3,7 +3,6 @@ package com.a703.withdog.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.bson.types.ObjectId;
 
 import java.util.Date;
 import java.util.List;

@@ -6,7 +6,6 @@ import com.a703.withdog.service.WalkService;
 import com.a703.withdog.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,20 +22,31 @@ public class WalkController {
     private final WalkService walkService;
     private final FileUtil fileUtil;
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> saveWalk(@RequestPart WalkDTO walk, @RequestPart(value = "image", required = false) MultipartFile image) {
+    @PostMapping
+    public ResponseEntity<?> saveWalk(@RequestBody WalkDTO walk) {
         /**
          * @Method Name : saveWalk
          * @Method 설명 : 산책 기록 저장 후 산책 id 반환
          */
-        if(image != null) {
-            String courseImgUrl = fileUtil.fileUpload(image);
-            walk.setCourseImgUrl(courseImgUrl);
-        }
-
         String walkIdx = walkService.saveWalk(walk);
 
         return ResponseEntity.ok().body(walkIdx.toString());
+    }
+
+    @PostMapping(value = "/img/{walkIdx}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> saveImg(@RequestPart(value = "image", required = false) MultipartFile image, @PathVariable String walkIdx) {
+        /**
+         * @Method Name : saveImg
+         * @Method 설명 : 산책코스 이미지 저장
+         */
+        log.info("이미지 업로드 시작");
+        if(image != null) {
+            String courseImgUrl = fileUtil.fileUpload(image);
+            log.info("이미지URL : "+courseImgUrl);
+            walkService.updateImg(courseImgUrl, walkIdx);
+        }
+
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     @GetMapping("/owner/{ownerIdx}")
