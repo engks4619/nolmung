@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -98,23 +99,32 @@ public class CommunityService {
 
     }
 
-    public void pushLike(Long postIdx,String token) {
+    @Transactional
+    public Boolean pushLike(Long postIdx,String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();
 
-        Post post=postRepository.findByPostIdx(postIdx);
+        if(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(userIdx,postIdx)) {
+            postLikeRepository.deleteByIdUserIdxAndIdPostPostIdx(userIdx,postIdx);
+            return false;
 
-        PostLikeId id = PostLikeId.builder()
-                        .userIdx(userIdx)
-                        .post(post)
-                        .build();
 
-        PostLike postLike = PostLike.builder()
-                        .id(id)
-                        .build();
+        }else{
+            Post post = postRepository.findByPostIdx(postIdx);
 
-        postLikeRepository.save(postLike);
+            PostLikeId id = PostLikeId.builder()
+                    .userIdx(userIdx)
+                    .post(post)
+                    .build();
+
+            PostLike postLike = PostLike.builder()
+                    .id(id)
+                    .build();
+
+            postLikeRepository.save(postLike);
+            return true;
+        }
     }
 
     public PostDto showPost(Long postIdx) {
