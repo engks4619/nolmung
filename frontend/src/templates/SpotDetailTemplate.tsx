@@ -3,13 +3,15 @@ import {useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import SpotImgContainer from '~/organisms/SpotImgContainer';
 import SpotInfoContainer from '~/organisms/SpotInfoContainer';
-import {spot} from '~/utils/type';
+import SpotReviewContainer from '~/organisms/SpotReviewContainer';
+import {review, spot} from '~/utils/type';
 
 interface Props {
   spot: spot | null;
+  reviewList: review[] | null;
 }
 
-const SpotDetailTemplate = ({spot}: Props) => {
+const SpotDetailTemplate = ({spot, reviewList}: Props) => {
   return (
     <ScrollView style={styles.container}>
       <SpotImgContainer
@@ -17,6 +19,7 @@ const SpotDetailTemplate = ({spot}: Props) => {
         imgCnt={spot?.imgCnt ?? 0}
       />
       <SpotInfoContainer spot={spot} />
+      <SpotReviewContainer reviewList={reviewList} />
     </ScrollView>
   );
 };

@@ -8,7 +8,7 @@ import {SpotDetailParamList} from './Spots';
 import axios from 'utils/axios';
 import CustomHeader from '~/headers/CustomHeader';
 import {Alert} from 'react-native';
-import {spot} from '~/utils/type';
+import {review, spot} from '~/utils/type';
 
 type SpotDetailProp = NativeStackScreenProps<SpotDetailParamList, 'SpotDetail'>;
 
@@ -18,11 +18,13 @@ const SpotDetail = ({route, navigation}: SpotDetailProp) => {
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
   const [spot, setSpot] = useState<spot | null>(null);
+  const [reviewList, setReviewList] = useState<review[]>([]);
 
   const getSpotDetail = async (spotId: string) => {
     const response = await axios.get(`spot/${spotId}?lat=${lat}&lng=${lng}`);
     if (response.status === 200) {
       setSpot(response?.data?.spotDto);
+      setReviewList(response?.data?.reviewList);
     } else {
       Alert.alert('상세 정보를 불러오지 못했습니다.');
     }
@@ -41,7 +43,7 @@ const SpotDetail = ({route, navigation}: SpotDetailProp) => {
     });
   }, [navigation]);
 
-  return <SpotDetailTemplate spot={spot} />;
+  return <SpotDetailTemplate spot={spot} reviewList={reviewList} />;
 };
 
 export default SpotDetail;

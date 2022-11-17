@@ -51,15 +51,25 @@ export type spot = {
   tel: string;
   tag: string;
   descList: string[];
-  time: {
-    (string: string) : (string: string)
-  };
-  menu: {
-    (menu: string) : (price: string)
-  };
+  time: {};
+  menu: {};
   lat: number;
   lng: number;
   distance: number;
   star: number;
   reviewCnt: number;
+};
+
+export type review = {
+  reviewIdx: number;
+  spotId: string;
+  star: number;
+  content: string;
+  deleted: boolean;
+  userIdx: number;
+  createdDate: Date;
+  moidfyDate: Date;
+  nickname: string;
+  profileImage: string;
+  photoList: string[];
 };
