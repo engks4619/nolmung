@@ -7,6 +7,7 @@ const initialState = {
   pay: undefined,
   writerIdx: undefined,
   writerImg: '',
+  writerName: '',
 };
 
 const postSlice = createSlice({
@@ -15,11 +16,12 @@ const postSlice = createSlice({
   reducers: {
     setPostInfo(state, action) {
       state.postIdx = action.payload.postIdx;
-      state.postImage = action.payload.photoUrl[0];
+      state.postImage = action.payload.thumbnailUrl;
       state.subject = action.payload.subject;
-      state.writerIdx = action.payload.writerIdx;
       state.pay = action.payload?.pay;
+      state.writerIdx = action.payload.writerIdx;
       state.writerImg = action.payload.userImgUrl;
+      state.writerName = action.payload.writer;
     },
   },
 });

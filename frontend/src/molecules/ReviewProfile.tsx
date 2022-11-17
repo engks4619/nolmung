@@ -2,13 +2,14 @@ import React from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import Profile from '~/atoms/Profile';
 import {MAIN_COLOR} from '~/const';
-import {reviewerType} from '@pages/Oppent';
 
 interface Props {
   ptReviewsNum: number;
   ownerReviews: number;
   isOwner: boolean;
   setIsOwner: React.Dispatch<React.SetStateAction<boolean>>;
+  oppentImg: string;
+  oppentName: string;
 }
 
 function ReviewProfile({
@@ -16,16 +17,14 @@ function ReviewProfile({
   ptReviewsNum,
   ownerReviews,
   setIsOwner,
+  oppentImg,
+  oppentName,
 }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        {/* <Profile
-          imageSource={oppentInfo?.profileImage}
-          width={50}
-          height={50}
-        />
-        <Text style={styles.nameStyle}>{oppentInfo?.nickname}</Text> */}
+        <Profile imageSource={oppentImg} width={50} height={50} />
+        <Text style={styles.nameStyle}>{oppentName}</Text>
       </View>
       <View style={styles.reviewContainer}>
         <Pressable

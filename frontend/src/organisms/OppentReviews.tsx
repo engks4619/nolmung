@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import Squre from '~/atoms/Squre';
 import OppentReview from '~/molecules/OppentReview';
 import {reviewDataType} from '~/pages/Oppent';
 
@@ -7,28 +8,43 @@ interface Props {
   reviews: reviewDataType[];
 }
 
+const MARGINTOP = (Dimensions.get('window').height - 500) / 2;
+
 function OppentReviews({reviews}: Props) {
-  console.log(reviews.length);
   return (
-    <ScrollView>
+    <View>
       {reviews?.length ? (
-        <View>
-          {reviews.map((review, idx) => (
-            <OppentReview
-              key={idx}
-              createdAt={review.createdAt}
-              content={review.review}
-              reviewer={review.reviewer}
-            />
-          ))}
-        </View>
+        <ScrollView>
+          <View>
+            {reviews.map((review, idx) => (
+              <OppentReview
+                key={idx}
+                createdAt={review.createdAt}
+                content={review.review}
+                reviewer={review.reviewer}
+              />
+            ))}
+          </View>
+        </ScrollView>
       ) : (
-        <View>
-          <Text>리뷰가 존재하지 않습니다.</Text>
+        <View style={styles.container}>
+          <Squre
+            imageSource="/images/review/empty.png"
+            width={300}
+            height={300}
+          />
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: 300,
+    marginTop: MARGINTOP,
+    alignItems: 'center',
+  },
+});
 
 export default OppentReviews;

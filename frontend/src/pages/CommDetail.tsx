@@ -27,7 +27,7 @@ export interface DetailProps {
   modifyDate: string;
   photoUrl: string[];
   userImgUrl: string;
-  writerIdx: number;
+  thumbnailUrl: string;
 }
 
 function CommDetail({route, navigation}: any) {
@@ -46,9 +46,17 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
-      const {writerIdx, pay, subject, photoUrl, userImgUrl} = data;
+      const {writerIdx, pay, subject, userImgUrl, thumbnailUrl, writer} = data;
       dispatch(
-        setPostInfo({postIdx, writerIdx, pay, subject, photoUrl, userImgUrl}),
+        setPostInfo({
+          postIdx,
+          writerIdx,
+          pay,
+          subject,
+          userImgUrl,
+          thumbnailUrl,
+          writer,
+        }),
       );
       setIsLiked(data.getLike);
       setCategory(data.categoryType);

@@ -1,13 +1,9 @@
 import {AxiosResponse} from 'axios';
 import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
-<<<<<<< HEAD
 import {useSelector} from 'react-redux';
 import CustomHeader from '~/headers/CustomHeader';
 import {RootState} from '~/store/reducer';
-=======
-import CustomHeader from '~/headers/CustomHeader';
->>>>>>> 912725ee9fdbd89818f10f1ea69e211ecefc5e00
 import OppentTemplate from '~/templates/OppentTemplate';
 import axios from '~/utils/axios';
 
@@ -32,6 +28,8 @@ function Oppent({route, navigation}: any) {
   const [isOwner, setIsOwner] = useState<boolean>(true);
   const [ownerReviews, setOwnerReviews] = useState<reviewDataType[]>([]);
   const [ptReviews, setPtReviews] = useState<reviewDataType[]>([]);
+  const oppentImg = useSelector((state: RootState) => state.post.writerImg);
+  const oppentName = useSelector((state: RootState) => state.post.writerName);
 
   useEffect(() => {
     navigation.setOptions({
@@ -46,7 +44,6 @@ function Oppent({route, navigation}: any) {
       );
       const reviewData: reviewDataType[] = response.data;
       setOwnerReviews(reviewData);
-      console.log(reviewData);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -77,6 +74,8 @@ function Oppent({route, navigation}: any) {
       ownerReviews={ownerReviews}
       ptReviews={ptReviews}
       setIsOwner={setIsOwner}
+      oppentImg={oppentImg}
+      oppentName={oppentName}
     />
   );
 }
