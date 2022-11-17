@@ -20,8 +20,8 @@ public class ClientUtil {
 
     public void saveImage(MultipartFile file, String savePath) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
-//        String url = "http://IMAGE/api/image";
-        String url = "http://nolmung.kr/api/image";
+        String url = "http://IMAGE/api/image";
+//        String url = "http://nolmung.kr/api/image";
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);

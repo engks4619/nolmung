@@ -1,14 +1,7 @@
-//buildscript {
-//	ext {
-//		queryDslVersion = "5.0.0"
-//	}
-//}
-
 plugins {
 	id 'org.springframework.boot' version '2.7.4'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
-//	id "com.ewerk.gradle.plugins.querydsl" version '1.0.10'
 }
 
 group = 'com.a703'
@@ -30,48 +23,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:3.1.4'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
-	//querydsl 추가
-//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-//	implementation "com.querydsl:querydsl-apt:${queryDslVersion}:jpa"
-	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//테스트에서 lombok 사용
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//querydsl 추가 시작
-//def querydslDir = "$buildDir/generated/querydsl"
-//querydsl {
-//	jpa = true
-//	springDataMongo = true
-//	querydslSourcesDir = querydslDir
-//}
-//sourceSets {
-//	main.java.srcDir querydslDir
-//}
-//configurations {
-//	querydsl.extendsFrom compileClasspath
-//}
-//compileQuerydsl {
-//	options.annotationProcessorPath = configurations.querydsl
-//}
-//querydsl 추가 끝
-
-//task deleteGeneratedSources(type: Delete) {
-//	delete file(querydslDir)
-//}
-//
-//tasks.withType(JavaCompile) { it.dependsOn('deleteGeneratedSources') }
