@@ -6,7 +6,6 @@ import com.a703.withdog.service.WalkService;
 import com.a703.withdog.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +46,7 @@ public class WalkController {
             walkService.updateImg(courseImgUrl, walkIdx);
         }
 
-        return ResponseEntity.ok().body(walkIdx.toString());
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     @GetMapping("/owner/{ownerIdx}")

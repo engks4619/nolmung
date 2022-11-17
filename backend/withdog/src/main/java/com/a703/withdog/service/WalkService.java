@@ -27,7 +27,6 @@ public class WalkService {
         walkDTO.setCourseImgUrl(courseImgUrl);
 
         walkMongoDBRepository.save(walkDTO);
-//        walkMongoDBRepository.update({'walkIdx': 'walkIdx'}, { $set: {'coureseImgUrl': 'url'}});
     }
 
     public List<WalkRes> findByOwnerIdx(Long ownerIdx) {
