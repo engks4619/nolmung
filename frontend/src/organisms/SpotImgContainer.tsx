@@ -25,8 +25,13 @@ const SpotImgContainer = ({spotId, imgCnt}: Props) => {
       return;
     }
     const list = [];
-    for (let i = 0; i < imgCnt; i++) {
+    let i = 0;
+    for (i = 0; i < imgCnt; i++) {
       list.push(SPOT_IMG_URL_PREFIX + spotId + '/' + i + '.jpg');
+    }
+    // 이미지 갯수 2 이하인 경우 검은색 사진으로 3개 채우기
+    while (imgCnt <= 2 && i++ < 3) {
+      list.push(SPOT_IMG_URL_PREFIX + '/black.jpg');
     }
     setImgList(list);
   };

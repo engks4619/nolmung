@@ -1,11 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {spot} from '~/utils/type';
 import Pencil from '@assets/pencil.svg';
-import {BORDER_COLOR, FONT_SIZE_L, FONT_SIZE_M} from '~/const';
+import {BORDER_COLOR, FONT_SIZE_M} from '~/const';
 
 interface Props {
-  spot: spot | null;
+  name: string;
+  reviewCnt: number;
+  star: number;
 }
 
 const getStringStar = (star: number): string => {
@@ -18,23 +19,25 @@ const getStringStar = (star: number): string => {
   return star.toString().slice(0, 3);
 };
 
-function SpotSummary({spot}: Props) {
+function SpotSummary({name, reviewCnt, star}: Props) {
   return (
     <View style={styles.hContainer}>
       <View style={styles.titleContainer}>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-          {spot?.name}
+        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.title}>
+          {name}
         </Text>
-        <Pencil
-          width={10}
-          height={10}
-          fill="black"
-          style={{paddingBottom: 15}}
-        />
-        <Text style={styles.text}>{spot?.reviewCnt}</Text>
+        <View>
+          <Pencil
+            width={10}
+            height={10}
+            fill="black"
+            style={[styles.pencil, styles.marginLeft]}
+          />
+        </View>
+        <Text style={[styles.text, styles.marginLeft]}>{reviewCnt}</Text>
       </View>
       <View>
-        <Text style={styles.star}>{getStringStar(spot?.star ?? 0)}</Text>
+        <Text style={styles.star}>{getStringStar(star ?? 0)}</Text>
       </View>
     </View>
   );
@@ -44,6 +47,7 @@ const styles = StyleSheet.create({
   hContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignContent: 'center',
     paddingVertical: 15,
     justifyContent: 'space-between',
     borderBottomColor: BORDER_COLOR,
@@ -62,6 +66,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: FONT_SIZE_M,
     color: 'black',
+  },
+  marginLeft: {
+    marginLeft: 5,
+  },
+  pencil: {
+    paddingBottom: 18,
   },
   star: {
     fontSize: 21,

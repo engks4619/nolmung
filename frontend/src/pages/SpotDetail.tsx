@@ -9,6 +9,7 @@ import axios from 'utils/axios';
 import CustomHeader from '~/headers/CustomHeader';
 import {Alert} from 'react-native';
 import {review, spot} from '~/utils/type';
+import {getTextAddress} from '~/utils/addressService';
 
 type SpotDetailProp = NativeStackScreenProps<SpotDetailParamList, 'SpotDetail'>;
 
@@ -18,6 +19,7 @@ const SpotDetail = ({route, navigation}: SpotDetailProp) => {
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
   const [spot, setSpot] = useState<spot | null>(null);
+  const [textAddress, setTextAddress] = useState<string>('');
   const [reviewList, setReviewList] = useState<review[]>([]);
 
   const getSpotDetail = async (spotId: string) => {
@@ -30,20 +32,52 @@ const SpotDetail = ({route, navigation}: SpotDetailProp) => {
     }
   };
 
+  const getAddress = async () => {
+    if (spot?.lat && spot?.lng) {
+      const response = await getTextAddress(spot?.lat, spot?.lng);
+      if (response.status === 200) {
+        const address = response.data.documents[0].address;
+        const text =
+          address.region_2depth_name +
+          ' ' +
+          address.region_3depth_name +
+          ' ' +
+          address.main_address_no +
+          (address.sub_address_no ? '-' + address.sub_address_no : '');
+        setTextAddress(text);
+      }
+    }
+  };
+
   useEffect(() => {
     //산책스팟 디테일 정보 가져오기
     getSpotDetail(spotId);
   }, [spotId]);
 
   useEffect(() => {
+    if (spot) {
+      getAddress();
+    }
+  }, [spot]);
+
+  useEffect(() => {
     navigation.setOptions({
       header: () => (
-        <CustomHeader navigation={navigation} middleText="스팟 상세" />
+        <CustomHeader
+          navigation={navigation}
+          middleText={spot?.name ?? '스팟 상세'}
+        />
       ),
     });
-  }, [navigation]);
+  }, [navigation, spot]);
 
-  return <SpotDetailTemplate spot={spot} reviewList={reviewList} />;
+  return (
+    <SpotDetailTemplate
+      spot={spot}
+      reviewList={reviewList}
+      textAddress={textAddress}
+    />
+  );
 };
 
 export default SpotDetail;

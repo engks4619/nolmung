@@ -9,16 +9,17 @@ import {review, spot} from '~/utils/type';
 interface Props {
   spot: spot | null;
   reviewList: review[] | null;
+  textAddress: string;
 }
 
-const SpotDetailTemplate = ({spot, reviewList}: Props) => {
+const SpotDetailTemplate = ({spot, reviewList, textAddress}: Props) => {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} overScrollMode="never">
       <SpotImgContainer
         spotId={spot?.spotId ?? ''}
         imgCnt={spot?.imgCnt ?? 0}
       />
-      <SpotInfoContainer spot={spot} />
+      <SpotInfoContainer spot={spot} textAddress={textAddress} />
       <SpotReviewContainer reviewList={reviewList} />
     </ScrollView>
   );

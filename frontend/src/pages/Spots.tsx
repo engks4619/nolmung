@@ -143,7 +143,10 @@ function Spots() {
     }
     // 실제 위치 주소 가져오기
     const response = await getTextAddress(lat, lng);
-    const address = response?.data?.documents[0].address;
+    const address = response?.data?.documents[0]?.address;
+    if (!address) {
+      return;
+    }
     const firstArr = address?.region_2depth_name.split(' ');
     const strAddress =
       firstArr[firstArr?.length - 1] + '/' + address?.region_3depth_name;

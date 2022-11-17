@@ -8,16 +8,10 @@ interface Props {
 
 function SpotImg({item}: Props) {
   return (
-    <View style={styles.spotContainer}>
+    <View>
       <Squre imageSource={item} width={120} height={120} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  spotContainer: {
-    marginBottom: 10,
-  },
-});
 
 export default SpotImg;

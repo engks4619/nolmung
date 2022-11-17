@@ -23,32 +23,7 @@ function SpotReviewContainer({reviewList}: Props) {
         <Text style={styles.brown}>리뷰</Text>
       </View>
       <View style={styles.container}>
-        {reviewList && reviewList?.length > 0 ? (
-          <FlatList
-            data={reviewList}
-            keyExtractor={(item, idx) => String(idx)}
-            renderItem={({item}) => (
-              <View>
-                <View style={styles.hContainer}>
-                  <View>
-                    <Profile
-                      imageSource={item.profileImage}
-                      width={30}
-                      height={30}
-                    />
-                    <Text style={styles.nickname}>{item.nickname}</Text>
-                  </View>
-                  <View>
-                    <Text>{item.star}</Text>
-                  </View>
-                </View>
-                <Text style={styles.text}>{item.content}</Text>
-              </View>
-            )}
-          />
-        ) : (
-          renderEmpty()
-        )}
+        {reviewList && reviewList?.length > 0 ? <View></View> : renderEmpty()}
       </View>
     </View>
   );

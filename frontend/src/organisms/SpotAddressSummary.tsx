@@ -1,45 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {FONT_SIZE_M, FONT_SIZE_S} from '~/const';
-import {spot} from '~/utils/type';
-import {getTextAddress} from 'utils/addressService';
+import {FONT_SIZE_S} from '~/const';
 import NaverMapView, {Marker} from 'react-native-nmap';
-import {Coord} from 'react-native-nmap';
 
 interface Props {
-  spot: spot | null;
+  lat: number;
+  lng: number;
+  address: string;
+  textAddress: string;
+  name: string;
 }
 
 const MARKER_IMG = require('@assets/marker.png');
 
-function SpotAddressSummary({spot}: Props) {
-  const [textAddress, setTextAddress] = useState<string>('');
-
-  const getAddress = async () => {
-    if (spot?.lat && spot?.lng) {
-      const response = await getTextAddress(spot?.lat, spot?.lng);
-      if (response.status === 200) {
-        const address = response.data.documents[0].address;
-        const text =
-          address.region_2depth_name +
-          ' ' +
-          address.region_3depth_name +
-          ' ' +
-          address.main_address_no +
-          (address.sub_address_no ? '-' + address.sub_address_no : '');
-        setTextAddress(text);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getAddress();
-  }, [spot]);
-
+function SpotAddressSummary({lat, lng, address, textAddress, name}: Props) {
   return (
     <View style={styles.container}>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-        {spot?.address}
+        {address}
       </Text>
       <View style={styles.hContainer}>
         <View style={styles.border}>
@@ -53,14 +31,14 @@ function SpotAddressSummary({spot}: Props) {
           zoomControl={true}
           center={{
             zoom: 15,
-            latitude: spot?.lat ?? 0,
-            longitude: spot?.lng ?? 0,
+            latitude: lat,
+            longitude: lng,
           }}>
           <Marker
-            coordinate={{latitude: spot?.lat ?? 0, longitude: spot?.lng ?? 0}}
+            coordinate={{latitude: lat, longitude: lng}}
             width={25}
             height={25}
-            caption={{text: spot?.name}}
+            caption={{text: name}}
             image={MARKER_IMG}
           />
         </NaverMapView>
@@ -95,12 +73,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flex: 1,
     alignItems: 'center',
-    minHeight: 150,
+    height: 150,
   },
   map: {
     justifySelf: 'center',
     width: '100%',
-    height: '100%',
+    height: 150,
   },
 });
 export default SpotAddressSummary;
