@@ -1,5 +1,6 @@
 package com.a703.community.dto.response;
 
+import com.a703.community.type.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +10,20 @@ import lombok.Getter;
 @Getter
 public class ChatDto {
 
-    Long postIdx;
+    private Long postIdx;
 
-    Long chatUserIdx;
+    private Long chatUserIdx;
+
+    private String nickname;
+
+    private String userImgUrl;;
+
+    private String thumbnailUrl;
+
+    private String subject;
+
+    private Boolean isOwner;
+
+    private CategoryType categoryType;
 
 }
