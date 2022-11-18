@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView, View} from 'react-native';
 import DetailDog from '@molecules/DetailDog';
 import {DetailDogProps} from '@molecules/DetailDog';
 
-interface DetailDogsProps {
+export interface DetailDogsProps {
   dogInfoList: DetailDogProps[];
 }
 

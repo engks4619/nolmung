@@ -3,11 +3,11 @@ import {Text, View, StyleSheet, ScrollView, Dimensions} from 'react-native';
 import NaverMapView, {Marker, Polyline} from 'react-native-nmap';
 import {MAIN_COLOR} from '~/const';
 import {Coord} from 'react-native-nmap';
-import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
 import Timer from '@organisms/Timer';
 import Distance from '@organisms/Distance';
+import WalkingDogs from '~/organisms/WalkingDogs';
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
@@ -39,7 +39,7 @@ function MapView({
     <View>
       <ScrollView>
         <View style={styles.mapViewContainer}>
-          <DetailDogs dogInfoList={dogInfoList} />
+          <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
           <View style={styles.mapContainer}>
             <NaverMapView
               style={styles.nmap}
@@ -86,12 +86,12 @@ const styles = StyleSheet.create({
   },
   mapViewContainer: {
     flex: 1,
-    alignItems: 'center',
-    height: '100%',
+    // alignItems: 'center',
+    // height: '100%',
   },
   mapContainer: {
     alignItems: 'center',
-    width: '90%',
+    width: '100%',
     height: Dimensions.get('window').height / 2,
   },
   nmap: {
