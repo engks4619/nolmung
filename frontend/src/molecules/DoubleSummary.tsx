@@ -20,7 +20,7 @@ function DoubleSummary({
         <Text style={styles.fontSize}>{firstLabel}</Text>
         <Text style={[styles.textCenter, styles.fontSize]}>{firstText}</Text>
       </View>
-      <View style={[styles.infoContainer, styles.borderRight]}>
+      <View style={styles.infoContainer}>
         <Text style={styles.fontSize}>{secondLabel}</Text>
         <Text style={[styles.textCenter, styles.fontSize]}>{secondText}</Text>
       </View>
@@ -31,6 +31,9 @@ function DoubleSummary({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: 'white',
+    marginTop: 5,
+    justifyContent: 'center',
   },
   borderRight: {
     borderRightWidth: 1,
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   fontSize: {
-    fontSize: 12,
+    fontSize: 13,
   },
 });
 

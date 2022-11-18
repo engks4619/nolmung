@@ -14,7 +14,11 @@ function WalkingDogs({dogInfoList, text}: Props) {
       <Text style={styles.heading}>{text}</Text>
       <ScrollView horizontal style={styles.dogsContainer}>
         {dogInfoList.map(dogInfo => (
-          <WalkingDog dogName={dogInfo.dogName} dogImg={dogInfo.image} />
+          <WalkingDog
+            key={dogInfo.dogName}
+            dogName={dogInfo.dogName}
+            dogImg={dogInfo.image}
+          />
         ))}
       </ScrollView>
     </View>

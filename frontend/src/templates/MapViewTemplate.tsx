@@ -42,16 +42,19 @@ function MapView({
   }
   return (
     <View>
-      <ScrollView>
-        <View style={styles.mapViewContainer}>
-          <CustomHeader navigation={navigation} middleText={''} />
-          <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
-          <View style={styles.mapContainer}>
-            <NaverMapView
-              style={styles.nmap}
-              zoomControl={true}
-              center={{
-                zoom: 17,
+      <ScrollView overscrollmode="never">
+        <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
+        <View style={styles.mapContainer}>
+          <NaverMapView
+            style={styles.nmap}
+            zoomControl={true}
+            center={{
+              zoom: 17,
+              latitude: myPosition.latitude,
+              longitude: myPosition.longitude,
+            }}>
+            <Marker
+              coordinate={{
                 latitude: myPosition.latitude,
                 longitude: myPosition.longitude,
               }}
@@ -59,51 +62,52 @@ function MapView({
               height={50}
               anchor={{x: 0.5, y: 0.5}}
               caption={{text: '나'}}
-              image={require('@assets/logo.png')}>
-              {path.length >= 2 ? (
-                <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-              ) : null}
-            </NaverMapView>
-            <DoubleSummary
-              firstLabel={'산책 시간'}
-              firstText={second}
-              secondLabel={'산책 거리'}
-              secondText={distance}
+              image={require('@assets/logo.png')}
             />
-          </View>
+            {path.length >= 2 ? (
+              <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+            ) : null}
+          </NaverMapView>
         </View>
-        {/* <Timer sec={second} /> */}
-        {/* <Distance distance={distance} /> */}
-        {/* <MyButton
-          btnText="산책 종료"
-          width={200}
-          height={50}
-          onClick={doneWalking}
-        /> */}
+        <DoubleSummary
+          firstLabel={'산책 시간'}
+          firstText={second}
+          secondLabel={'산책 거리'}
+          secondText={distance}
+        />
+        <View style={styles.btnContainer}>
+          <MyButton
+            btnText="산책 종료"
+            width={200}
+            height={50}
+            onClick={doneWalking}
+          />
+        </View>
       </ScrollView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   whileLoading: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
-  mapViewContainer: {
-    flex: 1,
-    // alignItems: 'center',
-    // height: '100%',
-  },
   mapContainer: {
     alignItems: 'center',
     width: '90%',
-    height: Dimensions.get('window').height / 5,
+    height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',
     width: '100%',
     height: '100%',
+  },
+  btnContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingVertical: 15,
   },
 });
 
