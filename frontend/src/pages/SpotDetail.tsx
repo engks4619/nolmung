@@ -1,10 +1,8 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import SpotDetailTemplate from '~/templates/SpotDetailTemplate';
-import {SpotDetailParamList} from './Spots';
 import axios from 'utils/axios';
 import CustomHeader from '~/headers/CustomHeader';
 import {Alert} from 'react-native';
@@ -62,6 +60,7 @@ const SpotDetail = ({route, navigation}: any) => {
     navigation.setOptions({
       header: () => (
         <CustomHeader
+          backFunc={() => navigation.navigate('Spots')}
           navigation={navigation}
           middleText={spot?.name ?? '스팟 상세'}
         />

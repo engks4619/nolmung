@@ -1,21 +1,41 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  FlatList,
+  Pressable,
+} from 'react-native';
 import MainSpot from '@molecules/MainSpot';
 import Carousel from '@organisms/Carousel';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
 import {LoggedInParamList} from '~/../AppInner';
+import {SpotDetailParamList} from '~/pages/Spots';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
-type mainScreenProp = NativeStackNavigationProp<LoggedInParamList, 'Main'>;
 
 interface Props {
   spots: any[];
 }
 
+type CommScreenProp = NativeStackNavigationProp<
+  SpotDetailParamList,
+  'SpotDetail'
+>;
+
 function MainSpots({spots}: Props) {
   const [page, setPage] = useState(0);
-  const navigation = useNavigation<mainScreenProp>();
+
+  const navigation = useNavigation<CommScreenProp>();
+
+  const naviWithDetail = (idx: number) => {
+    navigation.navigate('SpotList', {
+      screen: 'SpotDetail',
+      params: {spotId: spots[idx].spotId},
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -35,6 +55,7 @@ function MainSpots({spots}: Props) {
         data={spots}
         pageWidth={screenWidth - (15 + 15) * 2}
         RenderItem={MainSpot}
+        pressFunc={naviWithDetail}
       />
     </View>
   );

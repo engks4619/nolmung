@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Pressable, View} from 'react-native';
 
 interface Props {
   page: number;
@@ -9,6 +9,7 @@ interface Props {
   RenderItem: ({page, item}: {page: number; item: any}) => JSX.Element;
   pageWidth: number;
   data: any[];
+  pressFunc?: (param: any) => void;
 }
 
 const Carousel = ({
@@ -19,6 +20,7 @@ const Carousel = ({
   data,
   page,
   setPage,
+  pressFunc,
 }: Props) => {
   const onScroll = (e: any) => {
     const newPage = Math.round(
@@ -41,9 +43,14 @@ const Carousel = ({
         keyExtractor={(item, idx) => String(idx)}
         data={data}
         renderItem={({item}) => (
-          <View style={{marginHorizontal: gap / 2}}>
-            <RenderItem page={page} item={item} />
-          </View>
+          <Pressable
+            onPress={
+              pressFunc ? () => pressFunc(data.indexOf(item)) : () => {}
+            }>
+            <View style={{marginHorizontal: gap / 2}}>
+              <RenderItem page={page} item={item} />
+            </View>
+          </Pressable>
         )}
         showsHorizontalScrollIndicator={false}
       />
