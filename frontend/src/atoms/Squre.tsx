@@ -3,8 +3,8 @@ import {View, Image} from 'react-native';
 
 interface Props {
   imageSource: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   borderRadius?: number;
 }
 
@@ -15,7 +15,6 @@ function Squre({
   borderRadius = 0,
 }: Props) {
   const convertImagePath = `http://www.nolmung.kr/api/image${imageSource}`;
-
   return (
     <View>
       <Image

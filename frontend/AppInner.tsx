@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Chats from './src/pages/Chats';
+import {ChatsStackNavigator} from './src/pages/Chats';
 import Main from './src/pages/Main';
 import Spots from './src/pages/Spots';
 
@@ -28,6 +28,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
+import {useSocket, useRoomSocket} from '~/hooks/useSocket';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -43,13 +44,26 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const headers = {
+  headerTitle: '놀면 멍하니',
+  headerTintColor: MAIN_COLOR,
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+};
+
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
+  const [socket, disconnect] = useSocket();
+  const [roomSocket, roomDisconnect] = useRoomSocket();
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
   );
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+
   const getUserInfo = async () => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
@@ -71,8 +85,8 @@ function AppInner() {
         },
       });
       const userInfo = {accessToken: token, ...responese.data};
-      axios.defaults.headers.common.Authorization = token;
       dispatch(setUser(userInfo));
+      axios.defaults.headers.common['Authorization'] = token;
     } catch (error: any) {
       if (error.responese.status === 401) {
         removeUserInfo();
@@ -85,6 +99,29 @@ function AppInner() {
     getLocation(dispatch);
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    // const helloCallback = (data: any) => {
+    //   console.log(data);
+    // };
+    if (socket && isLoggedIn && userIdx) {
+      const data = {id: userIdx};
+      socket.emit('login', data);
+      // socket.on('hello', helloCallback);
+    }
+    return () => {
+      if (socket) {
+        socket.off('login');
+      }
+    };
+  }, [isLoggedIn, socket, userIdx]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      disconnect();
+      roomDisconnect();
+    }
+  }, [isLoggedIn, disconnect, roomDisconnect]);
 
   return (
     <NavigationContainer>
@@ -116,10 +153,15 @@ function AppInner() {
             }}
           />
           <Tab.Screen
-            name="Chats"
-            component={Chats}
+            name="ChatList"
+            component={ChatsStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '채팅',
               tabBarIcon: ({color}) => (
                 <ChatIcon width={25} height={25} fill={color} />
@@ -130,7 +172,12 @@ function AppInner() {
             name="Spots"
             component={Spots}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '산책스팟',
               tabBarIcon: ({color}) => (
                 <SpotIcon width={25} height={25} fill={color} />
@@ -157,7 +204,12 @@ function AppInner() {
             name="MypageList"
             component={MypageStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '마이페이지',
               tabBarIcon: ({color}) => (
                 <UserIcon width={25} height={25} fill={color} />
