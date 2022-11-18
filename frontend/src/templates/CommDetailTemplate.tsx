@@ -12,9 +12,18 @@ interface Props {
   isLiked: Boolean;
   putLike: () => void;
   userIdx: number;
+  startChat: () => void;
+  naviOppent: (oppentIdx: number) => void;
 }
 
-function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
+function CommDetailTemplate({
+  detailContent,
+  isLiked,
+  putLike,
+  userIdx,
+  startChat,
+  naviOppent,
+}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.container}>
@@ -26,7 +35,7 @@ function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
           userImgUrl={detailContent.userImgUrl}
           leadLine={detailContent.leadLine}
           poopBag={detailContent.poopBag}
-          isWriter={detailContent.writerIdx === userIdx}
+          naviOppent={naviOppent}
         />
         <DetailDogs dogInfoList={detailContent.dogInfoList} />
         <DetailWalk
@@ -44,6 +53,7 @@ function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
         isLiked={isLiked}
         putLike={putLike}
         isWriter={detailContent.writerIdx === userIdx}
+        startChat={startChat}
       />
     </View>
   );

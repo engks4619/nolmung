@@ -3,9 +3,6 @@ import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Profile from '@atoms/Profile';
 import Poop from '@assets/poop.svg';
 import Lead from '@assets/lead.svg';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {CommunityParamList} from '~/pages/Community';
-import {useNavigation} from '@react-navigation/native';
 
 interface DetailSubjectProps {
   subject: string;
@@ -15,13 +12,9 @@ interface DetailSubjectProps {
   leadLine: boolean;
   poopBag: boolean;
   writerIdx: number;
-  isWriter: boolean;
+  naviOppent: (oppentIdx: number) => void;
 }
 
-type CommScreenProp = NativeStackNavigationProp<
-  CommunityParamList,
-  'Community'
->;
 function DetailSubject({
   subject,
   writer,
@@ -29,16 +22,8 @@ function DetailSubject({
   leadLine,
   poopBag,
   writerIdx,
-  isWriter,
+  naviOppent,
 }: DetailSubjectProps) {
-  const navigation = useNavigation<CommScreenProp>();
-
-  const naviOppent = (oppentIdx: number) => {
-    if (isWriter) {
-      return;
-    }
-    navigation.navigate('Oppent', {oppentIdx});
-  };
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{subject}</Text>

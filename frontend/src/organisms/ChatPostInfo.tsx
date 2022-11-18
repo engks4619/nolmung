@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
-import MyButton from '~/atoms/MyButton';
+import {View, Text, StyleSheet} from 'react-native';
+import PostscriptBtn from '~/atoms/PostscriptBtn';
+import ScheduleBtn from '~/atoms/ScheduleBtn';
 import Squre from '~/atoms/Squre';
 
 interface chatsPostInfoProps {
@@ -28,13 +29,8 @@ function ChatPostInfo({
         </View>
       </View>
       <View style={styles.btnContainer}>
-        <MyButton
-          btnText="산책 확정"
-          width={100}
-          height={45}
-          fontSize={14}
-          onClick={() => handleConfirmWalk()}
-        />
+        <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
+        <PostscriptBtn />
       </View>
     </View>
   );
@@ -61,7 +57,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   btnContainer: {
-    justifyContent: 'center',
+    flexDirection: 'row',
+    marginTop: 10,
   },
 });
 
