@@ -38,6 +38,10 @@ function LogView({route, navigation}: any) {
       dogs.push(elem);
     }
   });
+  const goBackAndClear = () => {
+    navigation.replace('MainPage');
+    clearLogsAll(dispatch);
+  };
 
   // img,데이터 전송
   const submitLogs = async () => {
@@ -66,16 +70,14 @@ function LogView({route, navigation}: any) {
             {
               text: '확인',
               onPress: () => {
-                navigation.replace('MainPage');
-                clearLogsAll(dispatch);
+                goBackAndClear();
               },
             },
           ],
           {
             cancelable: true,
             onDismiss: () => {
-              navigation.replace('MainPage');
-              clearLogsAll(dispatch);
+              goBackAndClear();
             },
           },
         );
@@ -99,7 +101,6 @@ function LogView({route, navigation}: any) {
 
   //이어하기
   const countinueLogs = async () => {
-    console.log('이어하기');
     startLogging(dispatch, selectedDogs);
     navigation.replace('MapViewAlone');
   };

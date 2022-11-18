@@ -7,7 +7,7 @@ interface HookType {
 interface Props {
   sec: number;
 }
-const Timer = ({sec}: Props) => {
+function Timer({sec}: Props) {
   const [second, setSecond] = useState(sec);
   const [delay, setDelay] = useState(1000);
 
@@ -23,9 +23,9 @@ const Timer = ({sec}: Props) => {
       {Math.floor(second / 60)} : {second % 60}{' '}
     </Text>
   );
-};
+}
 
-function useInterval(callback, delay): HookType {
+const useInterval = (callback, delay): HookType => {
   const savedCallback = useRef();
 
   // Remember the latest callback.
@@ -43,7 +43,7 @@ function useInterval(callback, delay): HookType {
       return () => clearInterval(id);
     }
   }, [delay]);
-}
+};
 
 const styles = StyleSheet.create({
   text: {
