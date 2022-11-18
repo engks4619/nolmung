@@ -22,7 +22,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -132,5 +134,14 @@ public class UserController {
         body.put("totalDistance", userVariableEntity.getTotalDistance());
         body.put("totalTime", userVariableEntity.getTotalTime());
         return ResponseEntity.ok(body);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> modifyProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt,
+                                           @RequestPart(value = "file", required = false) MultipartFile file,
+                                           @RequestPart(value = "nickname") String nickname) throws IOException {
+        Long userIdx = jwtUtil.jwtToUserIdx(jwt);
+
+        return ResponseEntity.ok(userService.modifyProfile(userIdx, file, nickname));
     }
 }

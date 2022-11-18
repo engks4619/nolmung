@@ -6,8 +6,10 @@ import com.a703.user.repository.HistoryRepository;
 import com.a703.user.repository.UserRepository;
 import com.a703.user.util.CommUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class HistoryServiceImpl implements HistoryService {
 
     private final HistoryRepository historyRepository;
@@ -22,7 +25,7 @@ public class HistoryServiceImpl implements HistoryService {
     private final CommUtil commUtil;
 
     @Override
-    public HistoryDto registerReview(Long userIdx, Long postIdx, HistoryDto historyDto) {
+    public void registerReview(Long userIdx, Long postIdx, HistoryDto historyDto) {
         var map = commUtil.getPostInfo(postIdx);
         if(userIdx == map.get("writerIdx")){
             historyDto.setOwner(false);
@@ -33,10 +36,10 @@ public class HistoryServiceImpl implements HistoryService {
         }
         historyDto.setReviewer(userRepository.findById(userIdx).get());
         ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setSkipNullEnabled(true).setFieldAccessLevel(Configuration.AccessLevel.PRIVATE).setFieldMatchingEnabled(true);
+        mapper.getConfiguration().setSkipNullEnabled(true).setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
+                .setFieldMatchingEnabled(true).setMatchingStrategy(MatchingStrategies.STRICT);
         HistoryEntity historyEntity = mapper.map(historyDto, HistoryEntity.class);
-        HistoryEntity savedReview = historyRepository.save(historyEntity);
-        return mapper.map(savedReview, HistoryDto.class);
+        historyRepository.save(historyEntity);
     }
 
     @Override
