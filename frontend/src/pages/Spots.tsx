@@ -162,7 +162,7 @@ function Spots() {
       return;
     }
     getSpotList();
-  }, [spotRequest, page, sort]);
+  }, [spotRequest, page]);
 
   useEffect(() => {
     if (!spotRequest) {
@@ -176,7 +176,7 @@ function Spots() {
       limitDistance,
       category,
     } as SpotRequest);
-  }, [limitDistance, category, lat, lng]);
+  }, [limitDistance, category, lat, lng, sort]);
 
   useEffect(() => {
     getTextLocation();
