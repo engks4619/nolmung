@@ -28,8 +28,8 @@ public class HistoryController {
     public ResponseEntity<?> RegisterReview(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String jwt, @RequestBody RequestHistory requestHistory){
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         HistoryDto historyDto = new ModelMapper().map(requestHistory, HistoryDto.class);
-        HistoryDto savedData = historyService.registerReview(userIdx, requestHistory.getPostIdx(), historyDto);
-        return ResponseEntity.status(HttpStatus.OK).body(savedData);
+        historyService.registerReview(userIdx, requestHistory.getPostIdx(), historyDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/reviewer/{userIdx}")
