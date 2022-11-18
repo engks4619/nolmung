@@ -11,9 +11,7 @@ import {Alert} from 'react-native';
 import {review, spot} from '~/utils/type';
 import {getTextAddress} from '~/utils/addressService';
 
-type SpotDetailProp = NativeStackScreenProps<SpotDetailParamList, 'SpotDetail'>;
-
-const SpotDetail = ({route, navigation}: SpotDetailProp) => {
+const SpotDetail = ({route, navigation}: any) => {
   const spotId: string = route.params.spotId;
 
   const lat = useSelector((state: RootState) => state.user.lat);

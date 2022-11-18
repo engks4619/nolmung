@@ -130,7 +130,12 @@ function AppInner() {
             name="SpotList"
             component={SpotStackNavigator}
             options={{
-              headerShown: false,
+              headerTitle: '놀면 멍하니',
+              headerTintColor: MAIN_COLOR,
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                fontSize: 15,
+              },
               title: '산책스팟',
               tabBarIcon: ({color}) => (
                 <SpotIcon width={25} height={25} fill={color} />
