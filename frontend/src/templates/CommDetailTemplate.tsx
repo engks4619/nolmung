@@ -26,6 +26,7 @@ function CommDetailTemplate({detailContent, isLiked, putLike, userIdx}: Props) {
           userImgUrl={detailContent.userImgUrl}
           leadLine={detailContent.leadLine}
           poopBag={detailContent.poopBag}
+          isWriter={detailContent.writerIdx === userIdx}
         />
         <DetailDogs dogInfoList={detailContent.dogInfoList} />
         <DetailWalk

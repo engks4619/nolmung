@@ -46,15 +46,16 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
-      const {writerIdx, pay, subject, thumbnailUrl, userImgUrl} = data;
+      const {writerIdx, pay, subject, userImgUrl, thumbnailUrl, writer} = data;
       dispatch(
         setPostInfo({
           postIdx,
           writerIdx,
           pay,
           subject,
-          thumbnailUrl,
           userImgUrl,
+          thumbnailUrl,
+          writer,
         }),
       );
       setIsLiked(data.getLike);

@@ -15,6 +15,7 @@ interface DetailSubjectProps {
   leadLine: boolean;
   poopBag: boolean;
   writerIdx: number;
+  isWriter: boolean;
 }
 
 type CommScreenProp = NativeStackNavigationProp<
@@ -28,10 +29,14 @@ function DetailSubject({
   leadLine,
   poopBag,
   writerIdx,
+  isWriter,
 }: DetailSubjectProps) {
   const navigation = useNavigation<CommScreenProp>();
 
   const naviOppent = (oppentIdx: number) => {
+    if (isWriter) {
+      return;
+    }
     navigation.navigate('Oppent', {oppentIdx});
   };
   return (
