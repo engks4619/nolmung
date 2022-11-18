@@ -1,9 +1,8 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import NaverMapView, {Marker, Polyline} from 'react-native-nmap';
 import {MAIN_COLOR} from '~/const';
 import {Coord} from 'react-native-nmap';
-import DetailDogs from '@organisms/DetailDogs';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
 import Timer from '@organisms/Timer';
@@ -11,6 +10,7 @@ import Distance from '@organisms/Distance';
 import CustomHeader from '~/headers/CustomHeader';
 import DoubleSummary from '@molecules/DoubleSummary';
 
+import WalkingDogs from '~/organisms/WalkingDogs';
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
@@ -42,10 +42,8 @@ function MapView({
   }
   return (
     <View>
-      <View style={styles.mapViewContainer}>
-        <CustomHeader navigation={navigation} middleText={''} />
-        <Text></Text>
-        <DetailDogs dogInfoList={dogInfoList} />
+      <ScrollView overscrollmode="never">
+        <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
         <View style={styles.mapContainer}>
           <NaverMapView
             style={styles.nmap}
@@ -70,47 +68,46 @@ function MapView({
               <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
             ) : null}
           </NaverMapView>
-          <DoubleSummary
-            firstLabel={'산책 시간'}
-            firstText={second}
-            secondLabel={'산책 거리'}
-            secondText={distance}
+        </View>
+        <DoubleSummary
+          firstLabel={'산책 시간'}
+          firstText={second}
+          secondLabel={'산책 거리'}
+          secondText={distance}
+        />
+        <View style={styles.btnContainer}>
+          <MyButton
+            btnText="산책 종료"
+            width={200}
+            height={50}
+            onClick={doneWalking}
           />
         </View>
-        {/* <Timer sec={second} /> */}
-        {/* <Distance distance={distance} /> */}
-        {/* <MyButton
-          btnText="산책 종료"
-          width={200}
-          height={50}
-          onClick={doneWalking}
-        /> */}
-      </View>
+      </ScrollView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   whileLoading: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
-  mapViewContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    // alignItems: 'stretch',
-    height: '100%',
-    backgroundColor: 'white',
-  },
   mapContainer: {
     alignItems: 'center',
     width: '90%',
-    height: Dimensions.get('window').height / 5,
+    height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',
     width: '100%',
     height: '100%',
+  },
+  btnContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingVertical: 15,
   },
 });
 

@@ -12,6 +12,7 @@ import {DetailDogProps} from '@molecules/DetailDog';
 import DetailDogs from '@organisms/DetailDogs';
 import {MAIN_COLOR} from '~/const';
 import ViewShot from 'react-native-view-shot';
+import WalkingDogs from '~/organisms/WalkingDogs';
 
 interface Props {
   path: Coord[];
@@ -42,7 +43,7 @@ function LogViewTemplate({
           <Pressable onPress={() => noSaveLogs()}>
             <Text>저장x</Text>
           </Pressable>
-          <DetailDogs dogInfoList={dogInfoList} />
+          <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
           <View style={styles.mapContainer}>
             <NaverMapView
               style={styles.nmap}
@@ -72,7 +73,7 @@ function LogViewTemplate({
     return (
       <ScrollView>
         <View>
-          <DetailDogs dogInfoList={dogInfoList} />
+          <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
           <View style={styles.mapContainer}>
             <NaverMapView
               style={styles.nmap}

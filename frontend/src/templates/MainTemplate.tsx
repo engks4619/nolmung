@@ -14,6 +14,7 @@ interface Props {
   totalDistance: number;
   totalTime: number;
   totalWalk: number;
+  isWalking: boolean;
 }
 
 function MainTemplate({
@@ -25,10 +26,11 @@ function MainTemplate({
   totalDistance,
   totalTime,
   totalWalk,
+  isWalking,
 }: Props) {
   return (
     <View>
-      <MainWalk goWalking={goWalking} />
+      <MainWalk goWalking={goWalking} isWalking={isWalking} />
       <UserSummary
         imageSource={profileImage}
         userName={userName}
