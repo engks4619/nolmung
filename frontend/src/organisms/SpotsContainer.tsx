@@ -1,10 +1,20 @@
 import React, {useEffect, useRef} from 'react';
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  Pressable,
+  Dimensions,
+} from 'react-native';
 import Squre from '~/atoms/Squre';
-import {Spot, SpotRequest} from '~/pages/Spots';
+import {Spot, SpotDetailParamList, SpotRequest} from '~/pages/Spots';
 import Pencil from '@assets/pencil.svg';
 import {getTextAddress} from '~/utils/addressService';
 import {AxiosResponse} from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 interface Props {
   spotList: Spot[];
@@ -16,6 +26,13 @@ interface Props {
   loadMore: Function;
 }
 
+type CommScreenProp = NativeStackNavigationProp<
+  SpotDetailParamList,
+  'SpotDetail'
+>;
+
+const windowHeight = Dimensions.get('window').height;
+
 function SpotsContainer({
   spotList,
   spotRequest,
@@ -26,14 +43,15 @@ function SpotsContainer({
   loadMore,
 }: Props) {
   const flatListRef = useRef<FlatList>(null);
+  const navigation = useNavigation<CommScreenProp>();
 
   const toTop = () => {
     flatListRef.current?.scrollToOffset({animated: true, offset: 0});
   };
 
   const renderEmpty = () => (
-    <View style={styles.emptyText}>
-      <Text>데이터가 없습니다.</Text>
+    <View style={styles.emptyContainer}>
+      <Squre imageSource="/images/review/empty.png" />
     </View>
   );
 
@@ -65,6 +83,10 @@ function SpotsContainer({
     return arr.join(' ');
   };
 
+  const spotDetailNavigate = (spotId: string) => {
+    navigation.navigate('SpotDetail', {spotId});
+  };
+
   useEffect(() => {
     if (page !== 0) {
       toTop();
@@ -82,36 +104,47 @@ function SpotsContainer({
       contentContainerStyle={{paddingBottom: 220}}
       renderItem={({item}) => (
         <View key={item.spotId} style={styles.container}>
-          <View style={styles.imgContainer}>
-            <Squre
-              width={130}
-              height={130}
-              borderRadius={5}
-              imageSource={
-                item.imgCnt !== 0
-                  ? `/images/spot/${item.spotId}/0.jpg`
-                  : `/images/spot/default/default.png`
-              }
-            />
-          </View>
+          <Pressable onPress={() => spotDetailNavigate(item.spotId)}>
+            <View style={styles.imgContainer}>
+              <Squre
+                width={130}
+                height={130}
+                borderRadius={5}
+                imageSource={
+                  item.imgCnt !== 0
+                    ? `/images/spot/${item.spotId}/0.jpg`
+                    : `/images/spot/default/default.png`
+                }
+              />
+            </View>
 
-          <View style={styles.descContainer}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-              {spotList.indexOf(item) + 1}. {item.name}
-            </Text>
-            <Text style={[styles.star, styles.right]}>
-              {getStringStar(item.star)}
-            </Text>
-          </View>
-          <View style={styles.descContainer}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.desc}>
-              {getSimpleAddress(item.address)}
-            </Text>
-            <Text style={styles.reviewContainer}>
-              <Pencil width={10} height={10} fill={'black'} stroke={'black'} />
-              {item.reviewCnt}
-            </Text>
-          </View>
+            <View style={styles.descContainer}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+                {spotList.indexOf(item) + 1}. {item.name}
+              </Text>
+              <Text style={[styles.star, styles.right]}>
+                {getStringStar(item.star)}
+              </Text>
+            </View>
+            <View style={styles.descContainer}>
+              <Text numberOfLines={1} ellipsizeMode="tail" style={styles.desc}>
+                {getSimpleAddress(item.address)}
+              </Text>
+              <Text style={styles.reviewContainer}>
+                <View style={styles.pencil}>
+                  <Pencil
+                    width={10}
+                    height={10}
+                    fill={'black'}
+                    stroke={'black'}
+                  />
+                </View>
+                <View style={styles.reviewCnt}>
+                  <Text>{item.reviewCnt}</Text>
+                </View>
+              </Text>
+            </View>
+          </Pressable>
         </View>
       )}
       ListEmptyComponent={renderEmpty}
@@ -158,13 +191,25 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   reviewContainer: {
-    paddingHorizontal: 10,
+    marginLeft: 10,
+    alignContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  emptyText: {
-    paddingVertical: 20,
+  emptyContainer: {
     alignItems: 'center',
-    fontSize: 12,
-    fontWeight: '500',
+    justifyContent: 'center',
+    height: windowHeight / 2,
+  },
+  pencil: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingBottom: 4,
+  },
+  reviewCnt: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 3,
   },
 });
 

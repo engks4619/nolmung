@@ -27,7 +27,9 @@ function MainSpot({item}: Props) {
         {item.name}
       </Text>
       <View style={styles.infoContainer}>
-        <Text style={styles.distanceInfo}>{distance}km</Text>
+        <Text style={styles.distanceInfo}>
+          {distance.length < 4 ? distance + 'm' : distance + 'km'}
+        </Text>
         <Text style={styles.categoryContainer}>[{item.category}]</Text>
       </View>
     </View>
