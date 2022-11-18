@@ -1,12 +1,22 @@
 import React from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {useSelector} from 'react-redux';
 import Profile from '~/atoms/Profile';
 import Squre from '~/atoms/Squre';
 import {BORDER_COLOR, FONT_SIZE_S} from '~/const';
+import {RootState} from '~/store/reducer';
 import {review} from '~/utils/type';
 
 interface Props {
   review: review;
+  deleteSpotReview: (reviewIdx: number) => void;
 }
 
 const getStringStar = (star: number): string => {
@@ -19,7 +29,10 @@ const getStringStar = (star: number): string => {
   return star.toString().slice(0, 3);
 };
 
-function SpotReviewInfo({review}: Props) {
+const screenWidth = Dimensions.get('window').width;
+
+function SpotReviewInfo({review, deleteSpotReview}: Props) {
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
   return (
     <View style={styles.container}>
       <View style={styles.hContainer}>
@@ -31,11 +44,16 @@ function SpotReviewInfo({review}: Props) {
           <Text style={styles.text}>{getStringStar(review.star)}</Text>
         </View>
       </View>
-
+      {String(review.userIdx) == userIdx ? (
+        <View style={styles.deleteContainer}>
+          <Pressable onPress={() => deleteSpotReview(review.reviewIdx)}>
+            <Text style={styles.delete}>삭제</Text>
+          </Pressable>
+        </View>
+      ) : null}
       <View style={styles.contentContainer}>
         <Text style={styles.text}>{review.content}</Text>
       </View>
-
       <FlatList
         data={review.photoList}
         horizontal
@@ -45,7 +63,7 @@ function SpotReviewInfo({review}: Props) {
           <View style={styles.imgContainer}>
             <Squre
               imageSource={review.photoList[item.index]}
-              width={300}
+              width={screenWidth * 0.9}
               height={200}
               borderRadius={3}
             />
@@ -81,8 +99,17 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   imgContainer: {
-    marginHorizontal: 10,
+    justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+  },
+  deleteContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    marginTop: 5,
+  },
+  delete: {
+    fontSize: 10,
   },
 });
 export default SpotReviewInfo;
