@@ -1,3 +1,4 @@
+import {containsKey} from './AsyncService';
 import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Coord} from 'react-native-nmap';
@@ -13,15 +14,17 @@ import {
 import {
   setMyPosition,
   setIsLoggingOn,
+  setIsLoggingOff,
   addPath,
   setStates,
   resetStates,
   setIsSavingOn,
   setIsSavingOff,
   setWatchId,
+  setStartDate,
+  setLastUpdate,
 } from '~/slices/myPositionSlice';
 import {setSelectedMyDogs} from '~/slices/dogsSlice';
-
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
 export const startWalking = async (
@@ -49,18 +52,25 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
-  storeData('@StartDate', new Date());
   storeData('@Dogs', dogs);
-  storeData('@WalkingLogs', []);
+  const hasLog = await containsKey('@WalkingLogs');
+  if (!hasLog) {
+    const startDate = new Date().toString();
+    storeData('@StartDate', startDate);
+    dispatch(setStartDate(startDate));
+    storeData('@WalkingLogs', []);
+  }
   const watchId = Geolocation.watchPosition(
     position => {
       const myPosition: Coord = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
+      const UpdateDate = new Date().toString();
       dispatch(setMyPosition(myPosition));
       dispatch(addPath(myPosition));
-      storeData('@LastUpdate', new Date());
+      storeData('@LastUpdate', UpdateDate);
+      dispatch(setLastUpdate(UpdateDate));
       addPathToAsync(myPosition);
     },
     error => {
@@ -69,6 +79,7 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
     },
     {
       interval: 5000,
+      maximumAge: 200000,
       enableHighAccuracy: true,
       timeout: 20000,
       distanceFilter: 5,
@@ -103,14 +114,14 @@ export const lastLogAlert = (
           await dispatch(resetStates);
           navigation.navigate('MapViewAlone');
           startLogging(dispatch, dogs);
-        }, //local 지우기, navigate mapView
+        },
       },
       {
         text: '네 볼래요',
         onPress: async () => {
           const isOver = await checkLastUpdate();
           await syncLogs(dispatch);
-          navigation.navigate('LogView', {isOver});
+          navigation.replace('LogView', {isOver});
         },
       },
     ],
@@ -135,10 +146,10 @@ export const checkLastUpdate = async () => {
   const currentDate = new Date();
   // 마지막 기록시간보다 30분 이상 지나 있을 때
   if (loggedDate >= currentDate) {
-    return true;
+    return false;
   } // 30분 이내의 기내의 기록이 있을 때
   else {
-    return false;
+    return true;
   }
 };
 
@@ -158,17 +169,10 @@ const syncLogs = async (dispatch: any) => {
 };
 
 // local/redux 초기화
+export const clearLogsAll = async (dispatch: any) => {
+  await removeMultiple(localList);
 
-// log 서버 전송 (withScreenShot)
-export const logsToServer = async () => {
-  try {
-    const response: AxiosResponse = await axios.post('로그저장주소');
-  } catch (error: any) {
-    Alert.alert(
-      `에러코드 ${error.response.status}`,
-      '죄송합니다. 다시 시도해주시길 바랍니다.',
-    );
-  }
+  await dispatch(resetStates());
 };
 
 export const quitLogging = (watchID: number) => {
@@ -182,8 +186,6 @@ export const doneWalking = async (
   watchId: number,
 ) => {
   quitLogging(watchId);
-  dispatch(setIsSavingOn);
-  // await logsToServer();
-  dispatch(setIsSavingOff);
-  navigation.navigate('LogView', {isOver: true});
+  dispatch(setIsLoggingOff());
+  navigation.replace('LogView', {isOver: false});
 };
