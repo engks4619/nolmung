@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {View, StyleSheet, Text, Pressable, Alert} from 'react-native';
 import {useSelector} from 'react-redux';
 import Profile from '~/atoms/Profile';
 import {RootState} from '~/store/reducer';
@@ -15,9 +15,10 @@ export interface dogInfo {
 interface Props {
   isSelecting: boolean;
   setIsSelecting: React.Dispatch<React.SetStateAction<boolean>>;
+  isWalking: boolean;
 }
 
-function MainDogs({isSelecting, setIsSelecting}: Props) {
+function MainDogs({isSelecting, setIsSelecting, isWalking}: Props) {
   const myDogs: dogInfo[] | undefined = useSelector(
     (state: RootState) => state.dogs.dogsInfo,
   );
@@ -27,13 +28,21 @@ function MainDogs({isSelecting, setIsSelecting}: Props) {
 
   const mainImage = myDogs.filter(dog => dog.dogIdx === selectedMyDogs[0]);
 
+  const handleSelecting = () => {
+    if (isWalking) {
+      Alert.alert('', '산책중에는 강아지를 선택할 수 없습니다.');
+      return;
+    }
+    setIsSelecting(true);
+  };
+
   if (myDogs.length === 0) {
     return <Text>추가해주세욤</Text>;
   } else if (myDogs.length === 1) {
     return <Profile imageSource={myDogs[0].image} width={70} height={70} />;
   } else {
     return (
-      <Pressable onPress={() => setIsSelecting(true)}>
+      <Pressable onPress={() => handleSelecting()}>
         <View
           style={isSelecting ? styles.selectingContainer : styles.container}>
           <View style={isSelecting ? styles.isSelectingStyle : null}>

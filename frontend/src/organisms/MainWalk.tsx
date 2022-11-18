@@ -5,16 +5,22 @@ import MainDogs from '~/molecules/MainDogs';
 
 interface Props {
   goWalking: () => void;
+  isWalking: boolean;
 }
 
-function MainWalk({goWalking}: Props) {
+function MainWalk({goWalking, isWalking}: Props) {
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.marginContainer}>
-        <MainDogs isSelecting={isSelecting} setIsSelecting={setIsSelecting} />
+        <MainDogs
+          isSelecting={isSelecting}
+          setIsSelecting={setIsSelecting}
+          isWalking={isWalking}
+        />
         <MyButton
-          btnText="산책 시작"
+          btnText={isWalking ? '산책 중' : '산책 시작'}
           width={isSelecting ? 120 : 200}
           height={50}
           onClick={() => goWalking()}
