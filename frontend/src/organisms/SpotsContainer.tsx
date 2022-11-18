@@ -131,13 +131,17 @@ function SpotsContainer({
                 {getSimpleAddress(item.address)}
               </Text>
               <Text style={styles.reviewContainer}>
-                <Pencil
-                  width={10}
-                  height={10}
-                  fill={'black'}
-                  stroke={'black'}
-                />
-                {item.reviewCnt}
+                <View style={styles.pencil}>
+                  <Pencil
+                    width={10}
+                    height={10}
+                    fill={'black'}
+                    stroke={'black'}
+                  />
+                </View>
+                <View style={styles.reviewCnt}>
+                  <Text>{item.reviewCnt}</Text>
+                </View>
               </Text>
             </View>
           </Pressable>
@@ -187,12 +191,25 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   reviewContainer: {
-    paddingHorizontal: 10,
+    marginLeft: 10,
+    alignContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   emptyContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     height: windowHeight / 2,
+  },
+  pencil: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingBottom: 4,
+  },
+  reviewCnt: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 3,
   },
 });
 
