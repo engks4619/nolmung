@@ -324,6 +324,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   hContainer: {
+    width: '100%',
     flexDirection: 'row',
     paddingVertical: 5,
     alignSelf: 'center',

@@ -58,7 +58,7 @@ const RegistArticle = ({navigation}: any) => {
         navigation.navigate('Community');
       }
     } catch (err: any) {
-      Alert.alert('게시글 작성 실패!', err);
+      Alert.alert('게시글 작성 실패!');
       setClicked(false);
     }
   };

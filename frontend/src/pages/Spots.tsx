@@ -6,6 +6,9 @@ import axios from '~/utils/axios';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {getTextAddress} from '~/utils/addressService';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MAIN_COLOR} from '~/const';
+import SpotDetail from './SpotDetail';
 
 export interface menu {
   menuName: string;
@@ -40,6 +43,26 @@ export interface SpotRequest {
   limitDistance: number;
   category: string;
 }
+
+export type SpotDetailParamList = {
+  Spot: undefined;
+  SpotDetail: {spotId: string};
+};
+
+const SpotStack = createNativeStackNavigator();
+
+export const SpotStackNavigator = () => (
+  <SpotStack.Navigator>
+    <SpotStack.Screen
+      name="Spots"
+      component={Spots}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <SpotStack.Screen name="SpotDetail" component={SpotDetail} />
+  </SpotStack.Navigator>
+);
 
 function Spots() {
   const [spotList, setSpotList] = useState<Spot[]>([]);
@@ -98,6 +121,7 @@ function Spots() {
   };
 
   const initSpotRequest = () => {
+    setSearchValue('');
     const requestBody: SpotRequest = {
       lat,
       lng,
@@ -115,7 +139,10 @@ function Spots() {
     }
     // 실제 위치 주소 가져오기
     const response = await getTextAddress(lat, lng);
-    const address = response?.data?.documents[0].address;
+    const address = response?.data?.documents[0]?.address;
+    if (!address) {
+      return;
+    }
     const firstArr = address?.region_2depth_name.split(' ');
     const strAddress =
       firstArr[firstArr?.length - 1] + '/' + address?.region_3depth_name;
@@ -131,7 +158,7 @@ function Spots() {
       return;
     }
     getSpotList();
-  }, [spotRequest, page, sort]);
+  }, [spotRequest, page]);
 
   useEffect(() => {
     if (!spotRequest) {
@@ -144,8 +171,9 @@ function Spots() {
       lng,
       limitDistance,
       category,
+      searchValue,
     } as SpotRequest);
-  }, [limitDistance, category, lat, lng]);
+  }, [limitDistance, category, lat, lng, sort, searchValue]);
 
   useEffect(() => {
     getTextLocation();
