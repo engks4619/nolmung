@@ -29,7 +29,7 @@ function ChatPostInfo({
         </View>
       </View>
       <View style={styles.btnContainer}>
-        <ScheduleBtn />
+        <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
         <PostscriptBtn />
       </View>
     </View>

@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Schedule from '@assets/schedule.svg';
 import {MAIN_COLOR} from '~/const';
 
-function ScheduleBtn() {
+function ScheduleBtn({handleConfirmWalk}) {
   return (
-    <View style={styels.container}>
+    <Pressable onPress={() => handleConfirmWalk()} style={styels.container}>
       <Schedule width={20} height={20} fill="black" />
       <Text style={styels.textStyle}>산책 확정하기</Text>
-    </View>
+    </Pressable>
   );
 }
 

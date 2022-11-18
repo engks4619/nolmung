@@ -10,12 +10,6 @@ import {
 import Heart from '@assets/heart.svg';
 import RedHeart from '@assets/redHeart.svg';
 import MyButton from '@atoms/MyButton';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useNavigation} from '@react-navigation/native';
-import {ChatsParamList} from '~/pages/Chats';
-import {useRoomSocket} from '~/hooks/useSocket';
-import {useSelector} from 'react-redux';
-import {RootState} from '~/store/reducer';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -25,9 +19,8 @@ interface footerProps {
   isWriter: Boolean;
   isLiked: Boolean;
   putLike: () => void;
+  startChat: () => void;
 }
-
-type chatsScreenProp = NativeStackNavigationProp<ChatsParamList, 'Chats'>;
 
 function DetailFooter({
   categoryType,
@@ -35,25 +28,8 @@ function DetailFooter({
   isWriter,
   isLiked,
   putLike,
+  startChat,
 }: footerProps) {
-  const navigation = useNavigation<chatsScreenProp>();
-  const [roomSocket, roomDisconnect] = useRoomSocket();
-  const userIdx = useSelector((state: RootState) => state.user.userIdx);
-  const postIdx = useSelector((state: RootState) => state.post.postIdx);
-  const opponentIdx = useSelector((state: RootState) => state.post.writerIdx);
-
-  const startChat = () => {
-    const data = {ownerIdx: userIdx, postIdx, opponentIdx};
-    if (roomSocket && userIdx) {
-      roomSocket.emit('newRoom', data);
-      roomSocket.on('newRoomId', (roomId: string) =>
-        navigation.navigate('ChatList', {
-          screen: 'ChatsDetail',
-          params: {roomId},
-        }),
-      );
-    }
-  };
   return (
     <View style={styles.container}>
       <Pressable onPress={() => putLike()}>
