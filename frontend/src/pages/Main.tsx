@@ -39,6 +39,7 @@ export const MainPageNavigator = () => (
 function Main({navigation}: any) {
   const [mainPostList, setMainPostList] = useState([]);
   const [mainSpotList, setMainSpotList] = useState([]);
+
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
 
@@ -47,9 +48,13 @@ function Main({navigation}: any) {
   const profileImage = useSelector(
     (state: RootState) => state.user.profileImage,
   );
+
   const myPositionState = useSelector((state: RootState) => state.myPosition);
   const selectedDogs = useSelector(
     (state: RootState) => state.dogs.selectedDogsInfo,
+  );
+  const isWalking = useSelector(
+    (state: RootState) => state.myPosition.isLogging,
   );
 
   const totalDistance = useSelector(
@@ -137,6 +142,7 @@ function Main({navigation}: any) {
         totalDistance={totalDistance}
         totalTime={totalTime}
         totalWalk={totalWalk}
+        isWalking={isWalking}
       />
     </ScrollView>
   );
