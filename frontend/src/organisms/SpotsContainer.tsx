@@ -6,6 +6,7 @@ import {
   Text,
   TouchableHighlight,
   Pressable,
+  Dimensions,
 } from 'react-native';
 import Squre from '~/atoms/Squre';
 import {Spot, SpotDetailParamList, SpotRequest} from '~/pages/Spots';
@@ -30,6 +31,8 @@ type CommScreenProp = NativeStackNavigationProp<
   'SpotDetail'
 >;
 
+const windowHeight = Dimensions.get('window').height;
+
 function SpotsContainer({
   spotList,
   spotRequest,
@@ -47,8 +50,8 @@ function SpotsContainer({
   };
 
   const renderEmpty = () => (
-    <View style={styles.emptyText}>
-      <Text>데이터가 없습니다.</Text>
+    <View style={styles.emptyContainer}>
+      <Squre imageSource="/images/review/empty.png" />
     </View>
   );
 
@@ -186,11 +189,10 @@ const styles = StyleSheet.create({
   reviewContainer: {
     paddingHorizontal: 10,
   },
-  emptyText: {
-    paddingVertical: 20,
+  emptyContainer: {
     alignItems: 'center',
-    fontSize: 12,
-    fontWeight: '500',
+    justifyContent: 'center',
+    height: windowHeight / 2,
   },
 });
 

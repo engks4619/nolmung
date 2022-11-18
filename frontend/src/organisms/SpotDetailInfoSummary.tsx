@@ -16,42 +16,49 @@ function SpotDetailInfoSummary({spot}: Props) {
         <Text style={styles.text}>공간 정보</Text>
       </View>
       <View style={styles.descContainer}>
-        <HContainer
-          left="태그"
-          right={
-            <View style={styles.tagContainer}>
-              {spot?.descList.map((item, idx) => (
-                <View style={styles.border} key={idx}>
-                  <Text style={styles.text}>{item}</Text>
-                </View>
-              ))}
-            </View>
-          }
-        />
-        <HContainer
-          left="영업시간"
-          right={Object.keys(spot?.time ?? {}).map(
-            (key: string, idx: number) => {
-              return (
-                <View style={styles.itemContainer} key={idx}>
-                  <SpaceBetweenContainer left={key} right={spot.time[key]} />
-                </View>
-              );
-            },
-          )}
-        />
-        <HContainer
-          left="메뉴"
-          right={Object.keys(spot?.menu ?? {}).map(
-            (key: string, idx: number) => {
-              return (
-                <View style={styles.itemContainer} key={idx}>
-                  <SpaceBetweenContainer left={key} right={spot.menu[key]} />
-                </View>
-              );
-            },
-          )}
-        />
+        {spot?.descList ? (
+          <HContainer
+            left="태그"
+            right={
+              <View style={styles.tagContainer}>
+                {spot?.descList.map((item, idx) => (
+                  <View style={styles.border} key={idx}>
+                    <Text style={styles.text}>{item}</Text>
+                  </View>
+                ))}
+              </View>
+            }
+          />
+        ) : null}
+
+        {spot?.time ? (
+          <HContainer
+            left="영업시간"
+            right={Object.keys(spot?.time ?? {}).map(
+              (key: string, idx: number) => {
+                return (
+                  <View style={styles.itemContainer} key={idx}>
+                    <SpaceBetweenContainer left={key} right={spot.time[key]} />
+                  </View>
+                );
+              },
+            )}
+          />
+        ) : null}
+        {spot?.menu ? (
+          <HContainer
+            left="메뉴"
+            right={Object.keys(spot?.menu ?? {}).map(
+              (key: string, idx: number) => {
+                return (
+                  <View style={styles.itemContainer} key={idx}>
+                    <SpaceBetweenContainer left={key} right={spot.menu[key]} />
+                  </View>
+                );
+              },
+            )}
+          />
+        ) : null}
       </View>
     </View>
   );
