@@ -19,6 +19,9 @@ const myPositionSlice = createSlice({
     setIsLoggingOn(state) {
       state.isLogging = true;
     },
+    setIsLoggingOff(state) {
+      state.isLogging = false;
+    },
     setIsSavingOn(state) {
       state.isSaving = true;
     },
@@ -62,6 +65,7 @@ const myPositionSlice = createSlice({
 export const {
   setMyPosition,
   setIsLoggingOn,
+  setIsLoggingOff,
   addPath,
   setStates,
   resetStates,

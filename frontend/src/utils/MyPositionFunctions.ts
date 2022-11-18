@@ -14,6 +14,7 @@ import {
 import {
   setMyPosition,
   setIsLoggingOn,
+  setIsLoggingOff,
   addPath,
   setStates,
   resetStates,
@@ -24,8 +25,6 @@ import {
   setLastUpdate,
 } from '~/slices/myPositionSlice';
 import {setSelectedMyDogs} from '~/slices/dogsSlice';
-const haversine = require('haversine');
-
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
 export const startWalking = async (
@@ -53,12 +52,12 @@ export const startWalking = async (
 
 export const startLogging = async (dispatch: any, dogs: number[]) => {
   dispatch(setIsLoggingOn());
-  const startDate = new Date().toString();
-  storeData('@StartDate', startDate);
-  dispatch(setStartDate(startDate));
   storeData('@Dogs', dogs);
   const hasLog = await containsKey('@WalkingLogs');
   if (!hasLog) {
+    const startDate = new Date().toString();
+    storeData('@StartDate', startDate);
+    dispatch(setStartDate(startDate));
     storeData('@WalkingLogs', []);
   }
   const watchId = Geolocation.watchPosition(
@@ -80,6 +79,7 @@ export const startLogging = async (dispatch: any, dogs: number[]) => {
     },
     {
       interval: 5000,
+      maximumAge: 200000,
       enableHighAccuracy: true,
       timeout: 20000,
       distanceFilter: 5,
@@ -114,14 +114,14 @@ export const lastLogAlert = (
           await dispatch(resetStates);
           navigation.navigate('MapViewAlone');
           startLogging(dispatch, dogs);
-        }, //local 지우기, navigate mapView
+        },
       },
       {
         text: '네 볼래요',
         onPress: async () => {
           const isOver = await checkLastUpdate();
           await syncLogs(dispatch);
-          navigation.navigate('LogView', {isOver});
+          navigation.replace('LogView', {isOver});
         },
       },
     ],
@@ -146,10 +146,10 @@ export const checkLastUpdate = async () => {
   const currentDate = new Date();
   // 마지막 기록시간보다 30분 이상 지나 있을 때
   if (loggedDate >= currentDate) {
-    return true;
+    return false;
   } // 30분 이내의 기내의 기록이 있을 때
   else {
-    return false;
+    return true;
   }
 };
 
@@ -169,17 +169,10 @@ const syncLogs = async (dispatch: any) => {
 };
 
 // local/redux 초기화
+export const clearLogsAll = async (dispatch: any) => {
+  await removeMultiple(localList);
 
-// log 서버 전송 (withScreenShot)
-export const logsToServer = async () => {
-  try {
-    const response: AxiosResponse = await axios.post('로그저장주소');
-  } catch (error: any) {
-    Alert.alert(
-      `에러코드 ${error.response.status}`,
-      '죄송합니다. 다시 시도해주시길 바랍니다.',
-    );
-  }
+  await dispatch(resetStates());
 };
 
 export const quitLogging = (watchID: number) => {
@@ -193,13 +186,6 @@ export const doneWalking = async (
   watchId: number,
 ) => {
   quitLogging(watchId);
-  // dispatch(setIsSavingOn);
-  // await logsToServer();
-  // dispatch(setIsSavingOff);
+  dispatch(setIsLoggingOff());
   navigation.replace('LogView', {isOver: false});
 };
-
-//저장x 새로 시작
-//저장o 새로 시작
-
-//이어하기

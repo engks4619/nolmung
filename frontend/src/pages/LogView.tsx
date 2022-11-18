@@ -1,19 +1,17 @@
-import React, {useRef, useState} from 'react';
+import React from 'react';
 import {View, Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import {useAppDispatch} from '~/store';
 import {RootState} from '~/store/reducer';
 import LogViewTemplate from '@templates/LogviewTemplate';
-import {logsToServer} from '~/utils/MyPositionFunctions';
 import {dogInfo} from '~/molecules/MainDogs';
 import axios from 'utils/axios';
-import ViewShot, {captureRef} from 'react-native-view-shot';
-import {uploadImg} from '~/utils/imgService';
-import { setIsSavingOff, setIsSavingOn } from '~/slices/myPositionSlice';
+import {setIsSavingOff, setIsSavingOn} from '~/slices/myPositionSlice';
+import {clearLogsAll, startLogging} from '~/utils/MyPositionFunctions';
 
-const functions = [logsToServer]; //저장x,저장하기,이어하기,navigate뒤로가기 추가해야함
 const moment = require('moment');
 function LogView({route, navigation}: any) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const path = useSelector((state: RootState) => state.myPosition.path);
   const isOver = route.params.isOver;
   const dogsInfo: dogInfo[] = useSelector(
@@ -40,27 +38,6 @@ function LogView({route, navigation}: any) {
       dogs.push(elem);
     }
   });
-  // 캡쳐관련
-  const [photo, setPhoto] = useState({});
-  const capture = async (ref: any) => {
-    await captureRef(ref, {
-      format: 'jpg',
-      quality: 0.9,
-    }).then(
-      uri => {
-        console.log('이미지uri', uri);
-        const p = {
-          name: `${userIdx},${startDate}`,
-          mime: 'images/jpeg',
-          path: uri,
-        };
-        setPhoto(p);
-        // dispatch(setPhoto(p));
-        console.log('캡쳐직후', photo);
-      },
-      error => console.log('스샷에러', error),
-    );
-  };
 
   // img,데이터 전송
   const submitLogs = async () => {
@@ -73,66 +50,75 @@ function LogView({route, navigation}: any) {
           ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
             1000
           : 0,
-      startDate: moment(startDate).format('yyyy-MM-DD HH:mm:ss'),
-      endDate: moment(lastUpdate).format('yyyy-MM-DD HH:mm:ss'),
+      startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
+      endDate: moment(lastUpdate).format('YYYY-MM-DD HH:mm:ss'),
       walkedDogList: selectedDogs,
       gpsList: path,
     };
 
     try {
-      console.log('전송중');
       const response = await axios.post('withdog/walk', jsonData);
-      if (response?.status === 200) {
-        const postIdx = response?.data;
-        console.log(photo)
-        if (photo) {
-          console.log('사진있어요');
-          await uploadImg(photo, `withdog/walk/img/${postIdx}`);
-        }
+      if (response.status === 200) {
+        Alert.alert(
+          '저장완료',
+          '기록이 저장 되었습니다',
+          [
+            {
+              text: '확인',
+              onPress: () => {
+                navigation.replace('MainPage');
+                clearLogsAll(dispatch);
+              },
+            },
+          ],
+          {
+            cancelable: true,
+            onDismiss: () => {
+              navigation.replace('MainPage');
+              clearLogsAll(dispatch);
+            },
+          },
+        );
       }
-      Alert.alert('게시글 작성완료!');
-      navigation.navigate('Main');
     } catch (err: any) {
-      Alert.alert('게시글 작성 실패!', err);
+      Alert.alert('저장에 실패 했습니다', '다시 시도해 주세요');
     }
   };
 
-  //저장o 새로시작
-  const saveAndGo = async (ref: any) => {
-    await capture(ref);
-    console.log('세이브앤고');
-    console.log(photo);
+  //저장o
+  const saveLogs = async () => {
     dispatch(setIsSavingOn);
     await submitLogs();
     dispatch(setIsSavingOff);
-    navigation.replace('MainPage');
-    //"저장완료되었습ㄴ이다"
-    //Function navigate to main Page
   };
-  //저장x 새로시작
-  const noSaveAndGo = async () => {
-    //redux,as 클리어
-    //startWalking
-    //navigate mapView
-  }
+  //저장x
+  const noSaveLogs = async () => {
+    navigation.replace('MainPage');
+    clearLogsAll(dispatch);
+  };
 
   //이어하기
-  const countinueAndGo = async () => {
-    //startLogging
-    //navigate mapview
-  }
-
+  const countinueLogs = async () => {
+    console.log('이어하기');
+    startLogging(dispatch, selectedDogs);
+    navigation.replace('MapViewAlone');
+  };
 
   return (
     <View>
       <LogViewTemplate
-        functions={functions}
         path={path}
         dogInfoList={dogs}
         isOver={isOver}
         myPosition={myPosition}
-        saveAndGo={(ref: any) => {
-          saveAndGo(ref);
+        saveLogs={() => {
+          saveLogs();
+        }}
+        noSaveLogs={() => {
+          noSaveLogs();
+        }}
+        countinueLogs={() => {
+          countinueLogs();
         }}
       />
     </View>

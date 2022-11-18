@@ -26,12 +26,12 @@ export const MainPageNavigator = () => (
     <MainPageStack.Screen
       name="MapViewAlone"
       component={MapViewAlone}
-      options={{headerShown: true}}
+      options={{headerShown: false}}
     />
     <MainPageStack.Screen
       name="LogView"
       component={LogView}
-      options={{headerShown: true}}
+      options={{headerShown: false}}
     />
   </MainPageStack.Navigator>
 );

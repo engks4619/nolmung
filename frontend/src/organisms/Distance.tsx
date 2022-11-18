@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Text} from 'react-native';
 
 interface Props {
   distance: number;

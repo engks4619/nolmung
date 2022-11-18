@@ -28,10 +28,6 @@ function MapView({
   dispatch,
   second,
 }: Props) {
-  // const defaultSec =
-  //   startDate !== undefined && startDate !== null
-  //     ? (new Date().getTime() - startDate.getTime()) / 1000
-  //     : 0;
   if (!myPosition || !myPosition.latitude) {
     return (
       <View style={styles.whileLoading}>
@@ -70,7 +66,7 @@ function MapView({
             </NaverMapView>
           </View>
           <Timer sec={second} />
-          <Distance path={path} distance={distance} dispatch={dispatch} />
+          <Distance distance={distance} />
           <MyButton
             btnText="산책 종료"
             width={200}
@@ -96,7 +92,7 @@ const styles = StyleSheet.create({
   mapContainer: {
     alignItems: 'center',
     width: '90%',
-    height: Dimensions.get('window').height / 4,
+    height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',
