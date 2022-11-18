@@ -73,9 +73,8 @@ public class SpotReviewServiceImpl implements SpotReviewService {
         );
         try {
             UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-//            UserInfoDto userInfoDto = UserInfoDto.builder().userIdx(1L).build();
 
-            if(spotReview.getUserIdx() == userInfoDto.getUserIdx()) {
+            if(spotReview.getUserIdx().equals(userInfoDto.getUserIdx())){
                 spotReview.setIsDeleted(true);
                 spotReviewRepository.save(spotReview);
             }else { // 리뷰 작성한 유저가 아닌 경우
