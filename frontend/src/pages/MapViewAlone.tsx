@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {View} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
@@ -32,10 +32,15 @@ function MapViewAlone({navigation}: any) {
   });
   //시간계산
   const defaultSec =
-    // startDate !== undefined && startDate !== null
     typeof startDate === 'string'
       ? (new Date().getTime() - new Date(startDate).getTime()) / 1000
       : 0;
+  const [second, setSecond] = useState(defaultSec);
+  const [delay, setDelay] = useState(1000);
+  useInterval(() => {
+    setSecond(second + 1);
+  }, delay);
+
   //거리계산
   useEffect(() => {
     const haversine = require('haversine');
@@ -61,10 +66,31 @@ function MapViewAlone({navigation}: any) {
           }}
           distance={distance}
           dispatch={dispatch}
-          second={defaultSec}
+          second={second}
+          navigation={navigation}
         />
       </View>
     );
   }
 }
+const useInterval = (callback, delay): HookType => {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+};
+
 export default MapViewAlone;
