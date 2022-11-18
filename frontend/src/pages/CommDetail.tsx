@@ -43,8 +43,6 @@ function CommDetail({route, navigation}: any) {
   const [isLiked, setIsLiked] = useState<Boolean>(false);
   const [category, setCategory] = useState<string>('');
 
-  const opponentIdx = useSelector((state: RootState) => state.post.writerIdx);
-
   const getDetailPost = async (postId: number) => {
     try {
       const response: AxiosResponse = await axios.get(
@@ -82,7 +80,11 @@ function CommDetail({route, navigation}: any) {
 
   const startChat = () => {
     console.log('pree');
-    const socketData = {ownerIdx: userIdx, postIdx, opponentIdx};
+    const socketData = {
+      ownerIdx: userIdx,
+      postIdx,
+      opponentIdx: detailContent.writerIdx,
+    };
     const {
       writerIdx,
       pay,
