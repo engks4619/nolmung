@@ -126,6 +126,7 @@ function Spots() {
   };
 
   const initSpotRequest = () => {
+    setSearchValue('');
     const requestBody: SpotRequest = {
       lat,
       lng,
@@ -175,8 +176,9 @@ function Spots() {
       lng,
       limitDistance,
       category,
+      searchValue,
     } as SpotRequest);
-  }, [limitDistance, category, lat, lng, sort]);
+  }, [limitDistance, category, lat, lng, sort, searchValue]);
 
   useEffect(() => {
     getTextLocation();
