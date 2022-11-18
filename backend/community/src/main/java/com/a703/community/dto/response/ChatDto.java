@@ -26,4 +26,6 @@ public class ChatDto {
 
     private CategoryType categoryType;
 
+    private Boolean Completed;
+
 }

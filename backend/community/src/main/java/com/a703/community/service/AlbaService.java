@@ -17,6 +17,7 @@ public class AlbaService {
 
         Post post = postRepository.findByPostIdx(albaReuest.getPostIdx());
         post.setAlbaIdx(albaReuest.getAlbaIdx());
+        post.setGetCompleted(true);
         postRepository.save(post);
 
     }

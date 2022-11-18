@@ -145,6 +145,7 @@ public class CommunityService {
 
 
         return PostDto.builder()
+                .Completed(post.getGetCompleted())
                 .thumbnailUrl(thumbnailUrl)
                 .postIdx(post.getPostIdx())
                 .getLike(postLikeRepository.existsByIdUserIdxAndIdPostPostIdx(post.getWriterIdx(),postIdx))
