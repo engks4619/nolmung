@@ -6,12 +6,11 @@ import ChatField from '~/organisms/ChatField';
 
 function ChatsDetailTemplate({
   postInfo,
-  msgInput,
-  onChageMsg,
   submitMsg,
-  serverMsg,
+  fullMsg,
   user,
   oppentImg,
+  handleConfirmWalk,
 }) {
   return (
     <View style={styles.container}>
@@ -19,14 +18,11 @@ function ChatsDetailTemplate({
         postSubject={postInfo.postSubject}
         postImgae={postInfo.postImage}
         postPay={postInfo.postPay}
+        handleConfirmWalk={handleConfirmWalk}
       />
-      <ChatField serverMsg={serverMsg} user={user} oppentImg={oppentImg} />
+      <ChatField fullMsg={fullMsg} user={user} oppentImg={oppentImg} />
       <View style={styles.inputContainer}>
-        <ChatInput
-          msgInput={msgInput}
-          onChageMsg={onChageMsg}
-          submitMsg={submitMsg}
-        />
+        <ChatInput submitMsg={submitMsg} />
       </View>
     </View>
   );

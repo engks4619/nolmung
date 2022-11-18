@@ -4,18 +4,18 @@ import {MAIN_COLOR} from '~/const';
 import Otherchat from '~/molecules/OtherChat';
 
 interface chatFieldProps {
-  serverMsg: any[];
+  fullMsg: any[];
   user: number;
   oppentImg: string;
 }
 
-function ChatField({serverMsg, user, oppentImg}: chatFieldProps) {
+function ChatField({fullMsg, user, oppentImg}: chatFieldProps) {
   return (
     <View style={styles.container}>
       <FlatList
-        data={serverMsg}
+        data={fullMsg}
         keyExtractor={item => item._id}
-        inverted={false}
+        inverted={true}
         renderItem={({item}) =>
           item?.user?.toString() === user.toString() ? (
             <Text style={styles.myChat}>{item.chat}</Text>

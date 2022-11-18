@@ -7,9 +7,15 @@ interface chatsPostInfoProps {
   postSubject: string;
   postImgae: string;
   postPay: number;
+  handleConfirmWalk: () => void;
 }
 
-function ChatPostInfo({postSubject, postImgae, postPay}: chatsPostInfoProps) {
+function ChatPostInfo({
+  postSubject,
+  postImgae,
+  postPay,
+  handleConfirmWalk,
+}: chatsPostInfoProps) {
   return (
     <View style={styles.container}>
       <View style={styles.postInfoContainer}>
@@ -27,7 +33,7 @@ function ChatPostInfo({postSubject, postImgae, postPay}: chatsPostInfoProps) {
           width={100}
           height={45}
           fontSize={14}
-          onClick={() => Alert.alert('not yet')}
+          onClick={() => handleConfirmWalk()}
         />
       </View>
     </View>

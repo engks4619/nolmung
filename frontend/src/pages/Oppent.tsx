@@ -25,7 +25,7 @@ export interface reviewDataType {
 
 function Oppent({route, navigation}: any) {
   const oppentIdx = route.params.oppentIdx;
-  const [isOwner, setIsOwner] = useState<boolean>(true);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [ownerReviews, setOwnerReviews] = useState<reviewDataType[]>([]);
   const [ptReviews, setPtReviews] = useState<reviewDataType[]>([]);
   const oppentImg = useSelector((state: RootState) => state.post.writerImg);
