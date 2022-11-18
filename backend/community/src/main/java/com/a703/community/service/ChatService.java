@@ -59,6 +59,7 @@ public class ChatService {
 
 
                     return ChatDto.builder()
+                            .Completed(chat.getPost().getGetCompleted())
                             .nickname(writerInfo.getNickname())
                             .userImgUrl(writerInfo.getProfileImage())
                             .isOwner(false)
@@ -79,6 +80,7 @@ public class ChatService {
 
                     return ChatDto.builder()
                             .isOwner(true)
+                            .Completed(chat.getPost().getGetCompleted())
                             .chatUserIdx(chat.getCallerUserIdx())
                             .postIdx(chat.getPost().getPostIdx())
                             .nickname(callerInfo.getNickname())

@@ -47,4 +47,6 @@ public class PostDto {
     private List<String> photoUrl;
 
     private String thumbnailUrl;
+
+    private Boolean Completed;
 }
