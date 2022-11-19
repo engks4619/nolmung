@@ -27,4 +27,8 @@ public class DogEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "breedCode")
     private BreedEntity breed;
+
+    public void changeDogImage(String savePath){
+        this.image = savePath;
+    }
 }

@@ -6,28 +6,36 @@ import com.a703.user.entity.DogEntity;
 import com.a703.user.repository.BreedRepository;
 import com.a703.user.repository.DogRepository;
 import com.a703.user.repository.UserRepository;
+import com.a703.user.util.CommUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class DogServiceImpl implements DogService{
+    private final Environment env;
 
     private final DogRepository dogRepository;
     private final BreedRepository breedRepository;
     private final UserRepository userRepository;
+    private final CommUtil commUtil;
 
     @Override
     public DogDto getDogInfoByDogIdx(Long dogIdx) {
-        return new ModelMapper().map(dogRepository.findByDogIdx(dogIdx).orElseThrow(NoSuchElementException::new), DogDto.class);
+        return new ModelMapper().map(dogRepository.findById(dogIdx).orElseThrow(NoSuchElementException::new), DogDto.class);
     }
 
     @Override
@@ -38,13 +46,13 @@ public class DogServiceImpl implements DogService{
     }
 
     @Override
-    public void registerDog(Long userIdx, DogDto dogDto) {
+    public Long registerDog(Long userIdx, DogDto dogDto) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
                 .setFieldMatchingEnabled(true);
         dogDto.setUser(userRepository.findById(userIdx).orElseThrow(NoSuchElementException::new));
         DogEntity dogEntity = modelMapper.map(dogDto, DogEntity.class);
-        dogRepository.save(dogEntity);
+        return dogRepository.save(dogEntity).getDogIdx();
     }
 
     @Override
@@ -57,5 +65,25 @@ public class DogServiceImpl implements DogService{
         return dogRepository.findAllByUserUserIdx(userIdx).stream()
                 .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void registerDogImage(MultipartFile file, Long dogIdx) throws IOException {
+        DogEntity dogEntity = dogRepository.findById(dogIdx).orElseThrow(NoSuchElementException::new);
+        String savePath = String.format(env.getProperty("image.dog.path"), UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));
+        commUtil.saveImage(file, savePath);
+        dogEntity.changeDogImage(savePath);
+        dogRepository.save(dogEntity);
+    }
+
+    @Override
+    public List<DogDto> deleteDog(Long userIdx, Long dogIdx) {
+        if(Objects.equals(userIdx, dogRepository.findById(dogIdx).orElseThrow().getUser().getUserIdx())){
+            dogRepository.deleteById(dogIdx);
+            return dogRepository.findAllByUserUserIdx(userIdx).stream()
+                    .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }
