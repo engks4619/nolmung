@@ -50,16 +50,17 @@ io.on('connection', socket => {
   console.log('소켓 연결 완료! socket 아이디 : ', socket.id);
 
   // 'login' 이벤트를 받았을 때의 처리
-  socket.on('login', async login => {
+  socket.on('login', async loginId => {
     // 기존 클라이언트 ID가 없으면 클라이언트 ID를 맵에 추가
     console.log('접속한 소켓의 ID : ' + socket.id);
-    login_ids[login.id] = socket.id;
-    socket.login_id = login.id;
-
+    login_ids[loginId] = socket.id;
+    socket.loginId = loginId;
+    console.log("로그인 소켓: ", login_ids[loginId]);
+    io.to(socket.id).emit('reply', '로그인 성공');
     try {
       // 채팅 목록 조회
       const rooms = await Room.find({
-        $or: [{ownerIdx: socket.login_id}, {opponentIdx: socket.login_id}],
+        $or: [{ownerIdx: socket.loginId}, {opponentIdx: socket.loginId}],
       }).sort('-createdAt');
 
       const roomInfo = []
@@ -73,24 +74,6 @@ io.on('connection', socket => {
     }
   });
 
-  socket.on('disconnect', () => {
-    // 연결 종료 시
-    console.log('클라이언트 접속 해제', socket.id);
-    clearInterval(socket.interval);
-  });
-});
-
-room.on('connection', socket => {
-  console.log('room 네임스페이스에 접속');
-
-  const req = socket.request;
-
-  socket.on('roomLogin', async loginId => {
-    console.log('접속한 소켓의 ID : ' + socket.id);
-    roomLogin_ids[loginId] = socket.id;
-    socket.roomLogin_id = loginId;
-  });
-  
   // 채팅방 생성 후 join
   socket.on('newRoom', async data => {
     console.log('newRoom 이벤트 발생');
@@ -110,11 +93,14 @@ room.on('connection', socket => {
         });
 
         socket.join(newRoom._id);
-        console.log("상대방 소켓 아이디: ", roomLogin_ids[newRoom.opponentIdx]);  
-        //io.of('/room').to(roomLogin_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
-        io.of('/room').to(socket.id).emit('join', newRoom._id);
+        console.log("상대방 소켓 아이디: ", login_ids[newRoom.opponentIdx]);  
+        console.log("내 소켓 아이디", socket.id, " ", login_ids[newRoom.ownerIdx]);
+        io.to(login_ids[newRoom.opponentIdx]).emit('replyRoom', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
 
+        console.log("room socket 아이디 : ", socket.id);
+        
         socket.emit('newRoomId', newRoom._id);
+        
       } else {
         console.log('해당 채팅방이 이미 존재합니다. roomId: ', room._id);
         socket.emit('newRoomId', room._id);
@@ -125,7 +111,9 @@ room.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
-    console.log('room 네임스페이스 접속 해제');
+    // 연결 종료 시
+    console.log('클라이언트 접속 해제', socket.id);
+    clearInterval(socket.interval);
   });
 });
 
