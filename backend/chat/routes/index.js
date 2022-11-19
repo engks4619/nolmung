@@ -11,8 +11,13 @@ router.get('/api/socket/room/:userId', async (req, res) => {
     const rooms = await Room.find({
       $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}]
     }).sort('-createdAt');
+
+    const roomInfo = []
+    for (var i in rooms) {
+      roomInfo.push({ roomId: rooms[i]._id, ownerIdx: rooms[i].ownerIdx, opponentIdx: rooms[i].opponentIdx, postIdx: rooms[i].postIdx, createdAt: rooms[i].createdAt });
+    }
   
-    res.json(rooms);
+    res.json(roomInfo);
     
   } catch (error) {
     console.log(error);
