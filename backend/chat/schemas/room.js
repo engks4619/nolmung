@@ -12,16 +12,21 @@ const roomSchema = new Schema({
 		type: Number,
 		required: true,
 	},
-	createdAt: {
-		// 생성 시간
-		type: Date,
-		default: Date.now,
-	},
 	postIdx: {
 		// 게시글 번호
 		type: Number,
 		required: true,
 	},
+	createdAt: {
+		// 생성 시간
+		type: Date,
+		default: Date.now,
+	},
+	complete: {
+		// 산책 확정 여부
+		type: Boolean,
+		default: false
+	}
 });
 
 module.exports = mongoose.model('Room', roomSchema);

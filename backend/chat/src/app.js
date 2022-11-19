@@ -3,12 +3,14 @@ const http = require('http');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const SocketIO = require('socket.io');
+var ObjectId = require('mongodb').ObjectID;
 
 dotenv.config();
 const connect = require('../schemas');
 const indexRouter = require('../routes');
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
+const Location = require('../schemas/location');
 
 const eurekaHelper = require('./eureka-helper');
 
@@ -23,7 +25,7 @@ const io = SocketIO(httpServer, {
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 app.use('/', indexRouter);
 
@@ -31,6 +33,7 @@ connect();
 
 const room = io.of('/room');
 const chat = io.of('/chat');
+const location = io.of('/location');
 
 var login_ids = {}; // 로그인 id 매핑 (로그인 ID -> 소켓 ID)
 var roomId = '';
@@ -47,6 +50,7 @@ io.on('connection', socket => {
     socket.login_id = login.id;
 
     try {
+      // 채팅 목록 조회
       const rooms = await Room.find({
         $or: [{ownerIdx: socket.login_id}, {opponentIdx: socket.login_id}],
       }).sort('-createdAt');
@@ -84,7 +88,7 @@ room.on('connection', socket => {
         const newRoom = await Room.create({
           opponentIdx: data.opponentIdx,
           ownerIdx: data.ownerIdx,
-          postIdx: data.postIdx,
+          postIdx: data.postIdx
         });
 
         roomId = newRoom._id;
@@ -115,8 +119,16 @@ chat.on('connection', socket => {
     socket.join(roomId);
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
+    // 산책 확정 여부 전달
+    const room = await Chat.find({ room: roomId });
+    if (room.complete) {
+      socket.emit('completed', '산책 확정');
+    } else {
+      socket.emit('completed', '산책 미확정');
+    }
+
     try {
-      const chats = await Chat.find({room: roomId}).sort('createdAt');
+      const chats = await Chat.find({room: roomId}).sort('-createdAt');
       socket.emit('chats', chats); // 클라이언트에 채팅내역 전달
     } catch (error) {
       console.log(error);
@@ -134,22 +146,70 @@ chat.on('connection', socket => {
         chat: data.chat,
       });
 
-      console.log(data.chat);
       console.log('클라이언트로부터 message 이벤트를 받았습니다.');
 
+      const room = await Room.updateOne({ _id: ObjectId(data.roomId) }, { $set: { createdAt: chatInfo.createdAt } }); 
+
       chat.to(data.roomId).emit('messageC', data); // 클라이언트에 메시지 전달
+
     } catch (error) {
       console.error(error);
     }
   });
 
   // 산책 확정
-  socket.on('decide', roomId => {
+  socket.on('complete', async roomId => {
     console.log('산책 확정');
-    chat.to(roomId).emit('decided', '산책이 확정되었습니다.');
 
-    // 커뮤니티 서버에 산책 확정 보내기
+    const room = await Room.updateOne({ _id: ObjectId(roomId) }, { $set: { complete: true } });
+    chat.to(roomId).emit('completed', '산책이 확정되었습니다.');
+
   });
+
+});
+
+// 산책 시작
+location.on('connection', socket => {
+  console.log('location 네임스페이스에 접속');
+
+  socket.on('gps', async data => {    // 위치 저장 이벤트
+
+    try {
+      const gps = await Location.findOne({
+        roomId: data.roomId,
+      });
+      console.log(data.gps[0].latitude)
+      if (gps == null) {
+        const gpsInfo = await Location.create({
+          roomId: data.roomId,
+          ownerIdx: data.ownerIdx,
+          gps: {
+            latitude: data.gps[0].latitude,
+            longitude: data.gps[0].longitude
+          }
+        });
+      } else {
+        console.log(data.gps.latitude);
+        const gpsInfo = await Location.updateMany({ _id: gps._id }, { $push: { gps: { latitude: data.gps[0].latitude, longitude: data.gps[0].longitude } } })
+        console.log("gps 저장 완료");
+      }
+    
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  socket.on('getGps', async roomId => {   // 위치 보기 이벤트
+    try {
+      const gpsInfo = await Location.find({ roomId: roomId });
+      console.log(socket.id)
+      socket.emit('gpsInfo', gpsInfo);
+      
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
 });
 
 httpServer.listen(PORT, () => {

@@ -4,64 +4,54 @@ const router = express.Router();
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
 
-// router.get('/', async (req, res, next) => {
+// 채팅방 목록 조회
+router.get('/api/socket/room/:userId', async (req, res) => {
+  try {
+
+    const rooms = await Room.find({
+      $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}]
+    }).sort('-createdAt');
+  
+    res.json(rooms);
+    
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// 새로운 채팅방 생성 후 채팅방으로 이동
+// router.post('/api/socket/room', async (req, res, next) => {
+//   const io = req.app.get('io');
+//   io.of('/room').emit('newRoom', newRoom);
+//   io.of('/room').emit('join', newRoom);
+//   io.of('/chat').emit('join', newRoom);
+
 //   try {
-//     const rooms = await Room.find({});
-//     res.render('main', {rooms, title: '채팅방'});
+//     const room = await Room.findOne({
+//       ownerIdx: data.ownerIdx,
+//       postIdx: data.postIdx,
+//     });
+
+//     if (room == null) {
+//       console.log('해당 방이 없습니다. ');
+//       const newRoom = await Room.create({
+//         opponentIdx: data.opponentIdx,
+//         ownerIdx: data.ownerIdx,
+//         postIdx: data.postIdx,
+//       });
+//     } else {
+//       console.log('해당 채팅방이 이미 존재합니다. roomId: ', room._id);
+//       socket.emit('newRoomId', room._id);
+//     }
+
+//     const io = req.app.get('io');
+//     io.of('/room').emit('newRoom', newRoom);
+//     // res.redirect(`/room/${newRoom._id}`);
 //   } catch (error) {
 //     console.error(error);
 //     next(error);
 //   }
 // });
-
-router.get('/api/socket', async (req, res, next) => {
-  try {
-    const rooms = await Room.find({});
-    // res.render('main', {rooms, title: '채팅방'});
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-// 채팅방 목록 조회
-router.get('/api/socket/room/:userId', (req, res) => {
-  res.render('room', {title: 'GIF 채팅방 생성'});
-});
-
-// 새로운 채팅방 생성 후 채팅방으로 이동
-router.post('/api/socket/room', async (req, res, next) => {
-  const io = req.app.get('io');
-  io.of('/room').emit('newRoom', newRoom);
-  io.of('/room').emit('join', newRoom);
-  io.of('/chat').emit('join', newRoom);
-
-  try {
-    const room = await Room.findOne({
-      ownerIdx: data.ownerIdx,
-      postIdx: data.postIdx,
-    });
-
-    if (room == null) {
-      console.log('해당 방이 없습니다. ');
-      const newRoom = await Room.create({
-        opponentIdx: data.opponentIdx,
-        ownerIdx: data.ownerIdx,
-        postIdx: data.postIdx,
-      });
-    } else {
-      console.log('해당 채팅방이 이미 존재합니다. roomId: ', room._id);
-      socket.emit('newRoomId', room._id);
-    }
-
-    const io = req.app.get('io');
-    io.of('/room').emit('newRoom', newRoom);
-    // res.redirect(`/room/${newRoom._id}`);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
 
 // 해당 채팅방으로 이동. 페이징 함수.
 router.get('/api/socket/room/:id/:page/:maxChat', async (req, res, next) => {
@@ -133,19 +123,19 @@ router.get('/api/socket/room/:id/:page/:maxChat', async (req, res, next) => {
 });
 
 // DB 저장 후 방에 뿌려줌.
-router.post('/api/socket/room/:id/chat', async (req, res, next) => {
-  try {
-    const chat = await Chat.create({
-      room: req.params.id,
-      user: req.session.color,
-      chat: req.body.chat,
-    });
-    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
-    res.send('ok');
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
+// router.post('/api/socket/room/:id/chat', async (req, res, next) => {
+//   try {
+//     const chat = await Chat.create({
+//       room: req.params.id,
+//       user: req.session.color,
+//       chat: req.body.chat,
+//     });
+//     req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+//     res.send('ok');
+//   } catch (error) {
+//     console.error(error);
+//     next(error);
+//   }
+// });
 
 module.exports = router;
