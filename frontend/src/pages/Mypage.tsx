@@ -4,6 +4,11 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
+import PostSend from '@assets/postSend.svg';
+import Heart from '@assets/heart.svg';
+import BarChart from '@assets/bar-chart.svg';
+import Paw from '@assets/paw.svg';
+import Schedule from '@assets/schedule.svg';
 
 import MyPostList from '@pages/MyPostList';
 import MyLikedList from '@pages/MyLikedList';
@@ -71,32 +76,32 @@ export const MypageStackNavigator = () => (
 const myPageListNavi = [
   {
     name: 'MyPostList',
-    icon: <Filter width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <PostSend width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 쓴 글',
   },
   {
     name: 'MyLikedList',
-    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <Heart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 글',
   },
   {
     name: 'MyLikedSpots',
-    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <Heart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 스팟',
   },
   {
     name: 'MyWalkingRecord',
-    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <BarChart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 산책 기록',
   },
   {
     name: 'MyDogs',
-    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <Paw width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
   },
   {
     name: 'WalkReview',
-    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
+    icon: <Schedule width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '산책후기',
   },
 ];
