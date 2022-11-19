@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   PressableSpace: {
     flexDirection: 'row',
     height: 35,
-    // marginVertical: 1,
     alignItems: 'center',
   },
   iconContainer: {
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'flex-end',
     color: 'black',
-    // paddingHorizontal: 10,
   },
   TextSpace: {
     fontSize: 15,
