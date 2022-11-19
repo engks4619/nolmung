@@ -174,20 +174,16 @@ function Mypage({navigation}: any) {
   };
 
   const openPicker = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        // isExportThumbnail: true,
-        usedCameraButton: true,
-        doneTitle: '완료',
-        cancelTitle: '취소',
-        singleSelectedMode: true,
-        mediaType: 'image',
-      });
-      console.log(response);
-      setTempProfileImage(response);
-    } catch (e: any) {
-      Alert.alert('이미지 선택 실패!', e.code, e.message);
-    }
+    await MultipleImagePicker.openPicker({
+      // isExportThumbnail: true,
+      usedCameraButton: true,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      singleSelectedMode: true,
+      mediaType: 'image',
+    })
+      .then(response => setTempProfileImage(response))
+      .catch(() => {});
   };
   return (
     <View>
