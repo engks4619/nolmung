@@ -14,10 +14,7 @@ const Location = require('../schemas/location');
 
 const eurekaHelper = require('./eureka-helper');
 const { response } = require("express");
-
-let phoneToken;
-process.env.GOOGLE_APPLICATION_CREDENTIALS =
-  "./nolmung-44638-firebase-adminsdk-qaa5s-6399f421a4.json";
+const admin = require("firebase-admin");
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
@@ -224,7 +221,7 @@ location.on('connection', socket => {
     try {
       const gpsInfo = await Location.find({ roomId: roomId });
       console.log(socket.id)
- 
+
       if (gpsInfo.length == 0) {
         socket.emit('gpsInfo', response.statusCode=403);
       } else {
