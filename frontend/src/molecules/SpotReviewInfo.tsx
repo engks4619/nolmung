@@ -44,7 +44,7 @@ function SpotReviewInfo({review, deleteSpotReview}: Props) {
           <Text style={styles.text}>{getStringStar(review.star)}</Text>
         </View>
       </View>
-      {String(review.userIdx) == userIdx ? (
+      {review.userIdx === parseInt(userIdx) ? (
         <View style={styles.deleteContainer}>
           <Pressable onPress={() => deleteSpotReview(review.reviewIdx)}>
             <Text style={styles.delete}>삭제</Text>
