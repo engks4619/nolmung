@@ -63,9 +63,14 @@ const userSlice = createSlice({
       state.totalTime = action.payload.totalTime;
       state.totalWalk = action.payload.totalWalk;
     },
+    setProfile(state, action) {
+      state.profileImage = action.payload.profileImage;
+      state.nickname = action.payload.nickname;
+    },
   },
   extraReducers: builder => {},
 });
 
-export const {setUser, setLocation, setWalkSummury} = userSlice.actions;
+export const {setUser, setLocation, setWalkSummury, setProfile} =
+  userSlice.actions;
 export default userSlice;

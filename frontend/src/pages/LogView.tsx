@@ -111,7 +111,6 @@ function LogView({route, navigation}: any) {
       <LogViewTemplate
         path={path}
         dogInfoList={dogs}
-        // isOver={isOver}
         myPosition={myPosition}
         saveLogs={() => {
           saveLogs();
