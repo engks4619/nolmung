@@ -7,9 +7,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -97,7 +94,6 @@ const RegistArticleTemplate = ({
   CATEGORY_TYPES,
 }: Props) => {
   const moment = require('moment');
-  moment.locale('kor');
 
   return (
     <View style={styles.container}>

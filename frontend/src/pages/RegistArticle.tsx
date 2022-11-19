@@ -7,7 +7,6 @@ import RegistArticleTemplate from '~/templates/RegistArticleTemplate';
 import {uploadImg} from '~/utils/imgService';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {dog} from '~/utils/type';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -32,6 +31,16 @@ const RegistArticle = ({navigation}: any) => {
 
   const CATEGORY_TYPES = ['함께가요', '돌봐줘요'];
 
+  const registSuccess = () => {
+    Alert.alert('게시글 작성완료!');
+    navigation.replace('Community');
+  };
+
+  const registFail = () => {
+    Alert.alert('게시글 작성 실패!');
+    setClicked(false);
+  };
+
   const registSubmit = async () => {
     const registerPost = {
       dogIdx: selectedDog,
@@ -50,16 +59,19 @@ const RegistArticle = ({navigation}: any) => {
       if (response?.status === 200) {
         const postIdx = response?.data;
         if (images?.length > 0) {
-          images.map(async (image, idx) => {
-            await uploadImg(image, `community/file/${postIdx}`);
-          });
+          await Promise.all(
+            images.map((image, idx) => {
+              uploadImg(image, `community/file/${postIdx}`);
+            }),
+          )
+            .then(registSuccess)
+            .catch(registFail);
         }
-        Alert.alert('게시글 작성완료!');
-        navigation.navigate('Community');
+      } else {
+        registFail();
       }
     } catch (err: any) {
-      Alert.alert('게시글 작성 실패!');
-      setClicked(false);
+      registFail();
     }
   };
 
