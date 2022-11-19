@@ -37,7 +37,7 @@ function MapView({
   }
   return (
     <View>
-      <ScrollView overscrollmode="never">
+      <ScrollView overScrollMode="never">
         <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
         <View style={styles.mapContainer}>
           <NaverMapView
@@ -90,13 +90,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapContainer: {
+    backgroundColor: 'white',
     alignItems: 'center',
-    width: '90%',
+    alignSelf: 'center',
+    width: '100%',
     height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',
-    width: '100%',
+    width: '90%',
     height: '100%',
   },
   btnContainer: {

@@ -122,6 +122,13 @@ function LogView({route, navigation}: any) {
         countinueLogs={() => {
           countinueLogs();
         }}
+        distance={distance}
+        second={
+          lastUpdate && startDate
+            ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
+              1000
+            : 0
+        }
       />
     </View>
   );
