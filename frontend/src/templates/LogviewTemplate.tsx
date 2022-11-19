@@ -23,6 +23,7 @@ interface Props {
   countinueLogs: () => void;
   second: number;
   distance: number;
+  startDate: string | null;
 }
 function LogViewTemplate({
   path,
@@ -34,15 +35,21 @@ function LogViewTemplate({
   countinueLogs,
   second,
   distance,
+  startDate,
 }: Props) {
+  const date = startDate ? new Date(startDate).toLocaleString('ko-KR') : '';
   return (
     <ScrollView overScrollMode="never">
-      <DoubleSummary
-        firstLabel={'산책 시간'}
-        firstText={second}
-        secondLabel={'산책 거리'}
-        secondText={distance}
-      />
+      <View style={styles.logSummaryContainer}>
+        <Text style={styles.logSummarySmall}>{date ? date : ''}</Text>
+        <Text style={styles.logSummaryMiddle}>산책 기록</Text>
+        <DoubleSummary
+          firstLabel={'산책 시간'}
+          firstText={second}
+          secondLabel={'산책 거리'}
+          secondText={distance}
+        />
+      </View>
       <View>
         <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
         <View style={styles.mapContainer}>
@@ -126,6 +133,19 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
     height: Dimensions.get('window').height / 2,
+  },
+  logSummaryContainer: {
+    paddingHorizontal: 15,
+    backgroundColor: 'white',
+  },
+  logSummarySmall: {
+    color: 'black',
+    fontSize: 10,
+  },
+  logSummaryMiddle: {
+    marginTop: 10,
+    color: 'black',
+    fontWeight: 'bold',
   },
   nmap: {
     justifySelf: 'center',
