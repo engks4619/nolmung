@@ -43,6 +43,7 @@ const chat = io.of('/chat');
 const location = io.of('/location');
 
 var login_ids = {}; // 로그인 id 매핑 (로그인 ID -> 소켓 ID)
+var roomLogin_ids = {};
 
 // 소켓 연결 및 이벤트
 io.on('connection', socket => {
@@ -84,6 +85,12 @@ room.on('connection', socket => {
 
   const req = socket.request;
 
+  socket.on('roomLogin', async loginId => {
+    console.log('접속한 소켓의 ID : ' + socket.id);
+    roomLogin_ids[loginId] = socket.id;
+    socket.roomLogin_id = loginId;
+  });
+  
   // 채팅방 생성 후 join
   socket.on('newRoom', async data => {
     console.log('newRoom 이벤트 발생');
@@ -102,10 +109,9 @@ room.on('connection', socket => {
           postIdx: data.postIdx
         });
 
-        roomId = newRoom._id;
-
         socket.join(newRoom._id);
-        room.to(login_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
+        console.log("상대방 소켓 아이디: ", roomLogin_ids[newRoom.opponentIdx]);  
+        room.to(roomLogin_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
 
         socket.emit('newRoomId', newRoom._id);
       } else {
