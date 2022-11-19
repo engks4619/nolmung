@@ -9,15 +9,13 @@ import {
 } from 'react-native';
 import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
-import DetailDogs from '@organisms/DetailDogs';
 import {MAIN_COLOR} from '~/const';
-import ViewShot from 'react-native-view-shot';
 import WalkingDogs from '~/organisms/WalkingDogs';
 
 interface Props {
   path: Coord[];
   dogInfoList: DetailDogProps[];
-  isOver: boolean;
+  // isOver: boolean;
   myPosition: Coord;
   saveLogs: () => void;
   noSaveLogs: () => void;
@@ -26,98 +24,98 @@ interface Props {
 function LogViewTemplate({
   path,
   dogInfoList,
-  isOver,
+  // isOver,
   myPosition,
   saveLogs,
   noSaveLogs,
   countinueLogs,
 }: Props) {
-  if (isOver) {
-    return (
-      <ScrollView>
-        <View style={styles.logViewContainer}>
-          <Text>{path.length}</Text>
-          <Pressable onPress={() => saveLogs()}>
-            <Text>저장</Text>
-          </Pressable>
-          <Pressable onPress={() => noSaveLogs()}>
-            <Text>저장x</Text>
-          </Pressable>
-          <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
-          <View style={styles.mapContainer}>
-            <NaverMapView
-              style={styles.nmap}
-              zoomControl={true}
-              center={{
-                zoom: 17,
-                latitude: myPosition.latitude,
-                longitude: myPosition.longitude,
-              }}>
-              <Marker
-                coordinate={path[path.length - 1]}
-                width={50}
-                height={50}
-                anchor={{x: 0.5, y: 0.5}}
-                caption={{text: '나'}}
-                image={require('@assets/logo.png')}
-              />
-              {path.length >= 2 ? (
-                <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-              ) : null}
-            </NaverMapView>
-          </View>
+  // if (isOver) {
+  //   return (
+  //     <ScrollView>
+  //       <View style={styles.logViewContainer}>
+  //         <Text>{path.length}</Text>
+  //         <Pressable onPress={() => saveLogs()}>
+  //           <Text>저장</Text>
+  //         </Pressable>
+  //         <Pressable onPress={() => noSaveLogs()}>
+  //           <Text>저장x</Text>
+  //         </Pressable>
+  //         <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
+  //         <View style={styles.mapContainer}>
+  //           <NaverMapView
+  //             style={styles.nmap}
+  //             zoomControl={true}
+  //             center={{
+  //               zoom: 17,
+  //               latitude: myPosition.latitude,
+  //               longitude: myPosition.longitude,
+  //             }}>
+  //             <Marker
+  //               coordinate={path[path.length - 1]}
+  //               width={50}
+  //               height={50}
+  //               anchor={{x: 0.5, y: 0.5}}
+  //               caption={{text: '나'}}
+  //               image={require('@assets/logo.png')}
+  //             />
+  //             {path.length >= 2 ? (
+  //               <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+  //             ) : null}
+  //           </NaverMapView>
+  //         </View>
+  //       </View>
+  //     </ScrollView>
+  //   );
+  // } else {
+  return (
+    <ScrollView>
+      <View>
+        <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
+        <View style={styles.mapContainer}>
+          <NaverMapView
+            style={styles.nmap}
+            zoomControl={true}
+            center={{
+              zoom: 17,
+              latitude: myPosition.latitude,
+              longitude: myPosition.longitude,
+            }}>
+            <Marker
+              coordinate={path[path.length - 1]}
+              width={50}
+              height={50}
+              anchor={{x: 0.5, y: 0.5}}
+              caption={{text: '나'}}
+              image={require('@assets/logo.png')}
+            />
+            {path.length >= 2 ? (
+              <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+            ) : null}
+          </NaverMapView>
         </View>
-      </ScrollView>
-    );
-  } else {
-    return (
-      <ScrollView>
-        <View>
-          <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
-          <View style={styles.mapContainer}>
-            <NaverMapView
-              style={styles.nmap}
-              zoomControl={true}
-              center={{
-                zoom: 17,
-                latitude: myPosition.latitude,
-                longitude: myPosition.longitude,
-              }}>
-              <Marker
-                coordinate={path[path.length - 1]}
-                width={50}
-                height={50}
-                anchor={{x: 0.5, y: 0.5}}
-                caption={{text: '나'}}
-                image={require('@assets/logo.png')}
-              />
-              {path.length >= 2 ? (
-                <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
-              ) : null}
-            </NaverMapView>
-          </View>
-          <Pressable
-            onPress={() => {
-              saveLogs();
-            }}>
-            <Text>저장하기</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              noSaveLogs();
-            }}>
-            <Text>저장 x</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              countinueLogs();
-            }}>
-            <Text>이어하기</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
-    );
-  }
+        <Pressable
+          onPress={() => {
+            saveLogs();
+          }}>
+          <Text>저장하기</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            noSaveLogs();
+          }}>
+          <Text>저장 x</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            countinueLogs();
+          }}>
+          <Text>이어하기</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
+  );
+  // }
 }
 
 const styles = StyleSheet.create({
