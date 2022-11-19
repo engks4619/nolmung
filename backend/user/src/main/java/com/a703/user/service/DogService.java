@@ -14,4 +14,5 @@ public interface DogService {
     void registerDogImage(MultipartFile file, Long dogIdx) throws IOException;
     BreedEntity findBreed(Integer breedCode);
     List<DogDto> getDogInfoByUserIdx(Long userIdx);
+    List<DogDto> deleteDog(Long userIdx, Long dogIdx);
 }

@@ -1,7 +1,8 @@
 package com.a703.user.controller;
 
+import com.a703.user.service.WithDogService;
 import com.a703.user.vo.request.RequestWithdog;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user/withdog")
+@RequiredArgsConstructor
 public class WithDogController {
+    private final WithDogService withDogService;
+
     @PostMapping
     ResponseEntity<?> completeWithDog(@RequestBody RequestWithdog requestWithdog){
-        HttpStatus status = HttpStatus.OK;
-        String msg = "Good";
-        return ResponseEntity.status(status).body(msg);
+        withDogService.withDogFinish(requestWithdog);
+        return ResponseEntity.ok().build();
     }
 }
