@@ -40,7 +40,7 @@ public class DogServiceImpl implements DogService{
 
     @Override
     public List<Long> getDogIdxListByBreedCode(Integer dogBreedCode) {
-        return dogRepository.findAllByBreedBreedCode(dogBreedCode).stream()
+        return dogRepository.findAllByBreedBreedCodeAndDeletedIsFalse(dogBreedCode).stream()
                 .map(DogEntity::getDogIdx)
                 .collect(Collectors.toList());
     }
@@ -62,7 +62,7 @@ public class DogServiceImpl implements DogService{
 
     @Override
     public List<DogDto> getDogInfoByUserIdx(Long userIdx) {
-        return dogRepository.findAllByUserUserIdx(userIdx).stream()
+        return dogRepository.findAllByUserUserIdxAndDeletedIsFalse(userIdx).stream()
                 .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
                 .collect(Collectors.toList());
     }
@@ -78,12 +78,19 @@ public class DogServiceImpl implements DogService{
 
     @Override
     public List<DogDto> deleteDog(Long userIdx, Long dogIdx) {
-        if(Objects.equals(userIdx, dogRepository.findById(dogIdx).orElseThrow().getUser().getUserIdx())){
-            dogRepository.deleteById(dogIdx);
-            return dogRepository.findAllByUserUserIdx(userIdx).stream()
-                    .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
+        DogEntity dogEntity = dogRepository.findById(dogIdx).orElseThrow();
+        if(Objects.equals(userIdx, dogEntity.getUser().getUserIdx())){
+            dogEntity.deleteDog();
+            dogRepository.save(dogEntity);
+            return dogRepository.findAllByUserUserIdxAndDeletedIsFalse(userIdx).stream()
+                    .map(dog -> new ModelMapper().map(dog, DogDto.class))
                     .collect(Collectors.toList());
         }
         return null;
+    }
+
+    @Override
+    public Integer countDog(Long userIdx){
+        return dogRepository.countByUserUserIdxAndDeletedIsFalse(userIdx);
     }
 }

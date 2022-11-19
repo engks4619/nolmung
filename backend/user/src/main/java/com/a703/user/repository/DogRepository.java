@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DogRepository extends CrudRepository<DogEntity, Long> {
-    List<DogEntity> findAllByBreedBreedCode(Integer breedCode);
-    List<DogEntity> findAllByUserUserIdx(Long userIdx);
+    List<DogEntity> findAllByBreedBreedCodeAndDeletedIsFalse(Integer breedCode);
+    List<DogEntity> findAllByUserUserIdxAndDeletedIsFalse(Long userIdx);
+    Integer countByUserUserIdxAndDeletedIsFalse(Long userIdx);
 }

@@ -30,7 +30,9 @@ public class DogController {
     @PostMapping
     public ResponseEntity<Object> registerDog(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt, @RequestBody RequestDog dog) {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
-
+        if(dogService.countDog(userIdx)==3){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("강아지는 3마리까지 등록 가능합니다.");
+        }
         DogDto dogDto = new ModelMapper().typeMap(RequestDog.class, DogDto.class).map(dog);
         dogDto.setBreed(dogService.findBreed(dog.getBreedCode()));
 
