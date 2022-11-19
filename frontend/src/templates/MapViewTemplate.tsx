@@ -5,12 +5,9 @@ import {MAIN_COLOR} from '~/const';
 import {Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
-import Timer from '@organisms/Timer';
-import Distance from '@organisms/Distance';
-import CustomHeader from '~/headers/CustomHeader';
 import DoubleSummary from '@molecules/DoubleSummary';
-
 import WalkingDogs from '~/organisms/WalkingDogs';
+
 interface Props {
   myPosition: Coord | null;
   path: Coord[];
@@ -29,9 +26,7 @@ function MapView({
   dogInfoList,
   doneWalking,
   distance,
-  dispatch,
   second,
-  navigation,
 }: Props) {
   if (!myPosition || !myPosition.latitude) {
     return (
@@ -42,7 +37,7 @@ function MapView({
   }
   return (
     <View>
-      <ScrollView overscrollmode="never">
+      <ScrollView overScrollMode="never">
         <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
         <View style={styles.mapContainer}>
           <NaverMapView
@@ -95,13 +90,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   mapContainer: {
+    backgroundColor: 'white',
     alignItems: 'center',
-    width: '90%',
+    alignSelf: 'center',
+    width: '100%',
     height: Dimensions.get('window').height / 2,
   },
   nmap: {
     justifySelf: 'center',
-    width: '100%',
+    width: '90%',
     height: '100%',
   },
   btnContainer: {

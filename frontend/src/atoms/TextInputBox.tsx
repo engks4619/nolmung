@@ -23,8 +23,6 @@ const TextInputBox = ({content, setContent, borderColor}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginVertical: 20,
     borderWidth: 1,
     borderRadius: 5,
     minHeight: 250,

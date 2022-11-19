@@ -1,28 +1,49 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Profile from '@atoms/Profile';
 import TextLine from '@atoms/TextLine';
-
+import ProfileTmp from '@atoms/ProfileTmp';
 interface Props {
   imageSource: string;
   userName: string;
   value: string;
   onChangeText: Function;
   isPassword: Boolean;
+  openPicker: () => Promise<void>;
+  tempProfileImage: any;
 }
 
-function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
+function UserEditForm({
+  imageSource,
+  userName,
+  value,
+  onChangeText,
+  openPicker,
+  tempProfileImage,
+}: Props) {
   return (
     <View style={styles.container}>
-      <Profile imageSource={imageSource} />
-      <View style={styles.description}>
-        <Text style={styles.userName}>닉네임</Text>
-        <TextLine
-          placeholder={userName}
-          onChangeText={onChangeText}
-          value={value}
-          isPassword={false}
-        />
+      <View style={styles.marginCotainer}>
+        <TouchableOpacity onPress={openPicker}>
+          {tempProfileImage ? (
+            <ProfileTmp
+              imageSource={tempProfileImage.path}
+              width={70}
+              height={70}
+            />
+          ) : (
+            <Profile imageSource={imageSource} width={70} height={70} />
+          )}
+        </TouchableOpacity>
+        <View style={styles.description}>
+          <Text style={styles.userName}>닉네임</Text>
+          <TextLine
+            placeholder={userName}
+            onChangeText={onChangeText}
+            value={value}
+            isPassword={false}
+          />
+        </View>
       </View>
     </View>
   );
@@ -30,22 +51,28 @@ function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginTop: 2,
-    paddingBottom: 7,
     backgroundColor: 'white',
+    marginTop: 2,
   },
+  marginCotainer: {
+    flex: 1,
+    margin: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
   userName: {
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
-    fontWeight: '700',
+    marginLeft: 10,
+    marginBottom: 5,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
   },
   description: {
-    width: 260,
-    height: 93,
+    paddingHorizontal: 15,
+    width: 230,
+    height: 90,
   },
 });
 

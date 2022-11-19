@@ -4,17 +4,25 @@ import Back from '@assets/back.svg';
 import {MAIN_COLOR} from '~/const';
 
 interface Props {
+  backFunc?: () => void;
   navigation: any;
   middleText: string;
   endText?: string;
   endFunc?: () => void;
 }
 
-function CustomHeader({navigation, middleText, endText, endFunc}: Props) {
+function CustomHeader({
+  backFunc,
+  navigation,
+  middleText,
+  endText,
+  endFunc,
+}: Props) {
   return (
     <View style={styles.hContainer}>
       <View style={styles.goBackBtn}>
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable
+          onPress={backFunc ? () => backFunc() : () => navigation.goBack()}>
           <Back width={20} height={20} fill={'black'} />
         </Pressable>
       </View>

@@ -10,10 +10,11 @@ import {setIsSavingOff, setIsSavingOn} from '~/slices/myPositionSlice';
 import {clearLogsAll, startLogging} from '~/utils/MyPositionFunctions';
 
 const moment = require('moment');
+
 function LogView({route, navigation}: any) {
   const dispatch = useAppDispatch();
   const path = useSelector((state: RootState) => state.myPosition.path);
-  const isOver = route.params.isOver;
+  // const isOver = route.params.isOver;
   const dogsInfo: dogInfo[] = useSelector(
     (state: RootState) => state.dogs.dogsInfo,
   );
@@ -110,7 +111,6 @@ function LogView({route, navigation}: any) {
       <LogViewTemplate
         path={path}
         dogInfoList={dogs}
-        isOver={isOver}
         myPosition={myPosition}
         saveLogs={() => {
           saveLogs();
@@ -121,6 +121,14 @@ function LogView({route, navigation}: any) {
         countinueLogs={() => {
           countinueLogs();
         }}
+        distance={distance}
+        second={
+          lastUpdate && startDate
+            ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
+              1000
+            : 0
+        }
+        startDate={startDate}
       />
     </View>
   );

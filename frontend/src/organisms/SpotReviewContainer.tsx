@@ -8,29 +8,33 @@ import {review} from '~/utils/type';
 
 interface Props {
   reviewList: review[] | null;
+  deleteSpotReview: (reviewIdx: number) => void;
 }
 
 const renderEmpty = () => {
   return (
-    <View style={{alignItems: 'center'}}>
+    <View
+      style={{
+        alignItems: 'center',
+      }}>
       <Squre imageSource="/images/review/empty.png" />
     </View>
   );
 };
 
-const renderReview = (reviewList: review[]) => {
+const renderReview = (reviewList: review[], deleteSpotReview: () => void) => {
   return (
     <View>
       {reviewList.map((review, idx) => (
         <View key={idx}>
-          <SpotReviewInfo review={review} />
+          <SpotReviewInfo review={review} deleteSpotReview={deleteSpotReview} />
         </View>
       ))}
     </View>
   );
 };
 
-function SpotReviewContainer({reviewList}: Props) {
+function SpotReviewContainer({reviewList, deleteSpotReview}: Props) {
   return (
     <View>
       <View style={styles.grayBox}>
@@ -38,7 +42,7 @@ function SpotReviewContainer({reviewList}: Props) {
       </View>
       <View style={styles.container}>
         {reviewList && reviewList?.length > 0
-          ? renderReview(reviewList)
+          ? renderReview(reviewList, deleteSpotReview)
           : renderEmpty()}
       </View>
     </View>

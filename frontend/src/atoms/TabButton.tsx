@@ -10,37 +10,38 @@ interface Props {
 
 function TabButton({name, btnText, icon, onClick}: Props) {
   return (
-    <View style={styles.TabContainer}>
+    <View>
       <Pressable
         onPress={() => {
           onClick(name);
         }}
         style={styles.PressableSpace}>
-        <View>{icon}</View>
-        <Text style={styles.TextSpace}>{btnText}</Text>
+        <View style={styles.iconContainer}>{icon}</View>
+        <View style={styles.textContainer}>
+          <Text style={styles.TextSpace}>{btnText}</Text>
+        </View>
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  TabContainer: {
-    flexDirection: 'row',
-    padding: 5,
-    height: 40,
-    paddingHorizontal: 20,
-    paddingVertical: 2,
-    marginVertical: 1,
-    alignItems: 'center',
-  },
   PressableSpace: {
     flexDirection: 'row',
+    height: 35,
+    alignItems: 'center',
+  },
+  iconContainer: {
+    paddingHorizontal: 10,
+  },
+  textContainer: {
+    justifyContent: 'flex-end',
+    color: 'black',
   },
   TextSpace: {
-    height: '100%',
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingHorizontal: 10,
+    fontSize: 15,
+    color: 'black',
+    fontWeight: '500',
     paddingVertical: 0,
   },
 });

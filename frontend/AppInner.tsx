@@ -44,6 +44,19 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const headers = {
+  headerTitle: '놀면 멍하니',
+  headerTintColor: MAIN_COLOR,
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+};
+export const removeUserInfo = async () => {
+  try {
+    await AsyncStorage.removeItem('accessToken');
+  } catch (error) {}
+};
 function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
@@ -59,12 +72,6 @@ function AppInner() {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
       accessToken !== null ? checkToken(accessToken) : null;
-    } catch (error) {}
-  };
-
-  const removeUserInfo = async () => {
-    try {
-      await AsyncStorage.removeItem('accessToken');
     } catch (error) {}
   };
 
