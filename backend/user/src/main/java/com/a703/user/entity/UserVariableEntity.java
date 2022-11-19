@@ -38,12 +38,12 @@ public class UserVariableEntity {
     @ColumnDefault("0")
     private Integer totalTime;
 
-    public void addOwnerReview(Long star) {
+    public void addOwnerReview(Double star) {
         this.cntOwnerStar++;
         this.sumOwnerStar += star;
     }
 
-    public void addAlbaReview(Long star) {
+    public void addAlbaReview(Double star) {
         this.cntAlbaStar++;
         this.sumAlbaStar += star;
     }

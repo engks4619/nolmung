@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -73,5 +74,16 @@ public class DogServiceImpl implements DogService{
         commUtil.saveImage(file, savePath);
         dogEntity.changeDogImage(savePath);
         dogRepository.save(dogEntity);
+    }
+
+    @Override
+    public List<DogDto> deleteDog(Long userIdx, Long dogIdx) {
+        if(Objects.equals(userIdx, dogRepository.findById(dogIdx).orElseThrow().getUser().getUserIdx())){
+            dogRepository.deleteById(dogIdx);
+            return dogRepository.findAllByUserUserIdx(userIdx).stream()
+                    .map(dogEntity -> new ModelMapper().map(dogEntity, DogDto.class))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 }

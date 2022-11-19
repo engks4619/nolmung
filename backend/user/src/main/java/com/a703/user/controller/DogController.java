@@ -64,7 +64,7 @@ public class DogController {
     }
 
     @GetMapping("/mydogs")
-    public ResponseEntity<?> getDogList(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+    public ResponseEntity<?> getDogList(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt) {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         return ResponseEntity.status(HttpStatus.OK).body(dogService.getDogInfoByUserIdx(userIdx).stream()
                 .map(dogDto -> new ModelMapper()
@@ -75,12 +75,29 @@ public class DogController {
     }
 
     @GetMapping("/info/{userIdx}")
-    public ResponseEntity<?> getDogListByUserIdx(@PathVariable(value = "userIdx") Long userIdx){
+    public ResponseEntity<?> getDogListByUserIdx(@PathVariable(value = "userIdx") Long userIdx) {
         return ResponseEntity.status(HttpStatus.OK).body(dogService.getDogInfoByUserIdx(userIdx).stream()
                 .map(dogDto -> new ModelMapper()
                         .typeMap(DogDto.class, ResponseDog.class)
                         .addMapping(DogDto::getBreedCodeValue, ResponseDog::setBreedCodeValue)
                         .map(dogDto))
                 .collect(Collectors.toList()));
+    }
+
+    @DeleteMapping("/{dogIdx}")
+    public ResponseEntity<?> deleteDog(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt, @PathVariable(value = "dogIdx") Long dogIdx) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        Map<String, Object> body = new HashMap<>();
+        Long userIdx = jwtUtil.jwtToUserIdx(jwt);
+        List<DogDto> list = dogService.deleteDog(userIdx, dogIdx);
+        if (list != null) {
+            status = HttpStatus.OK;
+            body.put("dogList", list.stream().map(dto -> new ModelMapper()
+                            .typeMap(DogDto.class, ResponseDog.class)
+                            .addMapping(DogDto::getBreedCodeValue, ResponseDog::setBreedCodeValue)
+                            .map(dto))
+                    .collect(Collectors.toList()));
+        }
+        return ResponseEntity.status(status).body(body);
     }
 }
