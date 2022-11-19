@@ -1,0 +1,898 @@
+[
+  {
+    "breed_code": 0,
+    "breed_code_value": "믹스"
+  },
+  {
+    "breed_code": 1,
+    "breed_code_value": "고든 세터"
+  },
+  {
+    "breed_code": 2,
+    "breed_code_value": "꼬똥 드 툴레아"
+  },
+  {
+    "breed_code": 3,
+    "breed_code_value": "골든두들"
+  },
+  {
+    "breed_code": 4,
+    "breed_code_value": "골든 리트리버"
+  },
+  {
+    "breed_code": 5,
+    "breed_code_value": "그레이트 데인"
+  },
+  {
+    "breed_code": 6,
+    "breed_code_value": "그레이트 스위스 마운틴 도그"
+  },
+  {
+    "breed_code": 7,
+    "breed_code_value": "그레이트 피레니즈"
+  },
+  {
+    "breed_code": 8,
+    "breed_code_value": "그레이하운드"
+  },
+  {
+    "breed_code": 9,
+    "breed_code_value": "그린란드견"
+  },
+  {
+    "breed_code": 10,
+    "breed_code_value": "글렌 오브 이말 테리어"
+  },
+  {
+    "breed_code": 11,
+    "breed_code_value": "기슈견"
+  },
+  {
+    "breed_code": 12,
+    "breed_code_value": "나폴리탄 마스티프"
+  },
+  {
+    "breed_code": 13,
+    "breed_code_value": "노르웨지안 부훈트"
+  },
+  {
+    "breed_code": 14,
+    "breed_code_value": "노르웨이 엘크 하운드"
+  },
+  {
+    "breed_code": 15,
+    "breed_code_value": "노리치 테리어"
+  },
+  {
+    "breed_code": 16,
+    "breed_code_value": "노바 스코셔 덕 톨링 레트리버"
+  },
+  {
+    "breed_code": 17,
+    "breed_code_value": "노퍽 테리어"
+  },
+  {
+    "breed_code": 18,
+    "breed_code_value": "뉴펀들랜드"
+  },
+  {
+    "breed_code": 19,
+    "breed_code_value": "닥스훈트"
+  },
+  {
+    "breed_code": 20,
+    "breed_code_value": "달마시안"
+  },
+  {
+    "breed_code": 21,
+    "breed_code_value": "댄디 딘몬트 테리어"
+  },
+  {
+    "breed_code": 22,
+    "breed_code_value": "도고 까나리오"
+  },
+  {
+    "breed_code": 23,
+    "breed_code_value": "도고 아르헨티노"
+  },
+  {
+    "breed_code": 24,
+    "breed_code_value": "도그 드 보르도"
+  },
+  {
+    "breed_code": 25,
+    "breed_code_value": "도베르만 핀셔"
+  },
+  {
+    "breed_code": 26,
+    "breed_code_value": "도사견"
+  },
+  {
+    "breed_code": 27,
+    "breed_code_value": "동경이"
+  },
+  {
+    "breed_code": 28,
+    "breed_code_value": "라고토 로마뇰로"
+  },
+  {
+    "breed_code": 29,
+    "breed_code_value": "라사압소"
+  },
+  {
+    "breed_code": 30,
+    "breed_code_value": "라페이로 도 알렌테조"
+  },
+  {
+    "breed_code": 31,
+    "breed_code_value": "라포니안 허더"
+  },
+  {
+    "breed_code": 32,
+    "breed_code_value": "래브라도 리트리버"
+  },
+  {
+    "breed_code": 33,
+    "breed_code_value": "레온베르거"
+  },
+  {
+    "breed_code": 34,
+    "breed_code_value": "레이크랜드 테리어"
+  },
+  {
+    "breed_code": 35,
+    "breed_code_value": "로디지아 리지백"
+  },
+  {
+    "breed_code": 36,
+    "breed_code_value": "로첸"
+  },
+  {
+    "breed_code": 37,
+    "breed_code_value": "로트와일러"
+  },
+  {
+    "breed_code": 38,
+    "breed_code_value": "마스티프"
+  },
+  {
+    "breed_code": 39,
+    "breed_code_value": "맨체스터 테리어"
+  },
+  {
+    "breed_code": 40,
+    "breed_code_value": "말티즈"
+  },
+  {
+    "breed_code": 41,
+    "breed_code_value": "미니어처 불 테리어"
+  },
+  {
+    "breed_code": 42,
+    "breed_code_value": "미니어처 슈나우저"
+  },
+  {
+    "breed_code": 43,
+    "breed_code_value": "미니어처 핀셔"
+  },
+  {
+    "breed_code": 44,
+    "breed_code_value": "말티푸"
+  },
+  {
+    "breed_code": 45,
+    "breed_code_value": "바센지"
+  },
+  {
+    "breed_code": 46,
+    "breed_code_value": "바셋 하운드"
+  },
+  {
+    "breed_code": 47,
+    "breed_code_value": "버니즈 마운틴 도그"
+  },
+  {
+    "breed_code": 48,
+    "breed_code_value": "베들링턴 테리어"
+  },
+  {
+    "breed_code": 49,
+    "breed_code_value": "발바리"
+  },
+  {
+    "breed_code": 50,
+    "breed_code_value": "벨기에 말리노이즈"
+  },
+  {
+    "breed_code": 51,
+    "breed_code_value": "벨기에 테뷰런"
+  },
+  {
+    "breed_code": 52,
+    "breed_code_value": "벨지안 그리펀"
+  },
+  {
+    "breed_code": 53,
+    "breed_code_value": "벨지언 쉽독 (벨지언 셰퍼드)"
+  },
+  {
+    "breed_code": 54,
+    "breed_code_value": "보더콜리"
+  },
+  {
+    "breed_code": 55,
+    "breed_code_value": "보더 테리어"
+  },
+  {
+    "breed_code": 56,
+    "breed_code_value": "보르도 마스티프"
+  },
+  {
+    "breed_code": 57,
+    "breed_code_value": "보르조이"
+  },
+  {
+    "breed_code": 58,
+    "breed_code_value": "보비에 드 플랜더스"
+  },
+  {
+    "breed_code": 59,
+    "breed_code_value": "보스롱"
+  },
+  {
+    "breed_code": 60,
+    "breed_code_value": "보스턴 테리어"
+  },
+  {
+    "breed_code": 61,
+    "breed_code_value": "복서"
+  },
+  {
+    "breed_code": 62,
+    "breed_code_value": "볼로네즈"
+  },
+  {
+    "breed_code": 63,
+    "breed_code_value": "불개"
+  },
+  {
+    "breed_code": 64,
+    "breed_code_value": "불도그"
+  },
+  {
+    "breed_code": 65,
+    "breed_code_value": "불리 쿠타"
+  },
+  {
+    "breed_code": 66,
+    "breed_code_value": "불 마스티프"
+  },
+  {
+    "breed_code": 67,
+    "breed_code_value": "불 테리어"
+  },
+  {
+    "breed_code": 68,
+    "breed_code_value": "브뤼셀 그리펀"
+  },
+  {
+    "breed_code": 69,
+    "breed_code_value": "브리어드"
+  },
+  {
+    "breed_code": 70,
+    "breed_code_value": "브리타니"
+  },
+  {
+    "breed_code": 71,
+    "breed_code_value": "블랙 러시안 테리어"
+  },
+  {
+    "breed_code": 72,
+    "breed_code_value": "블랙 앤드 탄 쿤하운드"
+  },
+  {
+    "breed_code": 73,
+    "breed_code_value": "블러드 하운드"
+  },
+  {
+    "breed_code": 74,
+    "breed_code_value": "비글"
+  },
+  {
+    "breed_code": 75,
+    "breed_code_value": "비숑 프리제"
+  },
+  {
+    "breed_code": 76,
+    "breed_code_value": "비어디드 콜리"
+  },
+  {
+    "breed_code": 77,
+    "breed_code_value": "비즐라"
+  },
+  {
+    "breed_code": 78,
+    "breed_code_value": "빠삐용"
+  },
+  {
+    "breed_code": 79,
+    "breed_code_value": "사모예드"
+  },
+  {
+    "breed_code": 80,
+    "breed_code_value": "사플라니낙"
+  },
+  {
+    "breed_code": 81,
+    "breed_code_value": "살루키"
+  },
+  {
+    "breed_code": 82,
+    "breed_code_value": "삽살개"
+  },
+  {
+    "breed_code": 83,
+    "breed_code_value": "샤페이"
+  },
+  {
+    "breed_code": 84,
+    "breed_code_value": "서식스 스패니얼"
+  },
+  {
+    "breed_code": 85,
+    "breed_code_value": "세인트 버나드"
+  },
+  {
+    "breed_code": 86,
+    "breed_code_value": "셰틀랜드 쉽독"
+  },
+  {
+    "breed_code": 87,
+    "breed_code_value": "소프트 코티드 휘튼 테리어"
+  },
+  {
+    "breed_code": 88,
+    "breed_code_value": "솔로이츠 쿠인틀레"
+  },
+  {
+    "breed_code": 89,
+    "breed_code_value": "스무드 폭스 테리어"
+  },
+  {
+    "breed_code": 90,
+    "breed_code_value": "스웨디쉬 발훈트"
+  },
+  {
+    "breed_code": 91,
+    "breed_code_value": "스카이 테리어"
+  },
+  {
+    "breed_code": 92,
+    "breed_code_value": "스코티시 디어하운드"
+  },
+  {
+    "breed_code": 93,
+    "breed_code_value": "스코티시 테리어"
+  },
+  {
+    "breed_code": 94,
+    "breed_code_value": "스키퍼키"
+  },
+  {
+    "breed_code": 95,
+    "breed_code_value": "스태퍼드셔 불 테리어"
+  },
+  {
+    "breed_code": 96,
+    "breed_code_value": "스탠더드 슈나우저"
+  },
+  {
+    "breed_code": 97,
+    "breed_code_value": "스패니쉬 그레이 하운드"
+  },
+  {
+    "breed_code": 98,
+    "breed_code_value": "스패니쉬 마스티프"
+  },
+  {
+    "breed_code": 99,
+    "breed_code_value": "스피노네 이탈리아노"
+  },
+  {
+    "breed_code": 100,
+    "breed_code_value": "스피츠"
+  },
+  {
+    "breed_code": 101,
+    "breed_code_value": "시고르자브종"
+  },
+  {
+    "breed_code": 102,
+    "breed_code_value": "시바 이누"
+  },
+  {
+    "breed_code": 103,
+    "breed_code_value": "시베리언 허스키"
+  },
+  {
+    "breed_code": 104,
+    "breed_code_value": "시추"
+  },
+  {
+    "breed_code": 105,
+    "breed_code_value": "시코쿠견"
+  },
+  {
+    "breed_code": 106,
+    "breed_code_value": "실리엄 테리어"
+  },
+  {
+    "breed_code": 107,
+    "breed_code_value": "실키 테리어"
+  },
+  {
+    "breed_code": 108,
+    "breed_code_value": "아나톨리아 셰퍼드"
+  },
+  {
+    "breed_code": 109,
+    "breed_code_value": "아메리칸 불도그"
+  },
+  {
+    "breed_code": 110,
+    "breed_code_value": "아메리칸 불리"
+  },
+  {
+    "breed_code": 111,
+    "breed_code_value": "아메리칸 스태퍼드셔 테리어"
+  },
+  {
+    "breed_code": 112,
+    "breed_code_value": "아메리칸 아키다"
+  },
+  {
+    "breed_code": 113,
+    "breed_code_value": "아메리칸 에스키모 도그"
+  },
+  {
+    "breed_code": 114,
+    "breed_code_value": "아메리칸 워터 스패니얼"
+  },
+  {
+    "breed_code": 115,
+    "breed_code_value": "아메리칸 코커 스패니얼"
+  },
+  {
+    "breed_code": 116,
+    "breed_code_value": "아메리칸 폭스하운드"
+  },
+  {
+    "breed_code": 117,
+    "breed_code_value": "아이디"
+  },
+  {
+    "breed_code": 118,
+    "breed_code_value": "아이리시 소프트코티드 휘튼 테리어"
+  },
+  {
+    "breed_code": 119,
+    "breed_code_value": "아이리시 레드 앤드 화이트 세터"
+  },
+  {
+    "breed_code": 120,
+    "breed_code_value": "아이리시 세터"
+  },
+  {
+    "breed_code": 121,
+    "breed_code_value": "아이리시 울프 하운드"
+  },
+  {
+    "breed_code": 122,
+    "breed_code_value": "아이리시 워터 스패니얼"
+  },
+  {
+    "breed_code": 123,
+    "breed_code_value": "아이리시 테리어"
+  },
+  {
+    "breed_code": 124,
+    "breed_code_value": "아키타"
+  },
+  {
+    "breed_code": 125,
+    "breed_code_value": "아펜핀셔"
+  },
+  {
+    "breed_code": 126,
+    "breed_code_value": "아프간 하운드"
+  },
+  {
+    "breed_code": 127,
+    "breed_code_value": "알래스칸 맬러뮤트"
+  },
+  {
+    "breed_code": 128,
+    "breed_code_value": "알래스칸 클리카이"
+  },
+  {
+    "breed_code": 129,
+    "breed_code_value": "에스트렐라 마운틴 독"
+  },
+  {
+    "breed_code": 130,
+    "breed_code_value": "에어데일 테리어"
+  },
+  {
+    "breed_code": 131,
+    "breed_code_value": "오브차카"
+  },
+  {
+    "breed_code": 132,
+    "breed_code_value": "오스트레일리안 실키 테리어"
+  },
+  {
+    "breed_code": 133,
+    "breed_code_value": "오스트레일리안 켈피"
+  },
+  {
+    "breed_code": 134,
+    "breed_code_value": "오스트레일리언 셰퍼드"
+  },
+  {
+    "breed_code": 135,
+    "breed_code_value": "오스트레일리언 캐틀 도그"
+  },
+  {
+    "breed_code": 136,
+    "breed_code_value": "오스트레일리언 테리어"
+  },
+  {
+    "breed_code": 137,
+    "breed_code_value": "오터 하운드"
+  },
+  {
+    "breed_code": 138,
+    "breed_code_value": "올드 잉글리시 쉽독"
+  },
+  {
+    "breed_code": 139,
+    "breed_code_value": "와이머라너"
+  },
+  {
+    "breed_code": 140,
+    "breed_code_value": "와이어 폭스 테리어"
+  },
+  {
+    "breed_code": 141,
+    "breed_code_value": "와이어헤어드 포인팅 그리펀"
+  },
+  {
+    "breed_code": 142,
+    "breed_code_value": "야쿠탄 라이카"
+  },
+  {
+    "breed_code": 143,
+    "breed_code_value": "요크셔 테리어"
+  },
+  {
+    "breed_code": 144,
+    "breed_code_value": "웨스트 하이랜드 화이트테리어"
+  },
+  {
+    "breed_code": 145,
+    "breed_code_value": "웰시 스프링어 스패니얼"
+  },
+  {
+    "breed_code": 146,
+    "breed_code_value": "웰시 코기"
+  },
+  {
+    "breed_code": 147,
+    "breed_code_value": "웰시 테리어"
+  },
+  {
+    "breed_code": 148,
+    "breed_code_value": "이비전 하운드"
+  },
+  {
+    "breed_code": 149,
+    "breed_code_value": "이탤리언 그레이하운드"
+  },
+  {
+    "breed_code": 150,
+    "breed_code_value": "잉글리시 세터"
+  },
+  {
+    "breed_code": 151,
+    "breed_code_value": "잉글리시 스프링어 스패니얼"
+  },
+  {
+    "breed_code": 152,
+    "breed_code_value": "잉글리시 코커 스패니얼"
+  },
+  {
+    "breed_code": 153,
+    "breed_code_value": "잉글리시 토이 스패니얼"
+  },
+  {
+    "breed_code": 154,
+    "breed_code_value": "잉글리시 폭스하운드"
+  },
+  {
+    "breed_code": 155,
+    "breed_code_value": "자이언트 슈나우저"
+  },
+  {
+    "breed_code": 156,
+    "breed_code_value": "재패니즈 친"
+  },
+  {
+    "breed_code": 157,
+    "breed_code_value": "재패니즈 스피츠"
+  },
+  {
+    "breed_code": 158,
+    "breed_code_value": "잭 러셀 테리어"
+  },
+  {
+    "breed_code": 159,
+    "breed_code_value": "저먼 셰퍼드"
+  },
+  {
+    "breed_code": 160,
+    "breed_code_value": "저먼 쇼트헤어드 포인터"
+  },
+  {
+    "breed_code": 161,
+    "breed_code_value": "저먼 와이어헤어드 포인터"
+  },
+  {
+    "breed_code": 162,
+    "breed_code_value": "저먼 핀셔"
+  },
+  {
+    "breed_code": 163,
+    "breed_code_value": "저먼 헌팅 테리어"
+  },
+  {
+    "breed_code": 164,
+    "breed_code_value": "제주개"
+  },
+  {
+    "breed_code": 165,
+    "breed_code_value": "진돗개"
+  },
+  {
+    "breed_code": 166,
+    "breed_code_value": "차우차우"
+  },
+  {
+    "breed_code": 167,
+    "breed_code_value": "차이니즈 샤페이"
+  },
+  {
+    "breed_code": 168,
+    "breed_code_value": "차이니즈 크레스티드"
+  },
+  {
+    "breed_code": 169,
+    "breed_code_value": "체서피크 베이 레트리버"
+  },
+  {
+    "breed_code": 170,
+    "breed_code_value": "체코슬로바키아 늑대개"
+  },
+  {
+    "breed_code": 171,
+    "breed_code_value": "치와와"
+  },
+  {
+    "breed_code": 172,
+    "breed_code_value": "카네 코르소"
+  },
+  {
+    "breed_code": 173,
+    "breed_code_value": "카디건 웰시 코기"
+  },
+  {
+    "breed_code": 174,
+    "breed_code_value": "카발리에 킹 찰스 스파니엘"
+  },
+  {
+    "breed_code": 175,
+    "breed_code_value": "캉갈"
+  },
+  {
+    "breed_code": 176,
+    "breed_code_value": "컬리코티드 레트리버"
+  },
+  {
+    "breed_code": 177,
+    "breed_code_value": "케리 블루 테리어"
+  },
+  {
+    "breed_code": 178,
+    "breed_code_value": "케언 테리어"
+  },
+  {
+    "breed_code": 179,
+    "breed_code_value": "케이넌 도그"
+  },
+  {
+    "breed_code": 180,
+    "breed_code_value": "케이스혼트"
+  },
+  {
+    "breed_code": 181,
+    "breed_code_value": "코리안 마스티프"
+  },
+  {
+    "breed_code": 182,
+    "breed_code_value": "코몬도르"
+  },
+  {
+    "breed_code": 183,
+    "breed_code_value": "코커 스패니얼"
+  },
+  {
+    "breed_code": 184,
+    "breed_code_value": "콜리"
+  },
+  {
+    "breed_code": 185,
+    "breed_code_value": "쿠바스"
+  },
+  {
+    "breed_code": 186,
+    "breed_code_value": "쿠이커혼제"
+  },
+  {
+    "breed_code": 187,
+    "breed_code_value": "클럼버 스패니얼"
+  },
+  {
+    "breed_code": 188,
+    "breed_code_value": "토이 폭스 테리어"
+  },
+  {
+    "breed_code": 189,
+    "breed_code_value": "티베탄 마스티프"
+  },
+  {
+    "breed_code": 190,
+    "breed_code_value": "티베탄 스패니얼"
+  },
+  {
+    "breed_code": 191,
+    "breed_code_value": "티베탄 테리어"
+  },
+  {
+    "breed_code": 192,
+    "breed_code_value": "파라오 하운드"
+  },
+  {
+    "breed_code": 193,
+    "breed_code_value": "파슨 러셀 테리어"
+  },
+  {
+    "breed_code": 194,
+    "breed_code_value": "파피용"
+  },
+  {
+    "breed_code": 195,
+    "breed_code_value": "패터데일 테리어"
+  },
+  {
+    "breed_code": 196,
+    "breed_code_value": "퍼그"
+  },
+  {
+    "breed_code": 197,
+    "breed_code_value": "페키니즈"
+  },
+  {
+    "breed_code": 198,
+    "breed_code_value": "펨브록 웰시 코기"
+  },
+  {
+    "breed_code": 199,
+    "breed_code_value": "포르투기즈 워터 도그"
+  },
+  {
+    "breed_code": 200,
+    "breed_code_value": "포메라니안"
+  },
+  {
+    "breed_code": 201,
+    "breed_code_value": "포인터"
+  },
+  {
+    "breed_code": 202,
+    "breed_code_value": "폭스 테리어"
+  },
+  {
+    "breed_code": 203,
+    "breed_code_value": "폴리시 롤런드 시프도그"
+  },
+  {
+    "breed_code": 204,
+    "breed_code_value": "폼피츠"
+  },
+  {
+    "breed_code": 205,
+    "breed_code_value": "푸들"
+  },
+  {
+    "breed_code": 206,
+    "breed_code_value": "푸미"
+  },
+  {
+    "breed_code": 207,
+    "breed_code_value": "풀리"
+  },
+  {
+    "breed_code": 208,
+    "breed_code_value": "풍산개"
+  },
+  {
+    "breed_code": 209,
+    "breed_code_value": "프렌치 불도그"
+  },
+  {
+    "breed_code": 210,
+    "breed_code_value": "프티 바세 그리퐁 방댕"
+  },
+  {
+    "breed_code": 211,
+    "breed_code_value": "플랫코티드 레트리버"
+  },
+  {
+    "breed_code": 212,
+    "breed_code_value": "플롯 하운드"
+  },
+  {
+    "breed_code": 213,
+    "breed_code_value": "피니시 스피츠"
+  },
+  {
+    "breed_code": 214,
+    "breed_code_value": "피레니안 마스티프"
+  },
+  {
+    "breed_code": 215,
+    "breed_code_value": "피레니안 쉽독"
+  },
+  {
+    "breed_code": 216,
+    "breed_code_value": "피레니언 셰퍼드"
+  },
+  {
+    "breed_code": 217,
+    "breed_code_value": "필드 스패니얼"
+  },
+  {
+    "breed_code": 218,
+    "breed_code_value": "필라 브라질레이로"
+  },
+  {
+    "breed_code": 219,
+    "breed_code_value": "핏 불 테리어"
+  },
+  {
+    "breed_code": 220,
+    "breed_code_value": "해리어"
+  },
+  {
+    "breed_code": 221,
+    "breed_code_value": "하바니즈"
+  },
+  {
+    "breed_code": 222,
+    "breed_code_value": "홋카이도 이누"
+  },
+  {
+    "breed_code": 223,
+    "breed_code_value": "휘핏"
+  }
+]

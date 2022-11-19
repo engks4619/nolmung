@@ -1,6 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {
-  Alert,
   Dimensions,
   FlatList,
   Image,
@@ -24,19 +23,16 @@ interface Props {
 
 const ImageUploadModal = ({setImageUploadModal, images, setImages}: Props) => {
   const openPicker = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        selectedAssets: images,
-        isExportThumbnail: true,
-        usedCameraButton: false,
-        doneTitle: '완료',
-        cancelTitle: '취소',
-        maxSelectedAssets: 10,
-      });
-      setImages(response);
-    } catch (e: any) {
-      Alert.alert('이미지 업로드 실패!', e.code, e.message);
-    }
+    await MultipleImagePicker.openPicker({
+      selectedAssets: images,
+      isExportThumbnail: true,
+      usedCameraButton: false,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      maxSelectedAssets: 10,
+    })
+      .then(response => setImages(response))
+      .catch(() => {});
   };
 
   const onDelete = (value: any) => {
@@ -92,7 +88,12 @@ const ImageUploadModal = ({setImageUploadModal, images, setImages}: Props) => {
           />
           <View style={styles.bottom}>
             <TouchableOpacity style={styles.openPicker} onPress={openPicker}>
-              <Text style={styles.openText}>업로드</Text>
+              <Text style={styles.openText}>열기</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.openPicker}
+              onPress={() => setImageUploadModal(false)}>
+              <Text style={styles.openText}>닫기</Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -132,7 +133,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   bottom: {
+    flexDirection: 'row',
     padding: 24,
+    justifyContent: 'space-between',
   },
   openText: {
     fontWeight: 'bold',
@@ -141,6 +144,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   openPicker: {
+    width: 150,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: MAIN_COLOR,

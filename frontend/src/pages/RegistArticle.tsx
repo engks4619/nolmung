@@ -7,7 +7,6 @@ import RegistArticleTemplate from '~/templates/RegistArticleTemplate';
 import {uploadImg} from '~/utils/imgService';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {dog} from '~/utils/type';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -55,7 +54,7 @@ const RegistArticle = ({navigation}: any) => {
           });
         }
         Alert.alert('게시글 작성완료!');
-        navigation.navigate('Community');
+        navigation.replace('Community');
       }
     } catch (err: any) {
       Alert.alert('게시글 작성 실패!');

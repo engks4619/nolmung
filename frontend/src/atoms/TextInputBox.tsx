@@ -7,7 +7,7 @@ interface Props {
   borderColor: string;
 }
 
-const TextInutBox = ({content, setContent, borderColor}: Props) => {
+const TextInputBox = ({content, setContent, borderColor}: Props) => {
   return (
     <View style={[styles.container, {borderColor}]}>
       <TextInput
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextInutBox;
+export default TextInputBox;
