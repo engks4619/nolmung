@@ -56,7 +56,9 @@ io.on('connection', socket => {
     login_ids[loginId] = socket.id;
     socket.loginId = loginId;
     console.log("로그인 소켓: ", login_ids[loginId]);
-    io.to(socket.id).emit('reply', '로그인 성공');
+
+    io.to(socket.id).emit('replyLogin', '로그인 성공');
+
     try {
       // 채팅 목록 조회
       const rooms = await Room.find({
@@ -95,7 +97,7 @@ io.on('connection', socket => {
         socket.join(newRoom._id);
         console.log("상대방 소켓 아이디: ", login_ids[newRoom.opponentIdx]);  
         console.log("내 소켓 아이디", socket.id, " ", login_ids[newRoom.ownerIdx]);
-        io.to(login_ids[newRoom.opponentIdx]).emit('replyRoom', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
+        io.to(login_ids[newRoom.opponentIdx]).emit('joinRoom', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
 
         console.log("room socket 아이디 : ", socket.id);
         
