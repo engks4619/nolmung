@@ -40,7 +40,7 @@ public class DogController {
     }
 
     @PostMapping("/image")
-    public ResponseEntity<?> registerDogImage(@RequestParam(value = "files") MultipartFile file, @RequestParam Long dogIdx) throws IOException {
+    public ResponseEntity<?> registerDogImage(@RequestParam(value = "files") MultipartFile file, @RequestParam(value = "dogIdx") Long dogIdx) throws IOException {
         dogService.registerDogImage(file, dogIdx);
         return ResponseEntity.ok("success");
     }
