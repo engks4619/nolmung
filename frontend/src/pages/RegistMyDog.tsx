@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
+import CustomHeader from '~/headers/CustomHeader';
 import RegistMyDogTemplate from '~/templates/RegistMyDogTemplate';
 import axios from '~/utils/axios';
 import {uploadImg} from '~/utils/imgService';
@@ -64,6 +65,14 @@ const RegistMyDog = ({navigation}: any) => {
   useEffect(() => {
     setRequestBody({...requestBody, description: desc});
   }, [desc]);
+
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <CustomHeader navigation={navigation} middleText={'강아지 등록'} />
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View>
