@@ -15,4 +15,6 @@ public interface DogService {
     BreedEntity findBreed(Integer breedCode);
     List<DogDto> getDogInfoByUserIdx(Long userIdx);
     List<DogDto> deleteDog(Long userIdx, Long dogIdx);
+
+    Integer countDog(Long userIdx);
 }

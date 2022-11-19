@@ -1,6 +1,8 @@
 package com.a703.user.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -8,9 +10,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @ToString
+@DynamicUpdate
 public class DogEntity extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dogIdx;
 
     private String dogName;
@@ -19,6 +23,7 @@ public class DogEntity extends BaseEntity {
     private Character gender;
     private String image;
     private String description;
+    private Boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "userIdx")
@@ -28,7 +33,11 @@ public class DogEntity extends BaseEntity {
     @JoinColumn(name = "breedCode")
     private BreedEntity breed;
 
-    public void changeDogImage(String savePath){
+    public void changeDogImage(String savePath) {
         this.image = savePath;
+    }
+
+    public void deleteDog() {
+        this.deleted = true;
     }
 }
