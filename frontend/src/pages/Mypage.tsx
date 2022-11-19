@@ -13,15 +13,12 @@ import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
 import WalkReview from './WalkReview';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import MultipleImagePicker, {
-  MediaType,
-  ImageResults,
-  VideoResults,
-} from '@baronha/react-native-multiple-image-picker';
+import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
 import axios from 'utils/axios';
 import ImageResizer from 'react-native-image-resizer';
+import {setProfile} from '~/slices/userSlice';
 //UserInfoType
 export type UserInfoType = {
   imageSource: string;
@@ -30,6 +27,7 @@ export type UserInfoType = {
   walkHour: number;
   walkDistance: number;
 };
+import {photo} from '~/utils/type';
 
 const MypageStack = createNativeStackNavigator();
 export const MypageStackNavigator = () => (
@@ -73,32 +71,32 @@ export const MypageStackNavigator = () => (
 const myPageListNavi = [
   {
     name: 'MyPostList',
-    icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Filter width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 쓴 글',
   },
   {
     name: 'MyLikedList',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 글',
   },
   {
     name: 'MyLikedSpots',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 스팟',
   },
   {
     name: 'MyWalkingRecord',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 산책 기록',
   },
   {
     name: 'MyDogs',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
   },
   {
     name: 'WalkReview',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '산책후기',
   },
 ];
@@ -106,7 +104,7 @@ const myPageListNavi = [
 const myPageListFunc = [
   {
     name: 'Logout',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '로그아웃',
   },
 ];
@@ -116,14 +114,15 @@ function Mypage({navigation}: any) {
   const userInfo: UserInfoType = {
     imageSource: user.profileImage,
     userName: user.nickname,
-    walkNumber: 10,
-    walkHour: 10,
-    walkDistance: 100,
+    walkNumber: user.totalWalk,
+    walkHour: user.totalTime,
+    walkDistance: user.totalDistance,
   };
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
-  const [tempProfileImage, setTempProfileImage] = useState<any[]>([]);
+  const [tempProfileImage, setTempProfileImage] = useState<any>(null);
 
+  const dispatch = useDispatch();
   const onChangeNickname = useCallback(text => {
     setTempNickname(text);
   }, []);
@@ -131,38 +130,39 @@ function Mypage({navigation}: any) {
   const profileEdit = async () => {
     if (isEditing) {
       if (tempProfileImage || tempNickname !== userInfo.userName) {
-        console.log(tempProfileImage);
         const body = new FormData();
-  ImageResizer.createResizedImage(
-    tempProfileImage[0].path,
-    1200,
-    1200,
-    tempProfileImage.mime.includes('jpeg') ? 'JPEG' : 'PNG',
-    100,
-    0,).then(async resizedImg => {
-      const image: photo = {
-        uri: resizedImg.uri,
-        name: resizedImg.name,
-        type: img.mime,
-      }
-        const image = {
-          uri: tempProfileImage[0].realPath,
-          name: tempProfileImage[0].fileName,
-          type: tempProfileImage[0].type,
-        };
-        body.append('file', image);
-        body.append('nickname', tempNickname);
-        try {
-          const response = await axios.post('/user', body, {
-            headers: {'content-type': 'multipart/form-data'},
-            transformRequest: (data, headers) => {
-              return data;
-            },
-          });
-          console.log(response);
-        } catch (err: any) {
-          console.log(err);
-        }
+        ImageResizer.createResizedImage(
+          tempProfileImage.realPath,
+          1200,
+          1200,
+          tempProfileImage.mime.includes('jpeg') ? 'JPEG' : 'PNG',
+          100,
+          0,
+        ).then(async resizedImg => {
+          const image: photo = {
+            uri: resizedImg.uri,
+            name: resizedImg.name,
+            type: tempProfileImage.mime,
+          };
+          body.append('file', image);
+          body.append('nickname', tempNickname);
+          try {
+            const response = await axios.put('/user', body, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            });
+            const profile = response.data;
+            dispatch(
+              setProfile({
+                nickname: profile.nickname,
+                profileImage: profile.profileImage,
+              }),
+            );
+          } catch (err: any) {
+            console.log(err);
+          }
+        });
       }
     }
     setIsEditing(!isEditing);
@@ -178,6 +178,7 @@ function Mypage({navigation}: any) {
         singleSelectedMode: true,
         mediaType: 'image',
       });
+      console.log(response);
       setTempProfileImage(response);
     } catch (e: any) {
       Alert.alert('이미지 선택 실패!', e.code, e.message);
@@ -195,6 +196,7 @@ function Mypage({navigation}: any) {
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
         openPicker={openPicker}
+        tempProfileImage={tempProfileImage}
       />
     </View>
   );

@@ -22,6 +22,7 @@ interface Props {
   TabButtonListFunc: Array<TabButtonObject>;
   navigation: any;
   openPicker: () => Promise<void>;
+  tempProfileImage: any;
 }
 const logout = () => {
   removeUserInfo();
@@ -39,6 +40,7 @@ function MypageTemplate(props: Props) {
             onChangeText={props.onChangeNickname}
             isPassword={false}
             openPicker={props.openPicker}
+            tempProfileImage={props.tempProfileImage}
           />
         ) : (
           <UserSummary

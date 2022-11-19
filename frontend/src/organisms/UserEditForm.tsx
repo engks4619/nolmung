@@ -1,19 +1,8 @@
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  GestureResponderEvent,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Profile from '@atoms/Profile';
 import TextLine from '@atoms/TextLine';
-import MultipleImagePicker, {
-  MediaType,
-  ImageResults,
-} from '@baronha/react-native-multiple-image-picker';
+import ProfileTmp from '@atoms/ProfileTmp';
 interface Props {
   imageSource: string;
   userName: string;
@@ -21,6 +10,7 @@ interface Props {
   onChangeText: Function;
   isPassword: Boolean;
   openPicker: () => Promise<void>;
+  tempProfileImage: any;
 }
 
 function UserEditForm({
@@ -29,12 +19,21 @@ function UserEditForm({
   value,
   onChangeText,
   openPicker,
+  tempProfileImage,
 }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.marginCotainer}>
         <TouchableOpacity onPress={openPicker}>
-          <Profile imageSource={imageSource} width={70} height={70} />
+          {tempProfileImage ? (
+            <ProfileTmp
+              imageSource={tempProfileImage.path}
+              width={70}
+              height={70}
+            />
+          ) : (
+            <Profile imageSource={imageSource} width={70} height={70} />
+          )}
         </TouchableOpacity>
         <View style={styles.description}>
           <Text style={styles.userName}>닉네임</Text>
