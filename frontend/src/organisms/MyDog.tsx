@@ -1,11 +1,22 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Pressable,
+} from 'react-native';
 import {dogInfo} from '@pages/MyDogs';
 import Profile from '@atoms/Profile';
+import DogDescriptBox from '@molecules/DogDescriptBox';
 interface Props {
-  myDog: dogInfo | undefined;
+  myDog: dogInfo;
+  isEdit: boolean;
+  deleteDog: () => void;
 }
-function MyDog({myDog}: Props) {
+function MyDog({myDog, isEdit, deleteDog}: Props) {
+  const defaultDogImage = '/images/spot/default/default.png';
   return (
     <View style={styles.myDogContainer}>
       {/* <Text>{myDog?.breedCodeValue}</Text>
@@ -16,9 +27,21 @@ function MyDog({myDog}: Props) {
       <Text>{myDog?.neuter}</Text>
       <Text>{myDog?.vaccination}</Text> */}
       <View style={styles.profileContianer}>
-        <Profile imageSource={myDog?.image}></Profile>
+        <Profile imageSource={myDog.image ? myDog.image : defaultDogImage} />
       </View>
-      <View style={styles.descriptConainer}></View>
+      <View style={styles.descriptConainer}>
+        <Text style={styles.dogName}>{myDog.dogName}</Text>
+        <DogDescriptBox myDog={myDog} />
+      </View>
+      {isEdit ? (
+        <Pressable
+          style={styles.deleteButton}
+          onPress={() => {
+            deleteDog();
+          }}>
+          <Text>X</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }
@@ -26,19 +49,30 @@ function MyDog({myDog}: Props) {
 const styles = StyleSheet.create({
   myDogContainer: {
     flexDirection: 'row',
+    backgroundColor: 'white',
     borderColor: '#D9D9D9',
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     width: Dimensions.get('window').width * 0.85,
-    height: 100,
+    height: 110,
     margin: 10,
   },
   profileContianer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
   },
-  descriptConainer: {flex: 2, backgroundColor: 'blue'},
+  descriptConainer: {flex: 2, justifyContent: 'center'},
+  dogName: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'black',
+    // marginBott
+  },
+  deleteButton: {
+    position: 'absolute',
+    right: 10,
+    top: 2,
+  },
 });
 export default MyDog;
