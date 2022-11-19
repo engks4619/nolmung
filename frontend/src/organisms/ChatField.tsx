@@ -2,22 +2,24 @@ import React from 'react';
 import {FlatList, View, StyleSheet, Text} from 'react-native';
 import {MAIN_COLOR} from '~/const';
 import Otherchat from '~/molecules/OtherChat';
+import {chatType} from '~/pages/ChatsDetail';
 
 interface chatFieldProps {
-  fullMsg: any[];
+  fullMsg: chatType[];
   user: number;
   oppentImg: string;
 }
 
 function ChatField({fullMsg, user, oppentImg}: chatFieldProps) {
+  console.log(fullMsg);
   return (
     <View style={styles.container}>
       <FlatList
         data={fullMsg}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.createdAt}
         inverted={true}
         renderItem={({item}) =>
-          item?.user?.toString() === user.toString() ? (
+          item?.sender?.toString() === user.toString() ? (
             <Text style={styles.myChat}>{item.chat}</Text>
           ) : (
             <Otherchat content={item?.chat} oppentImg={oppentImg} />

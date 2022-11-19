@@ -51,3 +51,22 @@ export const useChatSocket = (): [Socket | undefined, () => void] => {
   }
   return [chatSocket, chatDisconnect];
 };
+
+let locationSocket: Socket | undefined;
+export const useLocationSocket = (): [Socket | undefined, () => void] => {
+  const locationDisconnect = useCallback(() => {
+    if (locationSocket) {
+      locationSocket.disconnect();
+      locationSocket = undefined;
+    }
+  }, []);
+  if (!locationSocket) {
+    locationSocket = io('http://nolmung.kr/location', {
+      transports: ['websocket'],
+    });
+    locationSocket.on('connect', () =>
+      console.log('location...socket..connected'),
+    );
+  }
+  return [locationSocket, locationDisconnect];
+};

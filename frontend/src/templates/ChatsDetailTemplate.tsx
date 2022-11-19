@@ -4,6 +4,25 @@ import ChatPostInfo from '~/organisms/ChatPostInfo';
 import ChatInput from '~/organisms/ChatInput';
 import ChatField from '~/organisms/ChatField';
 
+interface postType {
+  postSubject: string;
+  postImage: string;
+  postPay: number;
+}
+
+interface Props {
+  postInfo: postType;
+  submitMsg: () => void;
+  handleConfirmWalk: () => void;
+  isCompleted: boolean;
+  categoryType: string;
+  hadleMyDogLocation: () => void;
+  isMyPost: boolean;
+  fullMsg: any;
+  user: number;
+  oppentImg: string;
+}
+
 function ChatsDetailTemplate({
   postInfo,
   submitMsg,
@@ -11,14 +30,22 @@ function ChatsDetailTemplate({
   user,
   oppentImg,
   handleConfirmWalk,
-}) {
+  isCompleted,
+  categoryType,
+  hadleMyDogLocation,
+  isMyPost,
+}: Props) {
   return (
     <View style={styles.container}>
       <ChatPostInfo
         postSubject={postInfo.postSubject}
-        postImgae={postInfo.postImage}
+        postImage={postInfo.postImage}
         postPay={postInfo.postPay}
         handleConfirmWalk={handleConfirmWalk}
+        isCompleted={isCompleted}
+        categoryType={categoryType}
+        hadleMyDogLocation={hadleMyDogLocation}
+        isMyPost={isMyPost}
       />
       <ChatField fullMsg={fullMsg} user={user} oppentImg={oppentImg} />
       <View style={styles.inputContainer}>

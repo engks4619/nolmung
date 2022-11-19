@@ -3,8 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ChatsStackNavigator} from './src/pages/Chats';
-import Main from './src/pages/Main';
-import Spots, {SpotStackNavigator} from './src/pages/Spots';
+import {SpotStackNavigator} from './src/pages/Spots';
 
 import SignUp from './src/pages/SignUp';
 import SignIn from './src/pages/SignIn';
@@ -28,7 +27,16 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
-import {useSocket, useRoomSocket} from '~/hooks/useSocket';
+import {
+  useSocket,
+  useRoomSocket,
+  useChatSocket,
+  useLocationSocket,
+} from '~/hooks/useSocket';
+import {setRoomInfos} from '~/slices/chatSlice';
+
+import PushNotification from 'react-native-push-notification';
+import {chatType} from '~/pages/ChatsDetail';
 
 export type LoggedInParamList = {
   Chats: undefined;
@@ -62,6 +70,8 @@ function AppInner() {
   const dispatch = useDispatch();
   const [socket, disconnect] = useSocket();
   const [roomSocket, roomDisconnect] = useRoomSocket();
+  const [chatSocket, chatDisconnect] = useChatSocket();
+  const [locationSocket, locationDisconnect] = useLocationSocket();
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
@@ -98,24 +108,54 @@ function AppInner() {
     getUserInfo();
   }, []);
 
+  const alarmChat = (msg: string) => {
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: msg,
+    });
+  };
+
+  const alarmWalkConfirm = (msg: string) => {
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: msg,
+    });
+  };
+
   useEffect(() => {
-    if (socket && isLoggedIn && userIdx) {
+    if (socket && isLoggedIn && userIdx && chatSocket && locationSocket) {
       const data = {id: userIdx};
       socket.emit('login', data);
+      socket.on('rooms', roomsInfo => dispatch(setRoomInfos(roomsInfo)));
+      chatSocket.on('messageC', (msgData: chatType) => {
+        alarmChat(msgData.chat);
+      });
+      locationSocket.on('completed', (confrimMsg: string) => {
+        alarmWalkConfirm(confrimMsg);
+      });
     }
     return () => {
       if (socket) {
         socket.off('login');
+        socket.off('rooms');
       }
     };
-  }, [isLoggedIn, socket, userIdx]);
+  }, [isLoggedIn, socket, userIdx, chatSocket, locationSocket]);
 
   useEffect(() => {
     if (!isLoggedIn) {
       disconnect();
       roomDisconnect();
+      chatDisconnect();
+      locationDisconnect();
     }
-  }, [isLoggedIn, disconnect, roomDisconnect]);
+  }, [
+    isLoggedIn,
+    disconnect,
+    roomDisconnect,
+    chatDisconnect,
+    locationDisconnect,
+  ]);
 
   return (
     <NavigationContainer>
