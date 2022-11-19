@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert} from 'react-native';
 import ChatsDetailTemplate from '~/templates/ChatsDetailTemplate';
 import {useChatSocket} from '~/hooks/useSocket';
 import {useSelector} from 'react-redux';
@@ -44,6 +44,7 @@ function ChatsDetail({route, navigation}: any) {
   const [fullMsg, setFullMsg] = useState<chatType[]>([]);
 
   useEffect(() => {
+    setFullMsg([]);
     if (chatSocket && roomId) {
       chatSocket.emit('join', roomId);
       chatSocket.on('chats', (serverChats: chatType[]) => {

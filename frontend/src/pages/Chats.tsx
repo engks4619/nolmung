@@ -1,8 +1,13 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MAIN_COLOR} from '~/const';
 import ChatsDetail from './ChatsDetail';
+import ChatsTemplate from '~/templates/ChatsTemplate';
+import axios from '~/utils/axios';
+import {useAppDispatch} from '~/store';
+import {setChatPostInfo} from '~/slices/chatSlice';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/store/reducer';
 
 export type ChatsParamList = {
   Chats: undefined;
@@ -35,10 +40,74 @@ export const ChatsStackNavigator = () => (
   </ChatsStack.Navigator>
 );
 
-function Chats() {
+export interface chatListType {
+  categoryType: string;
+  chatUserIdx: number;
+  completed: boolean;
+  isOwner: boolean;
+  nickname: string;
+  postIdx: number;
+  subject: string;
+  thumbnailUrl: string;
+  userImgUrl: string;
+}
+
+function Chats({navigation}: any) {
+  const dispatch = useAppDispatch();
+  const userIdx = useSelector((state: RootState) => state.user.userIdx);
+  const chatListSocket = useSelector(
+    (state: RootState) => state.chat.roomInfos,
+  );
+  const [myChatList, setMyChatList] = useState([]);
+
+  const getChatsList = async () => {
+    try {
+      const response = await axios.get('community/chat');
+      setMyChatList(response.data);
+    } catch (error: any) {
+      console.log('채팅 목록 에러');
+    }
+  };
+
+  const handleDetailChat = (chatInfo: chatListType) => {
+    const writerIdx = chatInfo.isOwner ? userIdx : chatInfo.chatUserIdx;
+
+    dispatch(
+      setChatPostInfo({
+        postIdx: chatInfo.postIdx,
+        thumbnailUrl: chatInfo.thumbnailUrl,
+        subject: chatInfo.subject,
+        writerIdx,
+        oppentIdx: chatInfo.chatUserIdx,
+        userImgUrl: chatInfo.userImgUrl,
+        writer: chatInfo.nickname,
+        categoryType: chatInfo.categoryType,
+        completed: chatInfo.completed,
+      }),
+    );
+
+    const roomIdArr = chatListSocket.filter(chatInfoSocket => {
+      chatInfoSocket.opponentIdx === chatInfo.chatUserIdx &&
+        chatInfoSocket.ownerIdx === userIdx &&
+        chatInfoSocket.postIdx === chatInfo.postIdx;
+    });
+
+    navigation.navigate('ChatList', {
+      screen: 'ChatsDetail',
+      params: {roomId: roomIdArr[0]},
+    });
+  };
+
+  useEffect(() => {
+    getChatsList();
+  }, []);
+
   return (
     <View>
-      <Text>채팅방 목록</Text>
+      <ChatsTemplate
+        myChatList={myChatList}
+        handleDetailChat={handleDetailChat}
+      />
     </View>
   );
 }
