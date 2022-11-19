@@ -2,8 +2,6 @@ import {containsKey} from './AsyncService';
 import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {Coord} from 'react-native-nmap';
-import axios from '~/utils/axios';
-import {AxiosResponse} from 'axios';
 import {
   storeData,
   removeMultiple,
@@ -25,6 +23,7 @@ import {
   setLastUpdate,
 } from '~/slices/myPositionSlice';
 import {setSelectedMyDogs} from '~/slices/dogsSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
 export const startWalking = async (
@@ -33,13 +32,13 @@ export const startWalking = async (
   myPositionState: any,
   dogs: number[],
 ) => {
+  const localIntended = await isIntended();
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewAlone');
   } else if (!myPositionState.isLogging) {
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
-    const localStatus = await checkLocal(localList);
-    if (localStatus) {
+    if (!localIntended) {
       // local에는 존재 redux에는 없음 => 비정상 종료
       lastLogAlert(navigation, dispatch, localList, dogs);
     } else {
@@ -51,12 +50,14 @@ export const startWalking = async (
 };
 
 export const startLogging = async (dispatch: any, dogs: number[]) => {
+  dispatch(resetStates());
   dispatch(setIsLoggingOn());
   storeData('@Dogs', dogs);
   const hasLog = await containsKey('@WalkingLogs');
   if (!hasLog) {
     const startDate = new Date().toString();
     storeData('@StartDate', startDate);
+    storeData('@intended', false);
     dispatch(setStartDate(startDate));
     storeData('@WalkingLogs', []);
   }
@@ -97,37 +98,45 @@ const addPathToAsync = async (position: Coord) => {
 };
 
 // 비정상 기록 저장 여부 질문
-export const lastLogAlert = (
+export const lastLogAlert = async (
   navigation: any,
   dispatch: any,
   removeList: string[],
   dogs: number[],
 ) => {
-  Alert.alert(
-    '비정상 종료된 산책이 있습니다',
-    '지난 기록을 보시겠어요?',
-    [
-      {
-        text: '무시하고 새로 시작',
-        onPress: async () => {
-          await removeMultiple(removeList);
-          await dispatch(resetStates);
-          navigation.navigate('MapViewAlone');
-          startLogging(dispatch, dogs);
+  const isOver = await checkLastUpdate();
+  if (!isOver) {
+    Alert.alert(
+      '비정상 종료된 산책이 있습니다',
+      '이어서 산책하시겠습니까?',
+      [
+        {
+          text: '네',
+          onPress: async () => {
+            await syncLogs(dispatch);
+            navigation.replace('MapViewAlone');
+          },
         },
-      },
-      {
-        text: '네 볼래요',
-        onPress: async () => {
-          const isOver = await checkLastUpdate();
-          await syncLogs(dispatch);
-          navigation.replace('LogView', {isOver});
+        {
+          text: '아니요',
+          onPress: async () => {
+            await removeMultiple(removeList);
+            await dispatch(resetStates);
+            navigation.navigate('MapViewAlone');
+            startLogging(dispatch, dogs);
+          },
         },
-      },
-    ],
-    {cancelable: false},
-  );
-  return;
+      ],
+      {cancelable: false},
+    );
+  } else {
+    await removeMultiple(removeList);
+    storeData('@intended', true);
+    Alert.alert(
+      '알림',
+      '종료 버튼을 누르지 않아 산책이 자동적으로 종료되었습니다.',
+    );
+  }
 };
 
 // Local에 key들이 전부 존재하는지 확인
@@ -139,6 +148,15 @@ export const checkLocal = async (checkList: string[]) => {
     return false;
   }
 };
+
+export const isIntended = async () => {
+  const isIntendedLocal = await AsyncStorage.getItem('@intended');
+  if (isIntendedLocal === 'false') {
+    return false;
+  }
+  return true;
+};
+
 // local 마지막 기록 시간확인
 export const checkLastUpdate = async () => {
   const loggedDate = new Date(await getData('@LastUpdate'));
@@ -187,5 +205,6 @@ export const doneWalking = async (
 ) => {
   quitLogging(watchId);
   dispatch(setIsLoggingOff());
-  navigation.replace('LogView', {isOver: false});
+  storeData('@intended', true);
+  navigation.replace('LogView');
 };

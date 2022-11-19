@@ -7,8 +7,10 @@ import {DetailDogProps} from '@molecules/DetailDog';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {useAppDispatch} from '~/store';
-import {setPostInfo} from '~/slices/postSlice';
 import CommDetailHeader from '~/molecules/CommDetailHeader';
+import {useRoomSocket} from '~/hooks/useSocket';
+import {setChatPostInfo} from '~/slices/chatSlice';
+import {setPostInfo} from '~/slices/postSlice';
 
 export interface DetailProps {
   dogInfoList: DetailDogProps[];
@@ -35,6 +37,8 @@ function CommDetail({route, navigation}: any) {
   const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
   const dispatch = useAppDispatch();
 
+  const [roomSocket, roomDisconnect] = useRoomSocket();
+
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
   const [isLiked, setIsLiked] = useState<Boolean>(false);
   const [category, setCategory] = useState<string>('');
@@ -46,18 +50,6 @@ function CommDetail({route, navigation}: any) {
       );
       const data: DetailProps = response.data;
       setDetailContent(data);
-      const {writerIdx, pay, subject, userImgUrl, thumbnailUrl, writer} = data;
-      dispatch(
-        setPostInfo({
-          postIdx,
-          writerIdx,
-          pay,
-          subject,
-          userImgUrl,
-          thumbnailUrl,
-          writer,
-        }),
-      );
       setIsLiked(data.getLike);
       setCategory(data.categoryType);
     } catch (error: any) {
@@ -84,7 +76,59 @@ function CommDetail({route, navigation}: any) {
         '죄송합니다. 다시 시도해주시길 바랍니다.',
       );
     }
-  }, [postIdx, isLiked]);
+  }, [postIdx]);
+
+  const startChat = () => {
+    const socketData = {
+      ownerIdx: userIdx,
+      postIdx,
+      opponentIdx: detailContent.writerIdx,
+    };
+    const {
+      writerIdx,
+      pay,
+      subject,
+      userImgUrl,
+      thumbnailUrl,
+      writer,
+      categoryType,
+    } = detailContent;
+    dispatch(
+      setChatPostInfo({
+        postIdx,
+        writerIdx,
+        pay,
+        subject,
+        userImgUrl,
+        thumbnailUrl,
+        writer,
+        categoryType,
+      }),
+    );
+    if (roomSocket && userIdx) {
+      roomSocket.emit('newRoom', socketData);
+      roomSocket.on('newRoomId', (roomId: string) =>
+        navigation.navigate('ChatList', {
+          screen: 'ChatsDetail',
+          params: {roomId},
+        }),
+      );
+    }
+  };
+
+  const naviOppent = (oppentIdx: number) => {
+    if (userIdx === detailContent.writerIdx) {
+      return;
+    }
+    dispatch(
+      setPostInfo({
+        writerIdx: detailContent.writerIdx,
+        userImgUrl: detailContent.userImgUrl,
+        writerName: detailContent.writer,
+      }),
+    );
+    navigation.navigate('Oppent', {oppentIdx});
+  };
 
   useEffect(() => {
     getDetailPost(postIdx);
@@ -104,6 +148,8 @@ function CommDetail({route, navigation}: any) {
       isLiked={isLiked}
       putLike={putLike}
       userIdx={userIdx}
+      startChat={startChat}
+      naviOppent={naviOppent}
     />
   );
 }

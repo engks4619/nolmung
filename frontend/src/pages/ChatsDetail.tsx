@@ -1,52 +1,112 @@
 import React, {useEffect, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Alert} from 'react-native';
 import ChatsDetailTemplate from '~/templates/ChatsDetailTemplate';
 import {useChatSocket} from '~/hooks/useSocket';
-import {ChatsParamList} from './Chats';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import CustomHeader from '~/headers/CustomHeader';
+import axios from '~/utils/axios';
+import {AxiosResponse} from 'axios';
 
-type ChatsScreenProp = NativeStackScreenProps<ChatsParamList, 'ChatsDetail'>;
+interface chatType {
+  chat: string;
+  user: string;
+  _id: string;
+  createdAt: string;
+}
 
-function ChatsDetail({route}: ChatsScreenProp) {
+interface msgType {
+  roomId: string;
+  sender: string;
+  _id: string;
+  createdAt: string;
+  chat: string;
+}
+
+function ChatsDetail({route, navigation}: any) {
   const roomId: string = route.params.roomId;
+
   const [chatSocket, chatDisconnect] = useChatSocket();
+  const [isFirstChat, setIsFirstChat] = useState<boolean>(false);
 
-  const postSubject = useSelector((state: RootState) => state.post.subject);
-  const postImage = useSelector((state: RootState) => state.post.postImage);
-  const postPay = useSelector((state: RootState) => state.post.pay);
   const user = useSelector((state: RootState) => state.user.userIdx);
-  const oppentImg = useSelector((state: RootState) => state.post.writerImg);
 
-  const [msgInput, setMsgInput] = useState<String>('');
-  const [serverMsg, setServerMsg] = useState<any[]>([]);
+  const postSubject = useSelector((state: RootState) => state.chat.subject);
+  const postImage = useSelector((state: RootState) => state.chat.postImage);
+  const postPay = useSelector((state: RootState) => state.chat.pay);
+  const postIdx = useSelector((state: RootState) => state.chat.postIdx);
+  const oppentImg = useSelector((state: RootState) => state.chat.oppentImg);
+  const oppentName = useSelector((state: RootState) => state.chat.oppentName);
+  const oppentIdx = useSelector((state: RootState) => state.chat.writerIdx);
+
+  const [serverMsg, setServerMsg] = useState<chatType[]>([]);
+  const [localMsg, setLocalMsg] = useState<chatType>();
+  const [fullMsg, setFullMsg] = useState<chatType[]>([]);
 
   useEffect(() => {
-    // serverMsg 안바뀌는 문제
     if (chatSocket && roomId) {
       chatSocket.emit('join', roomId);
-      chatSocket.on('chats', serverChats => setServerMsg(serverChats));
-      chatSocket.on('messageC', data => {
+      chatSocket.on('chats', (serverChats: chatType[]) => {
+        if (serverChats.length) {
+          setServerMsg(serverChats);
+          setIsFirstChat(false);
+        } else {
+          setIsFirstChat(true);
+        }
+      });
+      chatSocket.on('messageC', (data: msgType) => {
         if (data.roomId === roomId) {
           const now = new Date().toString();
-          const newData = {
+          const newData: chatType = {
             chat: data.chat,
             user: data.sender,
             _id: now,
             createdAt: now,
           };
-          setServerMsg([...serverMsg, newData]);
+          setLocalMsg(newData);
         }
       });
+      chatSocket.on('decide', (data: string) => {
+        Alert.alert('확정', `${data}`);
+      });
+      return () => {
+        if (chatSocket) {
+          chatSocket.off('chats');
+          chatSocket.off('messageC');
+        }
+      };
     }
-  }, [chatSocket, roomId]);
+  }, [chatSocket, roomId, localMsg, chatDisconnect]);
 
-  const onChageMsg = (text: string) => {
-    setMsgInput(text);
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <CustomHeader navigation={navigation} middleText={oppentName} />
+      ),
+    });
+  }, [navigation, oppentName]);
+
+  useEffect(() => {
+    setFullMsg([...serverMsg]);
+  }, [localMsg, serverMsg]);
+
+  const postChatInfo = async () => {
+    try {
+      const response: AxiosResponse = await axios.post(
+        `community/chat/${postIdx}`,
+      );
+      if (response.status === 200) {
+        setIsFirstChat(false);
+      }
+    } catch (error: any) {
+      Alert.alert(
+        `에러코드 ${error?.response?.status}`,
+        '죄송합니다. 다시 시도해주시길 바랍니다.',
+      );
+    }
   };
 
   const submitMsg = (inputChat: String) => {
-    const now = new Date().toString();
     const chat = inputChat.trim();
     const data = {
       roomId,
@@ -54,21 +114,39 @@ function ChatsDetail({route}: ChatsScreenProp) {
       chat,
     };
     if (chatSocket && chat) {
+      if (isFirstChat) {
+        postChatInfo();
+      }
       chatSocket.emit('messageS', data);
-      // setServerMsg([...serverMsg, {chat, user, _id: now, createdAt: now}]);
     }
-    setMsgInput('');
+  };
+
+  const handleConfirmWalk = async () => {
+    const data = {
+      postIdx,
+      albaIdx: oppentIdx,
+    };
+    try {
+      const response = await axios.post('community/alba', data);
+      if (response.status === 200) {
+        if (chatSocket) {
+          chatSocket.emit('decide', roomId);
+        }
+      }
+      console.log(response.data);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (
     <ChatsDetailTemplate
       postInfo={{postImage, postSubject, postPay}}
-      msgInput={msgInput}
-      onChageMsg={onChageMsg}
       submitMsg={submitMsg}
-      serverMsg={serverMsg}
+      fullMsg={fullMsg}
       user={user}
       oppentImg={oppentImg}
+      handleConfirmWalk={handleConfirmWalk}
     />
   );
 }

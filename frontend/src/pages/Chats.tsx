@@ -17,12 +17,7 @@ export const ChatsStackNavigator = () => (
       name="Chats"
       component={Chats}
       options={{
-        headerTitle: '놀면 멍하니',
-        headerTintColor: MAIN_COLOR,
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
+        headerShown: false,
       }}
     />
     <ChatsStack.Screen

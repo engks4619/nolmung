@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     textAlign: 'center',
     marginVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 50,
   },
   textCenter: {
     paddingTop: 7,

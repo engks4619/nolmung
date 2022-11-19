@@ -5,14 +5,12 @@ export const storeData = async (key: string, value: any) => {
   try {
     const svalue = JSON.stringify(value);
     await AsyncStorage.setItem(key, svalue);
-    console.log(svalue);
   } catch (e) {
     Alert.alert('storeDataError', `${e}`);
   }
 };
 
 export const getData = async (key: string) => {
-  // console.log('key', key);
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {

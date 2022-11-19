@@ -99,13 +99,9 @@ function AppInner() {
   }, []);
 
   useEffect(() => {
-    // const helloCallback = (data: any) => {
-    //   console.log(data);
-    // };
     if (socket && isLoggedIn && userIdx) {
       const data = {id: userIdx};
       socket.emit('login', data);
-      // socket.on('hello', helloCallback);
     }
     return () => {
       if (socket) {
