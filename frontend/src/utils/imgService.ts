@@ -42,14 +42,5 @@ export const uploadImg = async (
       .catch(err => {
         failFunc ? failFunc() : () => {};
       });
-    // try {
-    //   await axios.post(url, formData, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    // } catch (err) {
-    //   console.log('upload err', err);
-    // }
   });
 };
