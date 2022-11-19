@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -52,14 +52,6 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const headers = {
-  headerTitle: '놀면 멍하니',
-  headerTintColor: MAIN_COLOR,
-  headerTitleStyle: {
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-};
 export const removeUserInfo = async () => {
   try {
     await AsyncStorage.removeItem('accessToken');
@@ -72,6 +64,10 @@ function AppInner() {
   const [roomSocket, roomDisconnect] = useRoomSocket();
   const [chatSocket, chatDisconnect] = useChatSocket();
   const [locationSocket, locationDisconnect] = useLocationSocket();
+
+  const [partiRoomInfos, setPartiRoomInfos] = useSelector(
+    (state: RootState) => state.chat.roomInfos,
+  );
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
@@ -108,28 +104,52 @@ function AppInner() {
     getUserInfo();
   }, []);
 
-  const alarmChat = (msg: string) => {
+  const alarmChat = (msg: chatType) => {
     PushNotification.localNotification({
       channelId: 'chats',
-      message: msg,
+      message: msg.chat,
+      title: msg.sender,
+      largeIcon: 's',
     });
   };
 
   const alarmWalkConfirm = (msg: string) => {
     PushNotification.localNotification({
-      channelId: 'chats',
+      channelId: 'walkConfirm',
       message: msg,
     });
   };
 
   useEffect(() => {
-    if (socket && isLoggedIn && userIdx && chatSocket && locationSocket) {
+    if (
+      socket &&
+      isLoggedIn &&
+      userIdx &&
+      chatSocket &&
+      locationSocket &&
+      roomSocket
+    ) {
       const data = {id: userIdx};
       socket.emit('login', data);
-      socket.on('rooms', roomsInfo => dispatch(setRoomInfos(roomsInfo)));
-      chatSocket.on('messageC', (msgData: chatType) => {
-        alarmChat(msgData.chat);
+      socket.on('rooms', roomsInfos => {
+        roomsInfos.map(roomInfo => {
+          chatSocket.emit('join', roomInfo.roomId);
+        });
+        dispatch(setRoomInfos(roomsInfos));
       });
+
+      roomSocket.emit('roomLogin', userIdx);
+      roomSocket.on('join', joinData => {
+        console.log('join', joinData);
+      });
+
+      chatSocket.on('messageC', (msgData: chatType) => {
+        if (msgData.sender === userIdx.toString()) {
+          return;
+        }
+        alarmChat(msgData);
+      });
+
       locationSocket.on('completed', (confrimMsg: string) => {
         alarmWalkConfirm(confrimMsg);
       });

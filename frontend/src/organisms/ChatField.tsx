@@ -11,7 +11,6 @@ interface chatFieldProps {
 }
 
 function ChatField({fullMsg, user, oppentImg}: chatFieldProps) {
-  console.log(fullMsg);
   return (
     <View style={styles.container}>
       <FlatList

@@ -13,7 +13,7 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     socket = io('http://nolmung.kr', {
       transports: ['websocket'],
     });
-    socket.on('connect', () => console.log('socket..connected'));
+    socket.on('connect', () => console.log(socket?.id, 'socket.id'));
   }
   return [socket, disconnect];
 };
@@ -30,7 +30,7 @@ export const useRoomSocket = (): [Socket | undefined, () => void] => {
     roomSocket = io('http://nolmung.kr/room', {
       transports: ['websocket'],
     });
-    roomSocket.on('connect', () => console.log('room...socket..connected'));
+    roomSocket.on('connect', () => console.log('rooomId', roomSocket.id));
   }
   return [roomSocket, roomDisconnect];
 };
