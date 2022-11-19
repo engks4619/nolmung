@@ -111,7 +111,8 @@ room.on('connection', socket => {
 
         socket.join(newRoom._id);
         console.log("상대방 소켓 아이디: ", roomLogin_ids[newRoom.opponentIdx]);  
-        io.of('/room').to(roomLogin_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
+        //io.of('/room').to(roomLogin_ids[newRoom.opponentIdx]).emit('join', newRoom._id); // 채팅 상대방에게 join 이벤트 요청
+        io.of('/room').to(socket.id).emit('join', newRoom._id);
 
         socket.emit('newRoomId', newRoom._id);
       } else {
