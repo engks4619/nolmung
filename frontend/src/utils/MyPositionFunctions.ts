@@ -32,12 +32,12 @@ export const startWalking = async (
   myPositionState: any,
   dogs: number[],
 ) => {
+  const localIntended = await isIntended();
   if (myPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewAlone');
   } else if (!myPositionState.isLogging) {
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
-    const localIntended = await isIntended();
     if (!localIntended) {
       // local에는 존재 redux에는 없음 => 비정상 종료
       lastLogAlert(navigation, dispatch, localList, dogs);
@@ -105,7 +105,7 @@ export const lastLogAlert = async (
   dogs: number[],
 ) => {
   const isOver = await checkLastUpdate();
-  if (isOver) {
+  if (!isOver) {
     Alert.alert(
       '비정상 종료된 산책이 있습니다',
       '이어서 산책하시겠습니까?',
@@ -129,8 +129,14 @@ export const lastLogAlert = async (
       ],
       {cancelable: false},
     );
+  } else {
+    await removeMultiple(removeList);
+    storeData('@intended', true);
+    Alert.alert(
+      '알림',
+      '종료 버튼을 누르지 않아 산책이 자동적으로 종료되었습니다.',
+    );
   }
-  return;
 };
 
 // Local에 key들이 전부 존재하는지 확인
@@ -145,7 +151,10 @@ export const checkLocal = async (checkList: string[]) => {
 
 export const isIntended = async () => {
   const isIntendedLocal = await AsyncStorage.getItem('@intended');
-  return isIntendedLocal;
+  if (isIntendedLocal === 'false') {
+    return false;
+  }
+  return true;
 };
 
 // local 마지막 기록 시간확인

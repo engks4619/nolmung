@@ -79,7 +79,6 @@ function CommDetail({route, navigation}: any) {
   }, [postIdx]);
 
   const startChat = () => {
-    console.log('pree');
     const socketData = {
       ownerIdx: userIdx,
       postIdx,
