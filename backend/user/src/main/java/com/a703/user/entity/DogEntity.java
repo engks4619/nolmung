@@ -1,6 +1,7 @@
 package com.a703.user.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class DogEntity extends BaseEntity {
     private Character gender;
     private String image;
     private String description;
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "userIdx")
