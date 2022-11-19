@@ -22,22 +22,35 @@ const SpotRegistReview = ({route, navigation}: any) => {
     registReview();
   };
 
+  const successFunc = () => {
+    Alert.alert('리뷰 작성 완료!');
+    navigation.replace('SpotDetail', {spotId});
+  };
+
+  const failFunc = () => {
+    Alert.alert('리뷰 작성 실패!');
+  };
+
   const registReview = async () => {
     const requestBody = {
       spotId,
       content: content.trim(),
       star,
     };
-    console.log(requestBody);
     try {
       const response = await axios.post(`spot/spot-review`, requestBody);
       if (response?.status === 200) {
         const reviewIdx = response.data;
         images.map(async image => {
-          await uploadImg(image, `spot/spot-review/file/${reviewIdx}`);
+          await uploadImg(
+            image,
+            `spot/spot-review/file/${reviewIdx}`,
+            undefined,
+            undefined,
+            successFunc,
+            failFunc,
+          );
         });
-        Alert.alert('리뷰 작성 완료!');
-        navigation.replace('SpotDetail', {spotId});
       } else {
         Alert.alert('리뷰 작성 실패!');
       }
