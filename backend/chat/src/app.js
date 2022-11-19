@@ -15,6 +15,15 @@ const Location = require('../schemas/location');
 const eurekaHelper = require('./eureka-helper');
 const { response } = require("express");
 
+let phoneToken;
+process.env.GOOGLE_APPLICATION_CREDENTIALS =
+  "./nolmung-44638-firebase-adminsdk-qaa5s-6399f421a4.json";
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: "https://nolmung-44638.firebaseio.com",
+});
+
 const app = express();
 const httpServer = http.createServer(app); // express http 서버 생성
 const io = SocketIO(httpServer, {
@@ -37,7 +46,6 @@ const chat = io.of('/chat');
 const location = io.of('/location');
 
 var login_ids = {}; // 로그인 id 매핑 (로그인 ID -> 소켓 ID)
-var roomId = '';
 
 // 소켓 연결 및 이벤트
 io.on('connection', socket => {
