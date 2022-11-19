@@ -128,7 +128,7 @@ chat.on('connection', socket => {
     }
 
     try {
-      const chats = await Chat.find({room: roomId}).sort('createdAt');
+      const chats = await Chat.find({room: roomId}).sort('-createdAt');
       socket.emit('chats', chats); // 클라이언트에 채팅내역 전달
     } catch (error) {
       console.log(error);
