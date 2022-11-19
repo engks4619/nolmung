@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
@@ -15,7 +15,13 @@ import LogView from '@pages/LogView';
 import WalkReview from './WalkReview';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-
+import MultipleImagePicker, {
+  MediaType,
+  ImageResults,
+  VideoResults,
+} from '@baronha/react-native-multiple-image-picker';
+import axios from 'utils/axios';
+import ImageResizer from 'react-native-image-resizer';
 //UserInfoType
 export type UserInfoType = {
   imageSource: string;
@@ -116,18 +122,67 @@ function Mypage({navigation}: any) {
   };
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
+  const [tempProfileImage, setTempProfileImage] = useState<any[]>([]);
 
   const onChangeNickname = useCallback(text => {
     setTempNickname(text);
   }, []);
 
-  const profileEdit = (): void => {
+  const profileEdit = async () => {
     if (isEditing) {
-      // 변경 profile 전송(닉네임 + 사진)
+      if (tempProfileImage || tempNickname !== userInfo.userName) {
+        console.log(tempProfileImage);
+        const body = new FormData();
+  ImageResizer.createResizedImage(
+    tempProfileImage[0].path,
+    1200,
+    1200,
+    tempProfileImage.mime.includes('jpeg') ? 'JPEG' : 'PNG',
+    100,
+    0,).then(async resizedImg => {
+      const image: photo = {
+        uri: resizedImg.uri,
+        name: resizedImg.name,
+        type: img.mime,
+      }
+        const image = {
+          uri: tempProfileImage[0].realPath,
+          name: tempProfileImage[0].fileName,
+          type: tempProfileImage[0].type,
+        };
+        body.append('file', image);
+        body.append('nickname', tempNickname);
+        try {
+          const response = await axios.post('/user', body, {
+            headers: {'content-type': 'multipart/form-data'},
+            transformRequest: (data, headers) => {
+              return data;
+            },
+          });
+          console.log(response);
+        } catch (err: any) {
+          console.log(err);
+        }
+      }
     }
     setIsEditing(!isEditing);
   };
 
+  const openPicker = async () => {
+    try {
+      const response = await MultipleImagePicker.openPicker({
+        // isExportThumbnail: true,
+        usedCameraButton: true,
+        doneTitle: '완료',
+        cancelTitle: '취소',
+        singleSelectedMode: true,
+        mediaType: 'image',
+      });
+      setTempProfileImage(response);
+    } catch (e: any) {
+      Alert.alert('이미지 선택 실패!', e.code, e.message);
+    }
+  };
   return (
     <View>
       <MypageTemplate
@@ -139,6 +194,7 @@ function Mypage({navigation}: any) {
         TabButtonListNavi={myPageListNavi}
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
+        openPicker={openPicker}
       />
     </View>
   );

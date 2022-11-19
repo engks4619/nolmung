@@ -26,9 +26,7 @@ function TabButton({name, btnText, icon, onClick}: Props) {
 const styles = StyleSheet.create({
   TabContainer: {
     flexDirection: 'row',
-    padding: 5,
     height: 40,
-    paddingHorizontal: 20,
     paddingVertical: 2,
     marginVertical: 1,
     alignItems: 'center',
@@ -38,7 +36,8 @@ const styles = StyleSheet.create({
   },
   TextSpace: {
     height: '100%',
-    fontSize: 20,
+    fontSize: 15,
+    color: 'black',
     fontWeight: 'bold',
     paddingHorizontal: 10,
     paddingVertical: 0,

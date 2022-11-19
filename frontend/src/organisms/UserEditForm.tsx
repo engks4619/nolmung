@@ -1,28 +1,50 @@
-import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  GestureResponderEvent,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import Profile from '@atoms/Profile';
 import TextLine from '@atoms/TextLine';
-
+import MultipleImagePicker, {
+  MediaType,
+  ImageResults,
+} from '@baronha/react-native-multiple-image-picker';
 interface Props {
   imageSource: string;
   userName: string;
   value: string;
   onChangeText: Function;
   isPassword: Boolean;
+  openPicker: () => Promise<void>;
 }
 
-function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
+function UserEditForm({
+  imageSource,
+  userName,
+  value,
+  onChangeText,
+  openPicker,
+}: Props) {
   return (
     <View style={styles.container}>
-      <Profile imageSource={imageSource} />
-      <View style={styles.description}>
-        <Text style={styles.userName}>닉네임</Text>
-        <TextLine
-          placeholder={userName}
-          onChangeText={onChangeText}
-          value={value}
-          isPassword={false}
-        />
+      <View style={styles.marginCotainer}>
+        <TouchableOpacity onPress={openPicker}>
+          <Profile imageSource={imageSource} width={70} height={70} />
+        </TouchableOpacity>
+        <View style={styles.description}>
+          <Text style={styles.userName}>닉네임</Text>
+          <TextLine
+            placeholder={userName}
+            onChangeText={onChangeText}
+            value={value}
+            isPassword={false}
+          />
+        </View>
       </View>
     </View>
   );
@@ -30,22 +52,33 @@ function UserEditForm({imageSource, userName, value, onChangeText}: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginTop: 2,
-    paddingBottom: 7,
     backgroundColor: 'white',
+    // flexDirection: 'row',
+    // justifyContent: 'space-around',
+    // alignItems: 'center',
+    marginTop: 2,
+    // paddingBottom: 7,
+    // width: '100%',
   },
+  marginCotainer: {
+    flex: 1,
+    margin: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+
   userName: {
-    paddingLeft: 10,
-    paddingBottom: 5,
-    fontSize: 16,
-    fontWeight: '700',
+    marginLeft: 10,
+    marginBottom: 5,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
   },
   description: {
-    width: 260,
-    height: 93,
+    paddingHorizontal: 15,
+    width: 230,
+    height: 90,
   },
 });
 

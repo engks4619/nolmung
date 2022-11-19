@@ -1,12 +1,17 @@
 import React from 'react';
-import {View, GestureResponderEvent, StyleSheet} from 'react-native';
+import {
+  View,
+  GestureResponderEvent,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import UserSummary from '@organisms/UserSummary';
 import type {UserInfoType} from '../pages/Mypage';
 import MyButton from '@atoms/MyButton';
 import TabButtonGroup from '@molecules/TabButtonGroup';
 import {TabButtonObject} from '@molecules/TabButtonGroup';
 import UserEditForm from '~/organisms/UserEditForm';
-
+import {removeUserInfo} from '~/../AppInner';
 interface Props {
   userInfo: UserInfoType;
   isEditing: boolean;
@@ -16,15 +21,15 @@ interface Props {
   TabButtonListNavi: Array<TabButtonObject>;
   TabButtonListFunc: Array<TabButtonObject>;
   navigation: any;
+  openPicker: () => Promise<void>;
 }
 const logout = () => {
-  //logout 실행
-  console.log('로그아웃!');
+  removeUserInfo();
 };
 
 function MypageTemplate(props: Props) {
   return (
-    <View>
+    <View style={styles.myPageContainer}>
       <View style={styles.profileContainer}>
         {props.isEditing ? (
           <UserEditForm
@@ -33,6 +38,7 @@ function MypageTemplate(props: Props) {
             value={props.value}
             onChangeText={props.onChangeNickname}
             isPassword={false}
+            openPicker={props.openPicker}
           />
         ) : (
           <UserSummary
@@ -46,24 +52,37 @@ function MypageTemplate(props: Props) {
       </View>
       <MyButton
         btnText={props.isEditing ? '수정 완료' : '프로필 수정'}
-        width={350}
+        width={Dimensions.get('screen').width * 0.9}
         onClick={props.profileEdit}
         backgroundColor="#D9D9D9"
         height={25}
         fontSize={12}
       />
-
-      <TabButtonGroup
-        TabButtonList={props.TabButtonListNavi}
-        func={(params?: string) => {
-          props.navigation.navigate(params);
-        }}
-      />
-      <TabButtonGroup TabButtonList={props.TabButtonListFunc} func={logout} />
+      <View style={styles.buttonGroupContainer}>
+        <TabButtonGroup
+          TabButtonList={props.TabButtonListNavi}
+          func={(params?: string) => {
+            props.navigation.navigate(params);
+          }}
+        />
+        <TabButtonGroup TabButtonList={props.TabButtonListFunc} func={logout} />
+      </View>
     </View>
   );
 }
 const styles = StyleSheet.create({
-  profileContainer: {backgroundColor: 'white'},
+  myPageContainer: {
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height,
+    alignItems: 'center',
+  },
+  profileContainer: {
+    alignItems: 'center',
+    width: '100%',
+    height: 93,
+  },
+  buttonGroupContainer: {
+    width: Dimensions.get('screen').width * 0.9,
+  },
 });
 export default MypageTemplate;
