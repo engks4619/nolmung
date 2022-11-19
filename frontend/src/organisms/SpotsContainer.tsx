@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useRef} from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -24,6 +24,9 @@ interface Props {
   limitDistance: number;
   category: string;
   loadMore: Function;
+  refreshing: boolean;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
+  refresh: (pageNum?: number) => void;
 }
 
 type CommScreenProp = NativeStackNavigationProp<
@@ -41,6 +44,9 @@ function SpotsContainer({
   limitDistance,
   category,
   loadMore,
+  refreshing,
+  setRefreshing,
+  refresh,
 }: Props) {
   const flatListRef = useRef<FlatList>(null);
   const navigation = useNavigation<CommScreenProp>();
@@ -93,10 +99,18 @@ function SpotsContainer({
     }
   }, [spotRequest, sort, limitDistance, category]);
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refresh(0);
+    setRefreshing(false);
+  };
+
   return (
     <FlatList
       ref={flatListRef}
       data={spotList}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
       numColumns={2}
       columnWrapperStyle={styles.row}
       keyExtractor={(item, idx) => idx.toString()}
