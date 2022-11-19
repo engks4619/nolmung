@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   ButtonGroup: {
     borderTopColor: 'gray',
     borderTopWidth: 1,
-    marginTop: 2,
+    marginTop: 10,
   },
 });
 

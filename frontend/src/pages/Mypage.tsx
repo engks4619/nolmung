@@ -1,9 +1,14 @@
 import React, {useState, useCallback} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Filter from '@assets/filter.svg';
 import Home from '@assets/home.svg';
+import PostSend from '@assets/postSend.svg';
+import Heart from '@assets/heart.svg';
+import BarChart from '@assets/bar-chart.svg';
+import Paw from '@assets/paw.svg';
+import Schedule from '@assets/schedule.svg';
 
 import MyPostList from '@pages/MyPostList';
 import MyLikedList from '@pages/MyLikedList';
@@ -13,9 +18,12 @@ import MyDogs from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
 import WalkReview from './WalkReview';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-
+import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
+import axios from 'utils/axios';
+import ImageResizer from 'react-native-image-resizer';
+import {setProfile} from '~/slices/userSlice';
 //UserInfoType
 export type UserInfoType = {
   imageSource: string;
@@ -24,6 +32,7 @@ export type UserInfoType = {
   walkHour: number;
   walkDistance: number;
 };
+import {photo} from '~/utils/type';
 
 const MypageStack = createNativeStackNavigator();
 export const MypageStackNavigator = () => (
@@ -67,32 +76,32 @@ export const MypageStackNavigator = () => (
 const myPageListNavi = [
   {
     name: 'MyPostList',
-    icon: <Filter width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <PostSend width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 쓴 글',
   },
   {
     name: 'MyLikedList',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Heart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 글',
   },
   {
     name: 'MyLikedSpots',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Heart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내가 찜한 스팟',
   },
   {
     name: 'MyWalkingRecord',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <BarChart width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 산책 기록',
   },
   {
     name: 'MyDogs',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Paw width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
   },
   {
     name: 'WalkReview',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Schedule width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '산책후기',
   },
 ];
@@ -100,7 +109,7 @@ const myPageListNavi = [
 const myPageListFunc = [
   {
     name: 'Logout',
-    icon: <Home width={25} height={25} fill={'black'} stroke={'black'} />,
+    icon: <Home width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '로그아웃',
   },
 ];
@@ -110,24 +119,72 @@ function Mypage({navigation}: any) {
   const userInfo: UserInfoType = {
     imageSource: user.profileImage,
     userName: user.nickname,
-    walkNumber: 10,
-    walkHour: 10,
-    walkDistance: 100,
+    walkNumber: user.totalWalk,
+    walkHour: user.totalTime,
+    walkDistance: user.totalDistance,
   };
   const [isEditing, setIsEditing] = useState(false);
   const [tempNickname, setTempNickname] = useState(userInfo.userName);
+  const [tempProfileImage, setTempProfileImage] = useState<any>(null);
 
+  const dispatch = useDispatch();
   const onChangeNickname = useCallback(text => {
     setTempNickname(text);
   }, []);
 
-  const profileEdit = (): void => {
+  const profileEdit = async () => {
     if (isEditing) {
-      // 변경 profile 전송(닉네임 + 사진)
+      if (tempProfileImage || tempNickname !== userInfo.userName) {
+        const body = new FormData();
+        ImageResizer.createResizedImage(
+          tempProfileImage.realPath,
+          1200,
+          1200,
+          tempProfileImage.mime.includes('jpeg') ? 'JPEG' : 'PNG',
+          100,
+          0,
+        ).then(async resizedImg => {
+          const image: photo = {
+            uri: resizedImg.uri,
+            name: resizedImg.name,
+            type: tempProfileImage.mime,
+          };
+          body.append('file', image);
+          body.append('nickname', tempNickname);
+          try {
+            const response = await axios.put('/user', body, {
+              headers: {
+                'content-type': 'multipart/form-data',
+              },
+            });
+            const profile = response.data;
+            dispatch(
+              setProfile({
+                nickname: profile.nickname,
+                profileImage: profile.profileImage,
+              }),
+            );
+          } catch (err: any) {
+            console.log(err);
+          }
+        });
+      }
     }
     setIsEditing(!isEditing);
   };
 
+  const openPicker = async () => {
+    await MultipleImagePicker.openPicker({
+      // isExportThumbnail: true,
+      usedCameraButton: true,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      singleSelectedMode: true,
+      mediaType: 'image',
+    })
+      .then(response => setTempProfileImage(response))
+      .catch(() => {});
+  };
   return (
     <View>
       <MypageTemplate
@@ -139,6 +196,8 @@ function Mypage({navigation}: any) {
         TabButtonListNavi={myPageListNavi}
         TabButtonListFunc={myPageListFunc}
         navigation={navigation}
+        openPicker={openPicker}
+        tempProfileImage={tempProfileImage}
       />
     </View>
   );
