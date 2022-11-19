@@ -69,8 +69,9 @@ public class DogServiceImpl implements DogService{
     @Override
     public void registerDogImage(MultipartFile file, Long dogIdx) throws IOException {
         DogEntity dogEntity = dogRepository.findById(dogIdx).orElseThrow(NoSuchElementException::new);
-        String savePath = String.format(env.getProperty("image.dog.path"), UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));        commUtil.saveImage(file, savePath);
+        String savePath = String.format(env.getProperty("image.dog.path"), UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));
         commUtil.saveImage(file, savePath);
         dogEntity.changeDogImage(savePath);
+        dogRepository.save(dogEntity);
     }
 }
