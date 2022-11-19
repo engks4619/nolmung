@@ -6,6 +6,9 @@ import lombok.Data;
 public class ResponseDog {
     private Long dogIdx;
     private String dogName;
+    private Boolean neuter;
+    private Boolean vaccination;
+    private Character gender;
     private String image;
     private String breedCodeValue;
 }
