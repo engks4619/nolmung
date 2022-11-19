@@ -46,7 +46,11 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyLikedList" component={MyLikedList} />
     <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
-    <MypageStack.Screen name="MyDogs" component={MyDogs} />
+    <MypageStack.Screen
+      name="MyDogs"
+      component={MyDogs}
+      options={{headerShown: false}}
+    />
     <MypageStack.Screen
       name="MapViewAlone"
       component={MapViewAlone}

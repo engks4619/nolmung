@@ -1,12 +1,22 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-
+import {} from 'react-native';
+import {RootState} from '~/store/reducer';
+import MyDogsTemplate from '@templates/MyDogsTemplate';
+import {useSelector} from 'react-redux';
+export interface dogInfo {
+  breedCodeValue: string;
+  dogIdx: number;
+  dogName: string;
+  image: string;
+  neuter: boolean;
+  vaccination: boolean;
+  gender: string;
+}
 function MyDogs() {
-  return (
-    <View>
-      <Text>내 강아지</Text>
-    </View>
+  const myDogs: dogInfo[] | undefined = useSelector(
+    (state: RootState) => state.dogs.dogsInfo,
   );
+  return <MyDogsTemplate myDogs={myDogs} />;
 }
 
 export default MyDogs;
