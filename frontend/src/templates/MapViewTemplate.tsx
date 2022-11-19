@@ -6,8 +6,8 @@ import {Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
 import MyButton from '~/atoms/MyButton';
 import DoubleSummary from '@molecules/DoubleSummary';
-
 import WalkingDogs from '~/organisms/WalkingDogs';
+
 interface Props {
   myPosition: Coord | null;
   path: Coord[];

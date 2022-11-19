@@ -16,7 +16,7 @@ import DoubleSummary from '@molecules/DoubleSummary';
 interface Props {
   path: Coord[];
   dogInfoList: DetailDogProps[];
-  isOver: boolean;
+  // isOver: boolean;
   myPosition: Coord;
   saveLogs: () => void;
   noSaveLogs: () => void;
@@ -27,7 +27,7 @@ interface Props {
 function LogViewTemplate({
   path,
   dogInfoList,
-  isOver,
+  // isOver,
   myPosition,
   saveLogs,
   noSaveLogs,
