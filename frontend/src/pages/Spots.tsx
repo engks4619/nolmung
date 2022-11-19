@@ -7,8 +7,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {getTextAddress} from '~/utils/addressService';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MAIN_COLOR} from '~/const';
 import SpotDetail from './SpotDetail';
+import SpotRegistReview from './SpotRegistReview';
 
 export interface menu {
   menuName: string;
@@ -47,6 +47,7 @@ export interface SpotRequest {
 export type SpotDetailParamList = {
   Spot: undefined;
   SpotDetail: {spotId: string};
+  SpotRegistReview: {spotId: string; spotName: string};
 };
 
 const SpotStack = createNativeStackNavigator();
@@ -61,6 +62,7 @@ export const SpotStackNavigator = () => (
       }}
     />
     <SpotStack.Screen name="SpotDetail" component={SpotDetail} />
+    <SpotStack.Screen name="SpotRegistReview" component={SpotRegistReview} />
   </SpotStack.Navigator>
 );
 

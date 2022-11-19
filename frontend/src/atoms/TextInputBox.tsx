@@ -7,7 +7,7 @@ interface Props {
   borderColor: string;
 }
 
-const TextInutBox = ({content, setContent, borderColor}: Props) => {
+const TextInputBox = ({content, setContent, borderColor}: Props) => {
   return (
     <View style={[styles.container, {borderColor}]}>
       <TextInput
@@ -23,8 +23,6 @@ const TextInutBox = ({content, setContent, borderColor}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
-    marginVertical: 20,
     borderWidth: 1,
     borderRadius: 5,
     minHeight: 250,
@@ -34,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextInutBox;
+export default TextInputBox;
