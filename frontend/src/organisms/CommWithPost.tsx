@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {View, StyleSheet, FlatList, TouchableHighlight} from 'react-native';
 import CommMainInfo from '@molecules/CommMainInfo';
 import Squre from '@atoms/Squre';
@@ -11,21 +11,39 @@ import {useNavigation} from '@react-navigation/native';
 interface Props {
   withPostList: withPostListType[];
   loadMore: () => void;
+  refreshing: boolean;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
+  refresh: (pgNum: number, isRefresh?: boolean) => void;
 }
 type CommScreenProp = NativeStackNavigationProp<
   CommunityParamList,
   'Community'
 >;
 
-function CommWithPost({withPostList, loadMore}: Props) {
+function CommWithPost({
+  withPostList,
+  loadMore,
+  refreshing,
+  setRefreshing,
+  refresh,
+}: Props) {
   const navigation = useNavigation<CommScreenProp>();
 
   const naviWithDetail = (postIdx: number) => {
     navigation.navigate('CommDetail', {postIdx});
   };
+
+  const onRefresh = () => {
+    if (!refreshing) {
+      refresh(0, true);
+    }
+  };
+
   return (
     <FlatList
       data={withPostList}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
       keyExtractor={item => String(item.postIdx)}
       renderItem={({item}) => (
         <TouchableHighlight

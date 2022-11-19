@@ -59,6 +59,7 @@ function Community({navigation}: any) {
   const [otherPgNum, setOtherPgNum] = useState<number>(0);
   const [otherPostList, setOtherPostList] = useState<otherPostListType[]>([]);
   const [otherTotalPg, setOtherTotalPg] = useState<number>(0);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const navigateWithPg = () => {
     setCategoryType('WITH');
@@ -68,7 +69,7 @@ function Community({navigation}: any) {
     setCategoryType('OTHER');
   };
 
-  const getWithPostList = async (pgNum: number) => {
+  const getWithPostList = async (pgNum: number, isRefresh?: boolean) => {
     const params = {
       page: pgNum,
     };
@@ -80,9 +81,14 @@ function Community({navigation}: any) {
         params,
       });
       const data: withPostListType[] = await response.data.withDtoList;
-      setWithPostList([...withPostList, ...data]);
+      if (isRefresh) {
+        setWithPostList([...data]);
+        setWithPgNum(1);
+      } else {
+        setWithPostList([...withPostList, ...data]);
+        setWithPgNum(withPgNum + 1);
+      }
       setWithTotalPg(response.data.totalPage);
-      setWithPgNum(withPgNum + 1);
     } catch (error: any) {
       Alert.alert(
         `에러코드 ${error.response.status}`,
@@ -91,7 +97,7 @@ function Community({navigation}: any) {
     }
   };
 
-  const getOtherPostList = async (pgNum: number) => {
+  const getOtherPostList = async (pgNum: number, isRefresh?: boolean) => {
     const params = {
       page: pgNum,
     };
@@ -103,8 +109,13 @@ function Community({navigation}: any) {
         params,
       });
       const data: otherPostListType[] = await response.data.otherDtoList;
-      setOtherPostList([...otherPostList, ...data]);
-      setOtherPgNum(otherPgNum + 1);
+      if (isRefresh) {
+        setOtherPostList([...data]);
+        setOtherPgNum(1);
+      } else {
+        setOtherPostList([...otherPostList, ...data]);
+        setOtherPgNum(otherPgNum + 1);
+      }
       setOtherTotalPg(response.data.totalPage);
     } catch (error: any) {
       Alert.alert(
@@ -135,6 +146,10 @@ function Community({navigation}: any) {
       otherPostList={otherPostList}
       loadMore={loadMore}
       navigation={navigation}
+      refreshing={refreshing}
+      setRefreshing={setRefreshing}
+      getWithPostList={getWithPostList}
+      getOtherPostList={getOtherPostList}
     />
   );
 }

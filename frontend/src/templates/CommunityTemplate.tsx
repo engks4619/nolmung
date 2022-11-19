@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {View, StyleSheet} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
@@ -17,6 +17,10 @@ interface Props extends CommunityTabType {
   loadMore: () => void;
   otherPostList: otherPostListType[];
   navigation: any;
+  refreshing: boolean;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
+  getWithPostList: (pgNum: number, isRefresh?: boolean) => void;
+  getOtherPostList: (pgNum: number, isRefresh?: boolean) => void;
 }
 
 function CommunityTemplate({
@@ -27,6 +31,10 @@ function CommunityTemplate({
   loadMore,
   otherPostList,
   navigation,
+  refreshing,
+  setRefreshing,
+  getWithPostList,
+  getOtherPostList,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -36,9 +44,21 @@ function CommunityTemplate({
         categoryType={categoryType}
       />
       {categoryType === 'WITH' ? (
-        <CommWithPost withPostList={withPostList} loadMore={loadMore} />
+        <CommWithPost
+          withPostList={withPostList}
+          loadMore={loadMore}
+          refreshing={refreshing}
+          setRefreshing={setRefreshing}
+          refresh={getWithPostList}
+        />
       ) : (
-        <CommOtherPost otherPostList={otherPostList} loadMore={loadMore} />
+        <CommOtherPost
+          otherPostList={otherPostList}
+          loadMore={loadMore}
+          refreshing={refreshing}
+          setRefreshing={setRefreshing}
+          refresh={getOtherPostList}
+        />
       )}
 
       <EditBtn onPress={() => navigation.navigate('RegistArticle')} />
