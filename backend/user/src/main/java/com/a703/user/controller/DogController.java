@@ -2,13 +2,11 @@ package com.a703.user.controller;
 
 import com.a703.user.dto.DogDto;
 import com.a703.user.service.DogService;
-import com.a703.user.util.CommUtil;
 import com.a703.user.util.JwtUtil;
 import com.a703.user.vo.request.RequestDog;
 import com.a703.user.vo.response.ResponseDog;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,10 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DogController {
 
-    private final Environment env;
     private final DogService dogService;
     private final JwtUtil jwtUtil;
-    private final CommUtil commUtil;
 
     @PostMapping
     public ResponseEntity<Object> registerDog(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt, @RequestBody RequestDog dog) {
@@ -37,18 +34,15 @@ public class DogController {
         DogDto dogDto = new ModelMapper().typeMap(RequestDog.class, DogDto.class).map(dog);
         dogDto.setBreed(dogService.findBreed(dog.getBreedCode()));
 
-        dogService.registerDog(userIdx, dogDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Map<String, Object> body = new HashMap<>();
+        body.put("dogIdx", dogService.registerDog(userIdx, dogDto));
+        return ResponseEntity.ok(body);
     }
 
     @PostMapping("/image")
     public ResponseEntity<?> registerDogImage(@RequestParam MultipartFile file, @RequestParam Long dogIdx) throws IOException {
-        String savePath = String.format(env.getProperty("image.dog.path"), UUID.randomUUID() + "." + commUtil.extractExt(file.getOriginalFilename()));
-        commUtil.saveImage(file, savePath);
-        DogDto dogDto = dogService.getDogInfoByDogIdx(dogIdx);
-        dogDto.setImage(savePath);
-        return null;
+        dogService.registerDogImage(file, dogIdx);
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping("/info")
