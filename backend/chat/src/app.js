@@ -166,7 +166,7 @@ chat.on('connection', socket => {
 
       const room = await Room.updateOne({ _id: ObjectId(data.roomId) }, { $set: { createdAt: chatInfo.createdAt } }); 
 
-      chat.to(data.roomId).emit('messageC', { chat: chatInfo.chat, createdAt: chatInfo.createdAt, room: chatInfo.room, sender: chatInfo.user }); // 클라이언트에 메시지 전달
+      chat.to(data.roomId).emit('messageC', { chat: chatInfo.chat, createdAt: chatInfo.createdAt, roomId: chatInfo.room, sender: chatInfo.user }); // 클라이언트에 메시지 전달
 
     } catch (error) {
       console.error(error);
