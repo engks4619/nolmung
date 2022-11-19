@@ -58,9 +58,11 @@ const styles = StyleSheet.create({
   textCenter: {
     paddingTop: 7,
     textAlign: 'center',
+    color: 'black',
   },
   fontSize: {
     fontSize: 13,
+    color: 'black',
   },
 });
 

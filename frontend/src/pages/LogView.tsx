@@ -129,6 +129,7 @@ function LogView({route, navigation}: any) {
               1000
             : 0
         }
+        startDate={startDate}
       />
     </View>
   );
