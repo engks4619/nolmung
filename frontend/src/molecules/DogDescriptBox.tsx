@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   lineTwo: {
     flex: 1,
     flexDirection: 'row',
-    // backgroundColor: 'red',
     marginHorizontal: 5,
   },
   cols: {
