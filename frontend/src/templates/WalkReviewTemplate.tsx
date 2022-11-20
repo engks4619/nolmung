@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {BORDER_COLOR, MAIN_COLOR, TEXT_INPUT_BACKGROUND_COLOR} from '~/const';
 import ChatInfoSummary from '~/organisms/ChatInfoSummary';
 import ReviewArticleSummary from '~/organisms/ReviewArticleSummary';
@@ -29,13 +29,15 @@ const WalkReviewTemplate = ({
     <ScrollView style={styles.container}>
       <ReviewArticleSummary article={article} />
       <ChatInfoSummary chatInfo={chatInfo} />
-      {/* <StarContainer star={star} setStar={setStar} /> */}
-      <StarRating star={star} setStar={setStar} />
-      <TextInputBox
-        content={review}
-        setContent={setReview}
-        borderColor={BORDER_COLOR}
-      />
+      <StarContainer star={star} setStar={setStar} />
+      {/* <StarRating star={star} setStar={setStar} /> */}
+      <View style={styles.textInputContainer}>
+        <TextInputBox
+          content={review}
+          setContent={setReview}
+          borderColor={BORDER_COLOR}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -46,6 +48,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     paddingHorizontal: 20,
+  },
+  textInputContainer: {
+    marginVertical: 20,
+    marginHorizontal: 20,
   },
 });
 

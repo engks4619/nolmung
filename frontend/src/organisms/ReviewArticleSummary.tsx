@@ -16,7 +16,9 @@ const ReviewArticleSummary = ({article}: Props) => {
           <Squre
             imageSource={
               article
-                ? article?.photoUrl[0] ?? article?.dogInfoList[0]?.image
+                ? article?.photoUrl
+                  ? article?.photoUrl[0]
+                  : article?.dogInfoList[0]?.image
                 : `/images/spot/default/default.png`
             }
             width={75}
