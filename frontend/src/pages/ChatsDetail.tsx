@@ -197,18 +197,18 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-  const endWalk = () => {
+
   const endWalk = () => {
     if (locationSocket) {
       locationSocket.emit('endWalk');
     }
   };
+  const interval = setInterval(() => {
+    hadleMyDogLocation();
+  }, 5000);
   useEffect(() => {
     if (locationSocket) {
-      console.log('재랜더링되었나요');
-      locationSocket.on('replyGps', data => {
-        console.log(data);
-      });
+      locationSocket.emit('locationLogin', {id: user});
       locationSocket.on('gpsInfo', gpsInfo => {
         console.log(gpsInfo);
         if (gpsInfo === 403) {
@@ -216,6 +216,8 @@ function ChatsDetail({route, navigation}: any) {
             '알림',
             '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
           );
+        } else if (gpsInfo === 400) {
+          clearInterval(interval);
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
           console.log('1', gpsInfo);
