@@ -61,9 +61,11 @@ io.on('connection', socket => {
 
     try {
       // 채팅 목록 조회
+      console.log("채팅 목록 조회 시작")
       const rooms = await Room.find({
-        $or: [{ownerIdx: socket.loginId}, {opponentIdx: socket.loginId}],
+        $or: [{ownerIdx: login.id }, {opponentIdx: login.id }],
       }).sort('-createdAt');
+      console.log("채팅 목록: ", rooms);
 
       const roomInfo = []
       for (var i in rooms) {
