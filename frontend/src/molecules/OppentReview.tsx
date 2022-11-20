@@ -1,15 +1,17 @@
 import React, {useCallback} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Profile from '~/atoms/Profile';
+import StaticRating from '~/atoms/StaticRating';
 import {reviewerType} from '~/pages/Oppent';
 
 interface Props {
   createdAt: string;
   content: string;
   reviewer: reviewerType;
+  starRate: number;
 }
 
-function OppentReview({createdAt, content, reviewer}: Props) {
+function OppentReview({createdAt, content, reviewer, starRate}: Props) {
   const converDate = useCallback((createDate: string) => {
     const result = createDate.split('T')[0].replaceAll('-', '.').slice(2);
     return result;
@@ -25,8 +27,8 @@ function OppentReview({createdAt, content, reviewer}: Props) {
         />
         <View style={styles.starContainer}>
           <Text style={styles.nameStyle}>{reviewer.nickname}</Text>
-          <View style={styles.rowContainer}>
-            <Text>별점</Text>
+          <View style={styles.subContainer}>
+            <StaticRating starRate={starRate} />
             <Text style={styles.dateStyle}>{converDate(createdAt)}</Text>
           </View>
         </View>
@@ -41,10 +43,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 15,
     paddingBottom: 15,
-    borderColor: 'rgba(0, 0, 0, .2)',
+    borderColor: 'rgba(0, 0, 0, .3)',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   rowContainer: {
+    flexDirection: 'row',
+  },
+  subContainer: {
+    marginLeft: 8,
     flexDirection: 'row',
   },
   starContainer: {
