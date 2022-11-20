@@ -131,6 +131,10 @@ function AppInner() {
     ) {
       const data = {id: userIdx};
       socket.emit('login', data);
+
+      socket.on('replyLogin', loginData =>
+        console.log('replyLogin', loginData),
+      );
       socket.on('rooms', roomsInfos => {
         roomsInfos.map(roomInfo => {
           chatSocket.emit('join', roomInfo.roomId);
@@ -138,10 +142,12 @@ function AppInner() {
         dispatch(setRoomInfos(roomsInfos));
       });
 
-      roomSocket.emit('roomLogin', userIdx);
-      roomSocket.on('join', joinData => {
-        console.log('join', joinData);
-      });
+      socket.on('joinRoom', joinData => console.log('방생성:', joinData));
+
+      // roomSocket.emit('roomLogin', userIdx);
+      // roomSocket.on('join', joinData => {
+      //   console.log('join', joinData);
+      // });
 
       chatSocket.on('messageC', (msgData: chatType) => {
         if (msgData.sender === userIdx.toString()) {

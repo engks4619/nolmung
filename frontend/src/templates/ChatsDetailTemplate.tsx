@@ -7,12 +7,12 @@ import ChatField from '~/organisms/ChatField';
 interface postType {
   postSubject: string;
   postImage: string;
-  postPay: number;
+  postPay?: number;
 }
 
 interface Props {
   postInfo: postType;
-  submitMsg: () => void;
+  submitMsg: (inputChat: String) => void;
   handleConfirmWalk: () => void;
   isCompleted: boolean;
   categoryType: string;

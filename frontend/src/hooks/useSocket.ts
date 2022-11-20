@@ -13,7 +13,7 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     socket = io('http://nolmung.kr', {
       transports: ['websocket'],
     });
-    socket.on('connect', () => console.log(socket?.id, 'socket.id'));
+    socket.on('connect', () => console.log('socketId:', socket?.id));
   }
   return [socket, disconnect];
 };
