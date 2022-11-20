@@ -69,7 +69,11 @@ const RegistArticle = ({navigation}: any) => {
           }),
         )
           .then(registSuccess)
-          .catch(registFail);
+          .catch(registFail)
+          .finally(() => {
+            navigation.replace('Community');
+            setLoading(false);
+          });
       } else {
         registFail();
       }

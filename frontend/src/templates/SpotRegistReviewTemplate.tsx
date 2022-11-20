@@ -41,19 +41,16 @@ const SpotRegistReviewTemplate = ({
   setImages,
 }: Props) => {
   const openPicker = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        selectedAssets: images,
-        isExportThumbnail: true,
-        usedCameraButton: false,
-        doneTitle: '완료',
-        cancelTitle: '취소',
-        maxSelectedAssets: 10,
-      });
-      setImages(response);
-    } catch (e: any) {
-      Alert.alert('이미지 업로드 실패!', e.code, e.message);
-    }
+    await MultipleImagePicker.openPicker({
+      selectedAssets: images,
+      isExportThumbnail: true,
+      usedCameraButton: false,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      maxSelectedAssets: 10,
+    })
+      .then(response => setImages(response))
+      .catch(() => {});
   };
 
   const onDelete = (value: any) => {
