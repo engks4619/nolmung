@@ -180,7 +180,7 @@ location.on('connection', socket => {
   console.log('location 네임스페이스에 접속');
 
   socket.on('startWalk', async data => {    // 산책 시작
-    console.log("startWalk");
+    console.log("startWalk 이벤트");
     try {
       const gps = await Location.findOne({ roomId: data.roomId });
 
@@ -257,19 +257,22 @@ location.on('connection', socket => {
   });
 
   socket.on('getGps', async roomId => {   // 위치 보기 이벤트 (산책 종료 후)
+    console.log("getGps 이벤트");
     try {
       const gpsInfo = await Location.findOne({ roomId: roomId });
       console.log(socket.id)
 
       console.log("gpsInfo: ", gpsInfo);
-      console.log("gpsInfo.walking : ", gpsInfo.walking);
-      if (gpsInfo == null) {    // 산책 기록 없는 경우
+      
+      if (gpsInfo == null) {    // 산책 기록(위치정보) 없는 경우
         socket.emit('gpsInfo', response.statusCode = 400);
+        console.log("산책 기록 없음.");
       } else if (!gpsInfo.walking) {    // 산책 중이 아닌 경우
         socket.emit('gpsInfo', response.statusCode = 403);
+        console.log("산책 중 아님.");
 
       } else {
-
+        console.log("gps 목록 조회");
         const gpsList = []
         for (var i in gpsInfo.gps ) {
           gpsList.push({ latitude: gpsInfo.gps[i].latitude, longitude: gpsInfo.gps[i].longitude });
