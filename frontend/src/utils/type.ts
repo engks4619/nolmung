@@ -73,3 +73,12 @@ export type review = {
   profileImage: string;
   photoList: string[];
 };
+
+export type dogRequestBody = {
+  dogName: string;
+  neuter: boolean | null;
+  vaccination: boolean | null;
+  gender: string | null;
+  description: String;
+  breedCode: number | null;
+};

@@ -92,6 +92,7 @@ function CommDetail({route, navigation}: any) {
       thumbnailUrl,
       writer,
       categoryType,
+      completed,
     } = detailContent;
     dispatch(
       setChatPostInfo({
@@ -103,6 +104,7 @@ function CommDetail({route, navigation}: any) {
         thumbnailUrl,
         writer,
         categoryType,
+        completed,
       }),
     );
     if (roomSocket && userIdx) {

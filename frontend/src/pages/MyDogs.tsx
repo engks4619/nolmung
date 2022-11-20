@@ -1,12 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-} from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
-import {Pressable, Text, View} from 'react-native';
 import CustomHeader from '~/headers/CustomHeader';
-// import RegistMyDog from './RegistMyDog';
+import RegistMyDog from './RegistMyDog';
 import {RootState} from '~/store/reducer';
 import MyDogsTemplate from '@templates/MyDogsTemplate';
 import {useSelector} from 'react-redux';
@@ -24,7 +19,7 @@ const MyDogStack = createNativeStackNavigator();
 export const MyDogStackNavigator = () => (
   <MyDogStack.Navigator>
     <MyDogStack.Screen name="MyDogs" component={MyDogs} />
-    {/* <MyDogStack.Screen name="RegistMyDog" component={RegistMyDog} /> */}
+    <MyDogStack.Screen name="RegistMyDog" component={RegistMyDog} />
   </MyDogStack.Navigator>
 );
 

@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     color: MAIN_COLOR,
     fontWeight: 'bold',
     fontSize: 14,
+    width: 20,
   },
   categoryContainer: {
-    marginLeft: 19,
+    marginLeft: 25,
     fontSize: 11,
   },
   headingText: {
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    marginLeft: 5,
+    marginLeft: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

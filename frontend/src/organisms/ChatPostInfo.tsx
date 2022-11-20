@@ -1,26 +1,34 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import DogLocation from '~/atoms/DogLocation';
 import PostscriptBtn from '~/atoms/PostscriptBtn';
 import ScheduleBtn from '~/atoms/ScheduleBtn';
 import Squre from '~/atoms/Squre';
-
 interface chatsPostInfoProps {
   postSubject: string;
-  postImgae: string;
+  postImage: string;
   postPay: number;
   handleConfirmWalk: () => void;
+  isCompleted: boolean;
+  categoryType: string;
+  hadleMyDogLocation: () => void;
+  isMyPost: boolean;
 }
 
 function ChatPostInfo({
   postSubject,
-  postImgae,
+  postImage,
   postPay,
   handleConfirmWalk,
+  isCompleted,
+  categoryType,
+  hadleMyDogLocation,
+  isMyPost,
 }: chatsPostInfoProps) {
   return (
     <View style={styles.container}>
       <View style={styles.postInfoContainer}>
-        <Squre imageSource={postImgae} width={70} height={70} />
+        <Squre imageSource={postImage} width={70} height={70} />
         <View style={styles.textContainer}>
           <Text style={styles.bold}>{postSubject}</Text>
           <Text style={styles.bold}>
@@ -28,10 +36,18 @@ function ChatPostInfo({
           </Text>
         </View>
       </View>
-      <View style={styles.btnContainer}>
-        <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
-        <PostscriptBtn />
-      </View>
+      {categoryType === 'WITH' ? null : (
+        <View style={styles.btnContainer}>
+          {isMyPost && isCompleted ? (
+            <DogLocation hadleMyDogLocation={hadleMyDogLocation} />
+          ) : null}
+          {isMyPost && !isCompleted ? (
+            <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
+          ) : null}
+          {isMyPost && isCompleted ? <Text>산책시작하기</Text> : null}
+          <PostscriptBtn />
+        </View>
+      )}
     </View>
   );
 }

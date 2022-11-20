@@ -7,23 +7,18 @@ import {RootState} from '~/store/reducer';
 import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
+import {useAppDispatch} from '~/store';
+import {setCompleted} from '~/slices/chatSlice';
 
-interface chatType {
+export interface chatType {
   chat: string;
-  user: string;
-  _id: string;
-  createdAt: string;
-}
-
-interface msgType {
-  roomId: string;
   sender: string;
-  _id: string;
+  roomId: string;
   createdAt: string;
-  chat: string;
 }
 
 function ChatsDetail({route, navigation}: any) {
+  const dispatch = useAppDispatch();
   const roomId: string = route.params.roomId;
 
   const [chatSocket, chatDisconnect] = useChatSocket();
@@ -38,12 +33,18 @@ function ChatsDetail({route, navigation}: any) {
   const oppentImg = useSelector((state: RootState) => state.chat.oppentImg);
   const oppentName = useSelector((state: RootState) => state.chat.oppentName);
   const oppentIdx = useSelector((state: RootState) => state.chat.writerIdx);
+  const categoryType = useSelector(
+    (state: RootState) => state.chat.categoryType,
+  );
+
+  const isCompleted = useSelector((state: RootState) => state.chat.completed);
 
   const [serverMsg, setServerMsg] = useState<chatType[]>([]);
   const [localMsg, setLocalMsg] = useState<chatType>();
   const [fullMsg, setFullMsg] = useState<chatType[]>([]);
 
   useEffect(() => {
+    setFullMsg([]);
     if (chatSocket && roomId) {
       chatSocket.emit('join', roomId);
       chatSocket.on('chats', (serverChats: chatType[]) => {
@@ -54,14 +55,13 @@ function ChatsDetail({route, navigation}: any) {
           setIsFirstChat(true);
         }
       });
-      chatSocket.on('messageC', (data: msgType) => {
+      chatSocket.on('messageC', (data: chatType) => {
         if (data.roomId === roomId) {
-          const now = new Date().toString();
           const newData: chatType = {
             chat: data.chat,
-            user: data.sender,
-            _id: now,
-            createdAt: now,
+            sender: data.sender,
+            roomId: data.roomId,
+            createdAt: data.createdAt,
           };
           setLocalMsg(newData);
         }
@@ -129,14 +129,25 @@ function ChatsDetail({route, navigation}: any) {
     try {
       const response = await axios.post('community/alba', data);
       if (response.status === 200) {
+        dispatch(setCompleted(true));
         if (chatSocket) {
-          chatSocket.emit('decide', roomId);
+          chatSocket.emit('complete', roomId);
         }
       }
-      console.log(response.data);
+      Alert.alert(
+        '산책이 확정되었습니다. ',
+        '상대방이 산책을 시작하면 강아지 위치 보기기 활성화됩니다.',
+      );
     } catch (error: any) {
-      console.log(error);
+      Alert.alert(
+        `에러코드 ${error?.response?.status}`,
+        '죄송합니다. 산책을 확정하지 못했습니다. 다시 시도해주시길 바랍니다.',
+      );
     }
+  };
+
+  const hadleMyDogLocation = () => {
+    console.log('내 강아지 위치 내놔');
   };
 
   return (
@@ -147,6 +158,10 @@ function ChatsDetail({route, navigation}: any) {
       user={user}
       oppentImg={oppentImg}
       handleConfirmWalk={handleConfirmWalk}
+      isCompleted={isCompleted}
+      categoryType={categoryType}
+      hadleMyDogLocation={hadleMyDogLocation}
+      isMyPost={user === oppentIdx}
     />
   );
 }

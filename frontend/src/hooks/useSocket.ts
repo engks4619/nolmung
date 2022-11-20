@@ -13,7 +13,7 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     socket = io('http://nolmung.kr', {
       transports: ['websocket'],
     });
-    socket.on('connect', () => console.log('socket..connected'));
+    socket.on('connect', () => console.log(socket?.id, 'socket.id'));
   }
   return [socket, disconnect];
 };
@@ -30,7 +30,7 @@ export const useRoomSocket = (): [Socket | undefined, () => void] => {
     roomSocket = io('http://nolmung.kr/room', {
       transports: ['websocket'],
     });
-    roomSocket.on('connect', () => console.log('room...socket..connected'));
+    roomSocket.on('connect', () => console.log('rooomId', roomSocket.id));
   }
   return [roomSocket, roomDisconnect];
 };
@@ -50,4 +50,23 @@ export const useChatSocket = (): [Socket | undefined, () => void] => {
     chatSocket.on('connect', () => console.log('chat...socket..connected'));
   }
   return [chatSocket, chatDisconnect];
+};
+
+let locationSocket: Socket | undefined;
+export const useLocationSocket = (): [Socket | undefined, () => void] => {
+  const locationDisconnect = useCallback(() => {
+    if (locationSocket) {
+      locationSocket.disconnect();
+      locationSocket = undefined;
+    }
+  }, []);
+  if (!locationSocket) {
+    locationSocket = io('http://nolmung.kr/location', {
+      transports: ['websocket'],
+    });
+    locationSocket.on('connect', () =>
+      console.log('location...socket..connected'),
+    );
+  }
+  return [locationSocket, locationDisconnect];
 };

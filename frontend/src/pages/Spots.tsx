@@ -3,12 +3,13 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Alert, View} from 'react-native';
 import SpotsTemplate from '~/templates/SpotsTemplate';
 import axios from '~/utils/axios';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {getTextAddress} from '~/utils/addressService';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SpotDetail from './SpotDetail';
 import SpotRegistReview from './SpotRegistReview';
+import {getLocation} from '~/slices/userSlice';
 
 export interface menu {
   menuName: string;
@@ -67,6 +68,7 @@ export const SpotStackNavigator = () => (
 );
 
 function Spots() {
+  const dispatch = useDispatch();
   const [spotList, setSpotList] = useState<Spot[]>([]);
   const [page, setPage] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
@@ -76,13 +78,14 @@ function Spots() {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [userLocation, setUserLocation] = useState<string>('');
   const [searchValue, setSearchValue] = useState<string>('');
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const lat = useSelector((state: RootState) => state.user.lat);
   const lng = useSelector((state: RootState) => state.user.lng);
 
-  const getSpotList = async () => {
+  const getSpotList = async (pageNum?: number) => {
     const params = {
-      page,
+      page: pageNum ?? page,
       sort,
     };
     try {
@@ -91,8 +94,9 @@ function Spots() {
       });
       if (response.status === 200) {
         const data = await response.data;
-        if (page === 0) {
+        if (page === 0 || pageNum === 0) {
           setSpotList([...data?.spotDtoList]);
+          setPage(0);
         } else {
           setSpotList([...spotList, ...data?.spotDtoList]);
         }
@@ -159,6 +163,8 @@ function Spots() {
     if (!spotRequest) {
       return;
     }
+
+    getLocation(dispatch);
     getSpotList();
   }, [spotRequest, page]);
 
@@ -200,6 +206,9 @@ function Spots() {
         category={category}
         setCategory={setCategory}
         initSpotRequest={initSpotRequest}
+        refreshing={refreshing}
+        setRefreshing={setRefreshing}
+        refresh={getSpotList}
       />
     </View>
   );

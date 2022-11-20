@@ -52,12 +52,7 @@ function UserEditForm({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    // flexDirection: 'row',
-    // justifyContent: 'space-around',
-    // alignItems: 'center',
     marginTop: 2,
-    // paddingBottom: 7,
-    // width: '100%',
   },
   marginCotainer: {
     flex: 1,

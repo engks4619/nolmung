@@ -22,6 +22,9 @@ interface Props {
   category: string;
   setCategory: Dispatch<SetStateAction<string>>;
   initSpotRequest: () => void;
+  refreshing: boolean;
+  setRefreshing: Dispatch<SetStateAction<boolea>>;
+  refresh: (pageNum?: number) => void;
 }
 
 function SpotsTemplate({
@@ -41,6 +44,9 @@ function SpotsTemplate({
   category,
   setCategory,
   initSpotRequest,
+  refreshing,
+  setRefreshing,
+  refresh,
 }: Props) {
   return (
     <SafeAreaView style={{backgroundColor: 'white'}}>
@@ -67,6 +73,9 @@ function SpotsTemplate({
         sort={sort}
         limitDistance={limitDistance}
         category={category}
+        refreshing={refreshing}
+        setRefreshing={setRefreshing}
+        refresh={refresh}
       />
     </SafeAreaView>
   );

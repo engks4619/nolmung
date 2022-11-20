@@ -14,7 +14,7 @@ import MyPostList from '@pages/MyPostList';
 import MyLikedList from '@pages/MyLikedList';
 import MyLikedSpots from '@pages/MyLikedSpots';
 import MyWalkingRecord from '@pages/MyWalkingRecord';
-import MyDogs from '@pages/MyDogs';
+import MyDogs, {MyDogStackNavigator} from '@pages/MyDogs';
 import MapViewAlone from '@pages/MapViewAlone';
 import LogView from '@pages/LogView';
 import WalkReview from './WalkReview';
@@ -47,8 +47,8 @@ export const MypageStackNavigator = () => (
     <MypageStack.Screen name="MyLikedSpots" component={MyLikedSpots} />
     <MypageStack.Screen name="MyWalkingRecord" component={MyWalkingRecord} />
     <MypageStack.Screen
-      name="MyDogs"
-      component={MyDogs}
+      name="MyDogList"
+      component={MyDogStackNavigator}
       options={{headerShown: false}}
     />
     <MypageStack.Screen
@@ -99,7 +99,7 @@ const myPageListNavi = [
     btnText: '내 산책 기록',
   },
   {
-    name: 'MyDogs',
+    name: 'MyDogList',
     icon: <Paw width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
   },
@@ -178,20 +178,16 @@ function Mypage({navigation}: any) {
   };
 
   const openPicker = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        // isExportThumbnail: true,
-        usedCameraButton: true,
-        doneTitle: '완료',
-        cancelTitle: '취소',
-        singleSelectedMode: true,
-        mediaType: 'image',
-      });
-      console.log(response);
-      setTempProfileImage(response);
-    } catch (e: any) {
-      Alert.alert('이미지 선택 실패!', e.code, e.message);
-    }
+    await MultipleImagePicker.openPicker({
+      // isExportThumbnail: true,
+      usedCameraButton: true,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      singleSelectedMode: true,
+      mediaType: 'image',
+    })
+      .then(response => setTempProfileImage(response))
+      .catch(() => {});
   };
   return (
     <View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {
   View,
   FlatList,
@@ -17,22 +17,39 @@ import {useNavigation} from '@react-navigation/native';
 interface Props {
   otherPostList: otherPostListType[];
   loadMore: () => void;
+  refreshing: boolean;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
+  refresh: (pgNum: number, isRefresh?: boolean) => void;
 }
 type CommScreenProp = NativeStackNavigationProp<
   CommunityParamList,
   'Community'
 >;
 
-function CommOtherPost({otherPostList, loadMore}: Props) {
+function CommOtherPost({
+  otherPostList,
+  loadMore,
+  refreshing,
+  setRefreshing,
+  refresh,
+}: Props) {
   const navigation = useNavigation<CommScreenProp>();
 
   const naviOtherDetail = (postIdx: number) => {
     navigation.navigate('CommDetail', {postIdx});
   };
 
+  const onRefresh = () => {
+    if (!refreshing) {
+      refresh(0, true);
+    }
+  };
+
   return (
     <FlatList
       data={otherPostList}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
       keyExtractor={item => String(item.postIdx)}
       renderItem={({item}) => (
         <TouchableHighlight

@@ -27,7 +27,7 @@ interface Props {
   setImages: Dispatch<SetStateAction<any[]>>;
 }
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 const IMAGE_WIDTH = (width - 70) / 3;
 
 const SpotRegistReviewTemplate = ({
@@ -104,22 +104,24 @@ const SpotRegistReviewTemplate = ({
           <Text style={styles.brown}>사진 첨부하기</Text>
         </View>
       </TouchableOpacity>
-      <FlatList
-        style={[
-          {
-            paddingTop: 6,
-          },
-        ]}
-        data={images}
-        keyExtractor={(item, index) => (item?.filename ?? item?.path) + index}
-        renderItem={renderItem}
-        numColumns={3}
-        ListEmptyComponent={
-          <View>
-            <Text>선택된 사진이 없습니다.</Text>
-          </View>
-        }
-      />
+      <SafeAreaView style={{height: 120}}>
+        <FlatList
+          style={[
+            {
+              paddingTop: 6,
+            },
+          ]}
+          horizontal
+          data={images}
+          keyExtractor={(item, index) => (item?.filename ?? item?.path) + index}
+          renderItem={renderItem}
+          ListEmptyComponent={
+            <View>
+              <Text>선택된 사진이 없습니다.</Text>
+            </View>
+          }
+        />
+      </SafeAreaView>
       <View style={styles.textBox}>
         <TextInputBox
           content={content}
@@ -134,9 +136,9 @@ const SpotRegistReviewTemplate = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    height: height,
   },
   titleContainer: {
     width: '100%',
@@ -150,6 +152,7 @@ const styles = StyleSheet.create({
   },
   textBox: {
     marginVertical: 20,
+    height: 150,
     width: '100%',
   },
   border: {
