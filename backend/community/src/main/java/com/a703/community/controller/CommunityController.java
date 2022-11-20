@@ -5,6 +5,7 @@ import com.a703.community.dto.response.MainListDto;
 import com.a703.community.dto.response.OtherListDto;
 import com.a703.community.dto.response.PostDto;
 import com.a703.community.dto.response.WithListDto;
+import com.a703.community.dto.response.connection.DogInfoDto;
 import com.a703.community.dto.response.connection.UserInfoDto;
 import com.a703.community.entity.Post;
 import com.a703.community.repository.PostRepository;
@@ -119,6 +120,12 @@ public class CommunityController {
         }
 
         return ResponseEntity.status(status).body(flag);
+    }
+
+    @GetMapping("/post/dog-info/{postIdx}")
+    public ResponseEntity<?>showPostDogInfo(@PathVariable Long postIdx) {
+        List<DogInfoDto> dogInfoDto = communityService.showPostDogInfo(postIdx);
+        return ResponseEntity.ok().body(dogInfoDto);
     }
 
 }

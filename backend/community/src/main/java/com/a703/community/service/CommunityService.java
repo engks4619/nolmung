@@ -259,4 +259,15 @@ public class CommunityService {
                 .build();
     }
 
+    public List<DogInfoDto> showPostDogInfo(Long postIdx){
+
+        List<LuckyDog> luckyDogList = luckyDogRepository.findByIdPostPostIdx(postIdx);
+
+
+        List<Long> dogIdxList = luckyDogList.stream().map(luckyDog -> luckyDog.getId().getDogIdx()).collect(Collectors.toList());
+
+        return clientUtil.requestDogInfo(dogIdxList);
+
+    }
+
 }
