@@ -202,6 +202,7 @@ function ChatsDetail({route, navigation}: any) {
           );
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
+          console.log(gpsInfo);
           navigation.navigate('MapViewWatcher', {postIdx: postIdx});
           dispatch(setPath({path: gpsInfo.gps}));
         }
@@ -215,6 +216,7 @@ function ChatsDetail({route, navigation}: any) {
   }, [locationSocket]);
 
   const hadleMyDogLocation = useCallback(() => {
+    console.log('pressed', locationSocket);
     if (locationSocket) {
       locationSocket.emit('getGps', roomId);
     }
@@ -236,9 +238,7 @@ function ChatsDetail({route, navigation}: any) {
       // navigation.navigate('MapViewWorker');
       // locationSocket.emit('gps', gpsLocalData);
     }
-
-    navigation;
-  }, [locationSocket, roomId, user, socketPositionState]);
+  }, [locationSocket, roomId, user]);
 
   return (
     <ChatsDetailTemplate

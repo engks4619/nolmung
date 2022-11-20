@@ -22,6 +22,7 @@ function OppentReviews({reviews}: Props) {
                 createdAt={review.createdAt}
                 content={review.review}
                 reviewer={review.reviewer}
+                starRate={review.star}
               />
             ))}
           </View>

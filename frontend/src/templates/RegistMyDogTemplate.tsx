@@ -246,7 +246,6 @@ const RegistMyDogTemplate = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    height: screenHeight,
     alignItems: 'center',
     paddingHorizontal: 20,
   },

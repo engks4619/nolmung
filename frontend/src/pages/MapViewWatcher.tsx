@@ -11,7 +11,8 @@ import {removeMultiple} from '~/utils/AsyncService';
 import {setDogs} from '~/slices/watcherSlice';
 function MapViewWatcher({navigation}: any, {route}: any) {
   const dispatch = useDispatch();
-  const postIdx = route.params;
+  const postIdx = route.params.postIdx;
+  console.log(postIdx);
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);
