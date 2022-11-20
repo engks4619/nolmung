@@ -235,7 +235,7 @@ location.on('connection', socket => {
         console.log("gps 저장 완료");
         socket.emit('replyGps', 'gps 저장 완료');
 
-        const gpsInfo = await Location.findOne({ roomId: roomId });
+        const gpsInfo = await Location.findOne({ roomId: data.roomId });
         const gpsList = []
         for (var i in gpsInfo.gps ) {
           gpsList.push({ latitude: gpsInfo.gps[i].latitude, longitude: gpsInfo.gps[i].longitude });
