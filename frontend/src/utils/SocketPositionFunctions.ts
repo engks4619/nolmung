@@ -39,11 +39,12 @@ export const startWalking = async (
   locationSocket: any,
   oppentIdx: number,
   roomId: string,
+  postIdx: any,
 ) => {
   const localIntended = await isIntended();
   if (socketPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
-    navigation.navigate('MapViewWorker');
+    navigation.navigate('MapViewWorker', {postIdx: postIdx});
   } else if (!socketPositionState.isLogging) {
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
     // if (!localIntended) {
@@ -51,12 +52,9 @@ export const startWalking = async (
     // lastLogAlert(navigation, dispatch, localList, dogs);{}
     // } else {
     // redux,local 둘다 없음 => 그냥 새로 시작
-    locationSocket.emit(
-      'startWalk',
-      {roomId: roomId, ownerIdx: oppentIdx},
-    );
+    locationSocket.emit('startWalk', {roomId: roomId, ownerIdx: oppentIdx});
     startLogging(dispatch, dogs, locationSocket, oppentIdx, roomId);
-    navigation.navigate('MapViewWorker');
+    navigation.navigate('MapViewWorker', {postIdx: postIdx});
   }
 };
 
@@ -230,5 +228,5 @@ export const doneWalking = async (
   quitLogging(watchId);
   dispatch(setIsLoggingOff());
   // storeData('@intendedSocket', true);
-  navigation.replace('LogView');
+  navigation.replace('LogViewWorker');
 };

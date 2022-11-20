@@ -39,13 +39,6 @@ function MapViewWatcher({navigation, route}: any) {
     (state: RootState) => state.socketPosition.lastUpdate,
   );
 
-  // LogView 함수 만들어서 import하기
-  // const dogs: any[] = [];
-  // dogsInfo.forEach(elem => {
-  //   if (selectedDogs.includes(elem.dogIdx)) {
-  //     dogs.push(elem);
-  //   }
-  // });
   // 개 불러오기
   const getDogs = async () => {
     const response = await axios.get(`community/post/dog-info/${postIdx}`);
@@ -55,39 +48,6 @@ function MapViewWatcher({navigation, route}: any) {
   useEffect(() => {
     getDogs();
   }, []);
-
-  // const submitLogs = async () => {
-  //   const jsonData = {
-  //     ownerIdx: userIdx,
-  //     walkerIdx: userIdx,
-  //     distance: distance,
-  //     time:
-  //       lastUpdate && startDate
-  //         ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
-  //           1000
-  //         : 0,
-  //     startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
-  //     endDate: moment(lastUpdate).format('YYYY-MM-DD HH:mm:ss'),
-  //     walkedDogList: selectedDogs,
-  //     gpsList: path,
-  //   };
-
-  //   try {
-  //     const response = await axios.post('withdog/walk', jsonData);
-  //     if (response.status === 200) {
-  //       removeMultiple(localList);
-  //     }
-  //   } catch (err: any) {
-  //     Alert.alert('저장에 실패 했습니다', '다시 시도해 주세요');
-  //   }
-  // };
-
-  // const handleDoneWalking = async () => {
-  //   doneWalking(dispatch, navigation, watchId);
-  //   dispatch(setIsSavingOn);
-  //   await submitLogs();
-  //   dispatch(setIsSavingOff);
-  // };
 
   //시간계산
   const defaultSec =
@@ -100,17 +60,6 @@ function MapViewWatcher({navigation, route}: any) {
   useInterval(() => {
     setSecond(second + 1);
   }, delay);
-
-  //거리계산
-  // useEffect(() => {
-  //   const haversine = require('haversine');
-  //   if (path.length >= 2) {
-  //     const d = haversine(path[path.length - 1], path[path.length - 2], {
-  //       unit: 'meter',
-  //     });
-  //     dispatch(addDistance(d));
-  //   }
-  // }, [path]);
 
   return (
     <View>

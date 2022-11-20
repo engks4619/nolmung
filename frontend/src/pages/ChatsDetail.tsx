@@ -22,20 +22,6 @@ export interface chatType {
   roomId: string;
   createdAt: string;
 }
-// const ChatsDetailStack = createNativeStackNavigator();
-// export const ChatsDetailStackNavigator = () => (
-//   <ChatsDetailStack.Navigator>
-//     <ChatsDetailStack.Screen
-//       name="ChatsDetailPage"
-//       component={ChatsDetail}
-//       options={{headerShown: false}}
-//     />
-//     <ChatsDetailStack.Screen
-//       name="MapViewWorker"
-//       component={MapViewWorker}
-//     />
-//   </ChatsDetailStack.Navigator>
-// );
 
 function ChatsDetail({route, navigation}: any) {
   const dispatch = useAppDispatch();
@@ -204,6 +190,7 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
+  const [intervalId, setIntervalId] = useState<number>();
   useEffect(() => {
     if (locationSocket && intervalId) {
       locationSocket.emit('locationLogin', {id: user});
@@ -216,9 +203,9 @@ function ChatsDetail({route, navigation}: any) {
           );
         } else if (gpsInfo === 400) {
           clearInterval(intervalId);
+          navigation.navigate('LogViewWatcher');
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
-          console.log('1', gpsInfo);
           navigation.navigate('MapViewWatcher', {postIdx: postIdx});
           dispatch(setPath({path: gpsInfo.gps}));
         }
@@ -230,7 +217,6 @@ function ChatsDetail({route, navigation}: any) {
       }
     };
   }, [locationSocket, intervalId]);
-  const [intervalId, setIntervalId] = useState<number>();
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
       const interval = setInterval(() => {
@@ -253,6 +239,7 @@ function ChatsDetail({route, navigation}: any) {
         locationSocket,
         oppentIdx,
         roomId,
+        postIdx,
       );
       // navigation.navigate('MapViewWorker');
       // locationSocket.emit('gps', gpsLocalData);

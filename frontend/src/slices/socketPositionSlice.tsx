@@ -11,6 +11,7 @@ const initialState = {
   second: 0,
   distance: 0,
   walkRoomId: '',
+  dogs: [],
 };
 
 const socketPositionSlice = createSlice({
@@ -62,11 +63,15 @@ const socketPositionSlice = createSlice({
     setWalkRoomId(state, action) {
       state.walkRoomId = action.payload;
     },
+    setDogs(state, action) {
+      state.dogs = action.payload.dogs;
+    },
   },
   extraReducers: builder => {},
 });
 
 export const {
+  setDogs,
   setMyPosition,
   setIsLoggingOn,
   setIsLoggingOff,

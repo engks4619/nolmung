@@ -11,6 +11,7 @@ import {RootState} from '~/store/reducer';
 import WalkReview from './WalkReview';
 import MapViewWorker from '@pages/MapViewWorker';
 import MapViewWatcher from '@pages/MapViewWatcher';
+import LogViewWorker from '@pages/LogViewWorker';
 export type ChatsParamList = {
   Chats: undefined;
   ChatsDetail: {roomId: string};
@@ -59,7 +60,12 @@ export const ChatsStackNavigator = () => (
     <ChatsStack.Screen
       name="MapViewWatcher"
       component={MapViewWatcher}
-      options={{headerShown: true}}
+      options={{headerShown: false}}
+    />
+    <ChatsStack.Screen
+      name="LogViewWorker"
+      component={LogViewWorker}
+      options={{headerShown: false}}
     />
   </ChatsStack.Navigator>
 );
