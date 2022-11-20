@@ -18,23 +18,6 @@ export const useSocket = (): [Socket | undefined, () => void] => {
   return [socket, disconnect];
 };
 
-let roomSocket: Socket | undefined;
-export const useRoomSocket = (): [Socket | undefined, () => void] => {
-  const roomDisconnect = useCallback(() => {
-    if (roomSocket) {
-      roomSocket.disconnect();
-      roomSocket = undefined;
-    }
-  }, []);
-  if (!roomSocket) {
-    roomSocket = io('http://nolmung.kr/room', {
-      transports: ['websocket'],
-    });
-    roomSocket.on('connect', () => console.log('rooomId', roomSocket.id));
-  }
-  return [roomSocket, roomDisconnect];
-};
-
 let chatSocket: Socket | undefined;
 export const useChatSocket = (): [Socket | undefined, () => void] => {
   const chatDisconnect = useCallback(() => {

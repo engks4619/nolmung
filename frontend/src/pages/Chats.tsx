@@ -50,14 +50,14 @@ export interface chatListType {
   subject: string;
   thumbnailUrl: string;
   userImgUrl: string;
+  pay: null | number;
+  roomId: string;
 }
 
 function Chats({navigation}: any) {
   const dispatch = useAppDispatch();
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
-  const chatListSocket = useSelector(
-    (state: RootState) => state.chat.roomInfos,
-  );
+
   const [myChatList, setMyChatList] = useState([]);
 
   const getChatsList = async () => {
@@ -74,6 +74,7 @@ function Chats({navigation}: any) {
 
     dispatch(
       setChatPostInfo({
+        pay: chatInfo.pay,
         postIdx: chatInfo.postIdx,
         thumbnailUrl: chatInfo.thumbnailUrl,
         subject: chatInfo.subject,
@@ -86,15 +87,9 @@ function Chats({navigation}: any) {
       }),
     );
 
-    const roomIdArr = chatListSocket.filter(chatInfoSocket => {
-      chatInfoSocket.opponentIdx === chatInfo.chatUserIdx &&
-        chatInfoSocket.ownerIdx === userIdx &&
-        chatInfoSocket.postIdx === chatInfo.postIdx;
-    });
-
     navigation.navigate('ChatList', {
       screen: 'ChatsDetail',
-      params: {roomId: roomIdArr[0]},
+      params: {roomId: chatInfo.roomId},
     });
   };
 

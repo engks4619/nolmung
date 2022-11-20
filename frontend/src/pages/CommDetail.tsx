@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {useAppDispatch} from '~/store';
 import CommDetailHeader from '~/molecules/CommDetailHeader';
-import {useRoomSocket, useSocket} from '~/hooks/useSocket';
+import {useSocket} from '~/hooks/useSocket';
 import {setChatPostInfo} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 
@@ -38,7 +38,6 @@ function CommDetail({route, navigation}: any) {
   const dispatch = useAppDispatch();
 
   const [socket, disconnect] = useSocket();
-  const [roomSocket, roomDisconnect] = useRoomSocket();
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
   const [isLiked, setIsLiked] = useState<Boolean>(false);
@@ -98,11 +97,12 @@ function CommDetail({route, navigation}: any) {
     dispatch(
       setChatPostInfo({
         postIdx,
-        writerIdx,
-        pay,
-        subject,
-        userImgUrl,
         thumbnailUrl,
+        subject,
+        pay,
+        writerIdx,
+        oppentIdx: writerIdx,
+        userImgUrl,
         writer,
         categoryType,
         completed,

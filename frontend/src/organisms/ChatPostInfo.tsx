@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import ChatWalkStart from '~/atoms/ChatWalkStart';
 import DogLocation from '~/atoms/DogLocation';
 import PostscriptBtn from '~/atoms/PostscriptBtn';
 import ScheduleBtn from '~/atoms/ScheduleBtn';
@@ -13,6 +14,7 @@ interface chatsPostInfoProps {
   categoryType: string;
   hadleMyDogLocation: () => void;
   isMyPost: boolean;
+  hadleStartWalk: () => void;
 }
 
 function ChatPostInfo({
@@ -24,6 +26,7 @@ function ChatPostInfo({
   categoryType,
   hadleMyDogLocation,
   isMyPost,
+  hadleStartWalk,
 }: chatsPostInfoProps) {
   return (
     <View style={styles.container}>
@@ -44,7 +47,9 @@ function ChatPostInfo({
           {isMyPost && !isCompleted ? (
             <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
           ) : null}
-          {isMyPost && isCompleted ? <Text>산책시작하기</Text> : null}
+          {!isMyPost && isCompleted ? (
+            <ChatWalkStart hadleStartWalk={hadleStartWalk} />
+          ) : null}
           <PostscriptBtn />
         </View>
       )}
