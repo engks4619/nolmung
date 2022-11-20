@@ -18,6 +18,8 @@ function CommunityTab({
   categoryType,
   modalOpen,
   setModalOpen,
+  searchValue,
+  setSearchValue,
 }: CommunityTabType) {
   return (
     <View style={styles.tabContainer}>
@@ -43,7 +45,11 @@ function CommunityTab({
       </View>
       <View style={styles.filterContainer}>
         <View style={[styles.filter, styles.hContainer]}>
-          <TextInput style={styles.searchBar} />
+          <TextInput
+            style={styles.searchBar}
+            value={searchValue}
+            onChangeText={text => setSearchValue(text)}
+          />
           <Search width={20} height={20} fill="black" />
         </View>
         <View style={styles.filter}>
@@ -88,9 +94,6 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: BORDER_COLOR,
-    borderRadius: 5,
     height: 40,
     marginHorizontal: 15,
   },

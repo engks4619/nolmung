@@ -9,6 +9,7 @@ import RegistArticle from '@pages/RegistArticle';
 import {MAIN_COLOR} from '~/const';
 import Oppent from '@pages/Oppent';
 import RegistHeader from '~/organisms/RegistHeader';
+import moment from 'moment';
 
 export type CommunityParamList = {
   Community: undefined;
@@ -52,6 +53,8 @@ export interface otherPostListType extends withPostListType {
 }
 
 function Community({navigation}: any) {
+  const endTime = new Date().setDate(new Date().getHours() + 20);
+
   const [categoryType, setCategoryType] = useState<string>('WITH');
   const [withPgNum, setWithPgNum] = useState<number>(0);
   const [withPostList, setWithPostList] = useState<withPostListType[]>([]);
@@ -62,6 +65,18 @@ function Community({navigation}: any) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [searching, setSearching] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [startDateModal, setStartDateModal] = useState<boolean>(false);
+  const [endDateModal, setEndDateModal] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndtDate] = useState<Date>(moment(endTime).toDate());
+  const [startPay, setStartPay] = useState<number>(0);
+  const [endPay, setEndPay] = useState<number>(100000);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [selectedSido, setSelectedSido] = useState('');
+  const [selectedSigugun, setSelectedSigugun] = useState('');
+  const [selectedDong, setSelectedDong] = useState('');
+  const [selectedBreed, setSelectedBreed] = useState<number>(-1);
+  const [requestBody, setRequestBody] = useState({});
 
   const navigateWithPg = () => {
     setCategoryType('WITH');
@@ -135,6 +150,19 @@ function Community({navigation}: any) {
     }
   };
 
+  const searchWithPost = async () => {
+    const body = {
+      startWalkDate: startDate,
+      endWalkDate: endDate,
+      dogBreed: -1 ? null : selectedBreed,
+      title: searchValue.trim() !== '' ? searchValue.trim() : null,
+      address: selectedSido + ' ' + selectedSigugun + ' ' + selectedDong,
+    };
+    await axios
+      .post(`http://nolmung.kr/api/community/search/with/?page=0`, body)
+      .then(response => setWithPostList([...response.data.withDtoList]));
+  };
+
   useEffect(() => {
     loadMore();
   }, [categoryType]);
@@ -156,6 +184,31 @@ function Community({navigation}: any) {
       setSearching={setSearching}
       modalOpen={modalOpen}
       setModalOpen={setModalOpen}
+      startDateModal={startDateModal}
+      setStartDateModal={setStartDateModal}
+      endDateModal={endDateModal}
+      setEndDateModal={setEndDateModal}
+      startDate={startDate}
+      setStartDate={setStartDate}
+      endDate={endDate}
+      setEndDate={setEndtDate}
+      requestBody={requestBody}
+      setRequestBody={setRequestBody}
+      startPay={startPay}
+      setStartPay={setStartPay}
+      endPay={endPay}
+      setEndPay={setEndPay}
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
+      selectedSido={selectedSido}
+      setSelectedSido={setSelectedSido}
+      selectedSigugun={selectedSigugun}
+      setSelectedSigugun={setSelectedSigugun}
+      selectedDong={selectedDong}
+      setSelectedDong={setSelectedDong}
+      selectedBreed={selectedBreed}
+      setSelectedBreed={setSelectedBreed}
+      searchWithPost={searchWithPost}
     />
   );
 }
