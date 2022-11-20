@@ -50,12 +50,12 @@ io.on('connection', socket => {
   console.log('소켓 연결 완료! socket 아이디 : ', socket.id);
 
   // 'login' 이벤트를 받았을 때의 처리
-  socket.on('login', async loginId => {
+  socket.on('login', async login => {
     // 기존 클라이언트 ID가 없으면 클라이언트 ID를 맵에 추가
     console.log('접속한 소켓의 ID : ' + socket.id);
-    login_ids[loginId] = socket.id;
-    socket.loginId = loginId;
-    console.log("로그인 소켓: ", login_ids[loginId]);
+    login_ids[login.id] = socket.id;
+    socket.loginId = login.id;
+    console.log("로그인 소켓: ", login_ids[login.id]);
 
     io.to(socket.id).emit('replyLogin', '로그인 성공');
 
