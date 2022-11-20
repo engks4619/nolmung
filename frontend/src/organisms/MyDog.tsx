@@ -19,13 +19,6 @@ function MyDog({myDog, isEdit, deleteDog}: Props) {
   const defaultDogImage = '/images/spot/default/default.png';
   return (
     <View style={styles.myDogContainer}>
-      {/* <Text>{myDog?.breedCodeValue}</Text>
-      <Text>{myDog?.dogIdx}</Text>
-      <Text>{myDog?.dogName}</Text>
-      <Text>{myDog?.gender}</Text>
-      <Text>{myDog?.image}</Text>
-      <Text>{myDog?.neuter}</Text>
-      <Text>{myDog?.vaccination}</Text> */}
       <View style={styles.profileContianer}>
         <Profile imageSource={myDog.image ? myDog.image : defaultDogImage} />
       </View>
@@ -67,7 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     color: 'black',
-    // marginBott
   },
   deleteButton: {
     position: 'absolute',
