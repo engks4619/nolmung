@@ -7,7 +7,7 @@ import Squre from '~/atoms/Squre';
 interface chatsPostInfoProps {
   postSubject: string;
   postImage: string;
-  postPay: number;
+  postPay?: number;
   handleConfirmWalk: () => void;
   isCompleted: boolean;
   categoryType: string;
@@ -32,7 +32,7 @@ function ChatPostInfo({
         <View style={styles.textContainer}>
           <Text style={styles.bold}>{postSubject}</Text>
           <Text style={styles.bold}>
-            {postPay !== null ? `${postPay.toLocaleString('ko-KR')}원` : null}
+            {postPay !== null ? `${postPay?.toLocaleString('ko-KR')}원` : null}
           </Text>
         </View>
       </View>

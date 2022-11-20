@@ -9,6 +9,7 @@ import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
 import {setCompleted} from '~/slices/chatSlice';
+import {setPostInfo} from '~/slices/postSlice';
 
 export interface chatType {
   chat: string;
@@ -79,9 +80,21 @@ function ChatsDetail({route, navigation}: any) {
   }, [chatSocket, roomId, localMsg, chatDisconnect]);
 
   useEffect(() => {
+    dispatch(
+      setPostInfo({
+        writerIdx: oppentIdx,
+        userImgUrl: oppentImg,
+        writerName: oppentName,
+      }),
+    );
+
     navigation.setOptions({
       header: () => (
-        <CustomHeader navigation={navigation} middleText={oppentName} />
+        <CustomHeader
+          navigation={navigation}
+          middleText={oppentName}
+          middleFunc={() => navigation.navigate('Oppent', {oppentIdx})}
+        />
       ),
     });
   }, [navigation, oppentName]);
