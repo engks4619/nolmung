@@ -121,6 +121,12 @@ function Main({navigation}: any) {
     } catch (error) {}
   };
 
+  const naviDogApply = () => {
+    navigation.navigate('MyDogList', {
+      screens: 'RegistMyDog',
+    });
+  };
+
   useEffect(() => {
     getMainPostList();
     getMyDogs();
@@ -143,6 +149,7 @@ function Main({navigation}: any) {
         totalTime={totalTime}
         totalWalk={totalWalk}
         isWalking={isWalking}
+        naviDogApply={naviDogApply}
       />
     </ScrollView>
   );
