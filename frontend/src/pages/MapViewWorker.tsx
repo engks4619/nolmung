@@ -71,8 +71,8 @@ function MapViewWorker({navigation}: any) {
           ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
             1000
           : 0,
-      startDate: moment(startDate).format('YYYY-MM-DD HH:mm:ss'),
-      endDate: moment(lastUpdate).format('YYYY-MM-DD HH:mm:ss'),
+      startDate: startDate,
+      endDate: lastUpdate,
       walkedDogList: selectedDogs,
       gpsList: path,
     };
@@ -90,9 +90,9 @@ function MapViewWorker({navigation}: any) {
   const handleDoneWalking = async () => {
     locationSocket?.emit('endWalk', roomId);
     doneWalking(dispatch, navigation, watchId);
-    dispatch(setIsSavingOn);
-    await submitLogs();
-    dispatch(setIsSavingOff);
+    // dispatch(setIsSavingOn);
+    // await submitLogs();
+    // dispatch(setIsSavingOff);
   };
 
   //시간계산
