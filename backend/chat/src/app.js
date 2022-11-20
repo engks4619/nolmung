@@ -43,7 +43,7 @@ const chat = io.of('/chat');
 const location = io.of('/location');
 
 var login_ids = {}; // 로그인 id 매핑 (로그인 ID -> 소켓 ID)
-var roomLogin_ids = {};
+var locationLogin_ids = {};
 
 // 소켓 연결 및 이벤트
 io.on('connection', socket => {
@@ -187,6 +187,18 @@ chat.on('connection', socket => {
 location.on('connection', socket => {
   console.log('location 네임스페이스에 접속');
 
+  // 'locationLogin' 이벤트를 받았을 때의 처리
+  socket.on('locationLogin', async login => {
+
+    // 기존 클라이언트 ID가 없으면 클라이언트 ID를 맵에 추가
+    console.log('location에 접속한 소켓의 ID : ' + socket.id);
+    locationLogin_ids[login.id] = socket.id;
+    socket.loginId = login.id;
+    console.log("로그인 소켓: ", locationLogin_ids[login.id]);
+
+    io.of('/location').to(socket.id).emit('replyLocationLogin', 'location 로그인 성공');
+  });
+
   socket.on('startWalk', async data => {    // 산책 시작
     console.log("startWalk 이벤트");
     try {
@@ -235,13 +247,13 @@ location.on('connection', socket => {
         console.log("gps 저장 완료");
         socket.emit('replyGps', 'gps 저장 완료');
 
-        const gpsInfo = await Location.findOne({ roomId: data.roomId });
         const gpsList = []
-        for (var i in gpsInfo.gps ) {
-          gpsList.push({ latitude: gpsInfo.gps[i].latitude, longitude: gpsInfo.gps[i].longitude });
+        for (var i in updatedGps.gps ) {
+          gpsList.push({ latitude: updatedGps.gps[i].latitude, longitude: updatedGps.gps[i].longitude });
         }
-        socket.emit('gpsInfo', {roomId: gpsInfo.roomId, ownerIdx: gpsInfo.ownerIdx, gps: gpsList });
-     
+       
+        io.of('/location').to(locationLogin_ids[updatedGps.ownerIdx]).emit('gpsInfo', {roomId: updatedGps.roomId, ownerIdx: updatedGps.ownerIdx, gps: gpsList });
+        console.log("gpsInfo: ", gpsInfo);
       }
 
     } catch (error) {
