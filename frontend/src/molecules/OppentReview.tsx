@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   subContainer: {
-    marginLeft: 7,
+    marginLeft: 8,
     flexDirection: 'row',
   },
   starContainer: {

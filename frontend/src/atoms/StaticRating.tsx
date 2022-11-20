@@ -34,7 +34,6 @@ function StaticRating({starRate, width = 13, height = 13}: Props) {
 
 const styles = StyleSheet.create({
   customRatingBarStyle: {
-    // marginTop: 5,
     justifyContent: 'center',
     flexDirection: 'row',
   },
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     resizeMode: 'cover',
-    marginHorizontal: 3,
+    marginHorizontal: 2,
   },
 });
 
