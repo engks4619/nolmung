@@ -51,6 +51,7 @@ export const startWalking = async (
     // lastLogAlert(navigation, dispatch, localList, dogs);
     // } else {
     // redux,local 둘다 없음 => 그냥 새로 시작
+    locationSocket.emit('startWalk');
     startLogging(dispatch, dogs, locationSocket, user, roomId);
     navigation.navigate('MapViewWorker');
   }

@@ -95,7 +95,9 @@ function ChatsDetail({route, navigation}: any) {
         Alert.alert('확정', `${data}`);
         console.log('Socket Decide', data);
       });
-
+      chatSocket.on('replyStartWalk', (data: string) => {
+        console.log(data);
+      });
       return () => {
         if (chatSocket) {
           chatSocket.off('chats');
@@ -216,8 +218,8 @@ function ChatsDetail({route, navigation}: any) {
   }, [locationSocket]);
 
   const hadleMyDogLocation = useCallback(() => {
-    console.log('pressed', locationSocket);
     if (locationSocket) {
+      console.log('getgps');
       locationSocket.emit('getGps', roomId);
     }
   }, [locationSocket, roomId]);
