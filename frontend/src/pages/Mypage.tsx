@@ -61,18 +61,6 @@ export const MypageStackNavigator = () => (
       component={LogView}
       options={{headerShown: true}}
     />
-    <MypageStack.Screen
-      name="WalkReview"
-      component={WalkReview}
-      options={{
-        headerTitle: '상대방 이름',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
-      }}
-    />
   </MypageStack.Navigator>
 );
 
@@ -102,11 +90,6 @@ const myPageListNavi = [
     name: 'MyDogList',
     icon: <Paw width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
-  },
-  {
-    name: 'WalkReview',
-    icon: <Schedule width={15} height={15} fill={'black'} stroke={'black'} />,
-    btnText: '산책후기',
   },
 ];
 // 마이페이지 버튼탭 목록(다른동작)

@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import ChatWalkStart from '~/atoms/ChatWalkStart';
@@ -28,6 +29,7 @@ function ChatPostInfo({
   isMyPost,
   hadleStartWalk,
 }: chatsPostInfoProps) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.postInfoContainer}>
@@ -50,7 +52,7 @@ function ChatPostInfo({
           {!isMyPost && isCompleted ? (
             <ChatWalkStart hadleStartWalk={hadleStartWalk} />
           ) : null}
-          <PostscriptBtn />
+          <PostscriptBtn onClick={()=>navigation.navigate('WalkReview')} />
         </View>
       )}
     </View>

@@ -8,6 +8,7 @@ import {useAppDispatch} from '~/store';
 import {setChatPostInfo} from '~/slices/chatSlice';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import WalkReview from './WalkReview';
 
 export type ChatsParamList = {
   Chats: undefined;
@@ -28,6 +29,18 @@ export const ChatsStackNavigator = () => (
     <ChatsStack.Screen
       name="ChatsDetail"
       component={ChatsDetail}
+      options={{
+        headerTitle: '상대방 이름',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
+    <ChatsStack.Screen
+      name="WalkReview"
+      component={WalkReview}
       options={{
         headerTitle: '상대방 이름',
         headerTitleAlign: 'center',
