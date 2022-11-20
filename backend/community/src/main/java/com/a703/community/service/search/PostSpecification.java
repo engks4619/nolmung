@@ -42,5 +42,10 @@ public class PostSpecification {
     public static Specification<Post> findDogBreedByPostIdx(List<Long> postIdxList) {
         return (root, query, criteriaBuilder) -> root.get("postIdx").in(postIdxList);
     }
-
+    public static Specification<Post> findTitle(String title){
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("subject"), "%" + title.trim() + "%");
+    }
+    public static Specification<Post> findAddress(String address){
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("subject"), "%" + address.substring(0,4) + "%");
+    }
 }
