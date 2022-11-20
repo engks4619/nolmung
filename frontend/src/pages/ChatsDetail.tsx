@@ -197,7 +197,7 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-  const endWalk = () => {
+  
   const endWalk = () => {
     if (locationSocket) {
       locationSocket.emit('endWalk');

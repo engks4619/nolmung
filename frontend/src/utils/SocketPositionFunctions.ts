@@ -54,7 +54,6 @@ export const startWalking = async (
     locationSocket.emit(
       'startWalk',
       {roomId: roomId, ownerIdx: oppentIdx},
-      {roomId: roomId, ownerIdx: user},
     );
     startLogging(dispatch, dogs, locationSocket, oppentIdx, roomId);
     navigation.navigate('MapViewWorker');
