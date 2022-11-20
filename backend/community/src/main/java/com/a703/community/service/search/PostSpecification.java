@@ -46,6 +46,6 @@ public class PostSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("subject"), "%" + title.trim() + "%");
     }
     public static Specification<Post> findAddress(String address){
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("subject"), "%" + address.substring(0,4) + "%");
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("subject"), "%" + address.substring(0,2) + "%");
     }
 }
