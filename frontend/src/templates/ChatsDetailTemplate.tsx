@@ -21,6 +21,7 @@ interface Props {
   fullMsg: any;
   user: number;
   oppentImg: string;
+  hadleStartWalk: () => void;
 }
 
 function ChatsDetailTemplate({
@@ -34,6 +35,7 @@ function ChatsDetailTemplate({
   categoryType,
   hadleMyDogLocation,
   isMyPost,
+  hadleStartWalk,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -46,6 +48,7 @@ function ChatsDetailTemplate({
         categoryType={categoryType}
         hadleMyDogLocation={hadleMyDogLocation}
         isMyPost={isMyPost}
+        hadleStartWalk={hadleStartWalk}
       />
       <ChatField fullMsg={fullMsg} user={user} oppentImg={oppentImg} />
       <View style={styles.inputContainer}>

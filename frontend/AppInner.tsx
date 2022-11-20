@@ -27,12 +27,7 @@ import {RootState} from './src/store/reducer';
 import {getLocation, setUser} from '~/slices/userSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '~/utils/axios';
-import {
-  useSocket,
-  useRoomSocket,
-  useChatSocket,
-  useLocationSocket,
-} from '~/hooks/useSocket';
+import {useSocket, useChatSocket, useLocationSocket} from '~/hooks/useSocket';
 import {setRoomInfos} from '~/slices/chatSlice';
 
 import PushNotification from 'react-native-push-notification';
@@ -61,13 +56,8 @@ function AppInner() {
   usePermissions(); //권한 요청 커스텀 훅
   const dispatch = useDispatch();
   const [socket, disconnect] = useSocket();
-  const [roomSocket, roomDisconnect] = useRoomSocket();
   const [chatSocket, chatDisconnect] = useChatSocket();
   const [locationSocket, locationDisconnect] = useLocationSocket();
-
-  const [partiRoomInfos, setPartiRoomInfos] = useSelector(
-    (state: RootState) => state.chat.roomInfos,
-  );
 
   const isLoggedIn = useSelector(
     (state: RootState) => !!state.user.accessToken,
@@ -121,14 +111,7 @@ function AppInner() {
   };
 
   useEffect(() => {
-    if (
-      socket &&
-      isLoggedIn &&
-      userIdx &&
-      chatSocket &&
-      locationSocket &&
-      roomSocket
-    ) {
+    if (socket && isLoggedIn && userIdx && chatSocket && locationSocket) {
       const data = {id: userIdx};
       socket.emit('login', data);
 
@@ -143,11 +126,6 @@ function AppInner() {
       });
 
       socket.on('joinRoom', joinData => console.log('방생성:', joinData));
-
-      // roomSocket.emit('roomLogin', userIdx);
-      // roomSocket.on('join', joinData => {
-      //   console.log('join', joinData);
-      // });
 
       chatSocket.on('messageC', (msgData: chatType) => {
         if (msgData.sender === userIdx.toString()) {
@@ -164,6 +142,9 @@ function AppInner() {
       if (socket) {
         socket.off('login');
         socket.off('rooms');
+        socket.off('replyLogin');
+        socket.off('joinRoom');
+        socket.off('messageC');
       }
     };
   }, [isLoggedIn, socket, userIdx, chatSocket, locationSocket]);
@@ -171,17 +152,10 @@ function AppInner() {
   useEffect(() => {
     if (!isLoggedIn) {
       disconnect();
-      roomDisconnect();
       chatDisconnect();
       locationDisconnect();
     }
-  }, [
-    isLoggedIn,
-    disconnect,
-    roomDisconnect,
-    chatDisconnect,
-    locationDisconnect,
-  ]);
+  }, [isLoggedIn, disconnect, chatDisconnect, locationDisconnect]);
 
   return (
     <NavigationContainer>
