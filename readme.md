@@ -139,4 +139,7 @@ https://documenter.getpostman.com/view/21981976/2s8YCjBWyX
 
 - WireFrame
 
-![image](/uploads/f1071b55fe10d101c1d2bcf29aaaf986/image.png)
+![image](/uploads/f1071b55fe10d101c1d2bcf29aaaf986/image.png)  
+
+- 기능명세서  
+[기능명세서.pdf](/uploads/446c3de6181b4049bd78b18b80182a33/기능명세서.pdf)  
