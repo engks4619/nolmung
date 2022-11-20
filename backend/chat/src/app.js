@@ -261,9 +261,10 @@ location.on('connection', socket => {
       const gpsInfo = await Location.findOne({ roomId: roomId });
       console.log(socket.id)
 
-      if (gpsInfo.walking) {    // 산책 시작 안했거나 산책중인 경우
+      if (gpsInfo.walking == null) {    // 산책 기록 없는 경우
+        socket.emit('gpsInfo', response.statusCode = 400);
+      } else if (gpsInfo.walking) {    // 산책 시작 안했거나 산책중인 경우
         socket.emit('gpsInfo', response.statusCode = 403);
-        
       } else {
 
         const gpsList = []
