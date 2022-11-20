@@ -129,6 +129,14 @@ chat.on('connection', socket => {
     socket.join(roomId);
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
+    // 산책 확정 여부 전달
+    const room = await Chat.find({ room: roomId });
+    if (room.complete) {
+      socket.emit('completed', '산책 확정');
+    } else {
+      socket.emit('completed', '산책 미확정');
+    }
+
     try {
       const chats = await Chat.find({ room: roomId }).sort('-createdAt');
       const chatInfo = []
@@ -222,9 +230,18 @@ location.on('connection', socket => {
         socket.emit('replyGps', '산책을 시작하세요.');
       } else {
         
-        const gpsInfo = await Location.updateMany({ _id: gpsData._id }, { $push: { gps: { latitude: data.gps.latitude, longitude: data.gps.longitude } } })
+        // gps 위치 추가
+        const updatedGps = await Location.updateMany({ _id: gpsData._id }, { $push: { gps: { latitude: data.gps.latitude, longitude: data.gps.longitude } } });   
         console.log("gps 저장 완료");
         socket.emit('replyGps', 'gps 저장 완료');
+
+        const gpsInfo = await Location.findOne({ roomId: roomId });
+        const gpsList = []
+        for (var i in gpsInfo.gps ) {
+          gpsList.push({ latitude: gpsInfo.gps[i].latitude, longitude: gpsInfo.gps[i].longitude });
+        }
+        socket.emit('gpsInfo', {roomId: gpsInfo.roomId, ownerIdx: gpsInfo.ownerIdx, gps: gpsList });
+     
       }
 
     } catch (error) {
