@@ -30,7 +30,7 @@ public class ChatService {
 
     private final LuckyDogRepository luckyDogRepository;
 
-    public void saveChat(Long postIdx, String token){
+    public void saveChat(Long postIdx, String roomId, String token){
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();
@@ -41,6 +41,7 @@ public class ChatService {
         Chat chat = Chat.builder()
                 .callerUserIdx(userIdx)
                 .post(post)
+                .roomId(roomId)
                 .build();
         chatRepository.save(chat);
     }
@@ -68,6 +69,8 @@ public class ChatService {
                             .categoryType(chat.getPost().getCategoryType())
                             .subject(chat.getPost().getSubject())
                             .thumbnailUrl(thumbnailUrl)
+                            .roomId(chat.getRoomId())
+                            .pay(chat.getPost().getPay())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -88,6 +91,8 @@ public class ChatService {
                             .categoryType(chat.getPost().getCategoryType())
                             .subject(chat.getPost().getSubject())
                             .thumbnailUrl(thumbnailUrl)
+                            .roomId(chat.getRoomId())
+                            .pay(chat.getPost().getPay())
                             .build();
                 })
                 .collect(Collectors.toList());

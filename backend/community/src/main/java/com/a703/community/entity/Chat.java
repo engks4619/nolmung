@@ -32,5 +32,6 @@ public class Chat {
     private LocalDateTime createDate;
 
     private Long callerUserIdx;
+    private String roomId;
 
 }
