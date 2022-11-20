@@ -9,7 +9,10 @@ import {setChatPostInfo} from '~/slices/chatSlice';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import WalkReview from './WalkReview';
-
+import MapViewWorker from '@pages/MapViewWorker';
+import MapViewWatcher from '@pages/MapViewWatcher';
+import LogViewWorker from '@pages/LogViewWorker';
+import LogViewWatcher from '@pages/LogViewWatcher';
 export type ChatsParamList = {
   Chats: undefined;
   ChatsDetail: {roomId: string};
@@ -49,6 +52,26 @@ export const ChatsStackNavigator = () => (
           fontSize: 15,
         },
       }}
+    />
+    <ChatsStack.Screen
+      name="MapViewWorker"
+      component={MapViewWorker}
+      options={{headerShown: false}}
+    />
+    <ChatsStack.Screen
+      name="MapViewWatcher"
+      component={MapViewWatcher}
+      options={{headerShown: false}}
+    />
+    <ChatsStack.Screen
+      name="LogViewWorker"
+      component={LogViewWorker}
+      options={{headerShown: false}}
+    />
+    <ChatsStack.Screen
+      name="LogViewWatcher"
+      component={LogViewWatcher}
+      options={{headerShown: false}}
     />
   </ChatsStack.Navigator>
 );

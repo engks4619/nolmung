@@ -8,9 +8,14 @@ import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setCompleted} from '~/slices/chatSlice';
+import {setCompleted, setRoomInfos} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
-
+import {startWalking} from '~/utils/SocketPositionFunctions';
+import Geolocation from '@react-native-community/geolocation';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MapViewWorker from '@pages/MapViewWorker';
+import {setPath} from '~/slices/watcherSlice';
+import {setWalkRoomId} from '~/slices/socketPositionSlice';
 export interface chatType {
   chat: string;
   sender: string;
@@ -77,12 +82,18 @@ function ChatsDetail({route, navigation}: any) {
         Alert.alert('확정', `${data}`);
         console.log('Socket Decide', data);
       });
-
+      chatSocket.on('replyStartWalk', (data: string) => {
+        console.log(data);
+      });
+      locationSocket.on('replyGps', data => {
+        console.log('리플라이');
+      });
       return () => {
         if (chatSocket) {
           chatSocket.off('chats');
           chatSocket.off('messageC');
           chatSocket.off('decide');
+          locationSocket.off('replyGps');
         }
       };
     }
@@ -178,17 +189,31 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
-  useEffect(() => {
+  const endWalk = () => {
     if (locationSocket) {
+      locationSocket.emit('endWalk');
+    }
+  };
+
+  const [intervalId, setIntervalId] = useState<number>();
+  useEffect(() => {
+    if (locationSocket && intervalId) {
+      locationSocket.emit('locationLogin', {id: user});
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo[0].gps);
-        if (gpsInfo === 403) {
+        console.log(gpsInfo);
+        if (gpsInfo === 400) {
           Alert.alert(
             '알림',
             '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
           );
+        } else if (gpsInfo === 400) {
+          clearInterval(intervalId);
+          console.log('클리어인터벌');
+          navigation.navigate('WalkReview');
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
+
+          dispatch(setPath({path: gpsInfo.gps}));
         }
       });
     }
@@ -197,27 +222,37 @@ function ChatsDetail({route, navigation}: any) {
         locationSocket.off('gpsInfo');
       }
     };
-  }, [locationSocket]);
-
+  }, [locationSocket, intervalId]);
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
-      locationSocket.emit('getGps', roomId);
+      navigation.navigate('MapViewWatcher', {
+        postIdx: postIdx,
+        interval: intervalId,
+      });
+      const interval = setInterval(() => {
+        locationSocket.emit('getGps', roomId);
+      }, 5000);
+      setIntervalId(interval);
     }
   }, [locationSocket, roomId]);
-
+  const socketPositionState = useSelector(
+    (state: RootState) => state.socketPosition,
+  );
   const hadleStartWalk = useCallback(() => {
-    const gpsLocalData = {
-      ownerIdx: user,
-      roomId,
-      gps: [
-        {
-          // gps정보 "latitude": 1.1111,  // 위도
-          //     "longitude": 1.111   // 경도
-        },
-      ],
-    };
-    if (locationSocket) {
-      locationSocket.emit('gps', gpsLocalData);
+    dispatch(setWalkRoomId(roomId));
+    if (locationSocket && oppentIdx) {
+      startWalking(
+        dispatch,
+        navigation,
+        socketPositionState,
+        [18], //이따 postid 넣고 postid로 api 쏴서 개리스틀 받아와야함
+        locationSocket,
+        oppentIdx,
+        roomId,
+        postIdx,
+      );
+      // navigation.navigate('MapViewWorker');
+      // locationSocket.emit('gps', gpsLocalData);
     }
   }, [locationSocket, roomId, user]);
 
