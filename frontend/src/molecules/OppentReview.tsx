@@ -11,7 +11,7 @@ interface Props {
   starRate: number;
 }
 
-function OppentReview({createdAt, content, reviewer}: Props) {
+function OppentReview({createdAt, content, reviewer, starRate}: Props) {
   const converDate = useCallback((createDate: string) => {
     const result = createDate.split('T')[0].replaceAll('-', '.').slice(2);
     return result;
@@ -28,7 +28,7 @@ function OppentReview({createdAt, content, reviewer}: Props) {
         <View style={styles.starContainer}>
           <Text style={styles.nameStyle}>{reviewer.nickname}</Text>
           <View style={styles.subContainer}>
-            <StaticRating starRate={4} />
+            <StaticRating starRate={starRate} />
             <Text style={styles.dateStyle}>{converDate(createdAt)}</Text>
           </View>
         </View>
