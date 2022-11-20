@@ -37,7 +37,7 @@ export const startWalking = async (
   socketPositionState: any,
   dogs: number[],
   locationSocket: any,
-  user: number,
+  oppentIdx: number,
   roomId: string,
 ) => {
   const localIntended = await isIntended();
@@ -51,8 +51,8 @@ export const startWalking = async (
     // lastLogAlert(navigation, dispatch, localList, dogs);
     // } else {
     // redux,local 둘다 없음 => 그냥 새로 시작
-    locationSocket.emit('startWalk');
-    startLogging(dispatch, dogs, locationSocket, user, roomId);
+    locationSocket.emit('startWalk', {roomId: roomId, ownerIdx: oppentIdx});
+    startLogging(dispatch, dogs, locationSocket, oppentIdx, roomId);
     navigation.navigate('MapViewWorker');
   }
 };
@@ -61,17 +61,17 @@ export const startLogging = async (
   dispatch: any,
   dogs: number[],
   locationSocket: any,
-  user: number,
+  oppentIdx: number,
   roomId: string,
 ) => {
   dispatch(resetStates());
   dispatch(setIsLoggingOn());
-  storeData('@DogsSocket', dogs);
+  // storeData('@DogsSocket', dogs);
   const hasLog = await containsKey('@WalkingLogsSocket');
   if (!hasLog) {
     const startDate = new Date().toString();
-    storeData('@StartDateSocket', startDate);
-    storeData('@intendedSocket', false);
+    // storeData('@StartDateSocket', startDate);
+    // storeData('@intendedSocket', false);
     dispatch(setStartDate(startDate));
     storeData('@WalkingLogsSocket', []);
   }
@@ -79,7 +79,7 @@ export const startLogging = async (
     position => {
       console.log('position은 새로받나');
       const gpsLocalData = {
-        ownerIdx: user,
+        ownerIdx: oppentIdx,
         roomId,
         gps: {
           latitude: position.coords.latitude,
@@ -91,7 +91,7 @@ export const startLogging = async (
       const UpdateDate = new Date().toString();
       dispatch(setMyPosition(gpsLocalData.gps));
       dispatch(addPath(gpsLocalData.gps));
-      storeData('@LastUpdateSocket', UpdateDate);
+      // storeData('@LastUpdateSocket', UpdateDate);
       dispatch(setLastUpdate(UpdateDate));
       addPathToAsync(gpsLocalData.gps);
     },

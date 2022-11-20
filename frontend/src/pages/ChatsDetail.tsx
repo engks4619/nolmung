@@ -99,11 +99,15 @@ function ChatsDetail({route, navigation}: any) {
       chatSocket.on('replyStartWalk', (data: string) => {
         console.log(data);
       });
+      locationSocket.on('replyGps', data => {
+        console.log('리플라이');
+      });
       return () => {
         if (chatSocket) {
           chatSocket.off('chats');
           chatSocket.off('messageC');
           chatSocket.off('decide');
+          locationSocket.off('replyGps');
         }
       };
     }
@@ -193,13 +197,17 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-  export const endWalk = () => {
+  const endWalk = () => {
     if (locationSocket) {
       locationSocket.emit('endWalk');
     }
   };
   useEffect(() => {
     if (locationSocket) {
+      console.log('재랜더링되었나요');
+      locationSocket.on('replyGps', data => {
+        console.log(data);
+      });
       locationSocket.on('gpsInfo', gpsInfo => {
         console.log(gpsInfo);
         if (gpsInfo === 403) {
@@ -209,8 +217,7 @@ function ChatsDetail({route, navigation}: any) {
           );
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
-          console.log(gpsInfo);
-          navigation.navigate('MapViewWatcher', {postIdx: postIdx});
+          // navigation.navigate('MapViewWatcher', {postIdx: postIdx});
           dispatch(setPath({path: gpsInfo.gps}));
         }
       });
@@ -240,7 +247,7 @@ function ChatsDetail({route, navigation}: any) {
         socketPositionState,
         [18], //이따 postid 넣고 postid로 api 쏴서 개리스틀 받아와야함
         locationSocket,
-        user,
+        oppentIdx,
         roomId,
       );
       // navigation.navigate('MapViewWorker');

@@ -9,10 +9,10 @@ import {addDistance} from '~/slices/watcherSlice';
 import axios from 'utils/axios';
 import {removeMultiple} from '~/utils/AsyncService';
 import {setDogs} from '~/slices/watcherSlice';
-function MapViewWatcher({navigation}: any, {route}: any) {
+
+function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
   const postIdx = route.params.postIdx;
-  console.log(postIdx);
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);
@@ -48,8 +48,9 @@ function MapViewWatcher({navigation}: any, {route}: any) {
   // });
   // 개 불러오기
   const getDogs = async () => {
-    const response = await axios.post(`community/post/dog-info/${postIdx}`);
-    dispatch(setDogs(response));
+    const response = await axios.get(`community/post/dog-info/${postIdx}`);
+    console.log(response.data);
+    dispatch(setDogs({dogs: response.data}));
   };
   useEffect(() => {
     getDogs();
