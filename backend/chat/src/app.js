@@ -222,7 +222,7 @@ location.on('connection', socket => {
         socket.emit('replyGps', '산책을 시작하세요.');
       } else {
         
-        const gpsInfo = await Location.updateMany({ _id: gpsData._id }, { $push: { gps: { latitude: data.gps[0].latitude, longitude: data.gps[0].longitude } } })
+        const gpsInfo = await Location.updateMany({ _id: gpsData._id }, { $push: { gps: { latitude: data.gps.latitude, longitude: data.gps.longitude } } })
         console.log("gps 저장 완료");
         socket.emit('replyGps', 'gps 저장 완료');
       }
