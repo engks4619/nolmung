@@ -240,7 +240,7 @@ function ChatsDetail({route, navigation}: any) {
   );
   const hadleStartWalk = useCallback(() => {
     dispatch(setWalkRoomId(roomId));
-    if (locationSocket) {
+    if (locationSocket && oppentIdx) {
       startWalking(
         dispatch,
         navigation,
