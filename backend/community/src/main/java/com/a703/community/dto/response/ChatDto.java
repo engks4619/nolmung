@@ -28,4 +28,8 @@ public class ChatDto {
 
     private Boolean Completed;
 
+    private String roomId;
+
+    private Integer pay;
+
 }
