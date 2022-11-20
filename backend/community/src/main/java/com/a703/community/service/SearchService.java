@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,11 +55,6 @@ public class SearchService {
             spec = spec.and(PostSpecification.greaterThanWalkDate(searchRequest.getStartWalkDate()));
             spec = spec.and(PostSpecification.lessThanWalkeDate(searchRequest.getEndWalkDate()));
         }
-        if (searchRequest.getStartPay() != null){
-            spec = spec.and(PostSpecification.greaterThanPay(searchRequest.getStartPay()));
-            spec = spec.and(PostSpecification.lessThanPay(searchRequest.getEndPay()));
-        }
-
         if (searchRequest.getDogBreed() != null){
             List<Long> dogIdxList =clientUtil.requestSearchDogInfo(searchRequest.getDogBreed());
 
@@ -68,6 +64,17 @@ public class SearchService {
             }).collect(Collectors.toList());
 
             spec = spec.and(PostSpecification.findDogBreedByPostIdx(findPostIdx));
+        }
+        if (searchRequest.getTitle() != null) {
+            spec = spec.and(PostSpecification.findTitle(searchRequest.getTitle()));
+        }
+        if(searchRequest.getAddress()!=null){
+            String[] addressList = searchRequest.getAddress().split(" ");
+            for(String address : addressList) spec = spec.and(PostSpecification.findAddress(address));
+        }
+        if (searchRequest.getStartPay() != null){
+            spec = spec.and(PostSpecification.greaterThanPay(searchRequest.getStartPay()));
+            spec = spec.and(PostSpecification.lessThanPay(searchRequest.getEndPay()));
         }
 
         Page<Post> otherLists = postRepository.findAll(spec,pageable);
@@ -125,6 +132,13 @@ public class SearchService {
             }).collect(Collectors.toList());
 
             spec = spec.and(PostSpecification.findDogBreedByPostIdx(findPostIdx));
+        }
+        if (searchRequest.getTitle() != null) {
+            spec = spec.and(PostSpecification.findTitle(searchRequest.getTitle()));
+        }
+        if(searchRequest.getAddress()!=null){
+            String[] addressList = searchRequest.getAddress().split(" ");
+            for(String address : addressList) spec = spec.and(PostSpecification.findAddress(address));
         }
 
         Page<Post> withLists = postRepository.findAll(spec,pageable);

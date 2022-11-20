@@ -18,4 +18,8 @@ public class SearchRequest {
     private Integer dogBreed;
 
     private String location;
+
+    private String title;
+
+    private String address;
 }
