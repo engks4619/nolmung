@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {useAppDispatch} from '~/store';
 import CommDetailHeader from '~/molecules/CommDetailHeader';
-import {useRoomSocket} from '~/hooks/useSocket';
+import {useSocket} from '~/hooks/useSocket';
 import {setChatPostInfo} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 
@@ -37,7 +37,7 @@ function CommDetail({route, navigation}: any) {
   const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
   const dispatch = useAppDispatch();
 
-  const [roomSocket, roomDisconnect] = useRoomSocket();
+  const [socket, disconnect] = useSocket();
 
   const [detailContent, setDetailContent] = useState<DetailProps>([]);
   const [isLiked, setIsLiked] = useState<Boolean>(false);
@@ -97,19 +97,20 @@ function CommDetail({route, navigation}: any) {
     dispatch(
       setChatPostInfo({
         postIdx,
-        writerIdx,
-        pay,
-        subject,
-        userImgUrl,
         thumbnailUrl,
+        subject,
+        pay,
+        writerIdx,
+        oppentIdx: writerIdx,
+        userImgUrl,
         writer,
         categoryType,
         completed,
       }),
     );
-    if (roomSocket && userIdx) {
-      roomSocket.emit('newRoom', socketData);
-      roomSocket.on('newRoomId', (roomId: string) =>
+    if (socket && userIdx) {
+      socket.emit('newRoom', socketData);
+      socket.on('newRoomId', (roomId: string) =>
         navigation.navigate('ChatList', {
           screen: 'ChatsDetail',
           params: {roomId},

@@ -110,7 +110,7 @@ function Main({navigation}: any) {
     const response: AxiosResponse = await axios.get('user/dog/mydogs');
     dispatch(setDogsInfo(response.data));
     if (response.data.length >= 1) {
-      dispatch(setSelectedMyDogs([1]));
+      dispatch(setSelectedMyDogs([response.data[0].dogIdx]));
     }
   };
 

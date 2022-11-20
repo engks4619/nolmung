@@ -9,18 +9,19 @@ import {Alert} from 'react-native';
 import {AxiosResponse} from 'axios';
 
 const WalkReview = ({navigation}: any) => {
-  const [star, setStar] = useState<number>(0);
+  const [star, setStar] = useState<number>(5);
   const [review, setReview] = useState<string>('');
   const [clicked, setClicked] = useState<boolean>(false);
   const [article, setArticle] = useState<article | null>(null);
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
   const userNickName = useSelector((state: RootState) => state.user.nickname);
+  const postIdx = useSelector((state: RootState) => state.chat.postIdx);
+  const oppentName = useSelector((state: RootState) => state.chat.oppentName);
   // 나중에 articleIdx, 채팅정보 받아와야함
-  const articleIdx = 20;
 
   const chatInfo = {
     me: userNickName,
-    opponent: '상대방이름',
+    opponent: oppentName,
   };
 
   const registReview = async () => {
@@ -72,7 +73,10 @@ const WalkReview = ({navigation}: any) => {
   }, [navigation]);
 
   const getArticleData = async () => {
-    const response = await axios.get(`community/post-info/${articleIdx}`);
+    if (!postIdx) {
+      return;
+    }
+    const response = await axios.get(`community/post-info/${postIdx}`);
     if (response.status === 200) {
       setArticle(response?.data);
     }
@@ -81,7 +85,7 @@ const WalkReview = ({navigation}: any) => {
   useEffect(() => {
     //게시글 정보 받아오기
     getArticleData();
-  }, []);
+  }, [postIdx]);
 
   return (
     <WalkReviewTemplate

@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     fontWeight: 'bold',
+    height: 17,
     width: 270,
   },
   contentContainer: {

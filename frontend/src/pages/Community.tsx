@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Alert, Button} from 'react-native';
+import {Alert} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CommunityTemplate from '@templates/CommunityTemplate';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import CommDetail from '@pages/CommDetail';
 import RegistArticle from '@pages/RegistArticle';
-import {MAIN_COLOR} from '~/const';
 import Oppent from '@pages/Oppent';
-import RegistHeader from '~/organisms/RegistHeader';
 import moment from 'moment';
 
 export type CommunityParamList = {

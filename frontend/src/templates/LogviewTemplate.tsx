@@ -26,6 +26,8 @@ function LogViewTemplate({
   startDate,
 }: Props) {
   const date = startDate ? new Date(startDate).toLocaleString('ko-KR') : '';
+  console.log(startDate, typeof startDate);
+  console.log(Date(startDate));
   return (
     <View style={styles.container}>
       <ScrollView overScrollMode="never">

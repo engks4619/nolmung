@@ -1,5 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import ChatWalkStart from '~/atoms/ChatWalkStart';
 import DogLocation from '~/atoms/DogLocation';
 import PostscriptBtn from '~/atoms/PostscriptBtn';
 import ScheduleBtn from '~/atoms/ScheduleBtn';
@@ -7,12 +9,13 @@ import Squre from '~/atoms/Squre';
 interface chatsPostInfoProps {
   postSubject: string;
   postImage: string;
-  postPay: number;
+  postPay?: number;
   handleConfirmWalk: () => void;
   isCompleted: boolean;
   categoryType: string;
   hadleMyDogLocation: () => void;
   isMyPost: boolean;
+  hadleStartWalk: () => void;
 }
 
 function ChatPostInfo({
@@ -24,7 +27,9 @@ function ChatPostInfo({
   categoryType,
   hadleMyDogLocation,
   isMyPost,
+  hadleStartWalk,
 }: chatsPostInfoProps) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.postInfoContainer}>
@@ -44,8 +49,10 @@ function ChatPostInfo({
           {isMyPost && !isCompleted ? (
             <ScheduleBtn handleConfirmWalk={handleConfirmWalk} />
           ) : null}
-          {isMyPost && isCompleted ? <Text>산책시작하기</Text> : null}
-          <PostscriptBtn />
+          {!isMyPost && isCompleted ? (
+            <ChatWalkStart hadleStartWalk={hadleStartWalk} />
+          ) : null}
+          <PostscriptBtn onClick={()=>navigation.navigate('WalkReview')} />
         </View>
       )}
     </View>

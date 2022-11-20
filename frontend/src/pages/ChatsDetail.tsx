@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import ChatsDetailTemplate from '~/templates/ChatsDetailTemplate';
-import {useChatSocket} from '~/hooks/useSocket';
+import {useChatSocket, useLocationSocket} from '~/hooks/useSocket';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import CustomHeader from '~/headers/CustomHeader';
@@ -9,6 +9,7 @@ import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
 import {setCompleted} from '~/slices/chatSlice';
+import {setPostInfo} from '~/slices/postSlice';
 
 export interface chatType {
   chat: string;
@@ -22,6 +23,8 @@ function ChatsDetail({route, navigation}: any) {
   const roomId: string = route.params.roomId;
 
   const [chatSocket, chatDisconnect] = useChatSocket();
+  const [locationSocket, locationDisconnect] = useLocationSocket();
+
   const [isFirstChat, setIsFirstChat] = useState<boolean>(false);
 
   const user = useSelector((state: RootState) => state.user.userIdx);
@@ -32,7 +35,8 @@ function ChatsDetail({route, navigation}: any) {
   const postIdx = useSelector((state: RootState) => state.chat.postIdx);
   const oppentImg = useSelector((state: RootState) => state.chat.oppentImg);
   const oppentName = useSelector((state: RootState) => state.chat.oppentName);
-  const oppentIdx = useSelector((state: RootState) => state.chat.writerIdx);
+  const writerIdx = useSelector((state: RootState) => state.chat.writerIdx);
+  const oppentIdx = useSelector((state: RootState) => state.chat.oppentIdx);
   const categoryType = useSelector(
     (state: RootState) => state.chat.categoryType,
   );
@@ -45,8 +49,9 @@ function ChatsDetail({route, navigation}: any) {
 
   useEffect(() => {
     setFullMsg([]);
-    if (chatSocket && roomId) {
+    if (chatSocket && locationSocket && roomId) {
       chatSocket.emit('join', roomId);
+
       chatSocket.on('chats', (serverChats: chatType[]) => {
         if (serverChats.length) {
           setServerMsg(serverChats);
@@ -55,6 +60,7 @@ function ChatsDetail({route, navigation}: any) {
           setIsFirstChat(true);
         }
       });
+
       chatSocket.on('messageC', (data: chatType) => {
         if (data.roomId === roomId) {
           const newData: chatType = {
@@ -66,22 +72,39 @@ function ChatsDetail({route, navigation}: any) {
           setLocalMsg(newData);
         }
       });
+
       chatSocket.on('decide', (data: string) => {
         Alert.alert('확정', `${data}`);
+        console.log('Socket Decide', data);
       });
+
       return () => {
         if (chatSocket) {
           chatSocket.off('chats');
           chatSocket.off('messageC');
+          chatSocket.off('decide');
         }
       };
     }
-  }, [chatSocket, roomId, localMsg, chatDisconnect]);
+  }, [chatSocket, roomId, localMsg, locationSocket, categoryType]);
 
   useEffect(() => {
+    dispatch(
+      setPostInfo({
+        writerIdx: oppentIdx,
+        userImgUrl: oppentImg,
+        writerName: oppentName,
+      }),
+    );
+
     navigation.setOptions({
       header: () => (
-        <CustomHeader navigation={navigation} middleText={oppentName} />
+        <CustomHeader
+          navigation={navigation}
+          middleText={oppentName}
+          backFunc={() => navigation.replace('Chats')}
+          middleFunc={() => navigation.navigate('Oppent', {oppentIdx})}
+        />
       ),
     });
   }, [navigation, oppentName]);
@@ -90,10 +113,11 @@ function ChatsDetail({route, navigation}: any) {
     setFullMsg([...serverMsg]);
   }, [localMsg, serverMsg]);
 
-  const postChatInfo = async () => {
+  const postChatInfo = async (postRoomId: string) => {
     try {
       const response: AxiosResponse = await axios.post(
         `community/chat/${postIdx}`,
+        {roomId: postRoomId},
       );
       if (response.status === 200) {
         setIsFirstChat(false);
@@ -115,7 +139,7 @@ function ChatsDetail({route, navigation}: any) {
     };
     if (chatSocket && chat) {
       if (isFirstChat) {
-        postChatInfo();
+        postChatInfo(roomId);
       }
       chatSocket.emit('messageS', data);
     }
@@ -126,6 +150,9 @@ function ChatsDetail({route, navigation}: any) {
       postIdx,
       albaIdx: oppentIdx,
     };
+    if (isCompleted) {
+      return;
+    }
     try {
       const response = await axios.post('community/alba', data);
       if (response.status === 200) {
@@ -146,9 +173,48 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
-  const hadleMyDogLocation = () => {
-    console.log('내 강아지 위치 내놔');
-  };
+  useEffect(() => {
+    if (locationSocket) {
+      locationSocket.on('gpsInfo', gpsInfo => {
+        console.log(gpsInfo[0].gps);
+        if (gpsInfo === 403) {
+          Alert.alert(
+            '알림',
+            '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
+          );
+        } else {
+          // 강아지 위치 정보 gpsInfo 담겨서 옴
+        }
+      });
+    }
+    return () => {
+      if (locationSocket) {
+        locationSocket.off('gpsInfo');
+      }
+    };
+  }, [locationSocket]);
+
+  const hadleMyDogLocation = useCallback(() => {
+    if (locationSocket) {
+      locationSocket.emit('getGps', roomId);
+    }
+  }, [locationSocket, roomId]);
+
+  const hadleStartWalk = useCallback(() => {
+    const gpsLocalData = {
+      ownerIdx: user,
+      roomId,
+      gps: [
+        {
+          // gps정보 "latitude": 1.1111,  // 위도
+          //     "longitude": 1.111   // 경도
+        },
+      ],
+    };
+    if (locationSocket) {
+      locationSocket.emit('gps', gpsLocalData);
+    }
+  }, [locationSocket, roomId, user]);
 
   return (
     <ChatsDetailTemplate
@@ -161,7 +227,8 @@ function ChatsDetail({route, navigation}: any) {
       isCompleted={isCompleted}
       categoryType={categoryType}
       hadleMyDogLocation={hadleMyDogLocation}
-      isMyPost={user === oppentIdx}
+      isMyPost={user === writerIdx}
+      hadleStartWalk={hadleStartWalk}
     />
   );
 }

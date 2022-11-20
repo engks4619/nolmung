@@ -3,16 +3,20 @@ import {Pressable, StyleSheet, Text} from 'react-native';
 import PostSend from '@assets/postSend.svg';
 import {MAIN_COLOR} from '~/const';
 
-function PostscriptBtn() {
+interface Props {
+  onClick: () => void;
+}
+
+function PostscriptBtn({onClick}: Props) {
   return (
-    <Pressable style={styels.container}>
+    <Pressable style={styles.container} onPress={()=>onClick()}>
       <PostSend width={20} height={20} fill="black" />
-      <Text style={styels.textStyle}>후기 보내기</Text>
+      <Text style={styles.textStyle}>후기 보내기</Text>
     </Pressable>
   );
 }
 
-const styels = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     borderWidth: 1.5,
     paddingVertical: 5,

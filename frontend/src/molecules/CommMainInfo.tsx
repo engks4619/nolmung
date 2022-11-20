@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   smallFont: {
+    marginTop: 3,
     fontSize: 13,
   },
 });

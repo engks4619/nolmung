@@ -43,6 +43,17 @@ function LogView({route, navigation}: any) {
     navigation.replace('MainPage');
     clearLogsAll(dispatch);
   };
+  const utcTOKST = (curr: string | null) => {
+    if (curr) {
+      const currT = new Date(curr);
+      const utc = currT.getTime() + currT.getTimezoneOffset() * 60 * 1000;
+      const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+      const kr_curr = new Date(utc + KR_TIME_DIFF).toString();
+      return kr_curr;
+    } else {
+      return null;
+    }
+  };
 
   // img,데이터 전송
   const submitLogs = async () => {
@@ -128,7 +139,7 @@ function LogView({route, navigation}: any) {
               1000
             : 0
         }
-        startDate={startDate}
+        startDate={utcTOKST(startDate)}
       />
     </View>
   );

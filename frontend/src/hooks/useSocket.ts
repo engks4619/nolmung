@@ -13,26 +13,9 @@ export const useSocket = (): [Socket | undefined, () => void] => {
     socket = io('http://nolmung.kr', {
       transports: ['websocket'],
     });
-    socket.on('connect', () => console.log(socket?.id, 'socket.id'));
+    socket.on('connect', () => console.log('socketId:', socket?.id));
   }
   return [socket, disconnect];
-};
-
-let roomSocket: Socket | undefined;
-export const useRoomSocket = (): [Socket | undefined, () => void] => {
-  const roomDisconnect = useCallback(() => {
-    if (roomSocket) {
-      roomSocket.disconnect();
-      roomSocket = undefined;
-    }
-  }, []);
-  if (!roomSocket) {
-    roomSocket = io('http://nolmung.kr/room', {
-      transports: ['websocket'],
-    });
-    roomSocket.on('connect', () => console.log('rooomId', roomSocket.id));
-  }
-  return [roomSocket, roomDisconnect];
 };
 
 let chatSocket: Socket | undefined;

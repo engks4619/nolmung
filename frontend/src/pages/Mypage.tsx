@@ -61,18 +61,6 @@ export const MypageStackNavigator = () => (
       component={LogView}
       options={{headerShown: true}}
     />
-    <MypageStack.Screen
-      name="WalkReview"
-      component={WalkReview}
-      options={{
-        headerTitle: '상대방 이름',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 15,
-        },
-      }}
-    />
   </MypageStack.Navigator>
 );
 
@@ -102,11 +90,6 @@ const myPageListNavi = [
     name: 'MyDogList',
     icon: <Paw width={15} height={15} fill={'black'} stroke={'black'} />,
     btnText: '내 강아지',
-  },
-  {
-    name: 'WalkReview',
-    icon: <Schedule width={15} height={15} fill={'black'} stroke={'black'} />,
-    btnText: '산책후기',
   },
 ];
 // 마이페이지 버튼탭 목록(다른동작)
@@ -138,7 +121,7 @@ function Mypage({navigation}: any) {
 
   const profileEdit = async () => {
     if (isEditing) {
-      if (tempProfileImage || tempNickname !== userInfo.userName) {
+      if (tempProfileImage) {
         const body = new FormData();
         ImageResizer.createResizedImage(
           tempProfileImage.realPath,
@@ -172,6 +155,26 @@ function Mypage({navigation}: any) {
             console.log(err);
           }
         });
+      } else if (tempNickname !== userInfo.userName) {
+        const body = new FormData();
+        body.append('file', null);
+        body.append('nickname', tempNickname);
+        try {
+          const response = await axios.put('/user', body, {
+            headers: {
+              'content-type': 'multipart/form-data',
+            },
+          });
+          const profile = response.data;
+          dispatch(
+            setProfile({
+              nickname: profile.nickname,
+              profileImage: profile.profileImage,
+            }),
+          );
+        } catch (err: any) {
+          console.log(err);
+        }
       }
     }
     setIsEditing(!isEditing);

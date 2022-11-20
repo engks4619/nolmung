@@ -8,6 +8,7 @@ import {useAppDispatch} from '~/store';
 import {setChatPostInfo} from '~/slices/chatSlice';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import WalkReview from './WalkReview';
 
 export type ChatsParamList = {
   Chats: undefined;
@@ -37,6 +38,18 @@ export const ChatsStackNavigator = () => (
         },
       }}
     />
+    <ChatsStack.Screen
+      name="WalkReview"
+      component={WalkReview}
+      options={{
+        headerTitle: '상대방 이름',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 15,
+        },
+      }}
+    />
   </ChatsStack.Navigator>
 );
 
@@ -50,14 +63,14 @@ export interface chatListType {
   subject: string;
   thumbnailUrl: string;
   userImgUrl: string;
+  pay: null | number;
+  roomId: string;
 }
 
 function Chats({navigation}: any) {
   const dispatch = useAppDispatch();
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
-  const chatListSocket = useSelector(
-    (state: RootState) => state.chat.roomInfos,
-  );
+
   const [myChatList, setMyChatList] = useState([]);
 
   const getChatsList = async () => {
@@ -74,6 +87,7 @@ function Chats({navigation}: any) {
 
     dispatch(
       setChatPostInfo({
+        pay: chatInfo.pay,
         postIdx: chatInfo.postIdx,
         thumbnailUrl: chatInfo.thumbnailUrl,
         subject: chatInfo.subject,
@@ -86,15 +100,9 @@ function Chats({navigation}: any) {
       }),
     );
 
-    const roomIdArr = chatListSocket.filter(chatInfoSocket => {
-      chatInfoSocket.opponentIdx === chatInfo.chatUserIdx &&
-        chatInfoSocket.ownerIdx === userIdx &&
-        chatInfoSocket.postIdx === chatInfo.postIdx;
-    });
-
     navigation.navigate('ChatList', {
       screen: 'ChatsDetail',
-      params: {roomId: roomIdArr[0]},
+      params: {roomId: chatInfo.roomId},
     });
   };
 

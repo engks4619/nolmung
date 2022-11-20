@@ -1,17 +1,16 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
-import Zoo from '@assets/zoo.svg';
+import WalkingTheDog from '@assets/walking-the-dog.svg';
 import {MAIN_COLOR} from '~/const';
 
-function DogLocation({hadleMyDogLocation}) {
+function ChatWalkStart({hadleStartWalk}) {
   return (
-    <Pressable style={styles.container} onPress={() => hadleMyDogLocation()}>
-      <Zoo width={20} height={20} fill="black" />
-      <Text style={styles.textStyle}>강아지 위치 보기</Text>
+    <Pressable style={styles.container} onPress={() => hadleStartWalk()}>
+      <WalkingTheDog width={20} height={20} fill="black" />
+      <Text style={styles.textStyle}>산책 시작하기</Text>
     </Pressable>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1.5,
@@ -30,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DogLocation;
+export default ChatWalkStart;

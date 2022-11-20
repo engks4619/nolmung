@@ -5,6 +5,7 @@ import {MAIN_COLOR} from '~/const';
 
 interface Props {
   backFunc?: () => void;
+  middleFunc?: () => void;
   navigation: any;
   middleText: string;
   endText?: string;
@@ -13,6 +14,7 @@ interface Props {
 
 function CustomHeader({
   backFunc,
+  middleFunc,
   navigation,
   middleText,
   endText,
@@ -27,7 +29,9 @@ function CustomHeader({
         </Pressable>
       </View>
       <View>
-        <Text style={styles.title}>{middleText}</Text>
+        <Pressable onPress={middleFunc ? () => middleFunc() : null}>
+          <Text style={styles.title}>{middleText}</Text>
+        </Pressable>
       </View>
       <View style={styles.registBtn}>
         {endText ? (
