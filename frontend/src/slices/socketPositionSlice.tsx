@@ -10,6 +10,7 @@ const initialState = {
   path: [],
   second: 0,
   distance: 0,
+  walkRoomId: '',
 };
 
 const socketPositionSlice = createSlice({
@@ -58,6 +59,9 @@ const socketPositionSlice = createSlice({
     setLastUpdate(state, action) {
       state.lastUpdate = action.payload;
     },
+    setWalkRoomId(state, action) {
+      state.walkRoomId = action.payload;
+    },
   },
   extraReducers: builder => {},
 });
@@ -76,5 +80,6 @@ export const {
   setLastUpdate,
   setSecond,
   addDistance,
+  setWalkRoomId,
 } = socketPositionSlice.actions;
 export default socketPositionSlice;

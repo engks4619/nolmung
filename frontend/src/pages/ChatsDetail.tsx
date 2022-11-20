@@ -8,13 +8,14 @@ import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setCompleted} from '~/slices/chatSlice';
+import {setCompleted, setRoomInfos} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
 import Geolocation from '@react-native-community/geolocation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MapViewWorker from '@pages/MapViewWorker';
 import {setPath} from '~/slices/watcherSlice';
+import {setWalkRoomId} from '~/slices/socketPositionSlice';
 export interface chatType {
   chat: string;
   sender: string;
@@ -192,7 +193,11 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-
+  export const endWalk = () => {
+    if (locationSocket) {
+      locationSocket.emit('endWalk');
+    }
+  };
   useEffect(() => {
     if (locationSocket) {
       locationSocket.on('gpsInfo', gpsInfo => {
@@ -227,6 +232,7 @@ function ChatsDetail({route, navigation}: any) {
     (state: RootState) => state.socketPosition,
   );
   const hadleStartWalk = useCallback(() => {
+    dispatch(setWalkRoomId(roomId));
     if (locationSocket) {
       startWalking(
         dispatch,

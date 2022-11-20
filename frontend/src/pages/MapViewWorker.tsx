@@ -9,6 +9,7 @@ import {addDistance} from '~/slices/socketPositionSlice';
 import {setIsSavingOff, setIsSavingOn} from '~/slices/socketPositionSlice';
 import axios from 'utils/axios';
 import {removeMultiple} from '~/utils/AsyncService';
+import {useLocationSocket} from '~/hooks/useSocket';
 
 const moment = require('moment');
 const localList = [
@@ -20,13 +21,16 @@ const localList = [
 
 function MapViewWorker({navigation}: any) {
   const dispatch = useDispatch();
-
+  const [locationSocket, locationDisconnect] = useLocationSocket();
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
   const myPosition = useSelector(
     (state: RootState) => state.socketPosition.myPosition,
   );
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
+  const roomId = useSelector(
+    (state: RootState) => state.socketPosition.walkRoomId,
+  );
   const isSaving = useSelector(
     (state: RootState) => state.socketPosition.isSaving,
   );
@@ -84,6 +88,7 @@ function MapViewWorker({navigation}: any) {
   };
 
   const handleDoneWalking = async () => {
+    locationSocket?.emit('endWalk', roomId);
     doneWalking(dispatch, navigation, watchId);
     dispatch(setIsSavingOn);
     await submitLogs();

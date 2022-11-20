@@ -226,6 +226,6 @@ export const doneWalking = async (
 ) => {
   quitLogging(watchId);
   dispatch(setIsLoggingOff());
-  storeData('@intendedSocket', true);
+  // storeData('@intendedSocket', true);
   navigation.replace('LogView');
 };
