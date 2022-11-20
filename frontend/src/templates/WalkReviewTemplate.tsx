@@ -7,6 +7,7 @@ import StarContainer from '~/organisms/StarContainer';
 import TextInputBox from '@atoms/TextInputBox';
 import {article} from '~/utils/type';
 import StarRating from '~/molecules/StarRating';
+import CustomRatingBar from '@atoms/CustomRatingBar';
 
 interface Props {
   star: number;
@@ -29,8 +30,12 @@ const WalkReviewTemplate = ({
     <ScrollView style={styles.container}>
       <ReviewArticleSummary article={article} />
       <ChatInfoSummary chatInfo={chatInfo} />
-      <StarContainer star={star} setStar={setStar} />
-      {/* <StarRating star={star} setStar={setStar} /> */}
+      <CustomRatingBar
+        width={40}
+        height={40}
+        defaultRating={star}
+        setDefaultRating={setStar}
+      />
       <View style={styles.textInputContainer}>
         <TextInputBox
           content={review}

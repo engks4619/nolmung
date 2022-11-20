@@ -9,7 +9,7 @@ interface Props {
 
 function PostscriptBtn({onClick}: Props) {
   return (
-    <Pressable style={styles.container} onPress={onClick}>
+    <Pressable style={styles.container} onPress={()=>onClick()}>
       <PostSend width={20} height={20} fill="black" />
       <Text style={styles.textStyle}>후기 보내기</Text>
     </Pressable>

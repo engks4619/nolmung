@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {TouchableOpacity, View, StyleSheet, Image} from 'react-native';
 
 const maxRating = [1, 2, 3, 4, 5];
@@ -10,11 +10,16 @@ const starImgCorner =
 interface Props {
   width: number;
   height: number;
+  defaultRating: number;
+  setDefaultRating: Dispatch<SetStateAction<number>>;
 }
 
-function CustomRatingBar({width, height}: Props) {
-  const [defaultRating, setDefaultRating] = useState<number>(0);
-
+function CustomRatingBar({
+  width,
+  height,
+  defaultRating,
+  setDefaultRating,
+}: Props) {
   return (
     <View style={styles.customRatingBarStyle}>
       {maxRating.map((item, key) => {
