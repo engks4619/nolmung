@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -99,14 +99,7 @@ function AppInner() {
       channelId: 'chats',
       message: msg.chat,
       title: msg.sender,
-      largeIcon: 's',
-    });
-  };
-
-  const alarmWalkConfirm = (msg: string) => {
-    PushNotification.localNotification({
-      channelId: 'walkConfirm',
-      message: msg,
+      largeIcon: '',
     });
   };
 
@@ -115,9 +108,6 @@ function AppInner() {
       const data = {id: userIdx};
       socket.emit('login', data);
 
-      socket.on('replyLogin', loginData =>
-        console.log('replyLogin', loginData),
-      );
       socket.on('rooms', roomsInfos => {
         roomsInfos.map(roomInfo => {
           chatSocket.emit('join', roomInfo.roomId);
@@ -125,7 +115,7 @@ function AppInner() {
         dispatch(setRoomInfos(roomsInfos));
       });
 
-      socket.on('joinRoom', joinData => console.log('방생성:', joinData));
+      socket.on('joinRoom', newRoomId => chatSocket.emit('join', newRoomId));
 
       chatSocket.on('messageC', (msgData: chatType) => {
         if (msgData.sender === userIdx.toString()) {
@@ -134,20 +124,21 @@ function AppInner() {
         alarmChat(msgData);
       });
 
-      locationSocket.on('completed', (confrimMsg: string) => {
-        alarmWalkConfirm(confrimMsg);
+      chatSocket.on('completed', (confrimMsg: string) => {
+        alarmChat({chat: '산책이 확정되었습니다!', sender: '놀면 멍하니'});
       });
     }
     return () => {
-      if (socket) {
+      if (socket && chatSocket) {
         socket.off('login');
         socket.off('rooms');
         socket.off('replyLogin');
         socket.off('joinRoom');
-        socket.off('messageC');
+        chatSocket.off('messageC');
+        chatSocket.off('completed');
       }
     };
-  }, [isLoggedIn, socket, userIdx, chatSocket, locationSocket]);
+  }, [isLoggedIn, socket, userIdx, chatSocket, locationSocket, dispatch]);
 
   useEffect(() => {
     if (!isLoggedIn) {
