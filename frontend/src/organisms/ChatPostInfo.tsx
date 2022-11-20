@@ -32,7 +32,7 @@ function ChatPostInfo({
         <View style={styles.textContainer}>
           <Text style={styles.bold}>{postSubject}</Text>
           <Text style={styles.bold}>
-            {postPay !== null ? `${postPay.toLocaleString('ko-KR')}원` : null}
+            {postPay !== null ? `${postPay?.toLocaleString('ko-KR')}원` : null}
           </Text>
         </View>
       </View>

@@ -1,15 +1,20 @@
 import React, {Dispatch, SetStateAction} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Modal} from 'react-native';
 import CommunityTab from '@organisms/CommunityTab';
 import CommWithPost from '@organisms/CommWithPost';
 import CommOtherPost from '@organisms/CommOtherPost';
 import {withPostListType, otherPostListType} from '@pages/Community';
 import EditBtn from '@molecules/EditBtn';
+import CommunityFilterModal from '~/organisms/CommunityFilterModal';
 
 export interface CommunityTabType {
   navigateWithPg: () => void;
   navigateOtherPg: () => void;
   categoryType: string;
+  searching: boolean;
+  setSearching: Dispatch<SetStateAction<boolean>>;
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface Props extends CommunityTabType {
@@ -35,13 +40,28 @@ function CommunityTemplate({
   setRefreshing,
   getWithPostList,
   getOtherPostList,
+  searching,
+  setSearching,
+  modalOpen,
+  setModalOpen,
 }: Props) {
   return (
     <View style={styles.container}>
+      <Modal
+        visible={modalOpen}
+        animationType={'fade'}
+        transparent={true}
+        onRequestClose={() => setModalOpen(false)}>
+        <CommunityFilterModal setModalOpen={setModalOpen} />
+      </Modal>
       <CommunityTab
         navigateWithPg={navigateWithPg}
         navigateOtherPg={navigateOtherPg}
         categoryType={categoryType}
+        searching={searching}
+        setSearching={setSearching}
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
       />
       {categoryType === 'WITH' ? (
         <CommWithPost

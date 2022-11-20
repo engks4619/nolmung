@@ -60,6 +60,8 @@ function Community({navigation}: any) {
   const [otherPostList, setOtherPostList] = useState<otherPostListType[]>([]);
   const [otherTotalPg, setOtherTotalPg] = useState<number>(0);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [searching, setSearching] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const navigateWithPg = () => {
     setCategoryType('WITH');
@@ -150,6 +152,10 @@ function Community({navigation}: any) {
       setRefreshing={setRefreshing}
       getWithPostList={getWithPostList}
       getOtherPostList={getOtherPostList}
+      searching={searching}
+      setSearching={setSearching}
+      modalOpen={modalOpen}
+      setModalOpen={setModalOpen}
     />
   );
 }
