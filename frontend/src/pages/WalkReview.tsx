@@ -18,7 +18,6 @@ const WalkReview = ({navigation}: any) => {
   const postIdx = useSelector((state: RootState) => state.chat.postIdx);
   const oppentName = useSelector((state: RootState) => state.chat.oppentName);
   // 나중에 articleIdx, 채팅정보 받아와야함
-  // const articleIdx = 20;
 
   const chatInfo = {
     me: userNickName,
