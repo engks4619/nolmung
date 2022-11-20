@@ -197,17 +197,15 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-  
+
   const endWalk = () => {
     if (locationSocket) {
       locationSocket.emit('endWalk');
     }
   };
-  const interval = setInterval(() => {
-    hadleMyDogLocation();
-  }, 5000);
+
   useEffect(() => {
-    if (locationSocket) {
+    if (locationSocket && intervalId) {
       locationSocket.emit('locationLogin', {id: user});
       locationSocket.on('gpsInfo', gpsInfo => {
         console.log(gpsInfo);
@@ -217,7 +215,7 @@ function ChatsDetail({route, navigation}: any) {
             '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
           );
         } else if (gpsInfo === 400) {
-          clearInterval(interval);
+          clearInterval(intervalId);
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
           console.log('1', gpsInfo);
@@ -231,12 +229,14 @@ function ChatsDetail({route, navigation}: any) {
         locationSocket.off('gpsInfo');
       }
     };
-  }, [locationSocket]);
-
+  }, [locationSocket, intervalId]);
+  const [intervalId, setIntervalId] = useState<number>();
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
-      console.log('getgps');
-      locationSocket.emit('getGps', roomId);
+      const interval = setInterval(() => {
+        locationSocket.emit('getGps', roomId);
+      }, 5000);
+      setIntervalId(interval);
     }
   }, [locationSocket, roomId]);
   const socketPositionState = useSelector(
