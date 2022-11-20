@@ -7,6 +7,7 @@ import RegistArticleTemplate from '~/templates/RegistArticleTemplate';
 import {uploadImg} from '~/utils/imgService';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
+import moment from 'moment';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -28,20 +29,24 @@ const RegistArticle = ({navigation}: any) => {
     {label: string; value: number}[] | null
   >(null);
   const dogList = useSelector((state: RootState) => state.dogs.dogsInfo);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const CATEGORY_TYPES = ['함께가요', '돌봐줘요'];
 
   const registSuccess = () => {
     Alert.alert('게시글 작성완료!');
     navigation.replace('Community');
+    setLoading(false);
   };
 
   const registFail = () => {
     Alert.alert('게시글 작성 실패!');
     setClicked(false);
+    setLoading(false);
   };
 
   const registSubmit = async () => {
+    setLoading(true);
     const registerPost = {
       dogIdx: selectedDog,
       categoryType: category === '함께가요' ? 'WITH' : 'OTHER',
@@ -51,22 +56,24 @@ const RegistArticle = ({navigation}: any) => {
       pay: price,
       leadLine: rope,
       poopBag: poop,
-      walkDate: date,
+      walkDate: moment(date.setHours(date.getHours() + 9)).toISOString(),
     };
 
     try {
       const response = await axios.post(`community`, registerPost);
       if (response?.status === 200) {
         const postIdx = response?.data;
-        if (images?.length > 0) {
-          await Promise.all(
-            images.map((image, idx) => {
-              uploadImg(image, `community/file/${postIdx}`);
-            }),
-          )
-            .then(registSuccess)
-            .catch(registFail);
-        }
+        await Promise.all(
+          images.map((image, idx) => {
+            uploadImg(image, `community/file/${postIdx}`);
+          }),
+        )
+          .then(registSuccess)
+          .catch(registFail)
+          .finally(() => {
+            navigation.replace('Community');
+            setLoading(false);
+          });
       } else {
         registFail();
       }
@@ -93,15 +100,21 @@ const RegistArticle = ({navigation}: any) => {
   };
 
   useEffect(() => {
-    navigation.setOptions({
-      header: () => (
-        <RegistHeader
-          navigation={navigation}
-          onRegistClicked={() => setClicked(true)}
-        />
-      ),
-    });
-  }, [navigation]);
+    if (!loading) {
+      navigation.setOptions({
+        header: () => (
+          <RegistHeader
+            navigation={navigation}
+            onRegistClicked={() => setClicked(true)}
+          />
+        ),
+      });
+    } else {
+      navigation.setOptions({
+        header: () => <></>,
+      });
+    }
+  }, [navigation, loading]);
 
   useEffect(() => {
     if (!clicked) {
@@ -148,6 +161,7 @@ const RegistArticle = ({navigation}: any) => {
       setSelectedDog={setSelectedDog}
       DOG_DATA={DOG_DATA}
       CATEGORY_TYPES={CATEGORY_TYPES}
+      loading={loading}
     />
   );
 };
