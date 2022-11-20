@@ -1,12 +1,14 @@
 import React, {useCallback} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Profile from '~/atoms/Profile';
+import StaticRating from '~/atoms/StaticRating';
 import {reviewerType} from '~/pages/Oppent';
 
 interface Props {
   createdAt: string;
   content: string;
   reviewer: reviewerType;
+  starRate: number;
 }
 
 function OppentReview({createdAt, content, reviewer}: Props) {
@@ -25,8 +27,8 @@ function OppentReview({createdAt, content, reviewer}: Props) {
         />
         <View style={styles.starContainer}>
           <Text style={styles.nameStyle}>{reviewer.nickname}</Text>
-          <View style={styles.rowContainer}>
-            <Text>별점</Text>
+          <View style={styles.subContainer}>
+            <StaticRating starRate={4} />
             <Text style={styles.dateStyle}>{converDate(createdAt)}</Text>
           </View>
         </View>
@@ -41,10 +43,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 15,
     paddingBottom: 15,
-    borderColor: 'rgba(0, 0, 0, .2)',
+    borderColor: 'rgba(0, 0, 0, .3)',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   rowContainer: {
+    flexDirection: 'row',
+  },
+  subContainer: {
+    marginLeft: 7,
     flexDirection: 'row',
   },
   starContainer: {
