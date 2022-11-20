@@ -138,7 +138,7 @@ function Mypage({navigation}: any) {
 
   const profileEdit = async () => {
     if (isEditing) {
-      if (tempProfileImage || tempNickname !== userInfo.userName) {
+      if (tempProfileImage) {
         const body = new FormData();
         ImageResizer.createResizedImage(
           tempProfileImage.realPath,
@@ -172,6 +172,26 @@ function Mypage({navigation}: any) {
             console.log(err);
           }
         });
+      } else if (tempNickname !== userInfo.userName) {
+        const body = new FormData();
+        body.append('file', null);
+        body.append('nickname', tempNickname);
+        try {
+          const response = await axios.put('/user', body, {
+            headers: {
+              'content-type': 'multipart/form-data',
+            },
+          });
+          const profile = response.data;
+          dispatch(
+            setProfile({
+              nickname: profile.nickname,
+              profileImage: profile.profileImage,
+            }),
+          );
+        } catch (err: any) {
+          console.log(err);
+        }
       }
     }
     setIsEditing(!isEditing);
