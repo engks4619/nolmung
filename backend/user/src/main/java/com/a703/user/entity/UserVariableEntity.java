@@ -24,11 +24,11 @@ public class UserVariableEntity {
     @ColumnDefault("0")
     private Integer point;
     @ColumnDefault("0")
-    private Double sumOwnerStar;
+    private Integer sumOwnerStar;
     @ColumnDefault("0")
     private Integer cntOwnerStar;
     @ColumnDefault("0")
-    private Double sumAlbaStar;
+    private Integer sumAlbaStar;
     @ColumnDefault("0")
     private Integer cntAlbaStar;
     @ColumnDefault("0")
@@ -38,12 +38,12 @@ public class UserVariableEntity {
     @ColumnDefault("0")
     private Integer totalTime;
 
-    public void addOwnerReview(Double star) {
+    public void addOwnerReview(Integer star) {
         this.cntOwnerStar++;
         this.sumOwnerStar += star;
     }
 
-    public void addAlbaReview(Double star) {
+    public void addAlbaReview(Integer star) {
         this.cntAlbaStar++;
         this.sumAlbaStar += star;
     }

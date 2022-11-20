@@ -8,7 +8,7 @@ public class HistoryDto {
     private UserEntity reviewer;
     private UserEntity reviewee;
     private Boolean owner;
-    private Double star;
+    private Integer star;
     private String review;
     private String recordIdx;
     private String createdAt;

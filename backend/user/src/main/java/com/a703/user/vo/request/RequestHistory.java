@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class RequestHistory {
     private Long postIdx;
-    private Double star;
+    private Integer star;
     private String review;
     private String recordIdx;
 }
