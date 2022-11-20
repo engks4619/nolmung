@@ -1,0 +1,31 @@
+server:
+  port: 0
+  servlet:
+    contextPath: /api/withdog
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  profiles:
+    include: db
+  application:
+    name: withdog
+  servlet:
+    multipart:
+      maxFileSize: 30MB
+      maxRequestSize: 30MB
+  data:
+    mongodb:
+      uri: mongodb://nolmung.kr:27017/withdog
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://nolmung.kr:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
