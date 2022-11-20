@@ -9,10 +9,10 @@ import {addDistance} from '~/slices/watcherSlice';
 import axios from 'utils/axios';
 import {removeMultiple} from '~/utils/AsyncService';
 import {setDogs} from '~/slices/watcherSlice';
-function MapViewWatcher({navigation}: any, {route}: any) {
+function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
   const postIdx = route.params.postIdx;
-  console.log(postIdx);
+  // console.log(postIdx);
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);

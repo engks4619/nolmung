@@ -193,7 +193,7 @@ function ChatsDetail({route, navigation}: any) {
       );
     }
   };
-  export const endWalk = () => {
+  const endWalk = () => {
     if (locationSocket) {
       locationSocket.emit('endWalk');
     }
@@ -209,7 +209,7 @@ function ChatsDetail({route, navigation}: any) {
           );
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
-          console.log(gpsInfo);
+          console.log('1', gpsInfo);
           navigation.navigate('MapViewWatcher', {postIdx: postIdx});
           dispatch(setPath({path: gpsInfo.gps}));
         }

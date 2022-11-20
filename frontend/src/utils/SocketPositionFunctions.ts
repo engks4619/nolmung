@@ -48,10 +48,10 @@ export const startWalking = async (
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
     // if (!localIntended) {
     // local에는 존재 redux에는 없음 => 비정상 종료
-    // lastLogAlert(navigation, dispatch, localList, dogs);
+    // lastLogAlert(navigation, dispatch, localList, dogs);{}
     // } else {
     // redux,local 둘다 없음 => 그냥 새로 시작
-    locationSocket.emit('startWalk');
+    locationSocket.emit('startWalk', {roomId: roomId, ownerIdx: user});
     startLogging(dispatch, dogs, locationSocket, user, roomId);
     navigation.navigate('MapViewWorker');
   }
