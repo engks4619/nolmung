@@ -10,13 +10,31 @@ import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
 import {setCompleted} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
-
+import {startWalking} from '~/utils/SocketPositionFunctions';
+import Geolocation from '@react-native-community/geolocation';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MapViewWorker from '@pages/MapViewWorker';
+import {setPath} from '~/slices/watcherSlice';
 export interface chatType {
   chat: string;
   sender: string;
   roomId: string;
   createdAt: string;
 }
+// const ChatsDetailStack = createNativeStackNavigator();
+// export const ChatsDetailStackNavigator = () => (
+//   <ChatsDetailStack.Navigator>
+//     <ChatsDetailStack.Screen
+//       name="ChatsDetailPage"
+//       component={ChatsDetail}
+//       options={{headerShown: false}}
+//     />
+//     <ChatsDetailStack.Screen
+//       name="MapViewWorker"
+//       component={MapViewWorker}
+//     />
+//   </ChatsDetailStack.Navigator>
+// );
 
 function ChatsDetail({route, navigation}: any) {
   const dispatch = useAppDispatch();
@@ -184,6 +202,8 @@ function ChatsDetail({route, navigation}: any) {
           );
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
+          navigation.navigate('MapViewWatcher', {postIdx: postIdx});
+          dispatch(setPath({path: gpsInfo.gps}));
         }
       });
     }
@@ -199,22 +219,26 @@ function ChatsDetail({route, navigation}: any) {
       locationSocket.emit('getGps', roomId);
     }
   }, [locationSocket, roomId]);
-
+  const socketPositionState = useSelector(
+    (state: RootState) => state.socketPosition,
+  );
   const hadleStartWalk = useCallback(() => {
-    const gpsLocalData = {
-      ownerIdx: oppentIdx,
-      roomId,
-      gps: [
-        {
-          // gps정보 "latitude": 1.1111,  // 위도
-          //     "longitude": 1.111   // 경도
-        },
-      ],
-    };
     if (locationSocket) {
-      locationSocket.emit('gps', gpsLocalData);
+      startWalking(
+        dispatch,
+        navigation,
+        socketPositionState,
+        [18], //이따 postid 넣고 postid로 api 쏴서 개리스틀 받아와야함
+        locationSocket,
+        user,
+        roomId,
+      );
+      // navigation.navigate('MapViewWorker');
+      // locationSocket.emit('gps', gpsLocalData);
     }
-  }, [locationSocket, roomId, oppentIdx]);
+
+    navigation;
+  }, [locationSocket, roomId, user, socketPositionState]);
 
   return (
     <ChatsDetailTemplate
