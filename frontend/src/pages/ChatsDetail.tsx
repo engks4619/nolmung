@@ -176,7 +176,7 @@ function ChatsDetail({route, navigation}: any) {
   useEffect(() => {
     if (locationSocket) {
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo);
+        console.log(gpsInfo[0].gps);
         if (gpsInfo === 403) {
           Alert.alert(
             '알림',
@@ -202,7 +202,7 @@ function ChatsDetail({route, navigation}: any) {
 
   const hadleStartWalk = useCallback(() => {
     const gpsLocalData = {
-      ownerIdx: oppentIdx,
+      ownerIdx: user,
       roomId,
       gps: [
         {
@@ -214,7 +214,7 @@ function ChatsDetail({route, navigation}: any) {
     if (locationSocket) {
       locationSocket.emit('gps', gpsLocalData);
     }
-  }, [locationSocket, roomId, oppentIdx]);
+  }, [locationSocket, roomId, user]);
 
   return (
     <ChatsDetailTemplate

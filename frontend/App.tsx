@@ -12,15 +12,6 @@ PushNotification.createChannel({
   vibrate: true,
 });
 
-PushNotification.createChannel({
-  channelId: 'walkConfirm', // (required)
-  channelName: '산책 확정 알림', // (required)
-  channelDescription: '산책이 확정됐다는 알림', // (optional) default: undefined.
-  soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-  importance: 1, // (optional) default: 4. Int value of the Android notification importance
-  vibrate: true,
-});
-
 function App() {
   return (
     <Provider store={store}>
