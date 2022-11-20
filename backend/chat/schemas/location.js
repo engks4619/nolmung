@@ -10,6 +10,11 @@ const locationSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	walking: {
+		// 산책중 여부
+		type: Boolean,
+		default: false
+	},
 	gps: [
 		{
 			latitude: {
