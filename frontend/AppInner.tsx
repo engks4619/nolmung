@@ -123,10 +123,6 @@ function AppInner() {
         }
         alarmChat(msgData);
       });
-
-      chatSocket.on('completed', (confrimMsg: string) => {
-        alarmChat({chat: '산책이 확정되었습니다!', sender: '놀면 멍하니'});
-      });
     }
     return () => {
       if (socket && chatSocket) {

@@ -14,6 +14,7 @@ interface Props {
   userIdx: number;
   startChat: () => void;
   naviOppent: (oppentIdx: number) => void;
+  headMyChat: () => void;
 }
 
 function CommDetailTemplate({
@@ -23,6 +24,7 @@ function CommDetailTemplate({
   userIdx,
   startChat,
   naviOppent,
+  headMyChat,
 }: Props) {
   return (
     <View style={styles.container}>
@@ -54,6 +56,7 @@ function CommDetailTemplate({
         putLike={putLike}
         isWriter={detailContent.writerIdx === userIdx}
         startChat={startChat}
+        headMyChat={headMyChat}
       />
     </View>
   );

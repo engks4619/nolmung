@@ -20,11 +20,7 @@ function OppentReview({createdAt, content, reviewer, starRate}: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
-        <Profile
-          imageSource="/images/dog/tibet-terrier-g2059ea483_1920.jpg"
-          width={50}
-          height={50}
-        />
+        <Profile imageSource={reviewer.profileImage} width={50} height={50} />
         <View style={styles.starContainer}>
           <Text style={styles.nameStyle}>{reviewer.nickname}</Text>
           <View style={styles.subContainer}>
