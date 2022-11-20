@@ -219,8 +219,7 @@ location.on('connection', socket => {
       });
       console.log("gps: ", gpsData);
       if (gpsData == null) {
-        response.status(400).send('산책을 시작하세요.');
-        // response.send(response.'위치 저장 완료되었습니다.');
+        socket.emit('replyGps', '산책을 시작하세요.');
       } else {
         
         const gpsInfo = await Location.updateMany({ _id: gpsData._id }, { $push: { gps: { latitude: data.gps[0].latitude, longitude: data.gps[0].longitude } } })
