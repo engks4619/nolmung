@@ -157,7 +157,7 @@ function Community({navigation}: any) {
       address: selectedSido + ' ' + selectedSigugun + ' ' + selectedDong,
     };
     await axios
-      .post(`http://nolmung.kr/api/community/search/with/?page=0`, body)
+      .post(`community/search/with/?page=0`, body)
       .then(response => setWithPostList([...response.data.withDtoList]));
   };
 
