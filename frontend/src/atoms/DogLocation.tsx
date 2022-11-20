@@ -5,14 +5,14 @@ import {MAIN_COLOR} from '~/const';
 
 function DogLocation({hadleMyDogLocation}) {
   return (
-    <Pressable style={styels.container} onPress={() => hadleMyDogLocation()}>
+    <Pressable style={styles.container} onPress={() => hadleMyDogLocation()}>
       <Zoo width={20} height={20} fill="black" />
-      <Text style={styels.textStyle}>강아지 위치 보기</Text>
+      <Text style={styles.textStyle}>강아지 위치 보기</Text>
     </Pressable>
   );
 }
 
-const styels = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     borderWidth: 1.5,
     paddingVertical: 5,

@@ -5,13 +5,13 @@ import {MAIN_COLOR} from '~/const';
 
 function ChatWalkStart({hadleStartWalk}) {
   return (
-    <Pressable style={styels.container} onPress={() => hadleStartWalk()}>
+    <Pressable style={styles.container} onPress={() => hadleStartWalk()}>
       <WalkingTheDog width={20} height={20} fill="black" />
-      <Text style={styels.textStyle}>산책 시작하기</Text>
+      <Text style={styles.textStyle}>산책 시작하기</Text>
     </Pressable>
   );
 }
-const styels = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     borderWidth: 1.5,
     paddingVertical: 5,
