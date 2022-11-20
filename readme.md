@@ -2,7 +2,9 @@
 
 # 🐕놀면멍하니
 
-![logo](/uploads/79dbbfae08e5c3d65d6c6272673f89c7/logo.png)
+<div align="center">
+    <img src="/uploads/79dbbfae08e5c3d65d6c6272673f89c7/logo.png" width="30%"/>
+</div>
 
 ## 1-1. 서비스 소개🐶
 
