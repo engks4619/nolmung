@@ -11,6 +11,7 @@ const initialState = {
   dogs: [],
   second: 0,
   distance: 0,
+  intervalId: '',
 };
 
 const watcherSlice = createSlice({

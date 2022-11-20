@@ -196,17 +196,18 @@ function ChatsDetail({route, navigation}: any) {
       locationSocket.emit('locationLogin', {id: user});
       locationSocket.on('gpsInfo', gpsInfo => {
         console.log(gpsInfo);
-        if (gpsInfo === 403) {
+        if (gpsInfo === 400) {
           Alert.alert(
             '알림',
             '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
           );
         } else if (gpsInfo === 400) {
           clearInterval(intervalId);
-          navigation.navigate('LogViewWatcher');
+          console.log('클리어인터벌');
+          navigation.navigate('WalkReview');
         } else {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
-          navigation.navigate('MapViewWatcher', {postIdx: postIdx});
+
           dispatch(setPath({path: gpsInfo.gps}));
         }
       });
@@ -219,6 +220,10 @@ function ChatsDetail({route, navigation}: any) {
   }, [locationSocket, intervalId]);
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
+      navigation.navigate('MapViewWatcher', {
+        postIdx: postIdx,
+        interval: intervalId,
+      });
       const interval = setInterval(() => {
         locationSocket.emit('getGps', roomId);
       }, 5000);

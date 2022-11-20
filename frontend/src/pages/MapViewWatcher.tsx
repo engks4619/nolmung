@@ -13,6 +13,7 @@ import {setDogs} from '~/slices/watcherSlice';
 function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
   const postIdx = route.params.postIdx;
+  const intervalId = route.params.intervalId;
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);
@@ -69,6 +70,9 @@ function MapViewWatcher({navigation, route}: any) {
         dogInfoList={dogs}
         startDate={startDate}
         doneWalking={() => {
+          console.log(intervalId, '클리어');
+          clearInterval(intervalId);
+          navigation.replace('WalkReview');
           // handleDoneWalking();
         }}
         distance={distance}
