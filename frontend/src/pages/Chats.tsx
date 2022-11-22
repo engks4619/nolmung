@@ -95,14 +95,17 @@ function Chats({navigation}: any) {
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const [myChatList, setMyChatList] = useState([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const getChatsList = async () => {
+    setRefreshing(true);
     try {
       const response = await axios.get('community/chat');
       setMyChatList(response.data);
     } catch (error: any) {
       console.log('채팅 목록 에러');
     }
+    setRefreshing(false);
   };
 
   const handleDetailChat = (chatInfo: chatListType) => {
@@ -138,6 +141,8 @@ function Chats({navigation}: any) {
       <ChatsTemplate
         myChatList={myChatList}
         handleDetailChat={handleDetailChat}
+        refresh={getChatsList}
+        refreshing={refreshing}
       />
     </View>
   );
