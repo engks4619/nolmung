@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 2,
     marginBottom: 5,
-    paddingBottom: 7,
+    paddingBottom: 5,
     borderBottomWidth: 0.8,
     borderColor: 'rgba(0, 0, 0, .2)',
     borderStyle: 'dashed',
@@ -91,12 +91,13 @@ const styles = StyleSheet.create({
   categoryContainer: {
     marginLeft: 25,
     fontSize: 11,
+    height: 15,
   },
   headingText: {
     fontSize: 14,
     color: 'black',
     fontWeight: 'bold',
-    height: 17,
+    height: 16,
     width: 270,
   },
   contentContainer: {
