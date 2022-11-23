@@ -46,10 +46,7 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public List<ChatDto> getChatList(String token){
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-        Long userIdx = userInfoDto.getUserIdx();
-
+    public List<ChatDto> getChatList(Long userIdx){
         List<Chat> callerChatList =chatRepository.findByCallerUserIdx(userIdx);
         List<Chat> writerChatList =chatRepository.findByPostWriterIdx(userIdx);
         List<ChatDto> callerChatDto = callerChatList.stream().map(chat -> {
