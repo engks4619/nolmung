@@ -41,7 +41,6 @@ router.get('/api/socket/room/:userId', async (req, res) => {
     const roomList = [];
     for (var i in rooms) {
       // 최근 메시지
-      console.log('room', i, ': ', typeof rooms[i]._id.toString());
       const recentChat = await Chat.findOne({
         room: rooms[i]._id.toString(),
       }).limit(1);

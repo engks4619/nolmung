@@ -30,7 +30,7 @@ public class ChatService {
 
     private final LuckyDogRepository luckyDogRepository;
 
-    public void saveChat(Long postIdx, String roomId, String token){
+    public void saveChat(Long postIdx, String roomId, String token) {
 
         UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
         Long userIdx = userInfoDto.getUserIdx();
@@ -46,21 +46,18 @@ public class ChatService {
         chatRepository.save(chat);
     }
 
-    public List<ChatDto> getChatList(String token){
-        UserInfoDto userInfoDto = clientUtil.requestUserInfo(token);
-        Long userIdx = userInfoDto.getUserIdx();
-
-        List<Chat> callerChatList =chatRepository.findByCallerUserIdx(userIdx);
-        List<Chat> writerChatList =chatRepository.findByPostWriterIdx(userIdx);
+    public List<ChatDto> getChatList(Long userIdx) {
+        List<Chat> callerChatList = chatRepository.findByCallerUserIdx(userIdx);
+        List<Chat> writerChatList = chatRepository.findByPostWriterIdx(userIdx);
         List<ChatDto> callerChatDto = callerChatList.stream().map(chat -> {
-            UserInfoDto writerInfo = clientUtil.requestOtherUserInfo(chat.getPost().getWriterIdx());
+                    UserInfoDto writerInfo = clientUtil.requestOtherUserInfo(chat.getPost().getWriterIdx());
 
-            String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(chat.getPost().getPostIdx()) ? postPhotoRepository.findByPostPostIdx(chat.getPost().getPostIdx()).get(0).getPhotoUrl()
-                    : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(chat.getPost().getPostIdx()).getId().getDogIdx())).get(0).getImage();
+                    String thumbnailUrl = postPhotoRepository.existsByPostPostIdx(chat.getPost().getPostIdx()) ? postPhotoRepository.findByPostPostIdx(chat.getPost().getPostIdx()).get(0).getPhotoUrl()
+                            : clientUtil.requestDogInfo(Collections.singletonList(luckyDogRepository.findFirstByIdPostPostIdx(chat.getPost().getPostIdx()).getId().getDogIdx())).get(0).getImage();
 
 
                     return ChatDto.builder()
-                            .Completed(chat.getPost().getGetCompleted())
+                            .Completed(chat.getPost().getGetCompleted() && chat.getPost().getAlbaIdx().equals(chat.getCallerUserIdx()))
                             .nickname(writerInfo.getNickname())
                             .userImgUrl(writerInfo.getProfileImage())
                             .isOwner(false)

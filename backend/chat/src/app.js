@@ -98,7 +98,7 @@ io.on('connection', socket => {
           postIdx: data.postIdx,
           thumbnailUrl: data.thumbnailUrl,
           ownerImgUrl: data.ownerImgUrl,
-          opponentImgUrl: opponentImgUrl,
+          opponentImgUrl: data.opponentImgUrl,
         });
 
         socket.join(newRoom._id);
