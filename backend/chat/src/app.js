@@ -99,6 +99,9 @@ io.on('connection', socket => {
           thumbnailUrl: data.thumbnailUrl,
           ownerImgUrl: data.ownerImgUrl,
           opponentImgUrl: data.opponentImgUrl,
+          pay: data.pay,
+          subject: data.subject,
+          opponentNickname: data.opponentNickname,
         });
 
         socket.join(newRoom._id);
