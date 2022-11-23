@@ -109,6 +109,7 @@ function AppInner() {
       socket.emit('login', data);
 
       socket.on('rooms', roomsInfos => {
+        console.log(roomsInfos);
         roomsInfos.map(roomInfo => {
           chatSocket.emit('join', roomInfo.roomId);
         });

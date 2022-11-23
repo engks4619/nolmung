@@ -28,10 +28,8 @@ const chatSlice = createSlice({
       state.pay = action.payload?.pay;
       state.writerIdx = action.payload.writerIdx;
       state.oppentIdx = action.payload.oppentIdx;
-      state.oppentImg = action.payload.userImgUrl;
-      state.oppentName = action.payload.writer;
-      state.categoryType = action.payload.categoryType;
-      state.completed = action.payload.completed;
+      state.oppentImg = action.payload.oppentImg;
+      state.oppentName = action.payload.oppentName;
     },
     setCompleted(state, action) {
       state.completed = action.payload;
