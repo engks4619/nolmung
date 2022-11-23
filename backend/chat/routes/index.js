@@ -19,13 +19,19 @@ const {default: axios} = require('axios');
 router.get('/api/socket/room/:userId', async (req, res) => {
   // community 서버에 요청
   // getChatPostInfo();
-  async userIdx => {
-    const response = await axios({
-      url: `http://nolmung.kr/api/community/chat/${userIdx}`,
-      method: 'get',
-    });
-    console.log(response.data);
-  };
+  // console.log(req.params.userId);
+  // try {
+  //   const response = await axios({
+  //     url: `http://nolmung.kr/api/community/chat/${req.params.userId}`,
+  //     headers: {
+  //       Authorization: req.headers.authorization,
+  //     },
+  //     method: 'get',
+  //   });
+  //   console.log(response.data);
+  // } catch (error) {
+  //   console.log(error.message);
+  // }
 
   try {
     const rooms = await Room.find({
@@ -36,7 +42,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
     for (var i in rooms) {
       // 최근 메시지
       const recentChat = await Chat.findOne({
-        room: req.params.rooms[i]._id,
+        room: rooms[i]._id.toString(),
       }).limit(1);
 
       roomList.push({
@@ -46,6 +52,9 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         postIdx: rooms[i].postIdx,
         createdAt: rooms[i].createdAt,
         recentChat: recentChat,
+        thumbnailUrl: rooms[i].thumbnailUrl,
+        ownerImgUrl: rooms[i].ownerImgUrl,
+        opponentImgUrl: rooms[i].opponentImgUrl,
       });
     }
 
