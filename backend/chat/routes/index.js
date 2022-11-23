@@ -5,16 +5,6 @@ const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
 const {default: axios} = require('axios');
 
-// const getChatPostInfo = async userIdx => {
-//   const response = await axios({
-//     url: `http://nolmung.kr/api/community/chat/${userIdx}`,
-//     method: 'get',
-//   });
-//   console.log(response.data);
-// };
-// 상대방프로필, 글썸네일
-// 최신 메시지
-
 // 채팅방 목록 조회
 router.get('/api/socket/room/:userId', async (req, res) => {
   try {

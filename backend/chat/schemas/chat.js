@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const { Types: { ObjectId } } = Schema;
 const chatSchema = new Schema({
-	room: {
+	roomId: {
 		type: String,
 		required: true,
 		ref: 'Room',
 	},
-	user: {
+	sender: {
 		type: String,
 		required: true,
 	},
