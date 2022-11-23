@@ -29,6 +29,11 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         room: rooms[i]._id.toString(),
       }).sort('-createdAt').limit(1);
 
+      const isWriter = false;   // 게시글 작성자(견주)인지 체크
+      if (opponentIdx === req.params.userId) {
+        isWriter = true;
+      }
+
       roomList.push({
         roomId: rooms[i]._id,
         ownerIdx: rooms[i].ownerIdx,
@@ -42,6 +47,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         pay: rooms[i].pay,
         subject: rooms[i].subject,
         opponentNickname: rooms[i].opponentNickname,
+        isWriter: isWriter
       });
     }
 

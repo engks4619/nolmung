@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 const roomSchema = new Schema({
   ownerIdx: {
-    // 채팅건 사람 ID
+    // 채팅건 사람 ID (알바)
     type: Number,
     required: true,
   },
   opponentIdx: {
-    // 채팅 상대방 ID (게시글작성자)
+    // 채팅 상대방 ID (게시글작성자=견주)
     type: Number,
     required: true,
   },
