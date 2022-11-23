@@ -3,22 +3,53 @@ const router = express.Router();
 
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
+const {default: axios} = require('axios');
+
+// const getChatPostInfo = async userIdx => {
+//   const response = await axios({
+//     url: `http://nolmung.kr/api/community/chat/${userIdx}`,
+//     method: 'get',
+//   });
+//   console.log(response.data);
+// };
+// 상대방프로필, 글썸네일
+// 최신 메시지
 
 // 채팅방 목록 조회
 router.get('/api/socket/room/:userId', async (req, res) => {
-  try {
+  // community 서버에 요청
+  // getChatPostInfo();
+  async userIdx => {
+    const response = await axios({
+      url: `http://nolmung.kr/api/community/chat/${userIdx}`,
+      method: 'get',
+    });
+    console.log(response.data);
+  };
 
+  try {
     const rooms = await Room.find({
-      $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}]
+      $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}],
     }).sort('-createdAt');
 
-    const roomInfo = []
+    const roomList = [];
     for (var i in rooms) {
-      roomInfo.push({ roomId: rooms[i]._id, ownerIdx: rooms[i].ownerIdx, opponentIdx: rooms[i].opponentIdx, postIdx: rooms[i].postIdx, createdAt: rooms[i].createdAt });
+      // 최근 메시지
+      const recentChat = await Chat.findOne({
+        room: req.params.rooms[i]._id,
+      }).limit(1);
+
+      roomList.push({
+        roomId: rooms[i]._id,
+        ownerIdx: rooms[i].ownerIdx,
+        opponentIdx: rooms[i].opponentIdx,
+        postIdx: rooms[i].postIdx,
+        createdAt: rooms[i].createdAt,
+        recentChat: recentChat,
+      });
     }
-  
-    res.json(roomInfo);
-    
+
+    res.json(roomList);
   } catch (error) {
     console.log(error);
   }
@@ -37,7 +68,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
 //       postIdx: data.postIdx,
 //     });
 
-//     if (room == null) {
+//     if (room === null) {
 //       console.log('해당 방이 없습니다. ');
 //       const newRoom = await Room.create({
 //         opponentIdx: data.opponentIdx,
