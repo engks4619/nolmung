@@ -142,7 +142,7 @@ chat.on('connection', socket => {
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
     // 산책 확정 여부 전달
-    const room = await Chat.find({room: roomId});
+    const room = await Chat.find({roomId: roomId});
     if (room.complete) {
       socket.emit('completed', '산책 확정');
     } else {
@@ -150,14 +150,14 @@ chat.on('connection', socket => {
     }
 
     try {
-      const chats = await Chat.find({room: roomId}).sort('-createdAt');
+      const chats = await Chat.find({roomId: roomId}).sort('-createdAt');
       const chatInfo = [];
       for (var i in chats) {
         chatInfo.push({
           chat: chats[i].chat,
           createdAt: chats[i].createdAt,
-          roomId: chats[i].room,
-          sender: chats[i].user,
+          roomId: chats[i].roomId,
+          sender: chats[i].sender,
         });
       }
 
@@ -173,8 +173,8 @@ chat.on('connection', socket => {
 
     try {
       const chatInfo = await Chat.create({
-        room: data.roomId,
-        user: data.sender,
+        roomId: data.roomId,
+        sender: data.sender,
         chat: data.chat,
       });
 
@@ -188,8 +188,8 @@ chat.on('connection', socket => {
       chat.to(data.roomId).emit('messageC', {
         chat: chatInfo.chat,
         createdAt: chatInfo.createdAt,
-        roomId: chatInfo.room,
-        sender: chatInfo.user,
+        roomId: chatInfo.roomId,
+        sender: chatInfo.sender,
       }); // 클라이언트에 메시지 전달
     } catch (error) {
       console.error(error);
