@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   logSummarySmall: {
     color: 'black',
-    fontSize: 10,
+    fontSize: 12,
   },
   logSummaryMiddle: {
     marginTop: 10,

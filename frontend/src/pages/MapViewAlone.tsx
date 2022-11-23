@@ -106,21 +106,19 @@ function MapViewAlone({navigation}: any) {
     return <OnSaving />;
   } else {
     return (
-      <View>
-        <MapViewTemplate
-          myPosition={myPosition}
-          path={path}
-          dogInfoList={dogs}
-          startDate={startDate}
-          doneWalking={() => {
-            handleDoneWalking();
-          }}
-          distance={distance}
-          dispatch={dispatch}
-          second={second}
-          navigation={navigation}
-        />
-      </View>
+      <MapViewTemplate
+        myPosition={myPosition}
+        path={path}
+        dogInfoList={dogs}
+        startDate={startDate}
+        doneWalking={() => {
+          handleDoneWalking();
+        }}
+        distance={distance}
+        dispatch={dispatch}
+        second={second}
+        navigation={navigation}
+      />
     );
   }
 }
