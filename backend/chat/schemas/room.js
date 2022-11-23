@@ -39,6 +39,15 @@ const roomSchema = new Schema({
     // 게시글 작성자 프로필
     type: String,
   },
+  pay: {
+    type: Number,
+  },
+  opponentNickname: {
+    type: String,
+  },
+  subject: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('Room', roomSchema);

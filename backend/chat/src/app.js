@@ -99,6 +99,9 @@ io.on('connection', socket => {
           thumbnailUrl: data.thumbnailUrl,
           ownerImgUrl: data.ownerImgUrl,
           opponentImgUrl: data.opponentImgUrl,
+          pay: data.pay,
+          subject: data.subject,
+          opponentNickname: data.opponentNickname,
         });
 
         socket.join(newRoom._id);
@@ -239,14 +242,18 @@ location.on('connection', socket => {
       } else {
         if (gps.walking) {
           console.log('이미 산책이 시작되었습니다.');
-          socket.emit('replyStartWalk', (response.statusCode = 400));
+          location
+            .to(data.roomId)
+            .emit('replyStartWalk', (response.statusCode = 400));
         } else {
           const gpsInfo = await Location.updateMany(
             {roomId: data.roomId},
             {$set: {walking: true}},
           );
           console.log('산책 시작', gpsInfo.walking);
-          socket.emit('replyStartWalk', '산책이 시작되었습니다.');
+          location
+            .to(data.roomId)
+            .emit('replyStartWalk', '산책이 시작되었습니다.');
         }
       }
     } catch (error) {
@@ -335,11 +342,11 @@ location.on('connection', socket => {
 
       if (gpsInfo === null) {
         // 산책 기록(위치정보) 없는 경우
-        socket.emit('gpsInfo', (response.statusCode = 400));
+        location.to(roomId).emit('gpsInfo', (response.statusCode = 400));
         console.log('산책 기록 없음.');
       } else if (!gpsInfo.walking) {
         // 산책 중이 아닌 경우
-        socket.emit('gpsInfo', (response.statusCode = 403));
+        location.to(roomId).emit('gpsInfo', (response.statusCode = 403));
         console.log('산책 중 아님.');
       } else {
         console.log('gps 목록 조회');
@@ -351,7 +358,7 @@ location.on('connection', socket => {
           });
         }
 
-        socket.emit('gpsInfo', {
+        location.to(roomId).emit('gpsInfo', {
           roomId: gpsInfo.roomId,
           ownerIdx: gpsInfo.ownerIdx,
           gps: gpsList,
