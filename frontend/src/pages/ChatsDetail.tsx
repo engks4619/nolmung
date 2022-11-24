@@ -183,7 +183,7 @@ function ChatsDetail({route, navigation}: any) {
 
   useEffect(() => {
     if (locationSocket) {
-      locationSocket.emit('locationLogin', {id: user});
+      locationSocket.emit('locationLogin', {id: user, roomId: roomId});
       locationSocket.on('replyLocationLogin', reply => {
         console.log(reply);
         // 로그인 성공
