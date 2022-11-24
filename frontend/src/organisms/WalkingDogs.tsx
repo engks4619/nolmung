@@ -28,7 +28,6 @@ function WalkingDogs({dogInfoList, text}: Props) {
 const styles = StyleSheet.create({
   container: {
     marginVertical: 3,
-    backgroundColor: 'white',
     paddingHorizontal: 15,
   },
   dogsContainer: {

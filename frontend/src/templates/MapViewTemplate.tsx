@@ -36,7 +36,7 @@ function MapView({
     );
   }
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView overScrollMode="never">
         <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
         <View style={styles.mapContainer}>
@@ -84,13 +84,16 @@ function MapView({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+  },
   whileLoading: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
   mapContainer: {
-    backgroundColor: 'white',
     alignItems: 'center',
     alignSelf: 'center',
     width: '100%',
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flex: 1,
-    backgroundColor: 'white',
     paddingVertical: 15,
   },
 });
