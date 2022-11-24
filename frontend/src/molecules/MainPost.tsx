@@ -45,7 +45,11 @@ function MainPost({mainPosts, mainPostPgNum}: Props) {
               {post.categoryType === 'OTHER' ? '돌봐줘요' : '함께 가요'}
             </Text>
             <View style={styles.postContainer}>
-              <Text style={styles.colored}>{mainPostPgNum * 5 + idx + 1}.</Text>
+              <View style={styles.indexContainer}>
+                <Text style={styles.colored}>
+                  {mainPostPgNum * 5 + idx + 1}.
+                </Text>
+              </View>
               <View style={styles.contentContainer}>
                 <Text
                   style={styles.headingText}
@@ -53,8 +57,12 @@ function MainPost({mainPosts, mainPostPgNum}: Props) {
                   ellipsizeMode="tail">
                   {post.subject}
                 </Text>
-                <View style={styles.svgContainer}>
+              </View>
+              <View style={styles.svgContainer}>
+                <View>
                   <Chat width={13} height={13} fill={'black'} />
+                </View>
+                <View>
                   <Text style={styles.svgMargin}>{post.chatCnt}</Text>
                 </View>
               </View>
@@ -81,12 +89,15 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, .2)',
     borderStyle: 'dashed',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  indexContainer: {
+    flex: 1.1,
   },
   colored: {
     color: MAIN_COLOR,
     fontWeight: 'bold',
     fontSize: 14,
-    width: 20,
   },
   categoryContainer: {
     marginLeft: 25,
@@ -96,11 +107,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     fontWeight: 'bold',
-    height: 17,
-    width: 270,
+    // height: 17,
+    // width: 270,
   },
   contentContainer: {
-    flex: 1,
+    flex: 15,
     marginLeft: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -110,6 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   svgMargin: {
+    flex: 1,
     marginHorizontal: 3,
   },
 });
