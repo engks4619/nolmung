@@ -215,36 +215,44 @@ function ChatsDetail({route, navigation}: any) {
         });
       });
     }
+    return () => {
+      if (locationSocket) {
+        locationSocket.off('replyLocationLogin');
+        locationSocket.off('replyStartWalk');
+      }
+    };
   }, [locationSocket]);
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
       navigation.navigate('MapViewWatcher', {
         postIdx: postIdx,
+        roomId: roomId,
       });
       locationSocket.emit('getGps', roomId);
-      locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo);
-        if (gpsInfo === 400) {
-          // 산책 기록 없음
-          // Alert.alert(
-          //   '알림',
-          //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
-          // );
-        } else if (gpsInfo === 403) {
-          // 산책중아님
-        } else if (gpsInfo) {
-          // 강아지 위치 정보 gpsInfo 담겨서 옴
-          dispatch(setPath({path: gpsInfo.gps}));
-          dispatch(addDistance(0));
-          // dispatch(addDistance(gpsInfo.distacne));
-        }
-      });
+      console.log('여기여기');
+      // locationSocket.on('gpsInfo', gpsInfo => {
+      //   console.log(gpsInfo);
+      //   if (gpsInfo === 400) {
+      //     // 산책 기록 없음
+      //     // Alert.alert(
+      //     //   '알림',
+      //     //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
+      //     // );
+      //   } else if (gpsInfo === 403) {
+      //     // 산책중아님
+      //   } else if (gpsInfo) {
+      //     // 강아지 위치 정보 gpsInfo 담겨서 옴
+      //     dispatch(setPath({path: gpsInfo.gps}));
+      //     dispatch(addDistance(0));
+      //     // dispatch(addDistance(gpsInfo.distacne));
+      //   }
+      // });
     }
-    return () => {
-      if (locationSocket) {
-        locationSocket.off('gpsInfo');
-      }
-    };
+    // return () => {
+    //   if (locationSocket) {
+    //     locationSocket.off('gpsInfo');
+    //   }
+    // };
   }, [locationSocket, roomId]);
   const socketPositionState = useSelector(
     (state: RootState) => state.socketPosition,

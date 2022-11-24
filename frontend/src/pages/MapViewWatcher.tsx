@@ -6,12 +6,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {addDistance} from '~/slices/watcherSlice';
 import axios from 'utils/axios';
-import {setDogs} from '~/slices/watcherSlice';
+import {setPath, setDogs} from '~/slices/watcherSlice';
 import {useLocationSocket} from '~/hooks/useSocket';
 
 function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
   const postIdx = route.params.postIdx;
+  const roomId = route.params.roomId;
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);
@@ -57,6 +58,25 @@ function MapViewWatcher({navigation, route}: any) {
       }
     });
   }, []);
+  useEffect(() => {
+    locationSocket?.on('gpsInfo', gpsInfo => {
+      console.log(gpsInfo);
+      if (gpsInfo === 400) {
+        // 산책 기록 없음
+        // Alert.alert(
+        //   '알림',
+        //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
+        // );
+      } else if (gpsInfo === 403) {
+        // 산책중아님
+      } else if (gpsInfo) {
+        // 강아지 위치 정보 gpsInfo 담겨서 옴
+        dispatch(setPath({path: gpsInfo.gps}));
+        dispatch(addDistance(0));
+        // dispatch(addDistance(gpsInfo.distacne));
+      }
+    });
+  }, [locationSocket, roomId]);
 
   //시간계산
   const defaultSec =
