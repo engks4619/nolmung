@@ -143,7 +143,7 @@ chat.on('connection', socket => {
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
     // 산책 확정 여부 전달
-    const roomInfo = await Room.findOne({roomId: roomId});
+    const roomInfo = await Room.findOne({_id: roomId});
     socket.emit('completed', roomInfo.complete);
 
     try {
