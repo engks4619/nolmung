@@ -23,7 +23,7 @@ interface Props {
   setCategory: Dispatch<SetStateAction<string>>;
   initSpotRequest: () => void;
   refreshing: boolean;
-  setRefreshing: Dispatch<SetStateAction<boolea>>;
+  setRefreshing: Dispatch<SetStateAction<boolean>>;
   refresh: (pageNum?: number) => void;
 }
 

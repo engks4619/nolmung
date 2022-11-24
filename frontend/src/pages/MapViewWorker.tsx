@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {Alert} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import {doneWalking} from '~/utils/SocketPositionFunctions';
 import {addDistance} from '~/slices/socketPositionSlice';
@@ -23,10 +23,7 @@ function MapViewWorker({navigation, route}: any) {
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
   const dogIdxs = useSelector((state: RootState) => state.socketPosition.dogs);
-  // const walkRoomId = useSelector(
-  //   (state: RootState) => state.socketPosition.walkRoomId,
-  // );
-  console.log('roomId', walkRoomId);
+
   const isSaving = useSelector(
     (state: RootState) => state.socketPosition.isSaving,
   );
@@ -43,9 +40,6 @@ function MapViewWorker({navigation, route}: any) {
   const lastUpdate = useSelector(
     (state: RootState) => state.socketPosition.lastUpdate,
   );
-  // const second = useSelector((state: RootState) => {
-  //   state.socketPosition.second;
-  // });
 
   // 개 불러오기
   const [dogsList, setDogsList] = useState([]);
@@ -89,9 +83,7 @@ function MapViewWorker({navigation, route}: any) {
     if (locationSocket) {
       locationSocket.emit('endWalk', walkRoomId);
       doneWalking(dispatch, navigation, watchId);
-      // dispatch(setIsSavingOn);
       await submitLogs();
-      // dispatch(setIsSavingOff);
     }
   }, [walkRoomId]);
 

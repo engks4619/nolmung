@@ -1,13 +1,10 @@
 import React from 'react';
-import {View, Alert} from 'react-native';
+import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '~/store';
 import {RootState} from '~/store/reducer';
 import LogViewTemplate from '@templates/LogviewTemplate';
-import {dogInfo} from '~/molecules/MainDogs';
-import axios from 'utils/axios';
-import {setIsSavingOff, setIsSavingOn} from '~/slices/myPositionSlice';
-import {clearLogsAll, startLogging} from '~/utils/MyPositionFunctions';
+import {clearLogsAll} from '~/utils/MyPositionFunctions';
 
 function LogViewWorker({navigation}: any) {
   const dispatch = useAppDispatch();

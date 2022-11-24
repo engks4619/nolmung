@@ -1,7 +1,5 @@
-import {containsKey} from './AsyncService';
 import {Alert} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-import {Coord} from 'react-native-nmap';
 import {
   storeData,
   removeMultiple,
@@ -16,14 +14,12 @@ import {
   addPath,
   setStates,
   resetStates,
-  setIsSavingOn,
-  setIsSavingOff,
   setWatchId,
   setStartDate,
   setLastUpdate,
 } from '~/slices/socketPositionSlice';
-// import {setSelectedMyDogs} from '~/slices/dogsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const localList = [
   '@StartDateSocket',
   '@LastUpdateSocket',
@@ -65,7 +61,6 @@ export const startLogging = async (
   dispatch(setStartDate(startDate));
   const watchId = Geolocation.watchPosition(
     position => {
-      console.log('position은 새로받나');
       const gpsLocalData = {
         ownerIdx: oppentIdx,
         roomId,
@@ -75,7 +70,6 @@ export const startLogging = async (
         },
       };
       locationSocket.emit('gps', gpsLocalData);
-      console.log('emit gps!!');
       const UpdateDate = new Date().toString();
       dispatch(setMyPosition(gpsLocalData.gps));
       dispatch(addPath(gpsLocalData.gps));
@@ -96,12 +90,6 @@ export const startLogging = async (
   if (typeof watchId === 'number') {
     dispatch(setWatchId(watchId));
   }
-};
-//asyncStorage에 path추가
-const addPathToAsync = async (position: Coord) => {
-  let path = await getData('@WalkingLogsSocket');
-  path.push(position);
-  await storeData('@WalkingLogsSocket', path);
 };
 
 // 비정상 기록 저장 여부 질문
@@ -212,6 +200,5 @@ export const doneWalking = async (
 ) => {
   quitLogging(watchId);
   dispatch(setIsLoggingOff());
-  // storeData('@intendedSocket', true);
   navigation.replace('LogViewWorker');
 };

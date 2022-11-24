@@ -1,12 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Alert, View} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
-import OnSaving from '@pages/OnSaving';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {addDistance} from '~/slices/watcherSlice';
 import axios from 'utils/axios';
-import {setPath, setDogs} from '~/slices/watcherSlice';
 import {useLocationSocket} from '~/hooks/useSocket';
 
 function MapViewWatcher({navigation, route}: any) {
@@ -18,21 +14,11 @@ function MapViewWatcher({navigation, route}: any) {
   const path = useSelector((state: RootState) => state.watcher.path);
   const myPosition = path[path.length - 1];
   const [locationSocket, locationDisconnect] = useLocationSocket();
-  // const isSaving = useSelector(
-  //   (state: RootState) => state.socketPosition.isSaving,
-  // );
-  // const watchId = useSelector(
-  //   (state: RootState) => state.socketPosition.watchId,
-  // );
 
   const dogIdxs = useSelector((state: RootState) => state.watcher.dogs);
   const distance = useSelector(
     (state: RootState) => state.socketPosition.distance,
   );
-  const selectedDogs = useSelector(
-    (state: RootState) => state.dogs.selectedDogsInfo,
-  );
-
   const startDate = useSelector(
     (state: RootState) => state.socketPosition.startDate,
   );
@@ -52,31 +38,7 @@ function MapViewWatcher({navigation, route}: any) {
   };
   useEffect(() => {
     getDogs();
-    locationSocket?.on('replyEndWalk', replyEndWalk => {
-      if (typeof replyEndWalk === 'string') {
-        // navigation.replace('LogViewWatcher');
-      }
-    });
   }, []);
-  // useEffect(() => {
-  //   locationSocket?.on('gpsInfo', gpsInfo => {
-  //     console.log(gpsInfo);
-  //     if (gpsInfo === 400) {
-  //       // 산책 기록 없음
-  //       // Alert.alert(
-  //       //   '알림',
-  //       //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
-  //       // );
-  //     } else if (gpsInfo === 403) {
-  //       // 산책중아님
-  //     } else if (gpsInfo) {
-  //       // 강아지 위치 정보 gpsInfo 담겨서 옴
-  //       dispatch(setPath({path: gpsInfo.gps}));
-  //       dispatch(addDistance(0));
-  //       // dispatch(addDistance(gpsInfo.distacne));
-  //     }
-  //   });
-  // }, [locationSocket, roomId]);
 
   //시간계산
   const defaultSec =
@@ -98,7 +60,6 @@ function MapViewWatcher({navigation, route}: any) {
       startDate={startDate}
       doneWalking={() => {
         navigation.replace('WalkReview');
-        // handleDoneWalking();
       }}
       distance={distance}
       dispatch={dispatch}

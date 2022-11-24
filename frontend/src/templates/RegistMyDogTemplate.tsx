@@ -36,7 +36,7 @@ interface Props {
   loading: boolean;
 }
 
-const BREED_DATA = breedData.map((item, idx) => item.breed_code_value);
+const BREED_DATA = breedData.map(item => item.breed_code_value);
 
 const dropdownIcon = (isOpened: boolean) => {
   return isOpened ? (
@@ -47,7 +47,6 @@ const dropdownIcon = (isOpened: boolean) => {
 };
 
 const RegistMyDogTemplate = ({
-  navigation,
   requestBody,
   setRequestBody,
   image,

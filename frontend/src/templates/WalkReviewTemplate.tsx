@@ -1,12 +1,10 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {BORDER_COLOR, MAIN_COLOR, TEXT_INPUT_BACKGROUND_COLOR} from '~/const';
+import {BORDER_COLOR} from '~/const';
 import ChatInfoSummary from '~/organisms/ChatInfoSummary';
 import ReviewArticleSummary from '~/organisms/ReviewArticleSummary';
-import StarContainer from '~/organisms/StarContainer';
 import TextInputBox from '@atoms/TextInputBox';
 import {article} from '~/utils/type';
-import StarRating from '~/molecules/StarRating';
 import CustomRatingBar from '@atoms/CustomRatingBar';
 
 interface Props {
