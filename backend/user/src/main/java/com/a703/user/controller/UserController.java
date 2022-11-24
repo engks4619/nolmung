@@ -132,7 +132,7 @@ public class UserController {
         Map<String, Object> body = new IdentityHashMap<>();
         body.put("totalWalk", userVariableEntity.getCntWalk());
         body.put("totalDistance", String.format("%.1f", userVariableEntity.getTotalDistance() / 1000));
-        body.put("totalTime", String.format("%d시간 %02d분", userVariableEntity.getTotalTime() / 60, userVariableEntity.getTotalTime() % 60));
+        body.put("totalTime", String.format("%d시간 %02d분", userVariableEntity.getTotalTime() / 3600, userVariableEntity.getTotalTime() / 60));
         return ResponseEntity.ok(body);
     }
 
