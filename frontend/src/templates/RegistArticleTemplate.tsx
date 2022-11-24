@@ -22,6 +22,7 @@ import CustomDatePicker from '~/organisms/CustomDatePicker';
 import BottomModal from '~/organisms/BottomModal';
 import {dogEtcOption} from '~/utils/type';
 import DogEtcOptionContainer from '~/organisms/DogEtcOptionSelectContainer';
+import RegistArticleInputContainer from '~/organisms/RegistArticleInputContainer';
 
 interface Props {
   category: string;
@@ -146,46 +147,32 @@ const RegistArticleTemplate = ({
               setSelectedDog={setSelectedDog}
             />
             <DogEtcOptionContainer DOG_ETC_OPTION={DOG_ETC_OPTION} />
-            <View style={[styles.dateContainer, styles.borderBottom]}>
-              <View style={{width: '30%'}}>
-                <Text style={styles.text}>산책 날짜</Text>
-              </View>
-              <Pressable
-                onPress={() => setDateModalOpen(true)}
-                style={{width: '70%', alignItems: 'center'}}>
+            <RegistArticleInputContainer
+              leftText="산책 날짜"
+              onPressFunc={() => setDateModalOpen(true)}
+              rightItem={
                 <View>
                   <Text style={styles.text}>
                     {moment(date).format('YYYY-MM-DD ddd A hh:mm')}
                   </Text>
                 </View>
-              </Pressable>
-            </View>
-            <View style={[styles.dateContainer, styles.borderBottom]}>
-              <View style={{width: '30%'}}>
-                <Text style={styles.text}>만남 장소</Text>
-              </View>
-              <Pressable
-                onPress={() => setPlaceModalOpen(true)}
-                style={{width: '70%', alignItems: 'center'}}>
+              }
+            />
+            <RegistArticleInputContainer
+              leftText="만남 장소"
+              onPressFunc={() => setPlaceModalOpen(true)}
+              rightItem={
                 <View>
                   <Text style={styles.text}>
                     {location ? location : '동까지만 표시됩니다'}
                   </Text>
                 </View>
-              </Pressable>
-            </View>
+              }
+            />
             {category === '돌봐줘요' ? (
-              <View style={[styles.dateContainer, styles.borderBottom]}>
-                <View style={{width: '30%'}}>
-                  <Text style={styles.text}> 가격 ￦</Text>
-                </View>
-                <View
-                  style={{
-                    width: '70%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 12,
-                  }}>
+              <RegistArticleInputContainer
+                leftText="가격 ￦"
+                rightItem={
                   <TextInput
                     placeholder="선택 사항"
                     style={{
@@ -198,8 +185,8 @@ const RegistArticleTemplate = ({
                       setPrice(parseInt(text.replace(/[^0-9]/g, '')))
                     }
                   />
-                </View>
-              </View>
+                }
+              />
             ) : null}
             <View style={styles.contentContainer}>
               <TextInput
