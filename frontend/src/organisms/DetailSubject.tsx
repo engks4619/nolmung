@@ -35,9 +35,11 @@ function DetailSubject({
           <Text style={styles.namePadding}>{writer}</Text>
         </Pressable>
         <View style={styles.rowContainer}>
-          {leadLine ? <Poop width={30} height={30} fill="black" /> : null}
+          {leadLine ? <Lead width={25} height={25} fill="black" /> : null}
           <View style={styles.svgContainer}>
-            {poopBag ? <Lead width={30} height={30} fill="black" /> : null}
+            <View style={styles.rowContainer}>
+              {poopBag ? <Poop width={25} height={25} fill="black" /> : null}
+            </View>
           </View>
         </View>
       </View>
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   subContainer: {
     flexDirection: 'row',
