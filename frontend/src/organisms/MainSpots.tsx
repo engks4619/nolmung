@@ -43,7 +43,7 @@ function MainSpots({spots}: Props) {
         <Text style={styles.headingText}>주변 애완 동반 스팟</Text>
         <Text
           style={styles.naviTextContainer}
-          onPress={() => navigation.navigate('Spots')}>
+          onPress={() => navigation.navigate('SpotList')}>
           전체보기
         </Text>
       </View>
