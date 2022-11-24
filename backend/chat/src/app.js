@@ -159,6 +159,7 @@ chat.on('connection', socket => {
           createdAt: chats[i].createdAt,
           roomId: chats[i].roomId,
           sender: chats[i].sender,
+          senderNickname: chats[i].senderNickname,
         });
       }
 
@@ -177,6 +178,7 @@ chat.on('connection', socket => {
         roomId: data.roomId,
         sender: data.sender,
         chat: data.chat,
+        senderNickname: data.senderNickname,
       });
 
       console.log('클라이언트로부터 message 이벤트를 받았습니다.');
@@ -191,6 +193,7 @@ chat.on('connection', socket => {
         createdAt: chatInfo.createdAt,
         roomId: chatInfo.roomId,
         sender: chatInfo.sender,
+        senderNickname: chatInfo.senderNickname,
       }); // 클라이언트에 메시지 전달
     } catch (error) {
       console.error(error);
