@@ -242,24 +242,11 @@ location.on('connection', socket => {
           walking: true,
         });
         console.log('산책이 시작되었습니다.');
-        socket.emit('replyStartWalk', '산책이 시작되었습니다.');
+        location.to(roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
       } else {
-        if (gps.walking) {
-          console.log('이미 산책이 시작되었습니다.');
-          location
-            .to(data.roomId)
-            .emit('replyStartWalk', (response.statusCode = 400));
-        } else {
-          const gpsInfo = await Location.updateMany(
-            {roomId: data.roomId},
-            {$set: {walking: true}},
-          );
-          console.log('산책 시작', gpsInfo.walking);
-          location
-            .to(data.roomId)
-            .emit('replyStartWalk', '산책이 시작되었습니다.');
-        }
+        location.to(roomId).emit('replyStartWalk', '이미 산책이 시작되었습니다.');
       }
+        
     } catch (error) {
       console.error(error);
     }
@@ -287,7 +274,7 @@ location.on('connection', socket => {
           },
         );
         console.log('gps 저장 완료');
-        socket.emit('replyGps', 'gps 저장 완료');
+        location.to(roomId).emit('replyGps', 'gps 저장 완료');
 
         const gpsList = [];
         for (var i in updatedGps.gps) {
