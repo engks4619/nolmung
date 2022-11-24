@@ -63,6 +63,7 @@ function ChatsDetail({route, navigation}: any) {
       });
 
       chatSocket.on('completed', (completeData: boolean) => {
+        console.log(completeData);
         setIsCompleted(completeData);
       });
 
@@ -83,7 +84,7 @@ function ChatsDetail({route, navigation}: any) {
         console.log('Socket Decide', data);
       });
       chatSocket.on('replyStartWalk', (data: string) => {
-        console.log(data);
+        console.log('replyStartWalk', data);
       });
       locationSocket.on('replyGps', data => {
         console.log('리플라이');
@@ -190,7 +191,7 @@ function ChatsDetail({route, navigation}: any) {
           if (response === 400) {
             // 이미 산책이 시작 되었습니다.
             // 알바생이 산책시작을 다시 누르는 경우에 대해 handleStartWalk에서 분기해놔서 따로 400이 필요한가>
-          } else if (typeof response === 'string' && user === writerIdx) {
+          } else if (typeof response === 'string' && isWriter) {
             // 산책 시작 알림은 견주에게만 (user === writer 일 때?)
             Alert.alert(
               '산책이 시작 되었어요',
@@ -199,22 +200,30 @@ function ChatsDetail({route, navigation}: any) {
           }
         });
       });
+      locationSocket.on('gpsInfo', gpsInfo => {
+        console.log(gpsInfo);
+      });
     }
     return () => {
       if (locationSocket) {
         locationSocket.off('replyLocationLogin');
         locationSocket.off('replyStartWalk');
+        locationSocket.off('gpsInfo');
       }
     };
   }, [locationSocket]);
+
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
-      navigation.navigate('MapViewWatcher', {
-        postIdx: postIdx,
-        roomId: roomId,
-      });
       locationSocket.emit('getGps', roomId);
-      console.log('여기여기');
+      locationSocket.on('gpsInfo', gpsInfo => {
+        console.log(gpsInfo);
+      });
+      // navigation.navigate('MapViewWatcher', {
+      //   postIdx: postIdx,
+      //   roomId: roomId,
+      // });
+
       // locationSocket.on('gpsInfo', gpsInfo => {
       //   console.log(gpsInfo);
       //   if (gpsInfo === 400) {
