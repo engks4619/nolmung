@@ -204,11 +204,11 @@ chat.on('connection', socket => {
   socket.on('complete', async roomId => {
     console.log('complete 이벤트');
 
-    const room = await Room.updateOne(
+    const room = await Room.findOneAndUpdate(
       {_id: ObjectId(roomId)},
       {$set: {complete: true}},
     );
-    console.log('room의 completed ; ', room.complete);
+    console.log('room의 complete : ', room.complete);
     chat.to(roomId).emit('completed', true); // 산책 확정 완료
     chat.to(roomId).emit('alarmCompleted', '산책이 확정되었습니다.');
   });
