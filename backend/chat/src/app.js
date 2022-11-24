@@ -311,18 +311,21 @@ location.on('connection', socket => {
     console.log('endWalk 이벤트');
 
     try {
+      console.log("endRoomId: ", roomId);
       const gpsData = await Location.findOne({roomId: roomId});
+      console.log("endGpsData: ", gpsData);
       console.log('walking: ', gpsData.walking);
 
       if (gpsData === null || !gpsData.walking) {
         // 산책 시작 전이거나 이미 종료된 경우
-
+        console.log("산책 시작 전 or 이미 종료");
         location.to(roomId).emit('replyEndWalk', (response.statusCode = 400));
       } else {
         const gpsInfo = await Location.updateMany(
           {roomId: roomId},
           {$set: {walking: false}},
         );
+        console.log("endGpsInfo: ", gpsInfo);
         console.log('산책 종료', gpsInfo.walking);
         location.to(roomId).emit('replyEndWalk', '산책이 종료되었습니다.');
       }
