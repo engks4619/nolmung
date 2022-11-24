@@ -9,7 +9,7 @@ const {default: axios} = require('axios');
 router.get('/api/socket/room/:userId', async (req, res) => {
   try {
     const rooms = await Room.find({
-      $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}],
+      $or: [{ownerIdx: Number(req.params.userId)}, {opponentIdx: Number(req.params.userId)}],
     }).sort('-createdAt');
 
     const roomList = [];
