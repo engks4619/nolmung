@@ -32,7 +32,7 @@ const io = SocketIO(httpServer, {
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 app.use('/', indexRouter);
 
