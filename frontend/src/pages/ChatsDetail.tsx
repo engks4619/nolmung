@@ -8,7 +8,7 @@ import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setCompleted, setRoomInfos} from '~/slices/chatSlice';
+import {setCompleted} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
 import Geolocation from '@react-native-community/geolocation';
@@ -18,7 +18,7 @@ import {setPath, addDistance} from '~/slices/watcherSlice';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
 export interface chatType {
   chat: string;
-  sender: string;
+  sender: number;
   roomId: string;
   createdAt: string;
 }
@@ -31,6 +31,7 @@ function ChatsDetail({route, navigation}: any) {
   const [locationSocket, locationDisconnect] = useLocationSocket();
 
   const [isFirstChat, setIsFirstChat] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
   const user = useSelector((state: RootState) => state.user.userIdx);
 
@@ -40,13 +41,8 @@ function ChatsDetail({route, navigation}: any) {
   const postIdx = useSelector((state: RootState) => state.chat.postIdx);
   const oppentImg = useSelector((state: RootState) => state.chat.oppentImg);
   const oppentName = useSelector((state: RootState) => state.chat.oppentName);
-  const writerIdx = useSelector((state: RootState) => state.chat.writerIdx);
+  const isWriter = useSelector((state: RootState) => state.chat.isWriter);
   const oppentIdx = useSelector((state: RootState) => state.chat.oppentIdx);
-  const categoryType = useSelector(
-    (state: RootState) => state.chat.categoryType,
-  );
-
-  const isCompleted = useSelector((state: RootState) => state.chat.completed);
 
   const [serverMsg, setServerMsg] = useState<chatType[]>([]);
   const [localMsg, setLocalMsg] = useState<chatType>();
@@ -64,6 +60,10 @@ function ChatsDetail({route, navigation}: any) {
         } else {
           setIsFirstChat(true);
         }
+      });
+
+      chatSocket.on('completed', (completeData: boolean) => {
+        setIsCompleted(completeData);
       });
 
       chatSocket.on('messageC', (data: chatType) => {
@@ -97,7 +97,7 @@ function ChatsDetail({route, navigation}: any) {
         }
       };
     }
-  }, [chatSocket, roomId, localMsg, locationSocket, categoryType]);
+  }, [chatSocket, roomId, localMsg, locationSocket]);
 
   useEffect(() => {
     dispatch(
@@ -169,23 +169,8 @@ function ChatsDetail({route, navigation}: any) {
     if (isCompleted) {
       return;
     }
-    try {
-      const response = await axios.post('community/alba', data);
-      if (response.status === 200) {
-        dispatch(setCompleted(true));
-        if (chatSocket) {
-          chatSocket.emit('complete', roomId);
-        }
-      }
-      Alert.alert(
-        '산책이 확정되었습니다. ',
-        '상대방이 산책을 시작하면 강아지 위치 보기기 활성화됩니다.',
-      );
-    } catch (error: any) {
-      Alert.alert(
-        `에러코드 ${error?.response?.status}`,
-        '죄송합니다. 산책을 확정하지 못했습니다. 다시 시도해주시길 바랍니다.',
-      );
+    if (chatSocket) {
+      chatSocket.emit('complete', roomId);
     }
   };
 
@@ -300,9 +285,8 @@ function ChatsDetail({route, navigation}: any) {
       oppentImg={oppentImg}
       handleConfirmWalk={handleConfirmWalk}
       isCompleted={isCompleted}
-      categoryType={categoryType}
       hadleMyDogLocation={hadleMyDogLocation}
-      isMyPost={user === writerIdx}
+      isMyPost={isWriter}
       hadleStartWalk={hadleStartWalk}
     />
   );
