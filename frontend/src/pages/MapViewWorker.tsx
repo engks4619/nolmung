@@ -92,11 +92,13 @@ function MapViewWorker({navigation, route}: any) {
   };
 
   const handleDoneWalking = async () => {
-    locationSocket?.emit('endWalk', roomId);
-    doneWalking(dispatch, navigation, watchId);
-    // dispatch(setIsSavingOn);
-    await submitLogs();
-    // dispatch(setIsSavingOff);
+    if (locationSocket) {
+      locationSocket.emit('endWalk', roomId);
+      doneWalking(dispatch, navigation, watchId);
+      // dispatch(setIsSavingOn);
+      await submitLogs();
+      // dispatch(setIsSavingOff);
+    }
   };
 
   //시간계산

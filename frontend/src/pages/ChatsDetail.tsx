@@ -83,9 +83,9 @@ function ChatsDetail({route, navigation}: any) {
         Alert.alert('확정', `${data}`);
         console.log('Socket Decide', data);
       });
-      chatSocket.on('replyStartWalk', (data: string) => {
-        console.log('replyStartWalk', data);
-      });
+      // locationSocket.on('replyStartWalk', (data: string) => {
+      //   console.log('replyStartWalk', data);
+      // });
       locationSocket.on('replyGps', data => {
         console.log('리플라이');
       });
@@ -95,6 +95,7 @@ function ChatsDetail({route, navigation}: any) {
           chatSocket.off('messageC');
           chatSocket.off('decide');
           locationSocket.off('replyGps');
+          locationSocket.off('completed');
         }
       };
     }
@@ -175,12 +176,6 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
-  const endWalk = () => {
-    if (locationSocket) {
-      locationSocket.emit('endWalk');
-    }
-  };
-
   useEffect(() => {
     if (locationSocket) {
       locationSocket.emit('locationLogin', {id: user, roomId: roomId});
@@ -188,7 +183,9 @@ function ChatsDetail({route, navigation}: any) {
         console.log(reply);
         // 로그인 성공
         locationSocket.on('replyStartWalk', response => {
+          console.log('replystartwalktresponse', response);
           if (response === 400) {
+            console.log('replystartwalk400');
             // 이미 산책이 시작 되었습니다.
             // 알바생이 산책시작을 다시 누르는 경우에 대해 handleStartWalk에서 분기해놔서 따로 400이 필요한가>
           } else if (typeof response === 'string' && isWriter) {
@@ -201,7 +198,10 @@ function ChatsDetail({route, navigation}: any) {
         });
       });
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo);
+        console.log('useeffect in', gpsInfo);
+      });
+      locationSocket.on('replyEndWalk', replyEndWalk => {
+        console.log('replyEndWalk', replyEndWalk);
       });
     }
     return () => {
@@ -216,9 +216,9 @@ function ChatsDetail({route, navigation}: any) {
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
       locationSocket.emit('getGps', roomId);
-      locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo);
-      });
+      // locationSocket.on('gpsInfo', gpsInfo => {
+      //   console.log(gpsInfo);
+      // });
       // navigation.navigate('MapViewWatcher', {
       //   postIdx: postIdx,
       //   roomId: roomId,
