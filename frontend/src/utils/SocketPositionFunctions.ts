@@ -86,11 +86,11 @@ export const startLogging = async (
       console.error(error);
     },
     {
-      interval: 5000,
+      interval: 2000,
       maximumAge: 200000,
       enableHighAccuracy: true,
       timeout: 20000,
-      distanceFilter: 5,
+      distanceFilter: 0,
     },
   );
   if (typeof watchId === 'number') {
