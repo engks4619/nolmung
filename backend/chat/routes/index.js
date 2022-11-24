@@ -7,9 +7,10 @@ const {default: axios} = require('axios');
 
 // 채팅방 목록 조회
 router.get('/api/socket/room/:userId', async (req, res) => {
+  const userId = Number(req.params.userId);
   try {
     const rooms = await Room.find({
-      $or: [{ownerIdx: Number(req.params.userId)}, {opponentIdx: Number(req.params.userId)}],
+      $or: [{ownerIdx: userId}, {opponentIdx: userId}],
     }).sort('-createdAt');
 
     const roomList = [];
@@ -31,7 +32,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
       );
 
       var isWriter = false; // 게시글 작성자(견주)인지 체크
-      if (rooms[i].opponentIdx == req.params.userId) {
+      if (rooms[i].opponentIdx == userId) {
         isWriter = true;
       }
 
