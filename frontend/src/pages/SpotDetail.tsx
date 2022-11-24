@@ -17,8 +17,10 @@ const SpotDetail = ({route, navigation}: any) => {
   const [spot, setSpot] = useState<spot | null>(null);
   const [textAddress, setTextAddress] = useState<string>('');
   const [reviewList, setReviewList] = useState<review[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getSpotDetail = async (spotId: string) => {
+    setLoading(true);
     try {
       const response = await axios.get(`spot/${spotId}?lat=${lat}&lng=${lng}`);
       if (response.status === 200) {
@@ -29,6 +31,8 @@ const SpotDetail = ({route, navigation}: any) => {
       }
     } catch (err) {
       Alert.alert('상세 정보를 불러오지 못했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,6 +93,7 @@ const SpotDetail = ({route, navigation}: any) => {
       reviewList={reviewList}
       textAddress={textAddress}
       deleteSpotReview={deleteSpotReview}
+      loading={loading}
     />
   );
 };
