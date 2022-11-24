@@ -1,11 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
-import {useEffect} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import Loading from '~/atoms/Loading';
 import MyButton from '~/atoms/MyButton';
-import {FONT_SIZE_L} from '~/const';
 import SpotImgContainer from '~/organisms/SpotImgContainer';
 import SpotInfoContainer from '~/organisms/SpotInfoContainer';
 import SpotReviewContainer from '~/organisms/SpotReviewContainer';

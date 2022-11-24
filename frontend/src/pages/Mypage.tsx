@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, Alert} from 'react-native';
+import {View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MypageTemplate from '../templates/MypageTemplate';
 import Home from '@assets/home.svg';

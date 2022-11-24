@@ -22,7 +22,7 @@ function WalkSummary({
     <View style={styles.container}>
       <View style={[styles.infoContainer, styles.borderRight]}>
         <Text style={styles.fontSize}>{firstLabel}</Text>
-        <Text style={[styles.textCenter, styles.fontSize]}>{firstText}회</Text>
+        <Text style={[styles.textCenter, styles.fontSize]}>{firstText}</Text>
       </View>
       <View style={[styles.infoContainer, styles.borderRight]}>
         <Text style={styles.fontSize}>{secondLabel}</Text>

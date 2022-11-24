@@ -37,27 +37,27 @@ const watcherSlice = createSlice({
     //   state.isSaving = false;
     // },
 
-    setMyPosition(state, action) {
-      state.myPosition = action.payload;
-    },
+    // setMyPosition(state, action) {
+    //   state.myPosition = action.payload;
+    // },
     addPath(state, action) {
       state.path = state.path.concat(action.payload);
     },
-    setStates(state, action) {
-      state.startDate = action.payload.startDate;
-      state.lastUpdate = action.payload.lastUpdate;
-      state.path = action.payload.walkingLogs;
-      state.myPosition = action.payload.myPosition;
-    },
+    // setStates(state, action) {
+    //   state.startDate = action.payload.startDate;
+    //   state.lastUpdate = action.payload.lastUpdate;
+    //   state.path = action.payload.walkingLogs;
+    //   state.myPosition = action.payload.myPosition;
+    // },
     resetStates(state) {
       Object.assign(state, initialState);
     },
-    setWatchId(state, action) {
-      state.watchId = action.payload;
-    },
-    setStartDate(state, action) {
-      state.startDate = action.payload;
-    },
+    // setWatchId(state, action) {
+    //   state.watchId = action.payload;
+    // },
+    // setStartDate(state, action) {
+    //   state.startDate = action.payload;
+    // },
     setSecond(state, action) {
       state.second = action.payload;
     },
@@ -74,14 +74,8 @@ const watcherSlice = createSlice({
 export const {
   setPath,
   setDogs,
-  setMyPosition,
-  setIsLoggingOn,
-  setIsLoggingOff,
   addPath,
-  setStates,
   resetStates,
-  setIsSavingOn,
-  setIsSavingOff,
   setWatchId,
   setStartDate,
   setLastUpdate,

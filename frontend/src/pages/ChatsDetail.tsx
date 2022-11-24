@@ -8,11 +8,11 @@ import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setCompleted} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
-import {setPath} from '~/slices/watcherSlice';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
+import PushNotification from 'react-native-push-notification';
+import {setPath} from '~/slices/watcherSlice';
 export interface chatType {
   chat: string;
   sender: number;
@@ -45,6 +45,23 @@ function ChatsDetail({route, navigation}: any) {
   const [localMsg, setLocalMsg] = useState<chatType>();
   const [fullMsg, setFullMsg] = useState<chatType[]>([]);
 
+  const alarmConfirm = () => {
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: `${oppentName}과 산책이 확장되었습니다.`,
+    });
+  };
+
+  const alarmWalkStatus = (status: boolean) => {
+    const msg = status
+      ? `${oppentName}가 산책을 시작하였습니다!`
+      : `${oppentName}가 산책을 종료하였습니다!`;
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: msg,
+    });
+  };
+
   useEffect(() => {
     setFullMsg([]);
     if (chatSocket && locationSocket && roomId) {
@@ -63,6 +80,10 @@ function ChatsDetail({route, navigation}: any) {
         setIsCompleted(completeData);
       });
 
+      chatSocket.on('alarmCompleted', () => {
+        alarmConfirm();
+      });
+
       chatSocket.on('messageC', (data: chatType) => {
         if (data.roomId === roomId) {
           const newData: chatType = {
@@ -75,13 +96,6 @@ function ChatsDetail({route, navigation}: any) {
         }
       });
 
-      chatSocket.on('decide', (data: string) => {
-        Alert.alert('확정', `${data}`);
-        console.log('Socket Decide', data);
-      });
-      chatSocket.on('replyStartWalk', (data: string) => {
-        console.log(data);
-      });
       locationSocket.on('replyGps', data => {
         console.log('리플라이');
       });
@@ -90,6 +104,7 @@ function ChatsDetail({route, navigation}: any) {
           chatSocket.off('chats');
           chatSocket.off('messageC');
           chatSocket.off('decide');
+          chatSocket.off('completed');
           locationSocket.off('replyGps');
         }
       };
@@ -126,6 +141,12 @@ function ChatsDetail({route, navigation}: any) {
     setFullMsg([...serverMsg]);
   }, [localMsg, serverMsg]);
 
+  useEffect(() => {
+    if (isCompleted && locationSocket) {
+      locationSocket.emit('locationLogin', {id: user, roomId});
+    }
+  }, [isCompleted, locationSocket, roomId, user]);
+
   const postChatInfo = async (postRoomId: string) => {
     try {
       const response: AxiosResponse = await axios.post(
@@ -159,10 +180,6 @@ function ChatsDetail({route, navigation}: any) {
   };
 
   const handleConfirmWalk = async () => {
-    const data = {
-      postIdx,
-      albaIdx: oppentIdx,
-    };
     if (isCompleted) {
       return;
     }
@@ -171,63 +188,75 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
-  const endWalk = () => {
-    if (locationSocket) {
-      locationSocket.emit('endWalk');
-    }
-  };
-
-  const [intervalId, setIntervalId] = useState<number>();
   useEffect(() => {
-    if (locationSocket && intervalId) {
-      locationSocket.emit('locationLogin', {id: user});
+    if (locationSocket) {
+      locationSocket.on('replyLocationLogin', replyData => {});
+      locationSocket.on('replyStartWalk', replayStart => {
+        if (isWriter && replayStart === '산책이 시작되었습니다.') {
+          alarmWalkStatus(true);
+        }
+      });
+      locationSocket.on('replyGps', gps => {
+        // console.log('replyGps', gps);
+      });
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log(gpsInfo);
-        if (gpsInfo === 400) {
-          Alert.alert(
-            '알림',
-            '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
-          );
-        } else if (gpsInfo === 400) {
-          clearInterval(intervalId);
-          console.log('클리어인터벌');
-          navigation.navigate('WalkReview');
-        } else {
-          // 강아지 위치 정보 gpsInfo 담겨서 옴
-
+        if (isWriter) {
           dispatch(setPath({path: gpsInfo.gps}));
         }
       });
+      locationSocket.on('replyEndWalk', () => {
+        if (isWriter) {
+          alarmWalkStatus(false);
+          navigation.replace('WalkReview');
+        }
+      });
     }
+
     return () => {
       if (locationSocket) {
+        locationSocket.off('replyLocationLogin');
+        locationSocket.off('replyStartWalk');
+        locationSocket.off('replyGps');
         locationSocket.off('gpsInfo');
       }
     };
-  }, [locationSocket, intervalId]);
+  }, [locationSocket]);
+
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
-      navigation.navigate('MapViewWatcher', {
-        postIdx: postIdx,
-        interval: intervalId,
-      });
-      const interval = setInterval(() => {
-        locationSocket.emit('getGps', roomId);
-      }, 5000);
-      setIntervalId(interval);
+      locationSocket.emit('getGps', roomId);
+      navigation.navigate('MapViewWatcher', {postIdx: postIdx, roomId: roomId});
     }
-  }, [locationSocket, roomId]);
+  }, [locationSocket, roomId, user]);
+
   const socketPositionState = useSelector(
     (state: RootState) => state.socketPosition,
   );
+
+  // 개 불러오기
+  const [dogs, setDogs] = useState([]);
+  const [dogIdxs, setDogIdxs] = useState([]);
+  const getDogs = async () => {
+    const response = await axios.get(`community/post/dog-info/${postIdx}`);
+    setDogs(response.data);
+    const dogIdxList = response.data.map(value => {
+      value.dogIdx;
+    });
+    setDogIdxs(dogIdxList);
+  };
+
+  useEffect(() => {
+    getDogs();
+  }, []);
+
   const hadleStartWalk = useCallback(() => {
-    dispatch(setWalkRoomId(roomId));
     if (locationSocket && oppentIdx) {
+      dispatch(setWalkRoomId(roomId));
       startWalking(
         dispatch,
         navigation,
         socketPositionState,
-        [18], //이따 postid 넣고 postid로 api 쏴서 개리스틀 받아와야함
+        dogIdxs,
         locationSocket,
         oppentIdx,
         roomId,
@@ -236,7 +265,7 @@ function ChatsDetail({route, navigation}: any) {
       // navigation.navigate('MapViewWorker');
       // locationSocket.emit('gps', gpsLocalData);
     }
-  }, [locationSocket, roomId, user]);
+  }, [locationSocket, roomId]);
 
   return (
     <ChatsDetailTemplate

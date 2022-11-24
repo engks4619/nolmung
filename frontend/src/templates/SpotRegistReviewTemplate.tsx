@@ -1,19 +1,17 @@
 import MultipleImagePicker from '@baronha/react-native-multiple-image-picker';
 import React, {Dispatch, SetStateAction} from 'react';
 import {
-  Alert,
   Dimensions,
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import TextInputBox from '~/atoms/TextInputBox';
-import {FONT_SIZE_M, FONT_SIZE_S, MAIN_COLOR} from '~/const';
+import {FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Camera from '@assets/camera.svg';
 import CustomRatingBar from '~/atoms/CustomRatingBar';
 
