@@ -234,16 +234,22 @@ location.on('connection', socket => {
     console.log('startWalk 이벤트');
     try {
       const gps = await Location.findOne({roomId: data.roomId});
-
+      console.log("gps: ", gps);
       if (gps === null) {
         const gpsInfo = await Location.create({
           roomId: data.roomId,
           ownerIdx: data.ownerIdx,
           walking: true,
         });
+        console.log("gpsInfo: ", gpsInfo);
         console.log('산책이 시작되었습니다.');
+
+        console.log("replyStartWalk 이벤트 보내기");
         location.to(roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
+        console.log("replyStartWalk 이벤트 보내기 완료");
       } else {
+
+        console.log("이미 산책이 시작되었습니다.");
         location.to(roomId).emit('replyStartWalk', '이미 산책이 시작되었습니다.');
       }
         
