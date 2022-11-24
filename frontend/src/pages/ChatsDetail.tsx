@@ -63,7 +63,6 @@ function ChatsDetail({route, navigation}: any) {
       });
 
       chatSocket.on('completed', (completeData: boolean) => {
-        console.log(completeData);
         setIsCompleted(completeData);
       });
 
@@ -123,6 +122,12 @@ function ChatsDetail({route, navigation}: any) {
   useEffect(() => {
     setFullMsg([...serverMsg]);
   }, [localMsg, serverMsg]);
+
+  useEffect(() => {
+    if (isCompleted && locationSocket) {
+      locationSocket.emit('locationLogin', {id: user, roomId});
+    }
+  }, [isCompleted, locationSocket, roomId, user]);
 
   const postChatInfo = async (postRoomId: string) => {
     try {
@@ -200,7 +205,6 @@ function ChatsDetail({route, navigation}: any) {
 
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
-      locationSocket.emit('locationLogin', {id: user, roomId});
       locationSocket.emit('getGps', roomId);
     }
   }, [locationSocket, roomId, user]);
@@ -238,11 +242,10 @@ function ChatsDetail({route, navigation}: any) {
         roomId,
         postIdx,
       );
-      locationSocket.emit('locationLogin', {id: user, roomId});
       // navigation.navigate('MapViewWorker');
       // locationSocket.emit('gps', gpsLocalData);
     }
-  }, [locationSocket, roomId, user]);
+  }, [locationSocket, roomId]);
 
   return (
     <ChatsDetailTemplate
