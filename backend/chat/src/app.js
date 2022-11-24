@@ -246,12 +246,12 @@ location.on('connection', socket => {
 
         console.log("replyStartWalk 이벤트 보내기");
         socket.emit('replyStartWalk', 'socket id 산책이 시작되었습니다.');
-        location.to(roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
+        location.to(data.roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
         console.log("replyStartWalk 이벤트 보내기 완료");
       } else {
 
         console.log("이미 산책이 시작되었습니다.");
-        location.to(roomId).emit('replyStartWalk', '이미 산책이 시작되었습니다.');
+        location.to(data.roomId).emit('replyStartWalk', '이미 산책이 시작되었습니다.');
       }
         
     } catch (error) {
@@ -268,7 +268,7 @@ location.on('connection', socket => {
       });
       console.log('gps: ', gpsData);
       if (gpsData === null) {
-        socket.emit('replyGps', '산책을 시작하세요.');
+        location.to(data.roomId).emit('replyGps', '산책을 시작하세요.');
       } else {
         // gps 위치 추가
         const updatedGps = await Location.updateMany(
@@ -281,7 +281,7 @@ location.on('connection', socket => {
           },
         );
         console.log('gps 저장 완료');
-        location.to(roomId).emit('replyGps', 'gps 저장 완료');
+        location.to(data.roomId).emit('replyGps', 'gps 저장 완료');
 
         const gpsList = [];
         for (var i in updatedGps.gps) {
@@ -291,8 +291,8 @@ location.on('connection', socket => {
           });
         }
 
-        io.of('/location')
-          .to(locationLogin_ids[updatedGps.ownerIdx])
+        location
+          .to(data.roomId)
           .emit('gpsInfo', {
             roomId: updatedGps.roomId,
             ownerIdx: updatedGps.ownerIdx,
