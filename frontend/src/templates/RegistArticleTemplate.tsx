@@ -19,6 +19,7 @@ import PlaceModal from '~/organisms/PlaceModal';
 import ImageUploadModal from '~/organisms/ImageUploadModal';
 import DogSelectBox from '~/organisms/DogSelectBox';
 import Loading from '~/atoms/Loading';
+import SingleDropDownSelector from '~/organisms/SingleDropDownSelector';
 
 interface Props {
   category: string;
@@ -146,28 +147,11 @@ const RegistArticleTemplate = ({
             />
           </Modal>
           <ScrollView style={styles.optionContainer}>
-            <SelectDropdown
+            <SingleDropDownSelector
               data={CATEGORY_TYPES}
-              buttonStyle={styles.dropdownBtnStyle}
-              buttonTextStyle={
-                category === '' ? styles.txtStyleNone : styles.txtStyle
-              }
-              renderDropdownIcon={isOpened => {
-                return dropdownIcon(isOpened);
-              }}
-              defaultButtonText={'카테고리 선택'}
-              dropdownStyle={styles.dropDownStyle}
-              rowStyle={styles.rowStyle}
-              rowTextStyle={styles.rowTextStyle}
-              onSelect={(selectedItem, idx) => {
-                setCategory(selectedItem);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
+              selectedItem={category}
+              defaultText={'카테고리 선택'}
+              setData={setCategory}
             />
             <TextInput
               placeholder="제목을 입력해주세요"
