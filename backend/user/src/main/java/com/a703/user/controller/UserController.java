@@ -104,7 +104,7 @@ public class UserController {
                 .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
                 .compact();
 
-        return ResponseEntity.status(HttpStatus.CREATED).header("token",token).body(responseUser);
+        return ResponseEntity.status(HttpStatus.CREATED).header("token", token).body(responseUser);
     }
 
     @GetMapping("/info/{userIdx}")
@@ -126,13 +126,13 @@ public class UserController {
     }
 
     @GetMapping("home")
-    public ResponseEntity<?> homeData(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt){
+    public ResponseEntity<?> homeData(@RequestHeader(HttpHeaders.AUTHORIZATION) String jwt) {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         UserVariableEntity userVariableEntity = userVariableService.getWalkData(userIdx);
         Map<String, Object> body = new IdentityHashMap<>();
         body.put("totalWalk", userVariableEntity.getCntWalk());
-        body.put("totalDistance", userVariableEntity.getTotalDistance());
-        body.put("totalTime", userVariableEntity.getTotalTime());
+        body.put("totalDistance", String.format("%.1f", userVariableEntity.getTotalDistance() / 1000));
+        body.put("totalTime", String.format("%d시간 %02d분", userVariableEntity.getTotalTime() / 60, userVariableEntity.getTotalTime() % 60));
         return ResponseEntity.ok(body);
     }
 
