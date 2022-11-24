@@ -8,18 +8,20 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import SelectDropdown from 'react-native-select-dropdown';
 import {FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Up from '@assets/up.svg';
 import Down from '@assets/down.svg';
-import DatePicker from 'react-native-date-picker';
 import 'moment/locale/ko';
 import ImageAddBtn from '~/molecules/ImageAddBtn';
 import PlaceModal from '~/organisms/PlaceModal';
 import ImageUploadModal from '~/organisms/ImageUploadModal';
 import DogSelectBox from '~/organisms/DogSelectBox';
 import Loading from '~/atoms/Loading';
-import SingleDropDownSelector from '~/organisms/SingleDropDownSelector';
+import SingleDropDownSelector from '~/molecules/SingleDropDownSelector';
+import CustomDatePicker from '~/organisms/CustomDatePicker';
+import BottomModal from '~/organisms/BottomModal';
+import {dogEtcOption} from '~/utils/type';
+import DogEtcOptionContainer from '~/organisms/DogEtcOptionSelectContainer';
 
 interface Props {
   category: string;
@@ -52,16 +54,9 @@ interface Props {
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
   DOG_DATA: {label: string; value: number}[] | null;
   CATEGORY_TYPES: string[];
+  DOG_ETC_OPTION: dogEtcOption[];
   loading: boolean;
 }
-
-const dropdownIcon = (isOpened: boolean) => {
-  return isOpened ? (
-    <Up width={10} height={10} fill={'rgb(129,129,129)'} />
-  ) : (
-    <Down width={10} height={10} fill={'rgb(129,129,129)'} />
-  );
-};
 
 const RegistArticleTemplate = ({
   category,
@@ -95,6 +90,7 @@ const RegistArticleTemplate = ({
   DOG_DATA,
   CATEGORY_TYPES,
   loading,
+  DOG_ETC_OPTION,
 }: Props) => {
   const moment = require('moment');
 
@@ -104,48 +100,33 @@ const RegistArticleTemplate = ({
         <Loading />
       ) : (
         <View style={styles.container}>
-          <DatePicker
-            modal
+          <CustomDatePicker
             open={dateModalOpen}
             date={date}
-            minimumDate={new Date()}
-            locale="ko"
-            onConfirm={date => {
-              setDateModalOpen(false);
-              setDate(date);
-            }}
-            onCancel={() => {
-              setDateModalOpen(false);
-            }}
-            cancelText="취소"
-            confirmText="확인"
-            title=" "
+            setDate={setDate}
+            setModalOpen={setDateModalOpen}
           />
-          <Modal
+          <BottomModal
             visible={placeModalOpen}
-            animationType={'slide'}
-            transparent={true}
-            onRequestClose={() => {
-              setPlaceModalOpen(false);
-            }}>
-            <PlaceModal
-              setPlaceModal={setPlaceModalOpen}
-              setLocation={setLocation}
-            />
-          </Modal>
-          <Modal
+            onRequestClose={() => setPlaceModalOpen(false)}
+            renderItem={
+              <PlaceModal
+                setPlaceModal={setPlaceModalOpen}
+                setLocation={setLocation}
+              />
+            }
+          />
+          <BottomModal
             visible={imageModalOpen}
-            animationType={'slide'}
-            transparent={true}
-            onRequestClose={() => {
-              setImageModalOpen(false);
-            }}>
-            <ImageUploadModal
-              setImageUploadModal={setImageModalOpen}
-              images={images}
-              setImages={setImages}
-            />
-          </Modal>
+            onRequestClose={() => setImageModalOpen(false)}
+            renderItem={
+              <ImageUploadModal
+                setImageUploadModal={setImageModalOpen}
+                images={images}
+                setImages={setImages}
+              />
+            }
+          />
           <ScrollView style={styles.optionContainer}>
             <SingleDropDownSelector
               data={CATEGORY_TYPES}
@@ -164,30 +145,7 @@ const RegistArticleTemplate = ({
               selectedDog={selectedDog}
               setSelectedDog={setSelectedDog}
             />
-            <View style={[styles.hContainer, styles.borderBottom]}>
-              <Text style={[styles.text, styles.black]}>리드줄</Text>
-              <View style={rope ? styles.borderBrown : styles.borderGray}>
-                <Pressable onPress={() => setRope(true)}>
-                  <Text style={styles.text}>유</Text>
-                </Pressable>
-              </View>
-              <View style={!rope ? styles.borderBrown : styles.borderGray}>
-                <Pressable onPress={() => setRope(false)}>
-                  <Text style={styles.text}>무</Text>
-                </Pressable>
-              </View>
-              <Text style={[styles.text, styles.black]}>배변봉투</Text>
-              <View style={poop ? styles.borderBrown : styles.borderGray}>
-                <Pressable onPress={() => setPoop(true)}>
-                  <Text style={styles.text}>유</Text>
-                </Pressable>
-              </View>
-              <View style={!poop ? styles.borderBrown : styles.borderGray}>
-                <Pressable onPress={() => setPoop(false)}>
-                  <Text style={styles.text}>무</Text>
-                </Pressable>
-              </View>
-            </View>
+            <DogEtcOptionContainer DOG_ETC_OPTION={DOG_ETC_OPTION} />
             <View style={[styles.dateContainer, styles.borderBottom]}>
               <View style={{width: '30%'}}>
                 <Text style={styles.text}>산책 날짜</Text>
