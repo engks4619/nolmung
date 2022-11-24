@@ -103,6 +103,7 @@ function Chats({navigation}: any) {
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const [myChatList, setMyChatList] = useState([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const getChatsList = async () => {
     try {
@@ -155,6 +156,9 @@ function Chats({navigation}: any) {
       <ChatsTemplate
         myChatList={myChatList}
         handleDetailChat={handleDetailChat}
+        refreshing={refreshing}
+        setRefreshing={setRefreshing}
+        refresh={getChatsList}
       />
     </View>
   );

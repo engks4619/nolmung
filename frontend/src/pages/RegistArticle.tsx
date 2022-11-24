@@ -1,5 +1,5 @@
 import axios from 'utils/axios';
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {useEffect} from 'react';
 import {Alert} from 'react-native';
 import RegistHeader from '~/organisms/RegistHeader';
@@ -8,6 +8,7 @@ import {uploadImg} from '~/utils/imgService';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import moment from 'moment';
+import {dogEtcOption} from '~/utils/type';
 
 const RegistArticle = ({navigation}: any) => {
   const [category, setCategory] = useState<string>('');
@@ -32,6 +33,10 @@ const RegistArticle = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const CATEGORY_TYPES = ['함께가요', '돌봐줘요'];
+  const DOG_ETC_OPTION: dogEtcOption[] = [
+    {leftText: '리드줄', data: rope, setData: setRope},
+    {leftText: '배변봉투', data: poop, setData: setPoop},
+  ];
 
   const registSuccess = () => {
     Alert.alert('게시글 작성완료!');
@@ -161,6 +166,7 @@ const RegistArticle = ({navigation}: any) => {
       setSelectedDog={setSelectedDog}
       DOG_DATA={DOG_DATA}
       CATEGORY_TYPES={CATEGORY_TYPES}
+      DOG_ETC_OPTION={DOG_ETC_OPTION}
       loading={loading}
     />
   );
