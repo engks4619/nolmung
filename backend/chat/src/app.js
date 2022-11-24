@@ -306,7 +306,7 @@ location.on('connection', socket => {
             gps: gpsList,
             distance: updatedGps.distance,
           });
-        console.log('gpsInfo: ', gpsInfo);
+      
       }
     } catch (error) {
       console.error(error);
@@ -365,11 +365,14 @@ location.on('connection', socket => {
           });
         }
 
+        console.log("gpsInfo: ", gpsInfo);
+        console.log("gpsInfo 이벤트 보내기");
         location.to(roomId).emit('gpsInfo', {
           roomId: gpsInfo.roomId,
           ownerIdx: gpsInfo.ownerIdx,
           gps: gpsList,
         });
+        console.log("gpsInfo 이벤트 보내기 완료");
       }
     } catch (error) {
       console.error(error);
