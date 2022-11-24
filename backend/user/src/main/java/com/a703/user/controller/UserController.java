@@ -130,9 +130,12 @@ public class UserController {
         Long userIdx = jwtUtil.jwtToUserIdx(jwt);
         UserVariableEntity userVariableEntity = userVariableService.getWalkData(userIdx);
         Map<String, Object> body = new IdentityHashMap<>();
-        body.put("totalWalk", userVariableEntity.getCntWalk());
-        body.put("totalDistance", String.format("%.1f", userVariableEntity.getTotalDistance() / 1000));
-        body.put("totalTime", String.format("%d시간 %02d분", userVariableEntity.getTotalTime() / 3600, userVariableEntity.getTotalTime() / 60));
+        body.put("totalWalk", userVariableEntity.getCntWalk() + "회");
+        body.put("totalDistance", String.format("%.1f", userVariableEntity.getTotalDistance() / 1000) + "km");
+        int min = userVariableEntity.getTotalTime() / 60;
+        int hour = min / 60;
+        min %= 60;
+        body.put("totalTime", (hour == 0 ? "" : hour + "시간") + String.format("%02d", min) + "분");
         return ResponseEntity.ok(body);
     }
 
