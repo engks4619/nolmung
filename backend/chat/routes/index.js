@@ -21,7 +21,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         .sort('-createdAt')
         .limit(1);
 
-      const isWriter = false; // 게시글 작성자(견주)인지 체크
+      const isWriter = false;   // 게시글 작성자(견주)인지 체크
       if (rooms[i].opponentIdx === req.params.userId) {
         isWriter = true;
       }
@@ -43,7 +43,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         isWriter: isWriter,
       });
     }
-
+    console.log(roomList);
     res.json(roomList);
   } catch (error) {
     console.log(error);
