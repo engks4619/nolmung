@@ -280,6 +280,9 @@ location.on('connection', socket => {
             },
           },
         );
+
+        console.log("updatedGps: ", updatedGps);
+        console.log("updategps: ", updatedGps.gps);
         console.log('gps 저장 완료');
         location.to(data.roomId).emit('replyGps', 'gps 저장 완료');
 
@@ -291,6 +294,8 @@ location.on('connection', socket => {
           });
         }
 
+        console.log("gpsList: ", gpsList);
+        
         location
           .to(data.roomId)
           .emit('gpsInfo', {
