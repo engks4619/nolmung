@@ -271,7 +271,7 @@ location.on('connection', socket => {
         location.to(data.roomId).emit('replyGps', '산책을 시작하세요.');
       } else {
         // gps 위치 추가
-        const updatedGps = await Location.updateMany(
+        const updatedGps = await Location.findOneAndUpdate(
           {_id: gpsData._id},
           {
             $push: {
