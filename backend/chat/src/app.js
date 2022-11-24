@@ -32,7 +32,7 @@ const io = SocketIO(httpServer, {
 
 app.use(cors()); // cors를 미들웨어로 사용하도록 등록
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 app.use('/', indexRouter);
 
@@ -145,9 +145,9 @@ chat.on('connection', socket => {
     // 산책 확정 여부 전달
     const room = await Chat.find({roomId: roomId});
     if (room.complete) {
-      socket.emit('completed', '산책 확정');
+      socket.emit('completed', true); // 산책 확정
     } else {
-      socket.emit('completed', '산책 미확정');
+      socket.emit('completed', false); // 산책 미확정
     }
 
     try {
@@ -208,7 +208,8 @@ chat.on('connection', socket => {
       {_id: ObjectId(roomId)},
       {$set: {complete: true}},
     );
-    chat.to(roomId).emit('completed', '산책이 확정되었습니다.');
+    chat.to(roomId).emit('completed', true); // 산책 확정 완료
+    chat.to(roomId).emit('alarmCompleted', '산책이 확정되었습니다.');
   });
 });
 
