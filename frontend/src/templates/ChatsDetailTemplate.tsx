@@ -15,7 +15,6 @@ interface Props {
   submitMsg: (inputChat: String) => void;
   handleConfirmWalk: () => void;
   isCompleted: boolean;
-  categoryType: string;
   hadleMyDogLocation: () => void;
   isMyPost: boolean;
   fullMsg: any;
@@ -32,7 +31,6 @@ function ChatsDetailTemplate({
   oppentImg,
   handleConfirmWalk,
   isCompleted,
-  categoryType,
   hadleMyDogLocation,
   isMyPost,
   hadleStartWalk,
@@ -45,7 +43,6 @@ function ChatsDetailTemplate({
         postPay={postInfo.postPay}
         handleConfirmWalk={handleConfirmWalk}
         isCompleted={isCompleted}
-        categoryType={categoryType}
         hadleMyDogLocation={hadleMyDogLocation}
         isMyPost={isMyPost}
         hadleStartWalk={hadleStartWalk}

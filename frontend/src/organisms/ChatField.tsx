@@ -18,7 +18,7 @@ function ChatField({fullMsg, user, oppentImg}: chatFieldProps) {
         keyExtractor={item => item.createdAt}
         inverted={true}
         renderItem={({item}) =>
-          item?.sender?.toString() === user.toString() ? (
+          item?.sender === user ? (
             <Text style={styles.myChat}>{item.chat}</Text>
           ) : (
             <Otherchat content={item?.chat} oppentImg={oppentImg} />

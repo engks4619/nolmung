@@ -64,6 +64,10 @@ function Main({navigation}: any) {
   const totalWalk = useSelector((state: RootState) => state.user.totalWalk);
 
   const goWalking = () => {
+    if (selectedDogs.length === 0) {
+      Alert.alert('알림', '강아지를 등록 후 산책을 시작해주시길 바랍니다.');
+      return;
+    }
     startWalking(dispatch, navigation, myPositionState, selectedDogs);
   };
 

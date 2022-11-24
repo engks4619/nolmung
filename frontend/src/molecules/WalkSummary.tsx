@@ -26,13 +26,11 @@ function WalkSummary({
       </View>
       <View style={[styles.infoContainer, styles.borderRight]}>
         <Text style={styles.fontSize}>{secondLabel}</Text>
-        <Text style={[styles.textCenter, styles.fontSize]}>
-          {secondeText}시간
-        </Text>
+        <Text style={[styles.textCenter, styles.fontSize]}>{secondeText}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.fontSize}>{thirdLabel}</Text>
-        <Text style={[styles.textCenter, styles.fontSize]}>{thridText}km</Text>
+        <Text style={[styles.textCenter, styles.fontSize]}>{thridText}</Text>
       </View>
     </View>
   );
