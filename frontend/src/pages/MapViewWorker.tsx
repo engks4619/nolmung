@@ -1,28 +1,20 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Alert, View} from 'react-native';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
+import {Alert} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {doneWalking, clearLogsAll} from '~/utils/SocketPositionFunctions';
+import {doneWalking} from '~/utils/SocketPositionFunctions';
 import {addDistance} from '~/slices/socketPositionSlice';
-import {setDogs} from '~/slices/socketPositionSlice';
 import axios from 'utils/axios';
-import {removeMultiple} from '~/utils/AsyncService';
 import {useLocationSocket} from '~/hooks/useSocket';
-
-const moment = require('moment');
-const localList = [
-  '@StartDateSocket',
-  '@LastUpdateSocket',
-  '@WalkingLogsSocket',
-  '@DogsSocket',
-];
+import {useAppDispatch} from '~/store';
 
 function MapViewWorker({navigation, route}: any) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const postIdx = route.params.postIdx;
   const [locationSocket, locationDisconnect] = useLocationSocket();
+
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
   const myPosition = useSelector(
     (state: RootState) => state.socketPosition.myPosition,
@@ -30,9 +22,10 @@ function MapViewWorker({navigation, route}: any) {
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
   const dogIdxs = useSelector((state: RootState) => state.socketPosition.dogs);
-  const roomId = useSelector(
+  const walkRoomId = useSelector(
     (state: RootState) => state.socketPosition.walkRoomId,
   );
+  console.log('roomId', walkRoomId);
   const isSaving = useSelector(
     (state: RootState) => state.socketPosition.isSaving,
   );
@@ -58,7 +51,6 @@ function MapViewWorker({navigation, route}: any) {
   const getDogs = async () => {
     try {
       const response = await axios.get(`community/post/dog-info/${postIdx}`);
-      console.log(response.data);
       setDogsList(response.data);
     } catch (err) {
       console.log('postIdx로 개정보 불러오기 실패');
@@ -91,15 +83,16 @@ function MapViewWorker({navigation, route}: any) {
     }
   };
 
-  const handleDoneWalking = async () => {
+  const handleDoneWalking = useCallback(async () => {
+    console.log('종료', walkRoomId);
     if (locationSocket) {
-      locationSocket.emit('endWalk', roomId);
+      locationSocket.emit('endWalk', walkRoomId);
       doneWalking(dispatch, navigation, watchId);
       // dispatch(setIsSavingOn);
       await submitLogs();
       // dispatch(setIsSavingOff);
     }
-  };
+  }, [walkRoomId]);
 
   //시간계산
   const defaultSec =

@@ -8,14 +8,10 @@ import CustomHeader from '~/headers/CustomHeader';
 import axios from '~/utils/axios';
 import {AxiosResponse} from 'axios';
 import {useAppDispatch} from '~/store';
-import {setCompleted} from '~/slices/chatSlice';
 import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
-import Geolocation from '@react-native-community/geolocation';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import MapViewWorker from '@pages/MapViewWorker';
-import {setPath, addDistance} from '~/slices/watcherSlice';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
+import PushNotification from 'react-native-push-notification';
 export interface chatType {
   chat: string;
   sender: number;
@@ -48,6 +44,13 @@ function ChatsDetail({route, navigation}: any) {
   const [localMsg, setLocalMsg] = useState<chatType>();
   const [fullMsg, setFullMsg] = useState<chatType[]>([]);
 
+  const alarmConfirm = () => {
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: `${oppentName}과 산책이 확장되었습니다.`,
+    });
+  };
+
   useEffect(() => {
     setFullMsg([]);
     if (chatSocket && locationSocket && roomId) {
@@ -64,6 +67,10 @@ function ChatsDetail({route, navigation}: any) {
 
       chatSocket.on('completed', (completeData: boolean) => {
         setIsCompleted(completeData);
+      });
+
+      chatSocket.on('alarmCompleted', () => {
+        alarmConfirm();
       });
 
       chatSocket.on('messageC', (data: chatType) => {
@@ -86,8 +93,8 @@ function ChatsDetail({route, navigation}: any) {
           chatSocket.off('chats');
           chatSocket.off('messageC');
           chatSocket.off('decide');
+          chatSocket.off('completed');
           locationSocket.off('replyGps');
-          locationSocket.off('completed');
         }
       };
     }
@@ -162,10 +169,6 @@ function ChatsDetail({route, navigation}: any) {
   };
 
   const handleConfirmWalk = async () => {
-    const data = {
-      postIdx,
-      albaIdx: oppentIdx,
-    };
     if (isCompleted) {
       return;
     }
@@ -186,7 +189,7 @@ function ChatsDetail({route, navigation}: any) {
         console.log('replyGps', gps);
       });
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log('알바 정보', gpsInfo);
+        // console.log('알바 정보', gpsInfo);
       });
       locationSocket.on('replyEndWalk', end => {
         console.log('end', end);
@@ -230,8 +233,8 @@ function ChatsDetail({route, navigation}: any) {
   }, []);
 
   const hadleStartWalk = useCallback(() => {
-    dispatch(setWalkRoomId(roomId));
     if (locationSocket && oppentIdx) {
+      dispatch(setWalkRoomId(roomId));
       startWalking(
         dispatch,
         navigation,
