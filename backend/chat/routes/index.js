@@ -54,6 +54,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
     }
     console.log(roomList);
     res.json(roomList);
+    res.status(200);
   } catch (error) {
     console.log(error);
   }
