@@ -114,7 +114,12 @@ function ChatsDetail({route, navigation}: any) {
           navigation={navigation}
           middleText={oppentName}
           backFunc={() => navigation.replace('Chats')}
-          middleFunc={() => navigation.navigate('Oppent', {oppentIdx})}
+          middleFunc={() =>
+            navigation.navigate('CommunityList', {
+              screen: 'Oppent',
+              params: {oppentIdx},
+            })
+          }
         />
       ),
     });

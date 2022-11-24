@@ -1,6 +1,5 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import {
-  Button,
   Modal,
   Pressable,
   ScrollView,
@@ -19,6 +18,7 @@ import ImageAddBtn from '~/molecules/ImageAddBtn';
 import PlaceModal from '~/organisms/PlaceModal';
 import ImageUploadModal from '~/organisms/ImageUploadModal';
 import DogSelectBox from '~/organisms/DogSelectBox';
+import Loading from '~/atoms/Loading';
 
 interface Props {
   category: string;
@@ -51,6 +51,7 @@ interface Props {
   setSelectedDog: Dispatch<SetStateAction<any[]>>;
   DOG_DATA: {label: string; value: number}[] | null;
   CATEGORY_TYPES: string[];
+  loading: boolean;
 }
 
 const dropdownIcon = (isOpened: boolean) => {
@@ -92,180 +93,187 @@ const RegistArticleTemplate = ({
   setSelectedDog,
   DOG_DATA,
   CATEGORY_TYPES,
+  loading,
 }: Props) => {
   const moment = require('moment');
 
   return (
-    <View style={styles.container}>
-      <DatePicker
-        modal
-        open={dateModalOpen}
-        date={date}
-        minimumDate={new Date()}
-        locale="ko"
-        onConfirm={date => {
-          setDateModalOpen(false);
-          setDate(date);
-        }}
-        onCancel={() => {
-          setDateModalOpen(false);
-        }}
-        cancelText="취소"
-        confirmText="확인"
-        title=" "
-      />
-      <Modal
-        visible={placeModalOpen}
-        animationType={'slide'}
-        transparent={true}
-        onRequestClose={() => {
-          setPlaceModalOpen(false);
-        }}>
-        <PlaceModal
-          setPlaceModal={setPlaceModalOpen}
-          setLocation={setLocation}
-        />
-      </Modal>
-      <Modal
-        visible={imageModalOpen}
-        animationType={'slide'}
-        transparent={true}
-        onRequestClose={() => {
-          setImageModalOpen(false);
-        }}>
-        <ImageUploadModal
-          setImageUploadModal={setImageModalOpen}
-          images={images}
-          setImages={setImages}
-        />
-      </Modal>
-      <ScrollView style={styles.optionContainer}>
-        <SelectDropdown
-          data={CATEGORY_TYPES}
-          buttonStyle={styles.dropdownBtnStyle}
-          buttonTextStyle={
-            category === '' ? styles.txtStyleNone : styles.txtStyle
-          }
-          renderDropdownIcon={isOpened => {
-            return dropdownIcon(isOpened);
-          }}
-          defaultButtonText={'카테고리 선택'}
-          dropdownStyle={styles.dropDownStyle}
-          rowStyle={styles.rowStyle}
-          rowTextStyle={styles.rowTextStyle}
-          onSelect={(selectedItem, idx) => {
-            setCategory(selectedItem);
-          }}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-        />
-        <TextInput
-          placeholder="제목을 입력해주세요"
-          value={subject}
-          onChangeText={text => setSubject(text)}
-          style={[styles.textInput, styles.borderBottom]}
-        />
-        <DogSelectBox
-          DOG_DATA={DOG_DATA}
-          selectedDog={selectedDog}
-          setSelectedDog={setSelectedDog}
-        />
-        <View style={[styles.hContainer, styles.borderBottom]}>
-          <Text style={[styles.text, styles.black]}>리드줄</Text>
-          <View style={rope ? styles.borderBrown : styles.borderGray}>
-            <Pressable onPress={() => setRope(true)}>
-              <Text style={styles.text}>유</Text>
-            </Pressable>
-          </View>
-          <View style={!rope ? styles.borderBrown : styles.borderGray}>
-            <Pressable onPress={() => setRope(false)}>
-              <Text style={styles.text}>무</Text>
-            </Pressable>
-          </View>
-          <Text style={[styles.text, styles.black]}>배변봉투</Text>
-          <View style={poop ? styles.borderBrown : styles.borderGray}>
-            <Pressable onPress={() => setPoop(true)}>
-              <Text style={styles.text}>유</Text>
-            </Pressable>
-          </View>
-          <View style={!poop ? styles.borderBrown : styles.borderGray}>
-            <Pressable onPress={() => setPoop(false)}>
-              <Text style={styles.text}>무</Text>
-            </Pressable>
-          </View>
-        </View>
-        <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '30%'}}>
-            <Text style={styles.text}>산책 날짜</Text>
-          </View>
-          <Pressable
-            onPress={() => setDateModalOpen(true)}
-            style={{width: '70%', alignItems: 'center'}}>
-            <View>
-              <Text style={styles.text}>
-                {moment(date).format('YYYY-MM-DD ddd A hh:mm')}
-              </Text>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <View style={styles.container}>
+          <DatePicker
+            modal
+            open={dateModalOpen}
+            date={date}
+            minimumDate={new Date()}
+            locale="ko"
+            onConfirm={date => {
+              setDateModalOpen(false);
+              setDate(date);
+            }}
+            onCancel={() => {
+              setDateModalOpen(false);
+            }}
+            cancelText="취소"
+            confirmText="확인"
+            title=" "
+          />
+          <Modal
+            visible={placeModalOpen}
+            animationType={'slide'}
+            transparent={true}
+            onRequestClose={() => {
+              setPlaceModalOpen(false);
+            }}>
+            <PlaceModal
+              setPlaceModal={setPlaceModalOpen}
+              setLocation={setLocation}
+            />
+          </Modal>
+          <Modal
+            visible={imageModalOpen}
+            animationType={'slide'}
+            transparent={true}
+            onRequestClose={() => {
+              setImageModalOpen(false);
+            }}>
+            <ImageUploadModal
+              setImageUploadModal={setImageModalOpen}
+              images={images}
+              setImages={setImages}
+            />
+          </Modal>
+          <ScrollView style={styles.optionContainer}>
+            <SelectDropdown
+              data={CATEGORY_TYPES}
+              buttonStyle={styles.dropdownBtnStyle}
+              buttonTextStyle={
+                category === '' ? styles.txtStyleNone : styles.txtStyle
+              }
+              renderDropdownIcon={isOpened => {
+                return dropdownIcon(isOpened);
+              }}
+              defaultButtonText={'카테고리 선택'}
+              dropdownStyle={styles.dropDownStyle}
+              rowStyle={styles.rowStyle}
+              rowTextStyle={styles.rowTextStyle}
+              onSelect={(selectedItem, idx) => {
+                setCategory(selectedItem);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                return item;
+              }}
+            />
+            <TextInput
+              placeholder="제목을 입력해주세요"
+              value={subject}
+              onChangeText={text => setSubject(text)}
+              style={[styles.textInput, styles.borderBottom]}
+            />
+            <DogSelectBox
+              DOG_DATA={DOG_DATA}
+              selectedDog={selectedDog}
+              setSelectedDog={setSelectedDog}
+            />
+            <View style={[styles.hContainer, styles.borderBottom]}>
+              <Text style={[styles.text, styles.black]}>리드줄</Text>
+              <View style={rope ? styles.borderBrown : styles.borderGray}>
+                <Pressable onPress={() => setRope(true)}>
+                  <Text style={styles.text}>유</Text>
+                </Pressable>
+              </View>
+              <View style={!rope ? styles.borderBrown : styles.borderGray}>
+                <Pressable onPress={() => setRope(false)}>
+                  <Text style={styles.text}>무</Text>
+                </Pressable>
+              </View>
+              <Text style={[styles.text, styles.black]}>배변봉투</Text>
+              <View style={poop ? styles.borderBrown : styles.borderGray}>
+                <Pressable onPress={() => setPoop(true)}>
+                  <Text style={styles.text}>유</Text>
+                </Pressable>
+              </View>
+              <View style={!poop ? styles.borderBrown : styles.borderGray}>
+                <Pressable onPress={() => setPoop(false)}>
+                  <Text style={styles.text}>무</Text>
+                </Pressable>
+              </View>
             </View>
-          </Pressable>
-        </View>
-        <View style={[styles.dateContainer, styles.borderBottom]}>
-          <View style={{width: '30%'}}>
-            <Text style={styles.text}>만남 장소</Text>
-          </View>
-          <Pressable
-            onPress={() => setPlaceModalOpen(true)}
-            style={{width: '70%', alignItems: 'center'}}>
-            <View>
-              <Text style={styles.text}>
-                {location ? location : '동까지만 표시됩니다'}
-              </Text>
+            <View style={[styles.dateContainer, styles.borderBottom]}>
+              <View style={{width: '30%'}}>
+                <Text style={styles.text}>산책 날짜</Text>
+              </View>
+              <Pressable
+                onPress={() => setDateModalOpen(true)}
+                style={{width: '70%', alignItems: 'center'}}>
+                <View>
+                  <Text style={styles.text}>
+                    {moment(date).format('YYYY-MM-DD ddd A hh:mm')}
+                  </Text>
+                </View>
+              </Pressable>
             </View>
-          </Pressable>
-        </View>
-        {category === '돌봐줘요' ? (
-          <View style={[styles.dateContainer, styles.borderBottom]}>
-            <View style={{width: '30%'}}>
-              <Text style={styles.text}> 가격 ￦</Text>
+            <View style={[styles.dateContainer, styles.borderBottom]}>
+              <View style={{width: '30%'}}>
+                <Text style={styles.text}>만남 장소</Text>
+              </View>
+              <Pressable
+                onPress={() => setPlaceModalOpen(true)}
+                style={{width: '70%', alignItems: 'center'}}>
+                <View>
+                  <Text style={styles.text}>
+                    {location ? location : '동까지만 표시됩니다'}
+                  </Text>
+                </View>
+              </Pressable>
             </View>
-            <View
-              style={{
-                width: '70%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: 12,
-              }}>
+            {category === '돌봐줘요' ? (
+              <View style={[styles.dateContainer, styles.borderBottom]}>
+                <View style={{width: '30%'}}>
+                  <Text style={styles.text}> 가격 ￦</Text>
+                </View>
+                <View
+                  style={{
+                    width: '70%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 12,
+                  }}>
+                  <TextInput
+                    placeholder="선택 사항"
+                    style={{
+                      fontSize: 10,
+                      paddingVertical: 0,
+                    }}
+                    keyboardType={'number-pad'}
+                    value={price ? price.toLocaleString() : '0'}
+                    onChangeText={text =>
+                      setPrice(parseInt(text.replace(/[^0-9]/g, '')))
+                    }
+                  />
+                </View>
+              </View>
+            ) : null}
+            <View style={styles.contentContainer}>
               <TextInput
-                placeholder="선택 사항"
-                style={{
-                  fontSize: 10,
-                  paddingVertical: 0,
-                }}
-                keyboardType={'number-pad'}
-                value={price ? price.toLocaleString() : '0'}
-                onChangeText={text =>
-                  setPrice(parseInt(text.replace(/[^0-9]/g, '')))
-                }
+                multiline={true}
+                numberOfLines={10}
+                style={styles.content}
+                placeholder={`내용을 입력해주세요.\n(내용 최소 10자 ~ 최대 200자 / 사진 최대 10장까지 가능)`}
+                value={content}
+                onChangeText={text => setContent(text)}
               />
             </View>
-          </View>
-        ) : null}
-        <View style={styles.contentContainer}>
-          <TextInput
-            multiline={true}
-            numberOfLines={10}
-            style={styles.content}
-            placeholder={`내용을 입력해주세요.\n(내용 최소 10자 ~ 최대 200자 / 사진 최대 10장까지 가능)`}
-            value={content}
-            onChangeText={text => setContent(text)}
-          />
+          </ScrollView>
+          <ImageAddBtn onPress={() => setImageModalOpen(true)} />
         </View>
-      </ScrollView>
-      <ImageAddBtn onPress={() => setImageModalOpen(true)} />
-    </View>
+      )}
+    </>
   );
 };
 

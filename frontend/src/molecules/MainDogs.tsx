@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import Profile from '~/atoms/Profile';
 import {RootState} from '~/store/reducer';
 import SelectingDogs from '@molecules/SelectingDogs';
+import Nodog from '~/atoms/Nodog';
 
 export interface dogInfo {
   breedCodeValue: string;
@@ -16,9 +17,15 @@ interface Props {
   isSelecting: boolean;
   setIsSelecting: React.Dispatch<React.SetStateAction<boolean>>;
   isWalking: boolean;
+  naviDogApply: () => void;
 }
 
-function MainDogs({isSelecting, setIsSelecting, isWalking}: Props) {
+function MainDogs({
+  isSelecting,
+  setIsSelecting,
+  isWalking,
+  naviDogApply,
+}: Props) {
   const myDogs: dogInfo[] | undefined = useSelector(
     (state: RootState) => state.dogs.dogsInfo,
   );
@@ -37,7 +44,7 @@ function MainDogs({isSelecting, setIsSelecting, isWalking}: Props) {
   };
 
   if (myDogs.length === 0) {
-    return <Text>추가해주세욤</Text>;
+    return <Nodog naviDogApply={naviDogApply} />;
   } else if (myDogs.length === 1) {
     return <Profile imageSource={myDogs[0].image} width={70} height={70} />;
   } else {

@@ -43,7 +43,6 @@ function DoubleSummary({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: 'white',
     marginTop: 5,
     justifyContent: 'center',
   },

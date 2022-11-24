@@ -20,6 +20,7 @@ import Up from '@assets/up.svg';
 import Down from '@assets/down.svg';
 import MyButton from '~/atoms/MyButton';
 import Search from '@assets/search.svg';
+import Loading from '~/atoms/Loading';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -32,6 +33,7 @@ interface Props {
   desc: string;
   setDesc: Dispatch<SetStateAction<string>>;
   registSubmit: () => void;
+  loading: boolean;
 }
 
 const BREED_DATA = breedData.map((item, idx) => item.breed_code_value);
@@ -53,6 +55,7 @@ const RegistMyDogTemplate = ({
   desc,
   setDesc,
   registSubmit,
+  loading,
 }: Props) => {
   const openPicker = async () => {
     await MultipleImagePicker.openPicker({
@@ -136,110 +139,116 @@ const RegistMyDogTemplate = ({
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={[styles.title]}>강아지 등록</Text>
-        </View>
-        <View style={styles.imgAddBtnContainer}>
-          <TouchableOpacity onPress={openPicker}>
-            {!image ? (
-              <>
-                <View style={styles.imgAddBtn}>
-                  <Plus width={30} height={30} fill={'white'} />
-                </View>
-              </>
-            ) : (
-              <View style={styles.imgAddBtn}>
-                <Image
-                  style={styles.profileImage}
-                  source={{uri: image?.path}}
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.titleContainer}>
+              <Text style={[styles.title]}>강아지 등록</Text>
+            </View>
+            <View style={styles.imgAddBtnContainer}>
+              <TouchableOpacity onPress={openPicker}>
+                {!image ? (
+                  <>
+                    <View style={styles.imgAddBtn}>
+                      <Plus width={30} height={30} fill={'white'} />
+                    </View>
+                  </>
+                ) : (
+                  <View style={styles.imgAddBtn}>
+                    <Image
+                      style={styles.profileImage}
+                      source={{uri: image?.path}}
+                    />
+                  </View>
+                )}
+                <Text>프로필 사진 등록</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.inputContainer}>
+              {renderLabel('강아지 이름')}
+              {renderTextInput(
+                '강아지 이름',
+                (val: string) => setRequestBody({...requestBody, dogName: val}),
+                requestBody.dogName,
+              )}
+              {renderLabel('견종 선택')}
+              <ScrollView>
+                <SelectDropdown
+                  data={BREED_DATA}
+                  buttonStyle={styles.dropdownBtnStyle}
+                  buttonTextStyle={styles.txtStyle}
+                  renderDropdownIcon={isOpened => {
+                    return dropdownIcon(isOpened);
+                  }}
+                  search={true}
+                  searchInputStyle={styles.searchBox}
+                  renderSearchInputRightIcon={() => {
+                    return <Search width={15} height={15} fill="black" />;
+                  }}
+                  defaultButtonText={' '}
+                  dropdownStyle={styles.dropDownStyle}
+                  rowStyle={styles.rowStyle}
+                  rowTextStyle={styles.rowTextStyle}
+                  onSelect={(selectedItem, idx) => {
+                    setRequestBody({...requestBody, breedCode: idx});
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                />
+              </ScrollView>
+              {renderLabel('성별')}
+              {renderChooseBox(
+                '남아',
+                '여아',
+                requestBody.gender === 'M',
+                requestBody.gender === 'F',
+                chooseGender,
+              )}
+              {renderLabel('중성화 여부')}
+              {renderChooseBox(
+                '중성화 전',
+                '중성화 완료',
+                requestBody.neuter === false,
+                requestBody.neuter === true,
+                chooseNeuter,
+              )}
+              {renderLabel('예방접종 여부')}
+              {renderChooseBox(
+                '아니오',
+                '예',
+                requestBody.vaccination === false,
+                requestBody.vaccination === true,
+                chooseVaccination,
+              )}
+              {renderLabel('소개/특이사항')}
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  multiline={true}
+                  numberOfLines={8}
+                  style={styles.textInputBox}
+                  value={desc}
+                  onChangeText={(text: string) => setDesc(text)}
                 />
               </View>
-            )}
-            <Text>프로필 사진 등록</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.inputContainer}>
-          {renderLabel('강아지 이름')}
-          {renderTextInput(
-            '강아지 이름',
-            (val: string) => setRequestBody({...requestBody, dogName: val}),
-            requestBody.dogName,
-          )}
-          {renderLabel('견종 선택')}
-          <ScrollView>
-            <SelectDropdown
-              data={BREED_DATA}
-              buttonStyle={styles.dropdownBtnStyle}
-              buttonTextStyle={styles.txtStyle}
-              renderDropdownIcon={isOpened => {
-                return dropdownIcon(isOpened);
-              }}
-              search={true}
-              searchInputStyle={styles.searchBox}
-              renderSearchInputRightIcon={() => {
-                return <Search width={15} height={15} fill="black" />;
-              }}
-              defaultButtonText={' '}
-              dropdownStyle={styles.dropDownStyle}
-              rowStyle={styles.rowStyle}
-              rowTextStyle={styles.rowTextStyle}
-              onSelect={(selectedItem, idx) => {
-                setRequestBody({...requestBody, breedCode: idx});
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                return item;
-              }}
-            />
-          </ScrollView>
-          {renderLabel('성별')}
-          {renderChooseBox(
-            '남아',
-            '여아',
-            requestBody.gender === 'M',
-            requestBody.gender === 'F',
-            chooseGender,
-          )}
-          {renderLabel('중성화 여부')}
-          {renderChooseBox(
-            '중성화 전',
-            '중성화 완료',
-            requestBody.neuter === false,
-            requestBody.neuter === true,
-            chooseNeuter,
-          )}
-          {renderLabel('예방접종 여부')}
-          {renderChooseBox(
-            '아니오',
-            '예',
-            requestBody.vaccination === false,
-            requestBody.vaccination === true,
-            chooseVaccination,
-          )}
-          {renderLabel('소개/특이사항')}
-          <View style={styles.textInputContainer}>
-            <TextInput
-              multiline={true}
-              numberOfLines={8}
-              style={styles.textInputBox}
-              value={desc}
-              onChangeText={(text: string) => setDesc(text)}
-            />
+              <View style={styles.btnContainer}>
+                <MyButton
+                  btnText="작성 완료"
+                  width={250}
+                  onClick={() => registSubmit()}
+                />
+              </View>
+            </View>
           </View>
-          <View style={styles.btnContainer}>
-            <MyButton
-              btnText="작성 완료"
-              width={250}
-              onClick={() => registSubmit()}
-            />
-          </View>
-        </View>
-      </View>
-    </ScrollView>
+        </ScrollView>
+      )}
+    </>
   );
 };
 

@@ -15,6 +15,7 @@ import {
 import TextInputBox from '~/atoms/TextInputBox';
 import {FONT_SIZE_M, FONT_SIZE_S, MAIN_COLOR} from '~/const';
 import Camera from '@assets/camera.svg';
+import CustomRatingBar from '~/atoms/CustomRatingBar';
 
 interface Props {
   spotId: string;
@@ -41,19 +42,16 @@ const SpotRegistReviewTemplate = ({
   setImages,
 }: Props) => {
   const openPicker = async () => {
-    try {
-      const response = await MultipleImagePicker.openPicker({
-        selectedAssets: images,
-        isExportThumbnail: true,
-        usedCameraButton: false,
-        doneTitle: '완료',
-        cancelTitle: '취소',
-        maxSelectedAssets: 10,
-      });
-      setImages(response);
-    } catch (e: any) {
-      Alert.alert('이미지 업로드 실패!', e.code, e.message);
-    }
+    await MultipleImagePicker.openPicker({
+      selectedAssets: images,
+      isExportThumbnail: true,
+      usedCameraButton: false,
+      doneTitle: '완료',
+      cancelTitle: '취소',
+      maxSelectedAssets: 10,
+    })
+      .then(response => setImages(response))
+      .catch(() => {});
   };
 
   const onDelete = (value: any) => {
@@ -89,6 +87,14 @@ const SpotRegistReviewTemplate = ({
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{spotName}</Text>
       </View>
+      <View style={styles.starContainer}>
+        <CustomRatingBar
+          width={35}
+          height={35}
+          defaultRating={star}
+          setDefaultRating={setStar}
+        />
+      </View>
       <TouchableOpacity
         onPress={openPicker}
         style={[styles.hContainer, styles.border]}>
@@ -104,7 +110,10 @@ const SpotRegistReviewTemplate = ({
           <Text style={styles.brown}>사진 첨부하기</Text>
         </View>
       </TouchableOpacity>
-      <SafeAreaView style={{height: 120}}>
+      <SafeAreaView
+        style={
+          images.length > 0 ? styles.imgContainer : styles.noneImgContainer
+        }>
         <FlatList
           style={[
             {
@@ -194,6 +203,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12,
     color: '#000',
+  },
+  starContainer: {
+    marginBottom: 20,
+  },
+  imgContainer: {
+    height: 120,
+  },
+  noneImgContainer: {
+    height: 30,
   },
 });
 

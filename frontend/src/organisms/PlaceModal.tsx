@@ -9,12 +9,6 @@ const getAddressData = (data: any) => {
   } else {
     defaultAddress = data.buildingName;
   }
-
-  // navigation.goBack();
-  // route.params.onSelect({
-  //   zone_code: data.zonecode,
-  //   default_address: data.address + ' ' + defaultAddress,
-  // });
 };
 interface Props {
   setPlaceModal: Dispatch<SetStateAction<boolean>>;

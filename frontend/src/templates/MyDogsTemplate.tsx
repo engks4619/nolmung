@@ -44,15 +44,17 @@ function MyDogsTemplate({myDogs, navigation, deleteDog}: Props) {
             ))}
           </View>
         ) : (
-          <Text>내 강아지를 추가해주세욤</Text>
+          <Text>내 강아지 추가해주세요!</Text>
         )}
-        <MyButton
-          btnText={'강아지 추가'}
-          width={Dimensions.get('window').width * 0.65}
-          onClick={() => {
-            navigation.navigate('RegistMyDog');
-          }}
-        />
+        <View style={styles.btnContainer}>
+          <MyButton
+            btnText={'강아지 추가'}
+            width={Dimensions.get('window').width * 0.65}
+            onClick={() => {
+              navigation.navigate('RegistMyDog');
+            }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -75,6 +77,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
-  endFunc: {color: MAIN_COLOR, fontSize: 10, paddingRight: 5},
+  endFunc: {
+    color: MAIN_COLOR,
+    fontSize: 10,
+    paddingRight: 5,
+  },
+  btnContainer: {
+    paddingVertical: 20,
+  },
 });
 export default MyDogsTemplate;

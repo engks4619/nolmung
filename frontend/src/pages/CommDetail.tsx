@@ -119,6 +119,12 @@ function CommDetail({route, navigation}: any) {
     }
   };
 
+  const headMyChat = () => {
+    navigation.navigate('ChatList', {
+      screen: 'Chats',
+    });
+  };
+
   const naviOppent = (oppentIdx: number) => {
     if (userIdx === detailContent.writerIdx) {
       return;
@@ -153,6 +159,7 @@ function CommDetail({route, navigation}: any) {
       userIdx={userIdx}
       startChat={startChat}
       naviOppent={naviOppent}
+      headMyChat={headMyChat}
     />
   );
 }

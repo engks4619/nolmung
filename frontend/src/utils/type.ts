@@ -82,3 +82,11 @@ export type dogRequestBody = {
   description: String;
   breedCode: number | null;
 };
+
+export type communityRequestBody = {
+  startWalkDate: Date;
+  endWalkDate: Date;
+  startPay: number;
+  endPay: number;
+  dogBreed: number;
+};

@@ -20,6 +20,7 @@ interface footerProps {
   isLiked: Boolean;
   putLike: () => void;
   startChat: () => void;
+  headMyChat: () => void;
 }
 
 function DetailFooter({
@@ -29,6 +30,7 @@ function DetailFooter({
   isLiked,
   putLike,
   startChat,
+  headMyChat,
 }: footerProps) {
   return (
     <View style={styles.container}>
@@ -51,11 +53,7 @@ function DetailFooter({
           btnText={isWriter ? '채팅목록' : '채팅하기'}
           width={100}
           fontSize={14}
-          onClick={
-            isWriter
-              ? () => () => Alert.alert('알림', '구현중입니다..')
-              : () => startChat()
-          }
+          onClick={isWriter ? () => headMyChat() : () => startChat()}
         />
       </View>
     </View>

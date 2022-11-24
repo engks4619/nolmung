@@ -15,11 +15,16 @@ function ChatList({chatInfo, handleDetailChat}: Props) {
       style={styles.container}
       onPress={() => handleDetailChat(chatInfo)}>
       <View style={styles.infoContaier}>
-        <View style={styles.oppentContainer}>
-          <Profile imageSource={chatInfo.userImgUrl} width={50} height={50} />
-          <Text style={styles.oppentName}>{chatInfo.nickname}</Text>
+        <Profile imageSource={chatInfo.userImgUrl} width={50} height={50} />
+        <View style={styles.textContainer}>
+          <Text
+            style={styles.oppentName}
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {chatInfo.nickname}
+          </Text>
+          <Text style={styles.subjectStyle}>{chatInfo.subject}</Text>
         </View>
-        <Text style={styles.subjectStyle}>{chatInfo.subject}</Text>
       </View>
       <Squre
         imageSource={chatInfo.thumbnailUrl}
@@ -39,22 +44,22 @@ const styles = StyleSheet.create({
     padding: 15,
     justifyContent: 'space-between',
   },
-  oppentContainer: {
-    alignItems: 'center',
-  },
   infoContaier: {
     flexDirection: 'row',
   },
+  textContainer: {
+    marginLeft: 15,
+  },
   oppentName: {
-    fontWeight: '600',
+    fontWeight: 'bold',
     color: 'black',
-    fontSize: 12,
-    marginTop: 10,
+    fontSize: 14,
+    width: 200,
   },
   subjectStyle: {
-    fontWeight: 'bold',
-    marginLeft: 15,
-    fontSize: 14,
+    width: 200,
+    fontSize: 13,
+    marginTop: 10,
     color: 'black',
   },
 });
