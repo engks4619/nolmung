@@ -101,6 +101,7 @@ io.on('connection', socket => {
           opponentImgUrl: data.opponentImgUrl,
           pay: data.pay,
           subject: data.subject,
+          ownerNickname: data.ownerNickname,
           opponentNickname: data.opponentNickname,
         });
 
@@ -278,6 +279,7 @@ location.on('connection', socket => {
           {
             $push: {
               gps: {latitude: data.gps.latitude, longitude: data.gps.longitude},
+              distance: data.distance,
             },
           },
         );
@@ -298,6 +300,7 @@ location.on('connection', socket => {
             roomId: updatedGps.roomId,
             ownerIdx: updatedGps.ownerIdx,
             gps: gpsList,
+            distance: updatedGps.distance,
           });
         console.log('gpsInfo: ', gpsInfo);
       }

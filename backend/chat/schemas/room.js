@@ -42,6 +42,9 @@ const roomSchema = new Schema({
   pay: {
     type: Number,
   },
+  ownerNickname: {
+    type: String,
+  },
   opponentNickname: {
     type: String,
   },
