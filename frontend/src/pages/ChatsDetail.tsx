@@ -79,13 +79,6 @@ function ChatsDetail({route, navigation}: any) {
         }
       });
 
-      chatSocket.on('decide', (data: string) => {
-        Alert.alert('확정', `${data}`);
-        console.log('Socket Decide', data);
-      });
-      // locationSocket.on('replyStartWalk', (data: string) => {
-      //   console.log('replyStartWalk', data);
-      // });
       locationSocket.on('replyGps', data => {
         console.log('리플라이');
       });
@@ -178,36 +171,28 @@ function ChatsDetail({route, navigation}: any) {
 
   useEffect(() => {
     if (locationSocket) {
-      locationSocket.emit('locationLogin', {id: user, roomId: roomId});
-      locationSocket.on('replyLocationLogin', reply => {
-        console.log(reply);
-        // 로그인 성공
-        locationSocket.on('replyStartWalk', response => {
-          console.log('replystartwalktresponse', response);
-          if (response === 400) {
-            console.log('replystartwalk400');
-            // 이미 산책이 시작 되었습니다.
-            // 알바생이 산책시작을 다시 누르는 경우에 대해 handleStartWalk에서 분기해놔서 따로 400이 필요한가>
-          } else if (typeof response === 'string' && isWriter) {
-            // 산책 시작 알림은 견주에게만 (user === writer 일 때?)
-            Alert.alert(
-              '산책이 시작 되었어요',
-              '"강아지 위치 보기"를 통해 실시간 경로를 확인 할 수 있어요!!',
-            );
-          }
-        });
+      locationSocket.on('replyLocationLogin', replyData => {
+        console.log('replyData', replyData);
+      });
+      locationSocket.on('replyStartWalk', replayStart => {
+        console.log('replyStartWalk', replayStart);
+      });
+      locationSocket.on('replyGps', gps => {
+        console.log('replyGps', gps);
       });
       locationSocket.on('gpsInfo', gpsInfo => {
-        console.log('useeffect in', gpsInfo);
+        console.log('알바 정보', gpsInfo);
       });
-      locationSocket.on('replyEndWalk', replyEndWalk => {
-        console.log('replyEndWalk', replyEndWalk);
+      locationSocket.on('replyEndWalk', end => {
+        console.log('end', end);
       });
     }
+
     return () => {
       if (locationSocket) {
         locationSocket.off('replyLocationLogin');
         locationSocket.off('replyStartWalk');
+        locationSocket.off('replyGps');
         locationSocket.off('gpsInfo');
       }
     };
@@ -215,42 +200,15 @@ function ChatsDetail({route, navigation}: any) {
 
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
+      locationSocket.emit('locationLogin', {id: user, roomId});
       locationSocket.emit('getGps', roomId);
-      // locationSocket.on('gpsInfo', gpsInfo => {
-      //   console.log(gpsInfo);
-      // });
-      // navigation.navigate('MapViewWatcher', {
-      //   postIdx: postIdx,
-      //   roomId: roomId,
-      // });
-
-      // locationSocket.on('gpsInfo', gpsInfo => {
-      //   console.log(gpsInfo);
-      //   if (gpsInfo === 400) {
-      //     // 산책 기록 없음
-      //     // Alert.alert(
-      //     //   '알림',
-      //     //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
-      //     // );
-      //   } else if (gpsInfo === 403) {
-      //     // 산책중아님
-      //   } else if (gpsInfo) {
-      //     // 강아지 위치 정보 gpsInfo 담겨서 옴
-      //     dispatch(setPath({path: gpsInfo.gps}));
-      //     dispatch(addDistance(0));
-      //     // dispatch(addDistance(gpsInfo.distacne));
-      //   }
-      // });
     }
-    // return () => {
-    //   if (locationSocket) {
-    //     locationSocket.off('gpsInfo');
-    //   }
-    // };
-  }, [locationSocket, roomId]);
+  }, [locationSocket, roomId, user]);
+
   const socketPositionState = useSelector(
     (state: RootState) => state.socketPosition,
   );
+
   // 개 불러오기
   const [dogs, setDogs] = useState([]);
   const [dogIdxs, setDogIdxs] = useState([]);
@@ -280,6 +238,7 @@ function ChatsDetail({route, navigation}: any) {
         roomId,
         postIdx,
       );
+      locationSocket.emit('locationLogin', {id: user, roomId});
       // navigation.navigate('MapViewWorker');
       // locationSocket.emit('gps', gpsLocalData);
     }
