@@ -245,6 +245,7 @@ location.on('connection', socket => {
         console.log('산책이 시작되었습니다.');
 
         console.log("replyStartWalk 이벤트 보내기");
+        socket.emit('replyStartWalk', 'socket id 산책이 시작되었습니다.');
         location.to(roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
         console.log("replyStartWalk 이벤트 보내기 완료");
       } else {
