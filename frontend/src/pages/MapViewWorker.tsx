@@ -12,6 +12,7 @@ import {useAppDispatch} from '~/store';
 
 function MapViewWorker({navigation, route}: any) {
   const dispatch = useAppDispatch();
+  const walkRoomId = route.params.roomId;
   const postIdx = route.params.postIdx;
   const [locationSocket, locationDisconnect] = useLocationSocket();
 
@@ -22,9 +23,9 @@ function MapViewWorker({navigation, route}: any) {
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
   const dogIdxs = useSelector((state: RootState) => state.socketPosition.dogs);
-  const walkRoomId = useSelector(
-    (state: RootState) => state.socketPosition.walkRoomId,
-  );
+  // const walkRoomId = useSelector(
+  //   (state: RootState) => state.socketPosition.walkRoomId,
+  // );
   console.log('roomId', walkRoomId);
   const isSaving = useSelector(
     (state: RootState) => state.socketPosition.isSaving,

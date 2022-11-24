@@ -48,7 +48,7 @@ export const startWalking = async (
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
     locationSocket.emit('startWalk', {roomId: roomId, ownerIdx: oppentIdx});
     startLogging(dispatch, dogs, locationSocket, oppentIdx, roomId);
-    navigation.navigate('MapViewWorker', {postIdx: postIdx});
+    navigation.navigate('MapViewWorker', {postIdx: postIdx, roomId: roomId});
   }
 };
 

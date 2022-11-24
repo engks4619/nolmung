@@ -12,6 +12,7 @@ import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
 import PushNotification from 'react-native-push-notification';
+import {setPath} from '~/slices/watcherSlice';
 export interface chatType {
   chat: string;
   sender: number;
@@ -48,6 +49,16 @@ function ChatsDetail({route, navigation}: any) {
     PushNotification.localNotification({
       channelId: 'chats',
       message: `${oppentName}과 산책이 확장되었습니다.`,
+    });
+  };
+
+  const alarmWalkStatus = (status: boolean) => {
+    const msg = status
+      ? `${oppentName}가 산책을 시작하였습니다!`
+      : `${oppentName}가 산책을 종료하였습니다!`;
+    PushNotification.localNotification({
+      channelId: 'chats',
+      message: msg,
     });
   };
 
@@ -179,20 +190,25 @@ function ChatsDetail({route, navigation}: any) {
 
   useEffect(() => {
     if (locationSocket) {
-      locationSocket.on('replyLocationLogin', replyData => {
-        console.log('replyData', replyData);
-      });
+      locationSocket.on('replyLocationLogin', replyData => {});
       locationSocket.on('replyStartWalk', replayStart => {
-        console.log('replyStartWalk', replayStart);
+        if (isWriter && replayStart === '산책이 시작되었습니다.') {
+          alarmWalkStatus(true);
+        }
       });
       locationSocket.on('replyGps', gps => {
-        console.log('replyGps', gps);
+        // console.log('replyGps', gps);
       });
       locationSocket.on('gpsInfo', gpsInfo => {
-        // console.log('알바 정보', gpsInfo);
+        if (isWriter) {
+          dispatch(setPath({path: gpsInfo.gps}));
+        }
       });
-      locationSocket.on('replyEndWalk', end => {
-        console.log('end', end);
+      locationSocket.on('replyEndWalk', () => {
+        if (isWriter) {
+          alarmWalkStatus(false);
+          navigation.replace('WalkReview');
+        }
       });
     }
 
@@ -209,6 +225,7 @@ function ChatsDetail({route, navigation}: any) {
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
       locationSocket.emit('getGps', roomId);
+      navigation.navigate('MapViewWatcher');
     }
   }, [locationSocket, roomId, user]);
 
