@@ -14,7 +14,7 @@ import {startWalking} from '~/utils/SocketPositionFunctions';
 import Geolocation from '@react-native-community/geolocation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MapViewWorker from '@pages/MapViewWorker';
-import {setPath} from '~/slices/watcherSlice';
+import {setPath, addDistance} from '~/slices/watcherSlice';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
 export interface chatType {
   chat: string;
@@ -190,25 +190,48 @@ function ChatsDetail({route, navigation}: any) {
     }
   };
 
-  const [intervalId, setIntervalId] = useState<number>();
   useEffect(() => {
-    if (locationSocket && intervalId) {
+    if (locationSocket) {
       locationSocket.emit('locationLogin', {id: user});
+      locationSocket.on('replyLocationLogin', reply => {
+        console.log(reply);
+        // 로그인 성공
+        locationSocket.on('replyStartWalk', response => {
+          if (response === 400) {
+            // 이미 산책이 시작 되었습니다.
+            // 알바생이 산책시작을 다시 누르는 경우에 대해 handleStartWalk에서 분기해놔서 따로 400이 필요한가>
+          } else if (typeof response === 'string' && user === writerIdx) {
+            // 산책 시작 알림은 견주에게만 (user === writer 일 때?)
+            Alert.alert(
+              '산책이 시작 되었어요',
+              '"강아지 위치 보기"를 통해 실시간 경로를 확인 할 수 있어요!!',
+            );
+          }
+        });
+      });
+    }
+  }, [locationSocket]);
+  const hadleMyDogLocation = useCallback(() => {
+    if (locationSocket) {
+      navigation.navigate('MapViewWatcher', {
+        postIdx: postIdx,
+      });
+      locationSocket.emit('getGps', roomId);
       locationSocket.on('gpsInfo', gpsInfo => {
         console.log(gpsInfo);
         if (gpsInfo === 400) {
-          Alert.alert(
-            '알림',
-            '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
-          );
-        } else if (gpsInfo === 400) {
-          clearInterval(intervalId);
-          console.log('클리어인터벌');
-          navigation.navigate('WalkReview');
-        } else {
+          // 산책 기록 없음
+          // Alert.alert(
+          //   '알림',
+          //   '아직 산책을 시작하지 않았습니다. \n산책이 시작되면 알려드릴게요 :)',
+          // );
+        } else if (gpsInfo === 403) {
+          // 산책중아님
+        } else if (gpsInfo) {
           // 강아지 위치 정보 gpsInfo 담겨서 옴
-
           dispatch(setPath({path: gpsInfo.gps}));
+          dispatch(addDistance(0));
+          // dispatch(addDistance(gpsInfo.distacne));
         }
       });
     }
@@ -217,22 +240,26 @@ function ChatsDetail({route, navigation}: any) {
         locationSocket.off('gpsInfo');
       }
     };
-  }, [locationSocket, intervalId]);
-  const hadleMyDogLocation = useCallback(() => {
-    if (locationSocket) {
-      navigation.navigate('MapViewWatcher', {
-        postIdx: postIdx,
-        interval: intervalId,
-      });
-      const interval = setInterval(() => {
-        locationSocket.emit('getGps', roomId);
-      }, 5000);
-      setIntervalId(interval);
-    }
   }, [locationSocket, roomId]);
   const socketPositionState = useSelector(
     (state: RootState) => state.socketPosition,
   );
+  // 개 불러오기
+  const [dogs, setDogs] = useState([]);
+  const [dogIdxs, setDogIdxs] = useState([]);
+  const getDogs = async () => {
+    const response = await axios.get(`community/post/dog-info/${postIdx}`);
+    setDogs(response.data);
+    const dogIdxList = response.data.map(value => {
+      value.dogIdx;
+    });
+    setDogIdxs(dogIdxList);
+  };
+
+  useEffect(() => {
+    getDogs();
+  }, []);
+
   const hadleStartWalk = useCallback(() => {
     dispatch(setWalkRoomId(roomId));
     if (locationSocket && oppentIdx) {
@@ -240,7 +267,7 @@ function ChatsDetail({route, navigation}: any) {
         dispatch,
         navigation,
         socketPositionState,
-        [18], //이따 postid 넣고 postid로 api 쏴서 개리스틀 받아와야함
+        dogIdxs,
         locationSocket,
         oppentIdx,
         roomId,

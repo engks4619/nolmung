@@ -29,7 +29,7 @@ function MapViewWorker({navigation, route}: any) {
   );
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
-  const dogs = useSelector((state: RootState) => state.socketPosition.dogs);
+  const dogIdxs = useSelector((state: RootState) => state.socketPosition.dogs);
   const roomId = useSelector(
     (state: RootState) => state.socketPosition.walkRoomId,
   );
@@ -49,12 +49,20 @@ function MapViewWorker({navigation, route}: any) {
   const lastUpdate = useSelector(
     (state: RootState) => state.socketPosition.lastUpdate,
   );
+  // const second = useSelector((state: RootState) => {
+  //   state.socketPosition.second;
+  // });
 
   // 개 불러오기
+  const [dogsList, setDogsList] = useState([]);
   const getDogs = async () => {
-    const response = await axios.get(`community/post/dog-info/${postIdx}`);
-    console.log(response.data);
-    dispatch(setDogs({dogs: response.data}));
+    try {
+      const response = await axios.get(`community/post/dog-info/${postIdx}`);
+      console.log(response.data);
+      setDogsList(response.data);
+    } catch (err) {
+      console.log('postIdx로 개정보 불러오기 실패');
+    }
   };
   useEffect(() => {
     getDogs();
@@ -65,23 +73,18 @@ function MapViewWorker({navigation, route}: any) {
       ownerIdx: userIdx,
       walkerIdx: userIdx,
       distance: distance,
-      time:
-        lastUpdate && startDate
-          ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
-            1000
-          : 0,
+      time: second,
       startDate: startDate,
       endDate: lastUpdate,
-      walkedDogList: dogs.map(value => {
-        value.dogIdx;
-      }),
+      walkedDogList: dogIdxs,
       gpsList: path,
     };
 
     try {
       const response = await axios.post('withdog/walk', jsonData);
       if (response.status === 200) {
-        removeMultiple(localList);
+        // 저장 성공
+        navigation.replace('LogViewWorker');
       }
     } catch (err: any) {
       Alert.alert('저장에 실패 했습니다', '다시 시도해 주세요');
@@ -127,7 +130,7 @@ function MapViewWorker({navigation, route}: any) {
         <MapViewTemplate
           myPosition={path[path.length - 1]}
           path={path}
-          dogInfoList={dogs}
+          dogInfoList={dogsList}
           startDate={startDate}
           doneWalking={() => {
             handleDoneWalking();

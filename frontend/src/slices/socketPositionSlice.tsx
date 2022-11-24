@@ -54,9 +54,6 @@ const socketPositionSlice = createSlice({
     setSecond(state, action) {
       state.second = action.payload;
     },
-    addDistance(state, action) {
-      state.distance = state.distance + action.payload;
-    },
     setLastUpdate(state, action) {
       state.lastUpdate = action.payload;
     },
@@ -65,6 +62,9 @@ const socketPositionSlice = createSlice({
     },
     setDogs(state, action) {
       state.dogs = action.payload.dogs;
+    },
+    addDistance(state, action) {
+      state.distance = state.distance + action.payload;
     },
   },
   extraReducers: builder => {},

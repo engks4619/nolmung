@@ -4,20 +4,19 @@ import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-// import {doneWalking, clearLogsAll} from '~/utils/SocketPositionFunctions';
 import {addDistance} from '~/slices/watcherSlice';
 import axios from 'utils/axios';
-import {removeMultiple} from '~/utils/AsyncService';
 import {setDogs} from '~/slices/watcherSlice';
+import {useLocationSocket} from '~/hooks/useSocket';
 
 function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
   const postIdx = route.params.postIdx;
-  const intervalId = route.params.intervalId;
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const path = useSelector((state: RootState) => state.watcher.path);
   const myPosition = path[path.length - 1];
+  const [locationSocket, locationDisconnect] = useLocationSocket();
   // const isSaving = useSelector(
   //   (state: RootState) => state.socketPosition.isSaving,
   // );
@@ -25,7 +24,7 @@ function MapViewWatcher({navigation, route}: any) {
   //   (state: RootState) => state.socketPosition.watchId,
   // );
 
-  const dogs = useSelector((state: RootState) => state.watcher.dogs);
+  const dogIdxs = useSelector((state: RootState) => state.watcher.dogs);
   const distance = useSelector(
     (state: RootState) => state.socketPosition.distance,
   );
@@ -39,15 +38,24 @@ function MapViewWatcher({navigation, route}: any) {
   const lastUpdate = useSelector(
     (state: RootState) => state.socketPosition.lastUpdate,
   );
-
+  const [dogsList, setDogsList] = useState([]);
   // 개 불러오기
   const getDogs = async () => {
-    const response = await axios.get(`community/post/dog-info/${postIdx}`);
-    console.log(response.data);
-    dispatch(setDogs({dogs: response.data}));
+    try {
+      const response = await axios.get(`community/post/dog-info/${postIdx}`);
+      console.log(response.data);
+      setDogsList(response.data);
+    } catch (err) {
+      console.log('postIdx로 개정보 불러오기 실패');
+    }
   };
   useEffect(() => {
     getDogs();
+    locationSocket?.on('replyEndWalk', replyEndWalk => {
+      if (typeof replyEndWalk === 'string') {
+        navigation.replace('LogViewWatcher');
+      }
+    });
   }, []);
 
   //시간계산
@@ -67,11 +75,9 @@ function MapViewWatcher({navigation, route}: any) {
       <MapViewTemplate
         myPosition={myPosition}
         path={path}
-        dogInfoList={dogs}
+        dogInfoList={dogsList}
         startDate={startDate}
         doneWalking={() => {
-          console.log(intervalId, '클리어');
-          clearInterval(intervalId);
           navigation.replace('WalkReview');
           // handleDoneWalking();
         }}

@@ -41,17 +41,11 @@ export const startWalking = async (
   roomId: string,
   postIdx: any,
 ) => {
-  const localIntended = await isIntended();
   if (socketPositionState.isLogging) {
     //watchPostion이 실행 중 => 아무 동작 없이 mapView만 띄울 것
     navigation.navigate('MapViewWorker', {postIdx: postIdx});
   } else if (!socketPositionState.isLogging) {
     // watchPosition이 중단 된 상태 => local 확인 해보고 판단
-    // if (!localIntended) {
-    // local에는 존재 redux에는 없음 => 비정상 종료
-    // lastLogAlert(navigation, dispatch, localList, dogs);{}
-    // } else {
-    // redux,local 둘다 없음 => 그냥 새로 시작
     locationSocket.emit('startWalk', {roomId: roomId, ownerIdx: oppentIdx});
     startLogging(dispatch, dogs, locationSocket, oppentIdx, roomId);
     navigation.navigate('MapViewWorker', {postIdx: postIdx});
@@ -67,15 +61,8 @@ export const startLogging = async (
 ) => {
   dispatch(resetStates());
   dispatch(setIsLoggingOn());
-  // storeData('@DogsSocket', dogs);
-  const hasLog = await containsKey('@WalkingLogsSocket');
-  if (!hasLog) {
-    const startDate = new Date().toString();
-    // storeData('@StartDateSocket', startDate);
-    // storeData('@intendedSocket', false);
-    dispatch(setStartDate(startDate));
-    storeData('@WalkingLogsSocket', []);
-  }
+  const startDate = new Date().toString();
+  dispatch(setStartDate(startDate));
   const watchId = Geolocation.watchPosition(
     position => {
       console.log('position은 새로받나');
@@ -88,13 +75,11 @@ export const startLogging = async (
         },
       };
       locationSocket.emit('gps', gpsLocalData);
-      console.log('emit 도 보내긴함');
+      console.log('emit gps!!');
       const UpdateDate = new Date().toString();
       dispatch(setMyPosition(gpsLocalData.gps));
       dispatch(addPath(gpsLocalData.gps));
-      // storeData('@LastUpdateSocket', UpdateDate);
       dispatch(setLastUpdate(UpdateDate));
-      addPathToAsync(gpsLocalData.gps);
     },
     error => {
       Alert.alert('알림', '죄송합니다. 위치정보 기록이 중단되었습니다.');
