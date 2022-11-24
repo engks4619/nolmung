@@ -202,12 +202,13 @@ chat.on('connection', socket => {
 
   // 산책 확정
   socket.on('complete', async roomId => {
-    console.log('산책 확정');
+    console.log('complete 이벤트');
 
     const room = await Room.updateOne(
       {_id: ObjectId(roomId)},
       {$set: {complete: true}},
     );
+    console.log('room의 completed ; ', room.complete);
     chat.to(roomId).emit('completed', true); // 산책 확정 완료
     chat.to(roomId).emit('alarmCompleted', '산책이 확정되었습니다.');
   });
@@ -224,6 +225,8 @@ location.on('connection', socket => {
     locationLogin_ids[login.id] = socket.id;
     socket.loginId = login.id;
     console.log('로그인 소켓: ', locationLogin_ids[login.id]);
+
+    socket.join(login.roomId);
 
     io.of('/location')
       .to(socket.id)
