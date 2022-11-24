@@ -15,13 +15,21 @@ function ChatList({chatInfo, handleDetailChat}: Props) {
       style={styles.container}
       onPress={() => handleDetailChat(chatInfo)}>
       <View style={styles.infoContaier}>
-        <Profile imageSource={chatInfo.opponentImgUrl} width={50} height={50} />
+        <Profile
+          imageSource={
+            chatInfo.isWriter ? chatInfo.ownerImgUrl : chatInfo.opponentImgUrl
+          }
+          width={50}
+          height={50}
+        />
         <View style={styles.textContainer}>
           <Text
             style={styles.oppentName}
             numberOfLines={1}
             ellipsizeMode="tail">
-            {chatInfo.opponentNickname}
+            {chatInfo.isWriter
+              ? chatInfo.ownerNickname
+              : chatInfo.opponentNickname}
           </Text>
           <Text style={styles.subjectStyle}>{chatInfo.recentChat.chat}</Text>
         </View>

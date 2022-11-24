@@ -36,6 +36,7 @@ function CommDetail({route, navigation}: any) {
   const postIdx: number = route.params.postIdx;
   const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
   const userImage = useSelector((state: RootState) => state.user.profileImage);
+  const userNickname = useSelector((state: RootState) => state.user.nickname);
   const dispatch = useAppDispatch();
 
   const [socket, disconnect] = useSocket();
@@ -84,12 +85,13 @@ function CommDetail({route, navigation}: any) {
     const socketData = {
       ownerIdx: userIdx,
       ownerImgUrl: userImage,
+      ownerNickname: userNickname,
       postIdx,
       opponentIdx: writerIdx,
-      thumbnailUrl: thumbnailUrl,
+      thumbnailUrl,
       opponentImgUrl: detailContent.userImgUrl,
-      pay: pay,
-      subject: subject,
+      pay,
+      subject,
       opponentNickname: writer,
     };
     dispatch(
@@ -101,6 +103,7 @@ function CommDetail({route, navigation}: any) {
         writerIdx,
         oppentIdx: writerIdx,
         oppentName: writer,
+        isWriter: writerIdx === userIdx,
       }),
     );
     if (socket && userIdx) {

@@ -92,6 +92,10 @@ export interface chatListType {
   opponentNickname: string;
   opponentIdx: number;
   writerIdx: number;
+  isWriter: boolean;
+  ownerIdx: number;
+  ownerImgUrl: string;
+  ownerNickname: string;
 }
 
 function Chats({navigation}: any) {
@@ -103,7 +107,6 @@ function Chats({navigation}: any) {
   const getChatsList = async () => {
     try {
       const response = await axios.get(`socket/room/${userIdx}`);
-      console.log(response.data);
       setMyChatList(response.data);
     } catch (error: any) {
       Alert.alert(
@@ -114,16 +117,26 @@ function Chats({navigation}: any) {
   };
 
   const handleDetailChat = (chatInfo: chatListType) => {
+    const oppentImg = chatInfo.isWriter
+      ? chatInfo.ownerImgUrl
+      : chatInfo.opponentImgUrl;
+    const oppentIdx = chatInfo.isWriter
+      ? chatInfo.ownerIdx
+      : chatInfo.opponentIdx;
+    const oppentName = chatInfo.isWriter
+      ? chatInfo.ownerNickname
+      : chatInfo.opponentNickname;
+
     dispatch(
       setChatPostInfo({
         postIdx: chatInfo.postIdx,
         thumbnailUrl: chatInfo.thumbnailUrl,
         subject: chatInfo.subject,
         pay: chatInfo.pay,
-        writerIdx: chatInfo.opponentIdx,
-        oppentIdx: chatInfo.opponentIdx,
-        oppentImg: chatInfo.opponentImgUrl,
-        oppentName: chatInfo.opponentNickname,
+        oppentIdx,
+        oppentImg,
+        oppentName,
+        isWriter: chatInfo.isWriter,
       }),
     );
 

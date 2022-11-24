@@ -99,7 +99,6 @@ function AppInner() {
       channelId: 'chats',
       message: msg.chat,
       title: msg.sender,
-      largeIcon: '',
     });
   };
 
@@ -109,7 +108,6 @@ function AppInner() {
       socket.emit('login', data);
 
       socket.on('rooms', roomsInfos => {
-        console.log(roomsInfos);
         roomsInfos.map(roomInfo => {
           chatSocket.emit('join', roomInfo.roomId);
         });
@@ -119,10 +117,14 @@ function AppInner() {
       socket.on('joinRoom', newRoomId => chatSocket.emit('join', newRoomId));
 
       chatSocket.on('messageC', (msgData: chatType) => {
-        if (msgData.sender === userIdx.toString()) {
+        if (msgData.sender === userIdx) {
           return;
         }
         alarmChat(msgData);
+      });
+
+      chatSocket.on('alarmCompleted', alarmData => {
+        alarmChat(alarmData);
       });
     }
     return () => {
