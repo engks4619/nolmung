@@ -71,22 +71,20 @@ function MapViewWatcher({navigation, route}: any) {
   }, delay);
 
   return (
-    <View>
-      <MapViewTemplate
-        myPosition={myPosition}
-        path={path}
-        dogInfoList={dogsList}
-        startDate={startDate}
-        doneWalking={() => {
-          navigation.replace('WalkReview');
-          // handleDoneWalking();
-        }}
-        distance={distance}
-        dispatch={dispatch}
-        second={second}
-        navigation={navigation}
-      />
-    </View>
+    <MapViewTemplate
+      myPosition={myPosition}
+      path={path}
+      dogInfoList={dogsList}
+      startDate={startDate}
+      doneWalking={() => {
+        navigation.replace('WalkReview');
+        // handleDoneWalking();
+      }}
+      distance={distance}
+      dispatch={dispatch}
+      second={second}
+      navigation={navigation}
+    />
   );
 }
 

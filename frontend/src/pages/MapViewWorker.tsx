@@ -126,21 +126,19 @@ function MapViewWorker({navigation, route}: any) {
     return <OnSaving />;
   } else {
     return (
-      <View>
-        <MapViewTemplate
-          myPosition={path[path.length - 1]}
-          path={path}
-          dogInfoList={dogsList}
-          startDate={startDate}
-          doneWalking={() => {
-            handleDoneWalking();
-          }}
-          distance={distance}
-          dispatch={dispatch}
-          second={second}
-          navigation={navigation}
-        />
-      </View>
+      <MapViewTemplate
+        myPosition={path[path.length - 1]}
+        path={path}
+        dogInfoList={dogsList}
+        startDate={startDate}
+        doneWalking={() => {
+          handleDoneWalking();
+        }}
+        distance={distance}
+        dispatch={dispatch}
+        second={second}
+        navigation={navigation}
+      />
     );
   }
 }
