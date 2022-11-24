@@ -16,10 +16,12 @@ router.get('/api/socket/room/:userId', async (req, res) => {
     for (var i in rooms) {
       // 최근 메시지
       const recentChat = await Chat.findOne({
-        room: rooms[i]._id.toString(),
-      }).sort('-createdAt').limit(1);
+        roomId: rooms[i]._id.toString(),
+      })
+        .sort('-createdAt')
+        .limit(1);
 
-      const isWriter = false;   // 게시글 작성자(견주)인지 체크
+      const isWriter = false; // 게시글 작성자(견주)인지 체크
       if (rooms[i].opponentIdx === req.params.userId) {
         isWriter = true;
       }
@@ -36,8 +38,9 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         opponentImgUrl: rooms[i].opponentImgUrl,
         pay: rooms[i].pay,
         subject: rooms[i].subject,
+        ownerNickname: rooms[i].ownerNickname,
         opponentNickname: rooms[i].opponentNickname,
-        isWriter: isWriter
+        isWriter: isWriter,
       });
     }
     console.log(roomList);
