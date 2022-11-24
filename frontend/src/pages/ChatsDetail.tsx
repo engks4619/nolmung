@@ -225,7 +225,7 @@ function ChatsDetail({route, navigation}: any) {
   const hadleMyDogLocation = useCallback(() => {
     if (locationSocket) {
       locationSocket.emit('getGps', roomId);
-      navigation.navigate('MapViewWatcher');
+      navigation.navigate('MapViewWatcher', {postIdx: postIdx, roomId: roomId});
     }
   }, [locationSocket, roomId, user]);
 

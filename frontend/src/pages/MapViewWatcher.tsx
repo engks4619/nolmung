@@ -54,7 +54,7 @@ function MapViewWatcher({navigation, route}: any) {
     getDogs();
     locationSocket?.on('replyEndWalk', replyEndWalk => {
       if (typeof replyEndWalk === 'string') {
-        navigation.replace('LogViewWatcher');
+        // navigation.replace('LogViewWatcher');
       }
     });
   }, []);
