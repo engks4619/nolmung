@@ -27,7 +27,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
         'opponentIdx: ',
         typeof rooms[i].opponentIdx,
         ' userId: ',
-        typeof req.params.userId,
+        typeof Number(req.params.userId),
       );
 
       var isWriter = false; // 게시글 작성자(견주)인지 체크
