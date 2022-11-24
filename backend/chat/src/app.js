@@ -143,12 +143,8 @@ chat.on('connection', socket => {
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
     // 산책 확정 여부 전달
-    const room = await Chat.find({roomId: roomId});
-    if (room.complete) {
-      socket.emit('completed', true); // 산책 확정
-    } else {
-      socket.emit('completed', false); // 산책 미확정
-    }
+    const roomInfo = await Room.findOne({roomId: roomId});
+    socket.emit('completed', roomInfo.complete);
 
     try {
       const chats = await Chat.find({roomId: roomId}).sort('-createdAt');
