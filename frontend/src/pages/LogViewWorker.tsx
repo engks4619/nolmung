@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useAppDispatch} from '~/store';
 import {RootState} from '~/store/reducer';
-import LogViewTemplate from '@templates/LogviewTemplate';
+import LogViewWorkerTemplate from '@templates/LogViewWorkerTemplate';
 import {clearLogsAll} from '~/utils/MyPositionFunctions';
 
 function LogViewWorker({navigation}: any) {
@@ -89,7 +89,7 @@ function LogViewWorker({navigation}: any) {
 
   return (
     <View>
-      <LogViewTemplate
+      <LogViewWorkerTemplate
         path={path}
         dogInfoList={dogs}
         myPosition={myPosition}
