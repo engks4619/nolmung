@@ -15,6 +15,10 @@ const locationSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  distance: {
+    type: Number,
+    default: 0,
+  },
   gps: [
     {
       latitude: {
@@ -34,9 +38,6 @@ const locationSchema = new Schema({
       },
     },
   ],
-  distance: {
-    type: Number,
-  },
 });
 
 module.exports = mongoose.model('Location', locationSchema);

@@ -276,19 +276,18 @@ location.on('connection', socket => {
         location.to(data.roomId).emit('replyGps', '산책을 시작하세요.');
       } else {
         // gps 위치 추가
-        const updatedGps = await Location.findOneAndUpdate(
-          {_id: gpsData._id},
+        console.log('data.distance: ', data.distance);
+        const updated = await Location.updateOne(
+          {roomId: data.roomId},
           {
             $push: {
               gps: {latitude: data.gps.latitude, longitude: data.gps.longitude},
             },
-          },
-          {
-            $set: {
-              distance: data.distance,
-            },
+            $set: {distance: data.distance},
           },
         );
+
+        const updatedGps = await Location.findOne({roomId: data.roomId});
 
         console.log('updatedGps: ', updatedGps);
         console.log('updategps distance: ', updatedGps.distance);
@@ -378,6 +377,7 @@ location.on('connection', socket => {
           roomId: gpsInfo.roomId,
           ownerIdx: gpsInfo.ownerIdx,
           gps: gpsList,
+          distance: gpsInfo.distance,
         });
         console.log('gpsInfo 이벤트 보내기 완료');
       }
