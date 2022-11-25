@@ -48,7 +48,7 @@ function ChatsDetail({route, navigation}: any) {
   const alarmConfirm = () => {
     PushNotification.localNotification({
       channelId: 'chats',
-      message: `${oppentName}과 산책이 확장되었습니다.`,
+      message: `${oppentName}과 산책이 확정되었습니다.`,
     });
   };
 
@@ -105,6 +105,7 @@ function ChatsDetail({route, navigation}: any) {
           chatSocket.off('messageC');
           chatSocket.off('decide');
           chatSocket.off('completed');
+          chatSocket.off('alarmCompleted');
           locationSocket.off('replyGps');
         }
       };
@@ -216,6 +217,7 @@ function ChatsDetail({route, navigation}: any) {
       if (locationSocket) {
         locationSocket.off('replyLocationLogin');
         locationSocket.off('replyStartWalk');
+        locationSocket.off('replyEndWalk');
         locationSocket.off('replyGps');
         locationSocket.off('gpsInfo');
       }
