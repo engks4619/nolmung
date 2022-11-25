@@ -76,14 +76,14 @@ function MapViewWatcherTemplate({
             secondText={distance}
           />
         </View> */}
-        <View style={styles.btnContainer}>
+        {/* <View style={styles.btnContainer}>
           <MyButton
             btnText="산책 종료"
             width={200}
             height={50}
             onClick={doneWalking}
           />
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
