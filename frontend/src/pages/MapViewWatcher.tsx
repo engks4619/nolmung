@@ -55,7 +55,7 @@ function MapViewWatcher({navigation, route}: any) {
   return (
     <MapViewTemplate
       myPosition={myPosition}
-      path={path}
+      path={path.slice(5)}
       dogInfoList={dogsList}
       startDate={startDate}
       doneWalking={() => {
