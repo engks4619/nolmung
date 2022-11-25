@@ -16,9 +16,7 @@ function MapViewWatcher({navigation, route}: any) {
   const [locationSocket, locationDisconnect] = useLocationSocket();
 
   const dogIdxs = useSelector((state: RootState) => state.watcher.dogs);
-  const distance = useSelector(
-    (state: RootState) => state.socketPosition.distance,
-  );
+  const distance = useSelector((state: RootState) => state.watcher.distance);
   const startDate = useSelector(
     (state: RootState) => state.socketPosition.startDate,
   );

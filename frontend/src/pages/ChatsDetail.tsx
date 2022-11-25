@@ -12,7 +12,7 @@ import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
 import PushNotification from 'react-native-push-notification';
-import {setPath} from '~/slices/watcherSlice';
+import {setPath, addDistance} from '~/slices/watcherSlice';
 export interface chatType {
   chat: string;
   sender: number;
@@ -54,8 +54,8 @@ function ChatsDetail({route, navigation}: any) {
 
   const alarmWalkStatus = (status: boolean) => {
     const msg = status
-      ? `${oppentName}가 산책을 시작하였습니다!`
-      : `${oppentName}가 산책을 종료하였습니다!`;
+      ? `${oppentName}님이 산책을 시작하였습니다!`
+      : `${oppentName}님이 산책을 종료하였습니다!`;
     PushNotification.localNotification({
       channelId: 'chats',
       message: msg,
@@ -203,6 +203,9 @@ function ChatsDetail({route, navigation}: any) {
       locationSocket.on('gpsInfo', gpsInfo => {
         if (isWriter) {
           dispatch(setPath({path: gpsInfo.gps}));
+          if (gpsInfo.distance <= 9) {
+            dispatch(addDistance(gpsInfo.distance));
+          }
         }
       });
       locationSocket.on('replyEndWalk', () => {
