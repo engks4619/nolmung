@@ -47,7 +47,7 @@ export const startWalking = async (
     navigation.navigate('MapViewWorker', {postIdx: postIdx, roomId: roomId});
   }
 };
-
+const haversine = require('haversine');
 export const startLogging = async (
   dispatch: any,
   dogs: number[],
@@ -59,8 +59,24 @@ export const startLogging = async (
   dispatch(setIsLoggingOn());
   const startDate = new Date().toString();
   dispatch(setStartDate(startDate));
+  var tmpLoc = null;
+  var distance = 0;
   const watchId = Geolocation.watchPosition(
     position => {
+      if (tmpLoc != null) {
+        const currentPosi = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        distance = haversine(currentPosi, tmpLoc, {
+          unit: 'meter',
+        });
+      } else if (tmpLoc === null) {
+        tmpLoc = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+      }
       const gpsLocalData = {
         ownerIdx: oppentIdx,
         roomId,
@@ -68,8 +84,10 @@ export const startLogging = async (
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         },
+        distance: distance,
       };
       locationSocket.emit('gps', gpsLocalData);
+      console.log(gpsLocalData.distance);
       const UpdateDate = new Date().toString();
       dispatch(setMyPosition(gpsLocalData.gps));
       dispatch(addPath(gpsLocalData.gps));

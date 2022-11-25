@@ -12,7 +12,7 @@ import {setPostInfo} from '~/slices/postSlice';
 import {startWalking} from '~/utils/SocketPositionFunctions';
 import {setWalkRoomId} from '~/slices/socketPositionSlice';
 import PushNotification from 'react-native-push-notification';
-import {setPath} from '~/slices/watcherSlice';
+import {setPath, addDistance} from '~/slices/watcherSlice';
 export interface chatType {
   chat: string;
   sender: number;
@@ -201,7 +201,9 @@ function ChatsDetail({route, navigation}: any) {
       });
       locationSocket.on('gpsInfo', gpsInfo => {
         if (isWriter) {
-          dispatch(setPath({path: gpsInfo.gps}));
+          dispatch(setPath({ path: gpsInfo.gps }));
+          console.log(gpsInfo.distance);
+          dispatch(addDistance(gpsInfo.distance));
         }
       });
       locationSocket.on('replyEndWalk', () => {
