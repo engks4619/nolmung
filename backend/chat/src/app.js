@@ -139,11 +139,14 @@ chat.on('connection', socket => {
 
   // 채팅방 입장
   socket.on('join', async roomId => {
+    console.log('chat join 이벤트');
     socket.join(roomId);
     console.log(roomId + ' 채팅방에 입장했습니다.');
 
     // 산책 확정 여부 전달
-    const roomInfo = await Room.findOne({_id: roomId});
+    const roomInfo = await Room.findOne({_id: ObjectId(roomId)});
+    console.log('roomInfo: ', roomInfo);
+    console.log('complete: ', roomInfo.complete);
     socket.emit('completed', roomInfo.complete);
 
     try {
@@ -234,26 +237,28 @@ location.on('connection', socket => {
     console.log('startWalk 이벤트');
     try {
       const gps = await Location.findOne({roomId: data.roomId});
-      console.log("gps: ", gps);
+      console.log('gps: ', gps);
       if (gps === null) {
         const gpsInfo = await Location.create({
           roomId: data.roomId,
           ownerIdx: data.ownerIdx,
           walking: true,
         });
-        console.log("gpsInfo: ", gpsInfo);
+        console.log('gpsInfo: ', gpsInfo);
         console.log('산책이 시작되었습니다.');
 
-        console.log("replyStartWalk 이벤트 보내기");
+        console.log('replyStartWalk 이벤트 보내기');
         socket.emit('replyStartWalk', 'socket id 산책이 시작되었습니다.');
-        location.to(data.roomId).emit('replyStartWalk', '산책이 시작되었습니다.');
-        console.log("replyStartWalk 이벤트 보내기 완료");
+        location
+          .to(data.roomId)
+          .emit('replyStartWalk', '산책이 시작되었습니다.');
+        console.log('replyStartWalk 이벤트 보내기 완료');
       } else {
-
-        console.log("이미 산책이 시작되었습니다.");
-        location.to(data.roomId).emit('replyStartWalk', '이미 산책이 시작되었습니다.');
+        console.log('이미 산책이 시작되었습니다.');
+        location
+          .to(data.roomId)
+          .emit('replyStartWalk', '이미 산책이 시작되었습니다.');
       }
-        
     } catch (error) {
       console.error(error);
     }
@@ -281,8 +286,8 @@ location.on('connection', socket => {
           },
         );
 
-        console.log("updatedGps: ", updatedGps);
-        console.log("updategps: ", updatedGps.gps);
+        console.log('updatedGps: ', updatedGps);
+        console.log('updategps: ', updatedGps.gps);
         console.log('gps 저장 완료');
         location.to(data.roomId).emit('replyGps', 'gps 저장 완료');
 
@@ -294,17 +299,14 @@ location.on('connection', socket => {
           });
         }
 
-        console.log("gpsList: ", gpsList);
-        
-        location
-          .to(data.roomId)
-          .emit('gpsInfo', {
-            roomId: updatedGps.roomId,
-            ownerIdx: updatedGps.ownerIdx,
-            gps: gpsList,
-            distance: updatedGps.distance,
-          });
-      
+        console.log('gpsList: ', gpsList);
+
+        location.to(data.roomId).emit('gpsInfo', {
+          roomId: updatedGps.roomId,
+          ownerIdx: updatedGps.ownerIdx,
+          gps: gpsList,
+          distance: updatedGps.distance,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -316,21 +318,21 @@ location.on('connection', socket => {
     console.log('endWalk 이벤트');
 
     try {
-      console.log("endRoomId: ", roomId);
+      console.log('endRoomId: ', roomId);
       const gpsData = await Location.findOne({roomId: roomId});
-      console.log("endGpsData: ", gpsData);
+      console.log('endGpsData: ', gpsData);
       console.log('walking: ', gpsData.walking);
 
       if (gpsData === null || !gpsData.walking) {
         // 산책 시작 전이거나 이미 종료된 경우
-        console.log("산책 시작 전 or 이미 종료");
+        console.log('산책 시작 전 or 이미 종료');
         location.to(roomId).emit('replyEndWalk', (response.statusCode = 400));
       } else {
         const gpsInfo = await Location.updateMany(
           {roomId: roomId},
           {$set: {walking: false}},
         );
-        console.log("endGpsInfo: ", gpsInfo);
+        console.log('endGpsInfo: ', gpsInfo);
         console.log('산책 종료', gpsInfo.walking);
         location.to(roomId).emit('replyEndWalk', '산책이 종료되었습니다.');
       }
@@ -366,14 +368,14 @@ location.on('connection', socket => {
           });
         }
 
-        console.log("gpsInfo: ", gpsInfo);
-        console.log("gpsInfo 이벤트 보내기");
+        console.log('gpsInfo: ', gpsInfo);
+        console.log('gpsInfo 이벤트 보내기');
         location.to(roomId).emit('gpsInfo', {
           roomId: gpsInfo.roomId,
           ownerIdx: gpsInfo.ownerIdx,
           gps: gpsList,
         });
-        console.log("gpsInfo 이벤트 보내기 완료");
+        console.log('gpsInfo 이벤트 보내기 완료');
       }
     } catch (error) {
       console.error(error);
