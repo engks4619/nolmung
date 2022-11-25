@@ -63,7 +63,7 @@ export const startLogging = async (
   var distance = 0;
   const watchId = Geolocation.watchPosition(
     position => {
-      if (tmpLoc != null) {
+      if (tmpLoc !== null) {
         const currentPosi = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
