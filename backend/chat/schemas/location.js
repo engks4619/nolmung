@@ -35,7 +35,7 @@ const locationSchema = new Schema({
     },
   ],
   distance: {
-    type: Array,
+    type: Number,
   },
 });
 

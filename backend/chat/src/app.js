@@ -281,13 +281,17 @@ location.on('connection', socket => {
           {
             $push: {
               gps: {latitude: data.gps.latitude, longitude: data.gps.longitude},
+            },
+          },
+          {
+            $set: {
               distance: data.distance,
             },
           },
         );
 
         console.log('updatedGps: ', updatedGps);
-        console.log('updategps: ', updatedGps.gps);
+        console.log('updategps distance: ', updatedGps.distance);
         console.log('gps 저장 완료');
         location.to(data.roomId).emit('replyGps', 'gps 저장 완료');
 
@@ -328,7 +332,7 @@ location.on('connection', socket => {
         console.log('산책 시작 전 or 이미 종료');
         location.to(roomId).emit('replyEndWalk', (response.statusCode = 400));
       } else {
-        const gpsInfo = await Location.updateMany(
+        const gpsInfo = await Location.findOneAndUpdate(
           {roomId: roomId},
           {$set: {walking: false}},
         );
