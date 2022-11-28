@@ -159,6 +159,8 @@ android {
                 }
             }
         }
+        manifestPlaceholders = [MAP_CLIENT_ID: "$System.env.MAP_CLIENT_ID"]
+
     }
 
     if (isNewArchitectureEnabled()) {
