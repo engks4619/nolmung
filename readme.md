@@ -80,43 +80,41 @@
 
 ### 메인 화면
 
-![0._home](/uploads/109d6d2545b30cbd70f1760901c60b96/0._home.gif)
+![0._home](/exec/img/메인화면.gif)
 
 ### 채팅
 
-![1._chat](/uploads/6e06a15f4483b7c04109bfb9705cf8a3/1._chat.gif)
+![1._chat](/exec/img/채팅.gif)
+
+### 내 강이지 위치 보기
+
+![8._DogGPS](/exec/img/내강아지위치보기.gif)
 
 ### 산책 알바 후기
 
-![2._walkreview](/uploads/5d64245481ffc977052fd3980f0b6945/2._walkreview.gif)
+![2._walkreview](/exec/img/알바후기작성.gif)
 
 ### 산책 스팟
 
-![3._spot1](/uploads/5c38eaed49c0f26ed40474245fffc4d3/3._spot1.gif)
+![3._spot1](/exec/img/산책스팟.gif)
 
-### 산책 스팟 상세
-
-![4._spot2](/uploads/d1f8dcf7b0a5fb88110b42e34e134dd6/4._spot2.gif)
 
 ### 산책 스팟 리뷰
 
-![5._spotreview](/uploads/be4095d84a9c282cd38adcba90086b81/5._spotreview.gif)
+![5._spotreview](/exec/img/스팟리뷰작성.gif)
 
-### 커뮤니티
+### 커뮤니티/유저후기
 
-![6.community](/uploads/4715239852bbd377025d019a522e1be0/6.community.gif)
+![6.community](/exec/img/커뮤니티상세유저후기.gif)
 
 ### 커뮤니티 글 작성
 
-![7._registArticle](/uploads/0562e29c8cce3596fcfb95702a635037/7._registArticle.gif)
+![7._registArticle](/exec/img/글작성.gif)
 
-### 내 강아지 - 삭제
+### 내 강아지 - 삭제/등록
 
-![8._deleteDog](/uploads/8e9b7f27b8a9152a75fea37423657084/8._deleteDog.gif)
+![8._Dog](/exec/img/내강아지관리.gif)
 
-### 내 강아지 - 등록
-
-![9._registDog](/uploads/289e0afc6dd039f6f10b74dd141272a2/9._registDog.gif)
 
 ### 산책하기 - 본인
 
