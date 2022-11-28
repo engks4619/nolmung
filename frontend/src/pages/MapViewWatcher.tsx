@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
-import MapViewTemplate from '@templates/MapViewTemplate';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
 import axios from 'utils/axios';
 import {useLocationSocket} from '~/hooks/useSocket';
+import MapViewWatcherTemplate from '~/templates/MapViewWatcherTemplate';
 
 function MapViewWatcher({navigation, route}: any) {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ function MapViewWatcher({navigation, route}: any) {
   }, delay);
 
   return (
-    <MapViewTemplate
+    <MapViewWatcherTemplate
       myPosition={myPosition}
       path={path.slice(5)}
       dogInfoList={dogsList}
