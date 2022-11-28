@@ -135,6 +135,8 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        manifestPlaceholders = [MAP_CLIENT_ID: "$System.env.MAP_CLIENT_ID"]
+
         applicationId "com.frontend"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -159,7 +161,6 @@ android {
                 }
             }
         }
-        manifestPlaceholders = [MAP_CLIENT_ID: "$System.env.MAP_CLIENT_ID"]
 
     }
 
@@ -316,5 +317,9 @@ def isNewArchitectureEnabled() {
     // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
     return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
 }
+// project.ext.envConfigFiles = [
+//     debug: ".env.development",
+//     release: ".env.production",
+// ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
