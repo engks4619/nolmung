@@ -3,22 +3,59 @@ const router = express.Router();
 
 const Room = require('../schemas/room');
 const Chat = require('../schemas/chat');
+const {default: axios} = require('axios');
 
 // 채팅방 목록 조회
 router.get('/api/socket/room/:userId', async (req, res) => {
+  const userId = Number(req.params.userId);
   try {
-
     const rooms = await Room.find({
-      $or: [{ownerIdx: req.params.userId}, {opponentIdx: req.params.userId}]
+      $or: [{ownerIdx: userId}, {opponentIdx: userId}],
     }).sort('-createdAt');
 
-    const roomInfo = []
+    const roomList = [];
     for (var i in rooms) {
-      roomInfo.push({ roomId: rooms[i]._id, ownerIdx: rooms[i].ownerIdx, opponentIdx: rooms[i].opponentIdx, postIdx: rooms[i].postIdx, createdAt: rooms[i].createdAt });
+      // 최근 메시지
+      const recentChat = await Chat.findOne({
+        roomId: rooms[i]._id.toString(),
+      })
+        .sort('-createdAt')
+        .limit(1);
+
+      if (recentChat === null) continue;
+
+      console.log(
+        'opponentIdx: ',
+        typeof rooms[i].opponentIdx,
+        ' userId: ',
+        typeof Number(req.params.userId),
+      );
+
+      var isWriter = false; // 게시글 작성자(견주)인지 체크
+      if (rooms[i].opponentIdx == userId) {
+        isWriter = true;
+      }
+
+      roomList.push({
+        roomId: rooms[i]._id,
+        ownerIdx: rooms[i].ownerIdx,
+        opponentIdx: rooms[i].opponentIdx,
+        postIdx: rooms[i].postIdx,
+        createdAt: rooms[i].createdAt,
+        recentChat: recentChat,
+        thumbnailUrl: rooms[i].thumbnailUrl,
+        ownerImgUrl: rooms[i].ownerImgUrl,
+        opponentImgUrl: rooms[i].opponentImgUrl,
+        pay: rooms[i].pay,
+        subject: rooms[i].subject,
+        ownerNickname: rooms[i].ownerNickname,
+        opponentNickname: rooms[i].opponentNickname,
+        isWriter: isWriter,
+      });
     }
-  
-    res.json(roomInfo);
-    
+    console.log(roomList);
+    res.json(roomList);
+//    res.status(200);
   } catch (error) {
     console.log(error);
   }
@@ -37,7 +74,7 @@ router.get('/api/socket/room/:userId', async (req, res) => {
 //       postIdx: data.postIdx,
 //     });
 
-//     if (room == null) {
+//     if (room === null) {
 //       console.log('해당 방이 없습니다. ');
 //       const newRoom = await Room.create({
 //         opponentIdx: data.opponentIdx,
