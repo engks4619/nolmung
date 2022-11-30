@@ -1,11 +1,15 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {MAIN_COLOR} from '~/const';
+import {StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const Loading = () => {
   return (
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size={'large'} color={MAIN_COLOR} />
+      <FastImage
+        style={{width: 150, height: 150}}
+        source={require('@assets/runningDog.gif')}
+        resizeMode={FastImage.resizeMode.contain}
+      />
     </View>
   );
 };
@@ -16,7 +20,6 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'center',
     backgroundColor: 'white',
   },
 });

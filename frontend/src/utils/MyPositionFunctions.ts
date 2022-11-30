@@ -16,8 +16,6 @@ import {
   addPath,
   setStates,
   resetStates,
-  setIsSavingOn,
-  setIsSavingOff,
   setWatchId,
   setStartDate,
   setLastUpdate,

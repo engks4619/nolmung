@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {Alert, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ChatsDetail from './ChatsDetail';
 import ChatsTemplate from '~/templates/ChatsTemplate';
@@ -76,18 +76,26 @@ export const ChatsStackNavigator = () => (
   </ChatsStack.Navigator>
 );
 
+interface recentChatType {
+  chat: string;
+}
+
 export interface chatListType {
-  categoryType: string;
-  chatUserIdx: number;
-  completed: boolean;
-  isOwner: boolean;
-  nickname: string;
+  opponentImgUrl: string;
   postIdx: number;
-  subject: string;
   thumbnailUrl: string;
   userImgUrl: string;
-  pay: null | number;
   roomId: string;
+  recentChat: recentChatType;
+  pay: number | null;
+  subject: string;
+  opponentNickname: string;
+  opponentIdx: number;
+  writerIdx: number;
+  isWriter: boolean;
+  ownerIdx: number;
+  ownerImgUrl: string;
+  ownerNickname: string;
 }
 
 function Chats({navigation}: any) {
@@ -95,31 +103,41 @@ function Chats({navigation}: any) {
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
   const [myChatList, setMyChatList] = useState([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const getChatsList = async () => {
     try {
-      const response = await axios.get('community/chat');
+      const response = await axios.get(`socket/room/${userIdx}`);
       setMyChatList(response.data);
     } catch (error: any) {
-      console.log('채팅 목록 에러');
+      Alert.alert(
+        `에러코드 ${error?.response?.status}`,
+        '죄송합니다. 다시 시도해주시길 바랍니다.',
+      );
     }
   };
 
   const handleDetailChat = (chatInfo: chatListType) => {
-    const writerIdx = chatInfo.isOwner ? userIdx : chatInfo.chatUserIdx;
+    const oppentImg = chatInfo.isWriter
+      ? chatInfo.ownerImgUrl
+      : chatInfo.opponentImgUrl;
+    const oppentIdx = chatInfo.isWriter
+      ? chatInfo.ownerIdx
+      : chatInfo.opponentIdx;
+    const oppentName = chatInfo.isWriter
+      ? chatInfo.ownerNickname
+      : chatInfo.opponentNickname;
 
     dispatch(
       setChatPostInfo({
-        pay: chatInfo.pay,
         postIdx: chatInfo.postIdx,
         thumbnailUrl: chatInfo.thumbnailUrl,
         subject: chatInfo.subject,
-        writerIdx,
-        oppentIdx: chatInfo.chatUserIdx,
-        userImgUrl: chatInfo.userImgUrl,
-        writer: chatInfo.nickname,
-        categoryType: chatInfo.categoryType,
-        completed: chatInfo.completed,
+        pay: chatInfo.pay,
+        oppentIdx,
+        oppentImg,
+        oppentName,
+        isWriter: chatInfo.isWriter,
       }),
     );
 
@@ -138,6 +156,9 @@ function Chats({navigation}: any) {
       <ChatsTemplate
         myChatList={myChatList}
         handleDetailChat={handleDetailChat}
+        refreshing={refreshing}
+        setRefreshing={setRefreshing}
+        refresh={getChatsList}
       />
     </View>
   );

@@ -20,7 +20,7 @@ interface Props {
   navigation: any;
 }
 
-function MapView({
+function MapViewWatcherTemplate({
   myPosition,
   path,
   dogInfoList,
@@ -68,20 +68,22 @@ function MapView({
             ) : null}
           </NaverMapView>
         </View>
-        <DoubleSummary
-          firstLabel={'산책 시간'}
-          firstText={second}
-          secondLabel={'산책 거리'}
-          secondText={distance}
-        />
-        <View style={styles.btnContainer}>
+        {/* <View>
+          <DoubleSummary
+            firstLabel={'산책 시간'}
+            firstText={second}
+            secondLabel={'산책 거리'}
+            secondText={distance}
+          />
+        </View> */}
+        {/* <View style={styles.btnContainer}>
           <MyButton
             btnText="산책 종료"
             width={200}
             height={50}
             onClick={doneWalking}
           />
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   );
@@ -114,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MapView;
+export default MapViewWatcherTemplate;

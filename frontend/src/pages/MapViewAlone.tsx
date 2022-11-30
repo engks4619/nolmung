@@ -1,16 +1,15 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Alert, View} from 'react-native';
+import {Alert} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {doneWalking, clearLogsAll} from '~/utils/MyPositionFunctions';
+import {doneWalking} from '~/utils/MyPositionFunctions';
 import {addDistance} from '~/slices/myPositionSlice';
 import {setIsSavingOff, setIsSavingOn} from '~/slices/myPositionSlice';
 import axios from 'utils/axios';
 import {removeMultiple} from '~/utils/AsyncService';
 
-const moment = require('moment');
 const localList = ['@StartDate', '@LastUpdate', '@WalkingLogs', '@Dogs'];
 
 function MapViewAlone({navigation}: any) {
@@ -106,21 +105,19 @@ function MapViewAlone({navigation}: any) {
     return <OnSaving />;
   } else {
     return (
-      <View>
-        <MapViewTemplate
-          myPosition={myPosition}
-          path={path}
-          dogInfoList={dogs}
-          startDate={startDate}
-          doneWalking={() => {
-            handleDoneWalking();
-          }}
-          distance={distance}
-          dispatch={dispatch}
-          second={second}
-          navigation={navigation}
-        />
-      </View>
+      <MapViewTemplate
+        myPosition={myPosition}
+        path={path}
+        dogInfoList={dogs}
+        startDate={startDate}
+        doneWalking={() => {
+          handleDoneWalking();
+        }}
+        distance={distance}
+        dispatch={dispatch}
+        second={second}
+        navigation={navigation}
+      />
     );
   }
 }

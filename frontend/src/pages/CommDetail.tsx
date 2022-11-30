@@ -35,6 +35,8 @@ export interface DetailProps {
 function CommDetail({route, navigation}: any) {
   const postIdx: number = route.params.postIdx;
   const userIdx: number = useSelector((state: RootState) => state.user.userIdx);
+  const userImage = useSelector((state: RootState) => state.user.profileImage);
+  const userNickname = useSelector((state: RootState) => state.user.nickname);
   const dispatch = useAppDispatch();
 
   const [socket, disconnect] = useSocket();
@@ -79,21 +81,19 @@ function CommDetail({route, navigation}: any) {
   }, [postIdx]);
 
   const startChat = () => {
+    const {writerIdx, pay, subject, thumbnailUrl, writer} = detailContent;
     const socketData = {
       ownerIdx: userIdx,
+      ownerImgUrl: userImage,
+      ownerNickname: userNickname,
       postIdx,
-      opponentIdx: detailContent.writerIdx,
-    };
-    const {
-      writerIdx,
+      opponentIdx: writerIdx,
+      thumbnailUrl,
+      opponentImgUrl: detailContent.userImgUrl,
       pay,
       subject,
-      userImgUrl,
-      thumbnailUrl,
-      writer,
-      categoryType,
-      completed,
-    } = detailContent;
+      opponentNickname: writer,
+    };
     dispatch(
       setChatPostInfo({
         postIdx,
@@ -102,10 +102,8 @@ function CommDetail({route, navigation}: any) {
         pay,
         writerIdx,
         oppentIdx: writerIdx,
-        userImgUrl,
-        writer,
-        categoryType,
-        completed,
+        oppentName: writer,
+        isWriter: writerIdx === userIdx,
       }),
     );
     if (socket && userIdx) {

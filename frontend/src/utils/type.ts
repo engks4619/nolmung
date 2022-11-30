@@ -1,3 +1,5 @@
+import {Dispatch, SetStateAction} from 'react';
+
 export type Geoloc = {
   lat: number;
   lng: number;
@@ -89,4 +91,10 @@ export type communityRequestBody = {
   startPay: number;
   endPay: number;
   dogBreed: number;
+};
+
+export type dogEtcOption = {
+  leftText: string;
+  data: boolean;
+  setData: Dispatch<SetStateAction<boolean>>;
 };

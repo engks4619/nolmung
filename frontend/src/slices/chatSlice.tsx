@@ -6,12 +6,10 @@ const initialState = {
   postImage: '',
   subject: '',
   pay: undefined,
-  writerIdx: undefined,
+  isWriter: false,
   oppentName: '',
   oppentImg: '',
   oppentIdx: undefined,
-  categoryType: '',
-  completed: undefined,
 };
 
 const chatSlice = createSlice({
@@ -26,15 +24,10 @@ const chatSlice = createSlice({
       state.postImage = action.payload.thumbnailUrl;
       state.subject = action.payload.subject;
       state.pay = action.payload?.pay;
-      state.writerIdx = action.payload.writerIdx;
+      state.isWriter = action.payload.isWriter;
       state.oppentIdx = action.payload.oppentIdx;
-      state.oppentImg = action.payload.userImgUrl;
-      state.oppentName = action.payload.writer;
-      state.categoryType = action.payload.categoryType;
-      state.completed = action.payload.completed;
-    },
-    setCompleted(state, action) {
-      state.completed = action.payload;
+      state.oppentImg = action.payload.oppentImg;
+      state.oppentName = action.payload.oppentName;
     },
   },
 });

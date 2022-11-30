@@ -1,38 +1,29 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Alert, View} from 'react-native';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
+import {Alert} from 'react-native';
 import MapViewTemplate from '@templates/MapViewTemplate';
 import OnSaving from '@pages/OnSaving';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '~/store/reducer';
-import {doneWalking, clearLogsAll} from '~/utils/SocketPositionFunctions';
+import {doneWalking} from '~/utils/SocketPositionFunctions';
 import {addDistance} from '~/slices/socketPositionSlice';
-import {setDogs} from '~/slices/socketPositionSlice';
 import axios from 'utils/axios';
-import {removeMultiple} from '~/utils/AsyncService';
 import {useLocationSocket} from '~/hooks/useSocket';
-
-const moment = require('moment');
-const localList = [
-  '@StartDateSocket',
-  '@LastUpdateSocket',
-  '@WalkingLogsSocket',
-  '@DogsSocket',
-];
+import {useAppDispatch} from '~/store';
 
 function MapViewWorker({navigation, route}: any) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const walkRoomId = route.params.roomId;
   const postIdx = route.params.postIdx;
   const [locationSocket, locationDisconnect] = useLocationSocket();
+
   const userIdx = useSelector((state: RootState) => state.user.userIdx);
   const myPosition = useSelector(
     (state: RootState) => state.socketPosition.myPosition,
   );
 
   const path = useSelector((state: RootState) => state.socketPosition.path);
-  const dogs = useSelector((state: RootState) => state.socketPosition.dogs);
-  const roomId = useSelector(
-    (state: RootState) => state.socketPosition.walkRoomId,
-  );
+  const dogIdxs = useSelector((state: RootState) => state.socketPosition.dogs);
+
   const isSaving = useSelector(
     (state: RootState) => state.socketPosition.isSaving,
   );
@@ -51,10 +42,14 @@ function MapViewWorker({navigation, route}: any) {
   );
 
   // 개 불러오기
+  const [dogsList, setDogsList] = useState([]);
   const getDogs = async () => {
-    const response = await axios.get(`community/post/dog-info/${postIdx}`);
-    console.log(response.data);
-    dispatch(setDogs({dogs: response.data}));
+    try {
+      const response = await axios.get(`community/post/dog-info/${postIdx}`);
+      setDogsList(response.data);
+    } catch (err) {
+      console.log('postIdx로 개정보 불러오기 실패');
+    }
   };
   useEffect(() => {
     getDogs();
@@ -65,36 +60,32 @@ function MapViewWorker({navigation, route}: any) {
       ownerIdx: userIdx,
       walkerIdx: userIdx,
       distance: distance,
-      time:
-        lastUpdate && startDate
-          ? (new Date(lastUpdate).getTime() - new Date(startDate).getTime()) /
-            1000
-          : 0,
+      time: second,
       startDate: startDate,
       endDate: lastUpdate,
-      walkedDogList: dogs.map(value => {
-        value.dogIdx;
-      }),
+      walkedDogList: dogIdxs,
       gpsList: path,
     };
 
     try {
       const response = await axios.post('withdog/walk', jsonData);
       if (response.status === 200) {
-        removeMultiple(localList);
+        // 저장 성공
+        navigation.replace('LogViewWorker');
       }
     } catch (err: any) {
       Alert.alert('저장에 실패 했습니다', '다시 시도해 주세요');
     }
   };
 
-  const handleDoneWalking = async () => {
-    locationSocket?.emit('endWalk', roomId);
-    doneWalking(dispatch, navigation, watchId);
-    // dispatch(setIsSavingOn);
-    await submitLogs();
-    // dispatch(setIsSavingOff);
-  };
+  const handleDoneWalking = useCallback(async () => {
+    console.log('종료', walkRoomId);
+    if (locationSocket) {
+      locationSocket.emit('endWalk', walkRoomId);
+      doneWalking(dispatch, navigation, watchId);
+      await submitLogs();
+    }
+  }, [walkRoomId]);
 
   //시간계산
   const defaultSec =
@@ -123,21 +114,19 @@ function MapViewWorker({navigation, route}: any) {
     return <OnSaving />;
   } else {
     return (
-      <View>
-        <MapViewTemplate
-          myPosition={path[path.length - 1]}
-          path={path}
-          dogInfoList={dogs}
-          startDate={startDate}
-          doneWalking={() => {
-            handleDoneWalking();
-          }}
-          distance={distance}
-          dispatch={dispatch}
-          second={second}
-          navigation={navigation}
-        />
-      </View>
+      <MapViewTemplate
+        myPosition={path[path.length - 1]}
+        path={path}
+        dogInfoList={dogsList}
+        startDate={startDate}
+        doneWalking={() => {
+          handleDoneWalking();
+        }}
+        distance={distance}
+        dispatch={dispatch}
+        second={second}
+        navigation={navigation}
+      />
     );
   }
 }

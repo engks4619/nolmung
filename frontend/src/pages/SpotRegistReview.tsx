@@ -12,6 +12,7 @@ const SpotRegistReview = ({route, navigation}: any) => {
   const [content, setContent] = useState<string>('');
   const [star, setStar] = useState<number>(0);
   const [images, setImages] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const validateInput = () => {
     console.log(content);
@@ -25,13 +26,16 @@ const SpotRegistReview = ({route, navigation}: any) => {
   const successFunc = () => {
     Alert.alert('리뷰 작성 완료!');
     navigation.replace('SpotDetail', {spotId});
+    setLoading(false);
   };
 
   const failFunc = () => {
     Alert.alert('리뷰 작성 실패!');
+    setLoading(false);
   };
 
   const registReview = async () => {
+    setLoading(true);
     const requestBody = {
       spotId,
       content: content.trim(),
@@ -41,21 +45,22 @@ const SpotRegistReview = ({route, navigation}: any) => {
       const response = await axios.post(`spot/spot-review`, requestBody);
       if (response?.status === 200) {
         const reviewIdx = response.data;
-        images.map(async image => {
-          await uploadImg(
-            image,
-            `spot/spot-review/file/${reviewIdx}`,
-            undefined,
-            undefined,
-            successFunc,
-            failFunc,
-          );
-        });
+        await Promise.all(
+          images.map((image, idx) => {
+            uploadImg(image, `spot/spot-review/file/${reviewIdx}`);
+          }),
+        )
+          .then(successFunc)
+          .catch(failFunc)
+          .finally(() => {
+            navigation.replace('SpotDetail', {spotId});
+            setLoading(false);
+          });
       } else {
-        Alert.alert('리뷰 작성 실패!');
+        failFunc();
       }
     } catch (err) {
-      Alert.alert('리뷰 작성 실패!');
+      failFunc();
     }
   };
 

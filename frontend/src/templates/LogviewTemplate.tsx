@@ -46,7 +46,7 @@ function LogViewTemplate({
             style={styles.nmap}
             zoomControl={true}
             center={{
-              zoom: 17,
+              zoom: 16,
               latitude: myPosition.latitude,
               longitude: myPosition.longitude,
             }}>
@@ -59,7 +59,11 @@ function LogViewTemplate({
               image={require('@assets/logo.png')}
             />
             {path.length >= 2 ? (
-              <Polyline coordinates={path} strokeColor={MAIN_COLOR} />
+              <Polyline
+                strokeWidth={5}
+                coordinates={path}
+                strokeColor={MAIN_COLOR}
+              />
             ) : null}
           </NaverMapView>
         </View>
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
   },
   logSummarySmall: {
     color: 'black',
-    fontSize: 10,
+    fontSize: 12,
   },
   logSummaryMiddle: {
     marginTop: 10,

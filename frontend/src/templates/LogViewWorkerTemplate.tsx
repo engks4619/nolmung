@@ -1,44 +1,47 @@
 import React from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
-import NaverMapView, {Marker, Polyline} from 'react-native-nmap';
-import {MAIN_COLOR} from '~/const';
-import {Coord} from 'react-native-nmap';
+import {View, Text, StyleSheet, ScrollView, Dimensions} from 'react-native';
+import NaverMapView, {Marker, Polyline, Coord} from 'react-native-nmap';
 import {DetailDogProps} from '@molecules/DetailDog';
-import MyButton from '~/atoms/MyButton';
-import DoubleSummary from '@molecules/DoubleSummary';
+import {MAIN_COLOR} from '~/const';
 import WalkingDogs from '~/organisms/WalkingDogs';
+import DoubleSummary from '@molecules/DoubleSummary';
+import MyButton from '~/atoms/MyButton';
 
 interface Props {
-  myPosition: Coord | null;
   path: Coord[];
   dogInfoList: DetailDogProps[];
-  startDate: Date | null;
-  doneWalking: any;
-  distance: number;
-  dispatch: any;
+  myPosition: Coord;
+  saveLogs: () => void;
+  noSaveLogs: () => void;
+  countinueLogs: () => void;
   second: number;
-  navigation: any;
+  distance: number;
+  startDate: string | null;
 }
-
-function MapView({
-  myPosition,
+function LogViewWorkerTemplate({
   path,
   dogInfoList,
-  doneWalking,
-  distance,
+  myPosition,
   second,
+  distance,
+  startDate,
 }: Props) {
-  if (!myPosition || !myPosition.latitude) {
-    return (
-      <View style={styles.whileLoading}>
-        <Text>내 위치를 로딩 중입니다. 권한을 허용했는지 확인해주세요.</Text>
-      </View>
-    );
-  }
+  const date = startDate ? new Date(startDate).toLocaleString('ko-KR') : '';
   return (
     <View style={styles.container}>
       <ScrollView overScrollMode="never">
-        <WalkingDogs dogInfoList={dogInfoList} text="함께하는 반려견" />
+        <View style={styles.logSummaryContainer}>
+          <Text style={styles.logSummarySmall}>{date ? date : ''}</Text>
+          <Text style={styles.logSummaryMiddle}>산책 기록</Text>
+          <DoubleSummary
+            firstLabel={'산책 시간'}
+            firstText={second}
+            secondLabel={'산책 거리'}
+            secondText={distance}
+          />
+        </View>
+        <WalkingDogs dogInfoList={dogInfoList} text="함께한 반려견" />
+
         <View style={styles.mapContainer}>
           <NaverMapView
             style={styles.nmap}
@@ -49,10 +52,7 @@ function MapView({
               longitude: myPosition.longitude,
             }}>
             <Marker
-              coordinate={{
-                latitude: myPosition.latitude,
-                longitude: myPosition.longitude,
-              }}
+              coordinate={path[path.length - 1]}
               width={50}
               height={50}
               anchor={{x: 0.5, y: 0.5}}
@@ -68,18 +68,12 @@ function MapView({
             ) : null}
           </NaverMapView>
         </View>
-        <DoubleSummary
-          firstLabel={'산책 시간'}
-          firstText={second}
-          secondLabel={'산책 거리'}
-          secondText={distance}
-        />
         <View style={styles.btnContainer}>
           <MyButton
-            btnText="산책 종료"
+            btnText="산책 후기 남기기"
             width={200}
             height={50}
-            onClick={doneWalking}
+            onClick={() => {}}
           />
         </View>
       </ScrollView>
@@ -90,12 +84,7 @@ function MapView({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1,
-  },
-  whileLoading: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
+    height: Dimensions.get('window').height,
   },
   mapContainer: {
     alignItems: 'center',
@@ -103,15 +92,32 @@ const styles = StyleSheet.create({
     width: '100%',
     height: Dimensions.get('window').height / 2,
   },
+  logSummaryContainer: {
+    paddingHorizontal: 15,
+    backgroundColor: 'white',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    color: 'rgba(0, 0, 0, 0.2)',
+  },
+  logSummarySmall: {
+    color: 'black',
+    fontSize: 12,
+  },
+  logSummaryMiddle: {
+    marginTop: 10,
+    color: 'black',
+    fontWeight: 'bold',
+  },
   nmap: {
     justifySelf: 'center',
     width: '90%',
     height: '100%',
+  },
+  img: {
+    height: 400,
   },
   btnContainer: {
     flex: 1,
     paddingVertical: 15,
   },
 });
-
-export default MapView;
+export default LogViewWorkerTemplate;
