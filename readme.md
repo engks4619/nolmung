@@ -3,7 +3,7 @@
 # 🐕놀면멍하니
 
 <div align="center">
-    <img src="/uploads/79dbbfae08e5c3d65d6c6272673f89c7/logo.png" width="30%"/>
+    <img src="/READMEASSETS/img/Logo.png" width="30%"/>
 </div>
 
 ## 1-1. 서비스 소개🐶
@@ -80,64 +80,64 @@
 
 ### 메인 화면
 
-![0._home](/exec/img/메인화면.gif)
+![0._home](/READMEASSETS/img/메인화면.gif)
 
 ### 채팅
 
-![1._chat](/exec/img/채팅.gif)
+![1._chat](/READMEASSETS/img/채팅.gif)
 
 ### 내 강이지 위치 보기
 
-![8._DogGPS](/exec/img/내강아지위치보기.gif)
+![8._DogGPS]/READMEASSETS/img/내강아지위치보기.gif)
 
 ### 산책 알바 후기
 
-![2._walkreview](/exec/img/알바후기작성.gif)
+![2._walkreview](/READMEASSETS/img/알바후기작성.gif)
 
 ### 산책 스팟
 
-![3._spot1](/exec/img/산책스팟.gif)
+![3._spot1](/READMEASSETS/img/산책스팟.gif)
 
 
 ### 산책 스팟 리뷰
 
-![5._spotreview](/exec/img/스팟리뷰작성.gif)
+![5._spotreview](/READMEASSETS/img/스팟리뷰작성.gif)
 
 ### 커뮤니티/유저후기
 
-![6.community](/exec/img/커뮤니티상세유저후기.gif)
+![6.community](/READMEASSETS/img/커뮤니티상세유저후기.gif)
 
 ### 커뮤니티 글 작성
 
-![7._registArticle](/exec/img/글작성.gif)
+![7._registArticle](/READMEASSETS/img/글작성.gif)
 
 ### 내 강아지 - 삭제/등록
 
-![8._Dog](/exec/img/내강아지관리.gif)
+![8._Dog](/READMEASSETS/img/내강아지관리.gif)
 
 
 ### 산책하기 - 본인
 
-![10._walk](/uploads/73e5d7a1caa196a9874a113e383831a2/10._walk.gif)
+![10._walk](/READMEASSETS/img/산책하기-본인.gif)
 
 ## 6. 프로젝트 산출물 📖
 
 - ERD
 
-![image](/uploads/2543793e1716147d9f7c3b5b1db7e778/image.png)
+![image](/READMEASSETS/ERD.png)
 
 - Server Architecture
 
-![image](/uploads/bf43baced284ea484bf6ff2a29e7751b/image.png)
+![image](/READMEASSETS/img/Architecture.png)
 
 - API Docs
 
 https://documenter.getpostman.com/view/21981976/2s8YCjBWyX  
-![image](/uploads/6ac762d80a0b78f312f01343e46196fd/image.png)
+![image](/READMEASSETS/img/APIDocs.png)
 
 - WireFrame
 
-![image](/uploads/f1071b55fe10d101c1d2bcf29aaaf986/image.png)  
+![image](/READMEASSETS/img/Wireframe.png)  
 
 - 기능명세서  
-[기능명세서.pdf](/uploads/446c3de6181b4049bd78b18b80182a33/기능명세서.pdf)  
+[기능명세서.pdf](/READMEASSETS/docs/기능명세서.pdf)  
