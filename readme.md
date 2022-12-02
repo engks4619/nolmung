@@ -86,9 +86,9 @@
 
 ![1._chat](/READMEASSETS/img/채팅.gif)
 
-### 내 강이지 위치 보기
+### 내 강아지 위치 보기
 
-![8._DogGPS]/READMEASSETS/img/내강아지위치보기.gif)
+![8._DogGPS](/READMEASSETS/img/내강아지위치보기.gif)
 
 ### 산책 알바 후기
 
